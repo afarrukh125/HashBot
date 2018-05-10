@@ -6,10 +6,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 
 public class CommandManager {
-    ArrayList<Command> commandList = new ArrayList<>();
+    private ArrayList<Command> commandList = new ArrayList<>();
 
     public void processEvent(MessageReceivedEvent evt) {
-        String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 1);
+        String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
         final String params = (tokens.length > 1) ? tokens[1] : null;
         final String commandName = tokens[0];
 
@@ -25,7 +25,7 @@ public class CommandManager {
 
     public Command commandFromName(String name) {
         for(Command c: commandList) {
-            if(c.getName().equals(name))
+            if(c.getName().equalsIgnoreCase(name))
                 return c;
         }
         return null;

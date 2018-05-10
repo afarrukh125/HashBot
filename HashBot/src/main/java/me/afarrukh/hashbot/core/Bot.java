@@ -1,6 +1,9 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
+import me.afarrukh.hashbot.commands.management.user.ColourChangeCommand;
+import me.afarrukh.hashbot.commands.management.user.RewardCommand;
+import me.afarrukh.hashbot.commands.management.user.StatsCommand;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -8,8 +11,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import javax.security.auth.login.LoginException;
 
 public class Bot {
-    public static JDA botUser;
-    String token;
+    private static JDA botUser;
+    private String token;
 
     static CommandManager commandManager;
 
@@ -27,7 +30,9 @@ public class Bot {
                 .buildBlocking();
 
         commandManager = new CommandManager()
-                .addCommand(new PingCommand());
-
+                .addCommand(new ColourChangeCommand())
+                .addCommand(new PingCommand())
+                .addCommand(new RewardCommand())
+                .addCommand(new StatsCommand());
     }
 }
