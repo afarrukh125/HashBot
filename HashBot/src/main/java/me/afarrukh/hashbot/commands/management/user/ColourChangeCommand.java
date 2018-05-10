@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.management.user;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.utils.CmdParams;
+import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -19,7 +19,10 @@ public class ColourChangeCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         Invoker invoker = new Invoker(evt.getMember());
-
+        if(invoker.getCredit() < Constants.colChangeCred) {
+            evt.getTextChannel().sendMessage("You need at least " +Constants.colChangeCred+ " credit to change your colour.").queue();
+            return;
+        }
         try {
             String[] tokens = params.split(" ");
             if(tokens.length < 4) {
@@ -27,7 +30,7 @@ public class ColourChangeCommand extends Command {
                 return;
             }
             int maxIndex = tokens.length - 1;
-            String roleName = CmdParams.getParamsAsString(tokens, 0, maxIndex - 3);
+            String roleName = CmdUtils.getParamsAsString(tokens, 0, maxIndex - 3);
             int red = Integer.parseInt(tokens[maxIndex-2]);
             int green = Integer.parseInt(tokens[maxIndex-1]);
             int blue = Integer.parseInt(tokens[maxIndex]);

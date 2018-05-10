@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.utils.CmdParams;
+import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -15,7 +15,7 @@ public class RewardCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         String[] tokens = params.split(" ");
-        String targetUser = CmdParams.getParamsAsString(tokens, 0, tokens.length-2);
+        String targetUser = CmdUtils.getParamsAsString(tokens, 0, tokens.length-2);
         int amt = 0;
 
         try {

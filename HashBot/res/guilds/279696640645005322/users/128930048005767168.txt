@@ -1,0 +1,1 @@
+{"score":804,"level":10,"name":"yatty","time":1525966903145,"credit":22749}

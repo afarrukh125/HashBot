@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.utils;
 
 import java.util.concurrent.TimeUnit;
 
-public class CmdParams {
+public class CmdUtils {
 
     /**
      * Gets the given array of strings as a string starting from index 1

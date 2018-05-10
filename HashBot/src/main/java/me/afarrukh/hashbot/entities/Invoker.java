@@ -31,13 +31,9 @@ public class Invoker {
         return null;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
     /**
      * Checks if the current UNIX time stamp exceeds 60000 (a minute) of that in the user file of the associated User object.
-     * <br>If enough time has passed then the timestamp is set to the current time.
+     * <br/>If enough time has passed then the timestamp is set to the current time.
      * @return true if enough time has passed, false otherwise
      */
     public boolean hasTimePassed() {
@@ -111,4 +107,9 @@ public class Invoker {
     public long getExp() {
         return (Long) jsonFileManager.getValue("score");
     }
+
+    public Member getMember() {
+        return member;
+    }
+
 }

@@ -32,7 +32,7 @@ public class JSONFileManager {
                 load();
             }
             else {
-                System.out.println("Could not create user file for user " +m.getUser().getName());
+                load();
             }
         }
     }
@@ -77,7 +77,13 @@ public class JSONFileManager {
     }
 
     public Object getValue(Object key) {
-        return jsonObject.get(key);
+        try {
+            Object value = jsonObject.get(key);
+            return value;
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
