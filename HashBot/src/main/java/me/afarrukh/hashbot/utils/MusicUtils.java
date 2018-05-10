@@ -1,12 +1,63 @@
 package me.afarrukh.hashbot.utils;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.music.GuildMusicManager;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.managers.AudioManager;
 
 public class MusicUtils {
+
+    /**
+     * @param evt The message event used to retrieve data such as the channel the message is being sent to
+     * @param musicManager The music manager to be queried
+     * @param track The track being queued
+     * @param playTop Whether or not the song is to be queued to the top of the list
+     */
+    public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
+        connectToChannel(evt);
+        if(playTop)
+            musicManager.getScheduler().queueTop(track);
+        else
+            musicManager.getScheduler().queue(track);
+        evt.getChannel().sendMessage(EmbedUtils.getSingleSongEmbed(track, evt));
+    }
+
+    /**
+     * Connects to a voice channel
+     * @param evt The event object used to retrieve the VoiceChannel to connect to through the Member object in the event
+     */
+    public static void connectToChannel(MessageReceivedEvent evt) {
+        if(!evt.getGuild().getAudioManager().isConnected()) {
+            Member m = evt.getMember();
+            if(m.getVoiceState().inVoiceChannel()) {
+                AudioManager audioManager = evt.getGuild().getAudioManager();
+                audioManager.openAudioConnection(m.getVoiceState().getChannel());
+            }
+            else {
+                evt.getChannel().sendMessage("You cannot call the bot if you are not in a voice channel.").queue();
+            }
+        }
+    }
+
+    /**
+     * Disconnects the bot from the channel provided in the provided message event
+     * @param evt
+     */
+    public static void disconnect(MessageReceivedEvent evt) {
+        GuildMusicManager gm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
+        if(gm.getPlayer().getPlayingTrack() != null)
+            gm.getPlayer().getPlayingTrack().stop();
+        gm.getScheduler().getQueue().clear();
+        gm.getScheduler().setLooping(false);
+        gm.getPlayer().setPaused(false);
+        evt.getGuild().getAudioManager().closeAudioConnection();
+        gm.getPlayer().destroy();
+    }
     /**
      * Returns the duration of a playlist
      * @param pl The playlist to be queried
@@ -80,7 +131,7 @@ public class MusicUtils {
             return;
         }
         evt.getChannel().sendMessage("Volume set to " +vol).queue();
-        Bot.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
+        Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
     }
 
     /**
@@ -90,7 +141,7 @@ public class MusicUtils {
      */
     public static void getCurrentSong(MessageReceivedEvent evt) {
         try {
-            AudioTrack currentTrack = Bot.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
+            AudioTrack currentTrack = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
             String message = "The currently playing song is `" +currentTrack
                     .getInfo().title+"`";
             int currentTime = (int) currentTrack.getPosition()/1000;
@@ -102,4 +153,39 @@ public class MusicUtils {
             evt.getChannel().sendMessage("Nothing is playing right now.").queue();
         }
     }
+
+    /**
+     * Pauses the bot and resumes if it is already paused
+     * @param a
+     * @param evt
+     */
+    public static void pause(MessageReceivedEvent evt) {
+        AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
+        if(!ap.isPaused())
+            ap.setPaused(true);
+        else
+            ap.setPaused(false);
+    }
+
+    /**
+     * Looks for a particular time in the song
+     * @param evt
+     * @param seconds The time in seconds to be searched for in the currently playing song
+     */
+    public static void seek(MessageReceivedEvent evt, int seconds) {
+        try {
+            AudioTrack track = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
+
+            if(seconds > track.getDuration()/1000 || seconds < 0)
+                evt.getChannel().sendMessage("Please enter a valid time for this song to seek.").queue();
+            else {
+                int toMilliSeconds = seconds * 1000;
+                track.setPosition(toMilliSeconds);
+                evt.getChannel().sendMessage("Set position of current song to " +seconds).queue();
+            }
+        } catch(NullPointerException e) {
+            evt.getChannel().sendMessage("Nothing is playing right now.").queue();
+        }
+    }
+
 }

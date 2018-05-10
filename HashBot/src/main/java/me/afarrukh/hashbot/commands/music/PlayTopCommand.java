@@ -8,21 +8,21 @@ import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class PlayCommand extends Command {
+public class PlayTopCommand extends Command {
 
-    public PlayCommand() {
-        super("play", new String[] {"p"});
+    public PlayTopCommand() {
+        super("playtop", new String[] {"ptop"});
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
         if(params.split(" ").length == 1 && params.contains("http")) {
-            Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
+            Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
             evt.getMessage().delete();
         }
         else
-            Bot.musicManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
+            Bot.musicManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
     }
 
     @Override

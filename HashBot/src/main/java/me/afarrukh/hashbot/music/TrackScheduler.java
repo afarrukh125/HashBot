@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.afarrukh.hashbot.utils.CmdUtils;
+import me.afarrukh.hashbot.utils.MusicUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,28 +28,43 @@ public class TrackScheduler extends AudioEventAdapter {
         looping = false;
     }
 
+    /**
+     * Queues the song onto the track and informs if it was immediately played or queued
+     * @param track The AudioTrack to play
+     * @return Returns a boolean corresponding
+     */
     public void queue(AudioTrack track) {
         if(!player.startTrack(track, true)) {
             queue.offer(track);
-            //TODO add message that implies song has been queued
         }
-        //TODO add message that implies song will immediately play
     }
 
     public void nextTrack() {
         player.startTrack(queue.poll(), false);
     }
 
+    /**
+     * Decides what happens when a song ends
+     */
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
-        if (endReason.mayStartNext) {
+        // Only start the next track if the current one is finished and if the load failed
+        if(isLooping()) {
+            player.stopTrack();
+            AudioTrack cloneTrack = track.makeClone();
+            cloneTrack.setUserData(track.getUserData());
+            player.startTrack(cloneTrack, false);
+            return;
+        }
+
+        if(endReason.mayStartNext) {
             nextTrack();
         }
     }
+
     /**
      * Replaces the current queue with a new one
-     * @param list
+     * @param list The list to replace the current queue with
      */
     private void replaceQueue(ArrayList<AudioTrack> list) {
         queue.clear();
@@ -89,7 +105,7 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     public void skip(int idx) {
         for(int i = 0; i<idx-1; i++) {
-            getQueue().poll();
+            queue.poll();
         }
         player.getPlayingTrack().stop();
         nextTrack();

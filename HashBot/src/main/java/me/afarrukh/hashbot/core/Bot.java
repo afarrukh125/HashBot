@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
-import me.afarrukh.hashbot.commands.music.PlayCommand;
+import me.afarrukh.hashbot.commands.music.*;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -20,16 +20,13 @@ public class Bot {
     private static JDA botUser;
     private String token;
 
-    private static AudioPlayerManager playerManager;
-    private static Map<Long, GuildMusicManager> musicManagers;
-
     static CommandManager commandManager;
+    public static MusicManager musicManager;
 
     public Bot(String token) {
         this.token = token;
         try {
             init();
-            initMusic();
         } catch (LoginException | InterruptedException e) { e.printStackTrace(); }
     }
 
@@ -46,31 +43,18 @@ public class Bot {
                 .addCommand(new StatsCommand())
                 .addCommand(new PruneCommand())
                 .addCommand(new PlayCommand())
-                .addCommand(new LeaderboardCommand());
-    }
+                .addCommand(new LeaderboardCommand())
+                .addCommand(new QueueCommand())
+                .addCommand(new ClearQueueCommand())
+                .addCommand(new DisconnectCommand())
+                .addCommand(new LoopCommand())
+                .addCommand(new NowPlayingCommand())
+                .addCommand(new PauseCommand())
+                .addCommand(new PlayTopCommand())
+                .addCommand(new SeekCommand())
+                .addCommand(new MoveCommand())
+                .addCommand(new SkipCommand());
 
-    private void initMusic() {
-        playerManager = new DefaultAudioPlayerManager();
-        AudioSourceManagers.registerLocalSource(playerManager);
-        AudioSourceManagers.registerRemoteSources(playerManager);
-        this.musicManagers = new HashMap<>();
-    }
-
-    public static GuildMusicManager getGuildAudioPlayer(Guild guild) {
-        long guildId = Long.parseLong(guild.getId());
-        GuildMusicManager musicManager = musicManagers.get(guildId);
-
-        if(musicManager == null) {
-            musicManager = new GuildMusicManager(playerManager);
-            musicManagers.put(guildId, musicManager);
-        }
-
-        guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
-
-        return musicManager;
-    }
-
-    public static AudioPlayerManager getPlayerManager() {
-        return playerManager;
+        musicManager = new MusicManager();
     }
 }
