@@ -53,6 +53,7 @@ public class Bot {
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
+                .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand());
 
         musicManager = new MusicManager();

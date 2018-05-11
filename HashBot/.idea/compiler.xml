@@ -9,6 +9,8 @@
         <module name="HashBot" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel>
+      <module name="HashBot" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
