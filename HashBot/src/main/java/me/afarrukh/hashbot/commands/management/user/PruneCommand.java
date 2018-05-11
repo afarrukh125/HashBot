@@ -24,7 +24,7 @@ public class PruneCommand extends Command {
         MessagePaginationAction messageHistory = evt.getTextChannel().getIterableHistory();
         List<Message> messageBin = new ArrayList<>();
         for(Message m: messageHistory) {
-            if(m.getAuthor().isBot() || m.getContentRaw().startsWith(Constants.invokerChar)) {
+            if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Constants.invokerChar)) {
                 messageBin.add(m);
             }
             if(messageBin.size() == 100)

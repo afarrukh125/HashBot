@@ -1,1 +1,0 @@
-{"score":2692,"level":15,"name":"Necrowolf","time":1525974502331,"credit":39638}

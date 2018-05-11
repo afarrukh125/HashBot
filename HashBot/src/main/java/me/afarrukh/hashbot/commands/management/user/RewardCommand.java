@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class RewardCommand extends Command {
 
     public RewardCommand() {
-        super("addCredit");
+        super("reward");
     }
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {

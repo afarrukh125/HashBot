@@ -1,1 +1,0 @@
-{"score":747,"level":15,"name":"sixgreenpeas","time":1525975338480,"credit":36815}

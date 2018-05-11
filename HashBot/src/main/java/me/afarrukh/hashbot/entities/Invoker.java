@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.entities;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.JSONFileManager;
+import me.afarrukh.hashbot.core.JSONUserFileManager;
 import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -16,11 +16,11 @@ import java.util.Random;
 public class Invoker {
 
     private Member member;
-    private JSONFileManager jsonFileManager;
+    private JSONUserFileManager jsonFileManager;
 
     public Invoker(Member m) {
         member = m;
-        jsonFileManager = new JSONFileManager(m);
+        jsonFileManager = new JSONUserFileManager(m);
     }
 
     public Role getRole(String name) {

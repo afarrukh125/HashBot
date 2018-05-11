@@ -8,8 +8,8 @@ public abstract class Command {
     /**
      * The name of the command, i.e. what the user will need to type after the prefix to call it
      */
-    private String name;
-    private String[] aliases;
+    protected String name;
+    protected String[] aliases;
 
     public Command(String name, String[] aliases) {
         this.name = name;
@@ -18,7 +18,7 @@ public abstract class Command {
 
     public Command(String name) {
         this.name = name;
-        aliases= null;
+        aliases = null;
     }
 
     /**

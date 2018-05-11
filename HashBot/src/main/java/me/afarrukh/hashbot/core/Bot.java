@@ -1,20 +1,14 @@
 package me.afarrukh.hashbot.core;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
+import me.afarrukh.hashbot.commands.management.bot.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
-import me.afarrukh.hashbot.music.GuildMusicManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Guild;
 
 import javax.security.auth.login.LoginException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Bot {
     private static JDA botUser;
@@ -48,11 +42,14 @@ public class Bot {
                 .addCommand(new ClearQueueCommand())
                 .addCommand(new DisconnectCommand())
                 .addCommand(new LoopCommand())
+                .addCommand(new PlaySkipCommand())
                 .addCommand(new NowPlayingCommand())
                 .addCommand(new PauseCommand())
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
+                .addCommand(new AddRoleCommand())
                 .addCommand(new MoveCommand())
+                .addCommand(new SetNameCommand())
                 .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand());
 

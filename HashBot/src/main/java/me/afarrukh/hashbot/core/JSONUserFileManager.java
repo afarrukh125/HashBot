@@ -11,13 +11,13 @@ import java.io.*;
  * Class that manipulates the json object associated with an invoker object
  */
 
-public class JSONFileManager {
+public class JSONUserFileManager {
 
     private JSONObject jsonObject;
     private File file;
     private Member member;
 
-    public JSONFileManager(Member m) {
+    public JSONUserFileManager(Member m) {
         String guildId = m.getGuild().getId();
         String userId = m.getUser().getId();
 

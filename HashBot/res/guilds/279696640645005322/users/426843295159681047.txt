@@ -1,1 +1,0 @@
-{"score":19,"level":1,"name":"JK","time":1525537649228,"credit":59}

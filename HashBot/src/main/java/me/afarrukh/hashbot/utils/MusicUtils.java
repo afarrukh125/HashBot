@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -20,11 +21,15 @@ public class MusicUtils {
      */
     public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
         connectToChannel(evt);
-        if(playTop)
+        Invoker invoker = new Invoker(evt.getMember());
+        if(playTop) {
+            invoker.addCredit(-Constants.PLAY_TOP_COST);
             musicManager.getScheduler().queueTop(track);
-        else
+        }
+        else {
+            invoker.addCredit(-Constants.SONG_COST);
             musicManager.getScheduler().queue(track);
-        evt.getChannel().sendMessage(EmbedUtils.getSingleSongEmbed(track, evt));
+        }
     }
 
     /**
@@ -156,7 +161,6 @@ public class MusicUtils {
 
     /**
      * Pauses the bot and resumes if it is already paused
-     * @param a
      * @param evt
      */
     public static void pause(MessageReceivedEvent evt) {

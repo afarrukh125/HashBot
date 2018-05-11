@@ -1,1 +1,0 @@
-{"score":0,"level":0,"name":"Tatsumaki","time":1523838707144,"credit":0}

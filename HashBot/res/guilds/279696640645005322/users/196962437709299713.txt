@@ -1,1 +1,0 @@
-{"score":27,"level":2,"name":"sweaty bandit","time":1525542163016,"credit":39}

@@ -18,7 +18,7 @@ public class SkipCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if(MusicUtils.canInteract(evt)) {
             GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().setLooping(false);
+            gmm.getScheduler().setLooping(false);
             if(params == null) {
                 evt.getChannel().sendMessage(EmbedUtils.getSkippedEmbed(gmm.getPlayer().getPlayingTrack())).queue();
 

@@ -42,11 +42,16 @@ public class ColourChangeCommand extends Command {
                 String prevGreen = Integer.toString(prevCol.getGreen());
                 String prevBlue = Integer.toString(prevCol.getBlue());
 
+                if(red == 0 || green == 0 || blue == 0) {
+                    evt.getTextChannel().sendMessage("You cannot use this colour.").queue();
+                    return;
+                }
+
                 desiredRole.getManager().setColor(new Color(red, green, blue)).queue();
                 Invoker in = new Invoker(evt.getMember());
                 in.addCredit(-Constants.colChangeCred);
                 evt.getTextChannel().sendMessage("Colour changed from " +prevRed+ " " + prevGreen+ " " +prevBlue
-                        +" to " + red+ " " + green+ " " +blue+ " [Cost: +"+Constants.colChangeCred+" credit]").queue();
+                        +" to " + red+ " " + green+ " " +blue+ " [Cost: "+Constants.colChangeCred+" credit]").queue();
                 return;
             }
             evt.getTextChannel().sendMessage("You do not have the role, or it doesn't exist.").queue();
