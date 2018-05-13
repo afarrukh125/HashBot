@@ -25,6 +25,7 @@ public class JSONUserFileManager {
 
         member = m;
         file = new File(filePath);
+
         if(file.exists())
             load();
         else {

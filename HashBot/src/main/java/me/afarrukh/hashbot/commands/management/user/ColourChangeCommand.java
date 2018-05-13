@@ -42,8 +42,8 @@ public class ColourChangeCommand extends Command {
                 String prevGreen = Integer.toString(prevCol.getGreen());
                 String prevBlue = Integer.toString(prevCol.getBlue());
 
-                if(red == 0 || green == 0 || blue == 0) {
-                    evt.getTextChannel().sendMessage("You cannot use this colour.").queue();
+                if(red == 0 && green == 0 && blue == 0) {
+                    evt.getTextChannel().sendMessage("You cannot use this colour. (Use at least one value above 0)").queue();
                     return;
                 }
 

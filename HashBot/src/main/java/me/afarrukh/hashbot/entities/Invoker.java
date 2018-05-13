@@ -66,15 +66,20 @@ public class Invoker {
         String[] tokens = msg.split(" ");
         int amt = LevelUtils.getPointsFromMessage(tokens);
         int currentExp = (int) getExp();
-        setExp(currentExp + amt);
-        System.out.print("User " +member.getUser().getName()+ " now has " +(currentExp+amt)+ " experience. (Added " +amt+ ")\n");
 
-        if(currentExp >= getExpForNextLevel()) {
+        this.setExp(currentExp + amt);
+        int newExp = currentExp + amt;
+
+        System.out.print("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")\n");
+
+        int expForNextLevel = getExpForNextLevel();
+
+        if(newExp >= expForNextLevel) {
             int currentLevel = (int) getLevel();
-            int newExp = (int) getExp();
 
-            setExp(newExp - getExpForNextLevel());
+            setExp(newExp - expForNextLevel);
             setLevel(currentLevel+1);
+
             System.out.println(member.getUser().getName() + " has levelled up. (Now level " +(currentLevel+1)+")");
         }
     }

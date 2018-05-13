@@ -1,7 +1,9 @@
 package me.afarrukh.hashbot.utils;
 
+import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 
 public class UserUtils {
 
@@ -14,5 +16,11 @@ public class UserUtils {
             }
         }
         return highest;
+    }
+
+    public static boolean isBotAdmin(User u) {
+        if(u.getId().equals(Constants.OWNER_ID))
+            return true;
+        return false;
     }
 }

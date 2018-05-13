@@ -14,7 +14,7 @@ public class BotUtils {
     public static void deleteLastMsg(MessageReceivedEvent evt) {
         for(Message m: evt.getTextChannel().getIterableHistory()) {
             if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId())) {
-                m.delete().queueAfter(800, TimeUnit.MILLISECONDS);
+                m.delete().queueAfter(1500, TimeUnit.MILLISECONDS);
                 break;
             }
         }

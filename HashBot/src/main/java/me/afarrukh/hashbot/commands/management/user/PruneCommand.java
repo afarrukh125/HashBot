@@ -30,10 +30,24 @@ public class PruneCommand extends Command {
             if(messageBin.size() == 100)
                 break;
         }
-
-        evt.getTextChannel().deleteMessages(messageBin).queue();
-        evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
-        BotUtils.deleteLastMsg(evt);
+        try {
+            evt.getTextChannel().deleteMessages(messageBin).queue();
+            evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
+            BotUtils.deleteLastMsg(evt);
+        } catch(IllegalArgumentException e) {
+            String[] msgData = e.getMessage().split(" ");
+            String msgId = msgData[msgData.length -1];
+            Iterator<Message> iter = messageBin.iterator();
+            //Removing messages from message bin with id less than the message id that caused the exception
+            while(iter.hasNext()) {
+                Message delMsg = iter.next();
+                if(delMsg.getIdLong() <= Long.parseLong(msgId))
+                    iter.remove();
+            }
+            evt.getTextChannel().deleteMessages(messageBin).queue();
+            evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
+            BotUtils.deleteLastMsg(evt);
+        }
     }
 
     @Override
