@@ -13,7 +13,7 @@ public class DisconnectCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if(MusicUtils.canInteract(evt))
-            MusicUtils.disconnect(evt);
+            MusicUtils.disconnect(evt.getGuild());
     }
 
     @Override

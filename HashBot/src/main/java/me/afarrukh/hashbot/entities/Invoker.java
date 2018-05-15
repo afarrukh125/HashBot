@@ -64,7 +64,7 @@ public class Invoker {
 
     public void updateExperience(String msg) {
         String[] tokens = msg.split(" ");
-        int amt = LevelUtils.getPointsFromMessage(tokens);
+        int amt = LevelUtils.getPointsFromMessage(tokens, (int) getLevel());
         int currentExp = (int) getExp();
 
         this.setExp(currentExp + amt);

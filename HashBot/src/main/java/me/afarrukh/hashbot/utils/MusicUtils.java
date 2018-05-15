@@ -7,9 +7,12 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.AudioManager;
+
+import java.util.concurrent.BlockingQueue;
 
 public class MusicUtils {
 
@@ -51,16 +54,16 @@ public class MusicUtils {
 
     /**
      * Disconnects the bot from the channel provided in the provided message event
-     * @param evt
+     * @param guild The guild to disconnect the bot from
      */
-    public static void disconnect(MessageReceivedEvent evt) {
-        GuildMusicManager gm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
+    public static void disconnect(Guild guild) {
+        GuildMusicManager gm = Bot.musicManager.getGuildAudioPlayer(guild);
         if(gm.getPlayer().getPlayingTrack() != null)
             gm.getPlayer().getPlayingTrack().stop();
         gm.getScheduler().getQueue().clear();
         gm.getScheduler().setLooping(false);
         gm.getPlayer().setPaused(false);
-        evt.getGuild().getAudioManager().closeAudioConnection();
+        guild.getAudioManager().closeAudioConnection();
         gm.getPlayer().destroy();
     }
     /**
@@ -88,7 +91,7 @@ public class MusicUtils {
             String botChannel = evt.getGuild().getAudioManager().getConnectedChannel().getId();
             if(memberChannel.equals(botChannel))
                 return true;
-            evt.getChannel().sendMessage("You cannot interact with the bot unless you are in a voice channel.").queue();
+            evt.getChannel().sendMessage("You cannot interact with the bot unless you are in its voice channel").queue();
             return false;
         }catch(NullPointerException e) {}
         return false;
@@ -190,6 +193,27 @@ public class MusicUtils {
         } catch(NullPointerException e) {
             evt.getChannel().sendMessage("Nothing is playing right now.").queue();
         }
+    }
+
+    /**
+     * The song to be removed from the queue at the given index
+     * @param a
+     * @param evt
+     * @param idx The current index of the song to be removed
+     */
+    public static void remove(MessageReceivedEvent evt, int idx) {
+        BlockingQueue<AudioTrack> tracks = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
+
+        int count = 1;
+        for(AudioTrack track : tracks) {
+            if(count == idx) {
+                tracks.remove(track);
+                evt.getTextChannel().sendMessage("Removed `" +track.getInfo().title+ "` from queue").queue();
+                return;
+            }
+            count++;
+        }
+        evt.getTextChannel().sendMessage("Could not find a song at that index.").queue();
     }
 
 }

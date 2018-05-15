@@ -1,0 +1,30 @@
+package me.afarrukh.hashbot.commands.music;
+
+import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.utils.MusicUtils;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+public class RemoveCommand extends Command {
+
+    public RemoveCommand() {
+        super("remove", new String[]{"rm", "r"});
+    }
+
+    @Override
+    public void onInvocation(MessageReceivedEvent evt, String params) {
+        try {
+        if(MusicUtils.canInteract(evt))
+            MusicUtils.remove(evt, Integer.parseInt(params));
+        } catch(NullPointerException e) {
+            onIncorrectParams(evt.getTextChannel());
+        } catch(NumberFormatException e) {
+            onIncorrectParams(evt.getTextChannel());
+        }
+    }
+
+    @Override
+    public void onIncorrectParams(TextChannel channel) {
+        channel.sendMessage("Usage: remove/rm/r <song index>").queue();
+    }
+}

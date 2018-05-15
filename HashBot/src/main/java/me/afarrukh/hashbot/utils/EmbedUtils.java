@@ -106,13 +106,14 @@ public class EmbedUtils {
     public static MessageEmbed getQueuedEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Queued song");
+        eb.setTitle("Now playing");
         eb.setColor(Constants.EMB_COL);
         eb.appendDescription("["+at.getInfo().title+"]("+at.getInfo().uri+")\n\n");
         eb.appendDescription("**Channel**: `" +at.getInfo().author + "`\n");
         eb.appendDescription("**Queued by**: `"+at.getUserData().toString()+ "`\n");
         eb.appendDescription("**Duration**: `"+CmdUtils.longToMMSS(at.getDuration())+ "`\n");
         if(!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack()!=null) {
+            eb.setTitle("Queued song");
             eb.appendDescription("**Position in queue**: `" +ts.getSongIndex(at)+"`\n");
             eb.appendDescription("**Playing in approximately**: `" +ts.getTotalTimeTil(at)+"`\n");
         }

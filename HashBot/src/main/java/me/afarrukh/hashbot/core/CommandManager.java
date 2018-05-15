@@ -1,6 +1,8 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
+import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ public class CommandManager {
         final String commandName = tokens[0];
 
         Command command = commandFromName(commandName);
+
+        if(command instanceof OwnerCommand && command!=null && !UserUtils.isBotAdmin(evt.getAuthor()))
+            return;
+
         if(command != null) command.onInvocation(evt, params);
 
     }
@@ -29,7 +35,7 @@ public class CommandManager {
                 return c;
             if(c.getAliases()!=null)
                 for(String alias : c.getAliases())
-                    if (alias.equals(name))
+                    if (alias.equalsIgnoreCase(name))
                         return c;
         }
         return null;

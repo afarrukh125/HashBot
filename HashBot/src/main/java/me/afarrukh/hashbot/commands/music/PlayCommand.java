@@ -7,6 +7,7 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
+import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -18,6 +19,9 @@ public class PlayCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        if(!MusicUtils.canInteract(evt) && evt.getGuild().getAudioManager().isConnected())
+            return;
+
         if(new Invoker(evt.getMember()).getCredit() < Constants.SONG_COST) {
             evt.getTextChannel().sendMessage("You need at least " +Constants.SONG_COST+ " credit to queue songs.").queue();
             return;

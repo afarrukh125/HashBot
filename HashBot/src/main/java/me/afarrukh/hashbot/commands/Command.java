@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.commands;
 
+import me.afarrukh.hashbot.utils.MusicUtils;
+import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

@@ -16,12 +16,6 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
     }
 
     @Override
-    public void loadFailed(FriendlyException e) {
-        e.printStackTrace();
-
-    }
-
-    @Override
     public void noMatches() {
         evt.getChannel().sendMessage("Nothing found by that URL.").queue();
     }
@@ -39,6 +33,7 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
             evt.getChannel().sendMessage("Cannot queue playlist larger than " +Constants.MAX_PLAYLIST_SIZE).queue();
             return;
         }
+
         firstTrack.setUserData(evt.getAuthor().getName());
         MusicUtils.play(evt, gmm, firstTrack, playTop);
 

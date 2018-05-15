@@ -15,12 +15,6 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
     }
 
     @Override
-    public void loadFailed(FriendlyException e) {
-        e.printStackTrace();
-
-    }
-
-    @Override
     public void noMatches() {
         evt.getChannel().sendMessage("Nothing found by that query");
     }

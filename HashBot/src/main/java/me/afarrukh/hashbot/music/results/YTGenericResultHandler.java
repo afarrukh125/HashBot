@@ -16,11 +16,19 @@ public abstract class YTGenericResultHandler implements AudioLoadResultHandler {
     GuildMusicManager gmm;
     MessageReceivedEvent evt;
     boolean playTop;
+    String query;
 
     public YTGenericResultHandler(GuildMusicManager gmm, MessageReceivedEvent evt, boolean playTop) {
         this.gmm = gmm;
         this.evt = evt;
         this.playTop = playTop;
+        String[] params = evt.getMessage().getContentRaw().split(" ", 2);
+        this.query = params[1];
+
+        if(!query.contains("list")) {
+            evt.getChannel().sendMessage(":mag: **Searching**: `" +query+"`").queue();
+        }
+
     }
 
     @Override
@@ -33,5 +41,7 @@ public abstract class YTGenericResultHandler implements AudioLoadResultHandler {
     public abstract void noMatches();
 
     @Override
-    public abstract void loadFailed(FriendlyException e);
+    public void loadFailed(FriendlyException e) {
+        evt.getChannel().sendMessage("Nothing found by `" +query+"`").queue();
+    }
 }

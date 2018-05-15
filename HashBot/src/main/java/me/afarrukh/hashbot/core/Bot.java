@@ -1,7 +1,8 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
-import me.afarrukh.hashbot.commands.management.bot.SetNameCommand;
+import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
+import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import net.dv8tion.jda.core.AccountType;
@@ -32,6 +33,7 @@ public class Bot {
 
         commandManager = new CommandManager()
                 .addCommand(new ColourChangeCommand())
+                .addCommand(new SetNameCommand())
                 .addCommand(new PingCommand())
                 .addCommand(new RewardCommand())
                 .addCommand(new StatsCommand())
@@ -39,6 +41,7 @@ public class Bot {
                 .addCommand(new PlayCommand())
                 .addCommand(new LeaderboardCommand())
                 .addCommand(new QueueCommand())
+                .addCommand(new RemoveCommand())
                 .addCommand(new ClearQueueCommand())
                 .addCommand(new DisconnectCommand())
                 .addCommand(new LoopCommand())
@@ -49,7 +52,7 @@ public class Bot {
                 .addCommand(new SeekCommand())
                 .addCommand(new AddRoleCommand())
                 .addCommand(new MoveCommand())
-                .addCommand(new SetNameCommand())
+                .addCommand(new SetNickCommand())
                 .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand());
 

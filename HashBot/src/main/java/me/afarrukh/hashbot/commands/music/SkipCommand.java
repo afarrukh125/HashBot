@@ -11,13 +11,15 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SkipCommand extends Command {
 
     public SkipCommand() {
-        super("skip", new String[]{"n", "next"});
+        super("skip", new String[]{"n", "next", "s"});
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if(MusicUtils.canInteract(evt)) {
             GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
+            if(gmm.getScheduler().getQueue().isEmpty() && (gmm.getPlayer().getPlayingTrack() == null))
+                return;
             gmm.getScheduler().setLooping(false);
             if(params == null) {
                 evt.getChannel().sendMessage(EmbedUtils.getSkippedEmbed(gmm.getPlayer().getPlayingTrack())).queue();

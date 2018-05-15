@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.UserUtils;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -15,7 +16,7 @@ public class RewardCommand extends Command {
     }
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!UserUtils.isBotAdmin(evt.getAuthor())) {
+        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
             evt.getChannel().sendMessage("Insufficient permission").queue();
             return;
         }

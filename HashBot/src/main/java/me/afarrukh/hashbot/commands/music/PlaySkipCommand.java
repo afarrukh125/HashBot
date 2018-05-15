@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.commands.music;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
+import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -18,6 +19,9 @@ public class PlaySkipCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        if(!MusicUtils.canInteract(evt) && evt.getGuild().getAudioManager().isConnected())
+            return;
+
         if(params != null) {
             new PlayTopCommand().onInvocation(evt, params);
             Timer timer  = new Timer();
