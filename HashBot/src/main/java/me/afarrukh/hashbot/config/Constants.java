@@ -19,7 +19,7 @@ public class Constants {
     public static final int MAX_CREDIT = 30;
 
     public static final int MAX_EXP_FROM_MSG = 60; //A single message cannot give more than this much experience
-    public static final int INITIAL_EXP = 15; //The amount of experience the user gets per message
+    public static final int INITIAL_EXP = 10; //The amount of experience the user gets per message
     public static final int LEADERBOARD_MAX = 10;
     public static final int IMAGE_EXP = INITIAL_EXP*2; //The amount of experience the user gets when they send an image (flat amount)
 

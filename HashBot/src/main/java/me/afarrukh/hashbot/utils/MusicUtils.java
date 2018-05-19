@@ -47,7 +47,7 @@ public class MusicUtils {
                 audioManager.openAudioConnection(m.getVoiceState().getChannel());
             }
             else {
-                evt.getChannel().sendMessage("You cannot call the bot if you are not in a voice channel.").queue();
+                return;
             }
         }
     }
@@ -95,6 +95,14 @@ public class MusicUtils {
             return false;
         }catch(NullPointerException e) {}
         return false;
+    }
+
+    /**
+     * Deletes the last bot message and message event message for 'play' commands mainly
+     */
+    public static void cleanPlayMessage(MessageReceivedEvent evt) {
+        BotUtils.deleteLastMsg(evt);
+        evt.getMessage().delete().queue();
     }
 
     /**

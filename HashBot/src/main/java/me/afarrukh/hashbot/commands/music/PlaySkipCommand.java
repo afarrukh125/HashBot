@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.commands.music;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,8 +20,11 @@ public class PlaySkipCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!MusicUtils.canInteract(evt) && evt.getGuild().getAudioManager().isConnected())
+        if(!MusicUtils.canInteract(evt) && !evt.getMember().getVoiceState().inVoiceChannel()) {
+            evt.getChannel().sendMessage("You cannot call the bot if you are not in a voice channel.").queue();
+            MusicUtils.cleanPlayMessage(evt);
             return;
+        }
 
         if(params != null) {
             new PlayTopCommand().onInvocation(evt, params);

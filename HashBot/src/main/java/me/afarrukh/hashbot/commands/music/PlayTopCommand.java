@@ -7,6 +7,7 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -19,8 +20,11 @@ public class PlayTopCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!MusicUtils.canInteract(evt) && evt.getGuild().getAudioManager().isConnected())
+        if(!MusicUtils.canInteract(evt) && !evt.getMember().getVoiceState().inVoiceChannel()) {
+            evt.getChannel().sendMessage("You cannot call the bot if you are not in a voice channel.").queue();
+            MusicUtils.cleanPlayMessage(evt);
             return;
+        }
 
         if(new Invoker(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
             evt.getTextChannel().sendMessage("You need at least " +Constants.PLAY_TOP_COST+ " credit to queue songs to the top of the list.").queue();
