@@ -2,7 +2,9 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
@@ -26,6 +28,10 @@ public class MessageListener extends ListenerAdapter {
             return;
         if(evt.getMessage().getContentRaw().startsWith(Constants.invokerChar)) {
             Bot.commandManager.processEvent(evt);
+            return;
+        }
+        if(evt.getMessage().getAttachments().isEmpty() && BotUtils.isPinnedChannel(evt) && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            evt.getMessage().delete().queue();
             return;
         }
         Invoker invoker = new Invoker(evt.getMember());

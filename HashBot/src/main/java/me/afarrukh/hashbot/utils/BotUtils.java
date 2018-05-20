@@ -1,6 +1,8 @@
 package me.afarrukh.hashbot.utils;
 
+import me.afarrukh.hashbot.core.JSONGuildManager;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.concurrent.TimeUnit;
@@ -18,5 +20,13 @@ public class BotUtils {
                 break;
             }
         }
+    }
+
+    public static boolean isPinnedChannel(MessageReceivedEvent evt) {
+        JSONGuildManager jgm = new JSONGuildManager(evt.getGuild());
+        if(evt.getTextChannel().getId().equals(jgm.getValue("pinnedchannel")))
+            return true;
+        else
+            return false;
     }
 }

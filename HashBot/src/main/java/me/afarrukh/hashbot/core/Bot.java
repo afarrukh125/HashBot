@@ -3,6 +3,9 @@ package me.afarrukh.hashbot.core;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
+import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
+import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
+import me.afarrukh.hashbot.commands.management.guild.roles.AddRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import net.dv8tion.jda.core.AccountType;
@@ -51,6 +54,8 @@ public class Bot {
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new AddRoleCommand())
+                .addCommand(new SetPinnedChannel())
+                .addCommand(new SetUnpinned())
                 .addCommand(new MoveCommand())
                 .addCommand(new SetNickCommand())
                 .addCommand(new ShuffleCommand())
