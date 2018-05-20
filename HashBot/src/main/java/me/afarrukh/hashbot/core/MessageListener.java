@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import me.afarrukh.hashbot.config.Constants;
@@ -39,6 +41,11 @@ public class MessageListener extends ListenerAdapter {
             invoker.addRandomCredit();
             invoker.updateExperience(evt.getMessage().getContentRaw());
         }
+        RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getAuthor());
+        if(rb == null)
+            return;
+        else
+            rb.handleEvent(evt);
     }
 
     @Override
@@ -64,5 +71,11 @@ public class MessageListener extends ListenerAdapter {
         //Check if the user to join is the first to join and resume if it is already paused
         if((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected())
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
+    }
+
+    @Override
+    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent evt) {
+        if (evt.getUser().isBot()) return;
+        Bot.reactionManager.sendToBuilder(evt);
     }
 }

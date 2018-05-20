@@ -1,9 +1,13 @@
 package me.afarrukh.hashbot.utils;
 
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.JSONGuildManager;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import me.afarrukh.hashbot.gameroles.GameRole;
+import me.afarrukh.hashbot.gameroles.RoleBuilder;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,4 +33,27 @@ public class BotUtils {
         else
             return false;
     }
+
+    public static boolean isGameRole(Role r, MessageReceivedEvent evt) {
+        for(Object role: (JSONArray) new JSONGuildManager(evt.getGuild()).getValue("gameroles")) {
+            JSONObject roleObj = (JSONObject) role;
+            if(roleObj.get("name").equals(r.getName()))
+                return true;
+        }
+        return false;
+    }
+
+    public static void createRole(Guild g, RoleBuilder rb) {
+        Role newRole = g.getController().createRole().complete();
+        Member m = g.getMemberById(rb.user.getId());
+
+        String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
+
+        newRole.getManager().setName(cap).setMentionable(true).setHoisted(false).setColor(rb.color)
+                .queue();
+
+        g.getController().addSingleRoleToMember(m, newRole).queue();
+    }
+
+
 }

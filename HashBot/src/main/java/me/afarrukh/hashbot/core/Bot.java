@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
 import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
 import me.afarrukh.hashbot.commands.management.guild.roles.AddRoleCommand;
+import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import net.dv8tion.jda.core.AccountType;
@@ -19,6 +20,8 @@ public class Bot {
     private String token;
 
     static CommandManager commandManager;
+    static ReactionManager reactionManager;
+    public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
 
     public Bot(String token) {
@@ -54,6 +57,7 @@ public class Bot {
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new AddRoleCommand())
+                .addCommand(new CreateRoleCommand())
                 .addCommand(new SetPinnedChannel())
                 .addCommand(new SetUnpinned())
                 .addCommand(new MoveCommand())
@@ -62,5 +66,7 @@ public class Bot {
                 .addCommand(new SkipCommand());
 
         musicManager = new MusicManager();
+        gameRoleManager = new GameRoleManager();
+        reactionManager = new ReactionManager();
     }
 }

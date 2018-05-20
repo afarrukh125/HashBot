@@ -50,19 +50,7 @@ public class AddRoleCommand extends Command {
                 evt.getTextChannel().sendMessage("The role already exists but you cannot join it.").queue();
                 return;
             }
-        Role newRole = evt.getGuild().getController().createRole().complete();
-
-        String cap = params.substring(0, 1).toUpperCase() + params.substring(1);
-
-        newRole.getManager().setName(cap).setMentionable(true).setHoisted(false)
-                .queue();
-
-        evt.getGuild().getController().addSingleRoleToMember(evt.getMember(), newRole).queue();
-
-        evt.getChannel().sendMessage("You have created and joined role: " +cap).queue();
-        JSONGuildManager gfm = new JSONGuildManager(evt.getGuild());
-
-        gfm.addRole(cap, 92, 70, 161);
+        evt.getTextChannel().sendMessage("This role does not exist but you can create it using the **createrole** command").queue();
     }
 
     @Override

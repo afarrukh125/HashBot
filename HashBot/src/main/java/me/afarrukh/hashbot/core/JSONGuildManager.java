@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.gameroles.GameRole;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -70,7 +71,7 @@ public class JSONGuildManager {
         System.out.println(obj);
     }
 
-    public void addRole(String name, int red, int blue, int green) {
+    public void addRole(String name, int red, int green, int blue) {
         JSONArray arr = (JSONArray) jsonObject.get("gameroles");
         JSONObject roleObj = new JSONObject();
 
@@ -82,6 +83,8 @@ public class JSONGuildManager {
         arr.add(roleObj);
 
         jsonObject.put("gameroles", arr);
+
+        Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().add(new GameRole(name, red, green, blue));
         try {
 
             FileWriter newFile = new FileWriter(file);

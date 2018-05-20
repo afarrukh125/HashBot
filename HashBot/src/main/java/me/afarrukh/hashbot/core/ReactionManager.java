@@ -1,0 +1,15 @@
+package me.afarrukh.hashbot.core;
+
+import me.afarrukh.hashbot.gameroles.GuildGameRoleManager;
+import me.afarrukh.hashbot.gameroles.RoleBuilder;
+import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
+
+public class ReactionManager {
+
+    public void sendToBuilder(GuildMessageReactionAddEvent evt) {
+        RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getUser());
+        if(rb == null)
+            return;
+        rb.handleEvent(evt);
+    }
+}

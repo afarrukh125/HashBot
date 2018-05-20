@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.utils;
 
+import java.awt.*;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -8,6 +9,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -273,6 +275,77 @@ public class EmbedUtils {
         eb.appendDescription("**leaderboard**- Displays the current leaderboard for the server\n\n");
         eb.appendDescription("**stats**- Displays your stats\n\n");
         eb.appendDescription("**rolecol** `<role name> <red> <green> <blue>`- Changes the colour of the role if you have it\n\n");
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleName(String name) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setTitle("Choose your new role name");
+        eb.setDescription("Current name is: " +name);
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleRed(int number) {
+        EmbedBuilder eb = new EmbedBuilder();
+        try {
+            eb.setColor(new Color(number, 0, 0));
+        } catch(IllegalArgumentException e) {
+            eb.setDescription("That is an invalid colour. Please select a number between 0-255");
+        }
+
+        eb.setTitle("Choose your new role red colour");
+        eb.setDescription("The colour to the left is the current intensity of red: "+ number);
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleGreen(int number) {
+        EmbedBuilder eb = new EmbedBuilder();
+        try {
+            eb.setColor(new Color(0, number, 0));
+        } catch(IllegalArgumentException e) {
+            eb.setDescription("That is an invalid colour. Please select a number between 0-255");
+        }
+
+        eb.setTitle("Choose your new role green colour");
+        eb.setDescription("The colour to the left is the current intensity of green: " +number);
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleBlue(int number) {
+        EmbedBuilder eb = new EmbedBuilder();
+        try {
+            eb.setColor(new Color(0, 0, number));
+        } catch(IllegalArgumentException e) {
+            eb.setDescription("That is an invalid colour. Please select a number between 0-255");
+        }
+
+        eb.setTitle("Choose your new role blue colour");
+        eb.setDescription("The colour to the left is the current intensity of blue: " + number);
+        return eb.build();
+    }
+
+    public static MessageEmbed getIllegalColourEmbed() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setDescription("Illegal colour entered. Please enter a number between 0 and 255.");
+        eb.setTitle("Illegal colour!");
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleConfirmEmbed(RoleBuilder rb) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(rb.color);
+        eb.setDescription("Please confirm that this is the name and colour you wish to have for the new role.");
+        eb.setTitle(rb.roleName);
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleCompleteEmbed(RoleBuilder rb) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(rb.color);
+        eb.setDescription("The new role has been created.");
+        eb.setTitle(rb.roleName);
         return eb.build();
     }
 }
