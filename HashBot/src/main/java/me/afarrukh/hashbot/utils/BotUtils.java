@@ -44,15 +44,50 @@ public class BotUtils {
     }
 
     public static void createRole(Guild g, RoleBuilder rb) {
-        Role newRole = g.getController().createRole().complete();
+        //Validating if the role is already existing in the guild
+        if(rb.color.getBlue() == 0 && rb.color.getGreen() == 0 && rb.color.getRed() == 0) {
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            return;
+        }
+
+        if(rb.roleName.equals("")) {
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            return;
+        }
+
+        if(rb.color.getBlue() > 255 || rb.color.getGreen() > 255 || rb.color.getRed() > 255) {
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            return;
+        }
+
+        for(Role r: g.getRoles()) {
+            if (r.getName().equalsIgnoreCase(rb.roleName)) {
+                rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
+                return;
+            }
+        }
         Member m = g.getMemberById(rb.user.getId());
+        for(Role r: m.getRoles())
+            if (r.getName().equalsIgnoreCase(rb.roleName)) {
+                rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
+                return;
+            }
+
+        Role newRole = g.getController().createRole().complete();
 
         String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
 
-        newRole.getManager().setName(cap).setMentionable(true).setHoisted(false).setColor(rb.color)
-                .queue();
+        try {
+            newRole.getManager().setName(cap).setMentionable(true).setHoisted(false).setColor(rb.color)
+                    .queue();
+        } catch(IllegalArgumentException e) {
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            return;
+        }
 
         g.getController().addSingleRoleToMember(m, newRole).queue();
+        JSONGuildManager jgm = new JSONGuildManager(g);
+        jgm.addRole(rb.roleName, rb.color.getBlue(), rb.color.getGreen(), rb.color.getBlue());
     }
 
 

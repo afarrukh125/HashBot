@@ -7,24 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b684874d-7c4f-4d17-a7a7-dd11d930f16a" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/GameRoleManager.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/ReactionManager.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GameRole.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/HashBot_jar/HashBot.jar" afterPath="$PROJECT_DIR$/out/artifacts/HashBot_jar/HashBot.jar" />
       <change beforePath="$PROJECT_DIR$/res/guilds/281033379150036992/data/data.json" afterPath="$PROJECT_DIR$/res/guilds/281033379150036992/data/data.json" />
       <change beforePath="$PROJECT_DIR$/res/guilds/281033379150036992/users/111608457290895360.txt" afterPath="$PROJECT_DIR$/res/guilds/281033379150036992/users/111608457290895360.txt" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/AddRoleCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/AddRoleCommand.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/Bot.class" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/Bot.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/MessageListener.class" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,11 +25,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="RoleBuilder.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RoleBuilder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+            <state relative-caret-position="-2449">
+              <caret line="32" column="33" lean-forward="false" selection-start-line="32" selection-start-column="33" selection-end-line="32" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EmbedUtils.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="411">
+              <caret line="284" column="53" lean-forward="false" selection-start-line="284" selection-start-column="53" selection-end-line="284" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -49,68 +48,8 @@
       <file leaf-file-name="BotUtils.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1034">
-              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddRoleCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/AddRoleCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="52" column="113" lean-forward="false" selection-start-line="52" selection-start-column="113" selection-end-line="52" selection-end-column="113" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateRoleCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="80" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GuildGameRoleManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="617">
-              <caret line="39" column="20" lean-forward="false" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EmbedUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="347" column="33" lean-forward="false" selection-start-line="347" selection-start-column="33" selection-end-line="347" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameRole.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GameRole.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="60" lean-forward="false" selection-start-line="10" selection-start-column="60" selection-end-line="10" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JSONGuildManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+            <state relative-caret-position="279">
+              <caret line="77" column="8" lean-forward="false" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -135,6 +74,7 @@
       <find>endSession()</find>
       <find>confirmRole</find>
       <find>System.out.println</find>
+      <find>255</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -198,10 +138,10 @@
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/ReactionManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" />
       </list>
     </option>
   </component>
@@ -676,6 +616,42 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="hashbot" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="gameroles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="music" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -845,15 +821,16 @@
       <workItem from="1526688117564" duration="1599000" />
       <workItem from="1526806162163" duration="6176000" />
       <workItem from="1526814488113" duration="1129000" />
-      <workItem from="1526816124016" duration="22644000" />
+      <workItem from="1526816124016" duration="25573000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67708000" />
+    <option name="totallyTimeSpent" value="70637000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -868,7 +845,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19166666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19166666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1017,14 +994,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="946">
           <caret line="48" column="20" lean-forward="false" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -1223,22 +1192,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="347" column="33" lean-forward="false" selection-start-line="347" selection-start-column="33" selection-end-line="347" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GameRole.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -1247,34 +1200,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="86" column="26" lean-forward="false" selection-start-line="86" selection-start-column="26" selection-end-line="86" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/AddRoleCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="52" column="113" lean-forward="false" selection-start-line="52" selection-start-column="113" selection-end-line="52" selection-end-column="113" />
+        <state relative-caret-position="59">
+          <caret line="21" column="8" lean-forward="false" selection-start-line="21" selection-start-column="8" selection-end-line="51" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="80" />
+        <state relative-caret-position="220">
+          <caret line="17" column="42" lean-forward="false" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1034">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+        <state relative-caret-position="374">
+          <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+        <state relative-caret-position="-2449">
+          <caret line="32" column="33" lean-forward="false" selection-start-line="32" selection-start-column="33" selection-end-line="32" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="77" column="8" lean-forward="false" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="284" column="53" lean-forward="false" selection-start-line="284" selection-start-column="53" selection-end-line="284" selection-end-column="53" />
           <folding />
         </state>
       </provider>

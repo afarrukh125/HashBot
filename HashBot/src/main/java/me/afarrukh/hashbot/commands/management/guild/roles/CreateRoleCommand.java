@@ -16,18 +16,7 @@ public class CreateRoleCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         evt.getMessage().delete().queue();
-//        Role newRole = evt.getGuild().getController().createRole().complete();
-//
-//        String cap = params.substring(0, 1).toUpperCase() + params.substring(1);
-
-        RoleBuilder rb = new RoleBuilder(evt);
-
-//        newRole.getManager().setName(cap).setMentionable(true).setHoisted(false)
-//                .queue();
-//
-//        evt.getGuild().getController().addSingleRoleToMember(evt.getMember(), newRole).queue();
-//
-//        evt.getChannel().sendMessage("You have created and joined role: " +cap).queue();
+        RoleBuilder rb = new RoleBuilder(evt, params);
     }
 
     @Override

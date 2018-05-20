@@ -24,9 +24,9 @@ public class RoleBuilder {
     private TextChannel channel;
 
     public String roleName;
-    private int red;
-    private int green;
-    private int blue;
+    private int red = 255;
+    private int green = 255;
+    private int blue = 255;
 
     public Color color;
 
@@ -36,13 +36,19 @@ public class RoleBuilder {
     private final String confirm = "\u2705";
     private final String back = "↩";
 
-    public RoleBuilder(MessageReceivedEvent evt) {
+    public RoleBuilder(MessageReceivedEvent evt, String name) {
+        if(name == null)
+            name = " ";
         this.channel = evt.getTextChannel();
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
-        message = channel.sendMessage(EmbedUtils.getRoleName(" ")).complete();
+        this.roleName = name;
+        message = channel.sendMessage(EmbedUtils.getRoleName(name)).complete();
+        message.addReaction(back).queue();
         message.addReaction(cancel).queue();
         message.addReaction(confirm).queue();
+        message.editMessage("Press the no entry symbol, or do not react for 30 seconds to exit this.\n" +
+                "Please type values into the chat and press the green check emoji when you wish to confirm.").queue();
 
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleBuilder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
@@ -81,12 +87,15 @@ public class RoleBuilder {
         switch(evt.getReaction().getReactionEmote().getName()) {
             case cancel:
                 endSession();
-                break;
+                return;
+            case back:
+                endSession();
+                return;
             default:
                 break;
         }
         stage++;
-        message.editMessage(EmbedUtils.getRoleRed(255)).queue();
+        message.editMessage(EmbedUtils.getRoleRed(red)).queue();
     }
 
     private void chooseRed(GuildMessageReactionAddEvent evt) {
@@ -94,11 +103,15 @@ public class RoleBuilder {
             case cancel:
                 endSession();
                 break;
+            case back:
+                stage--;
+                message.editMessage(EmbedUtils.getRoleName(roleName)).queue();
+                return;
             default:
                 break;
         }
         stage++;
-        message.editMessage(EmbedUtils.getRoleGreen(255)).queue();
+        message.editMessage(EmbedUtils.getRoleGreen(green)).queue();
     }
 
     private void chooseGreen(GuildMessageReactionAddEvent evt) {
@@ -106,11 +119,15 @@ public class RoleBuilder {
             case cancel:
                 endSession();
                 break;
+            case back:
+                stage--;
+                message.editMessage(EmbedUtils.getRoleRed(red)).queue();
+                return;
             default:
                 break;
         }
         stage++;
-        message.editMessage(EmbedUtils.getRoleBlue(255)).queue();
+        message.editMessage(EmbedUtils.getRoleBlue(blue)).queue();
     }
 
     private void chooseBlue(GuildMessageReactionAddEvent evt) {
@@ -118,6 +135,10 @@ public class RoleBuilder {
             case cancel:
                 endSession();
                 break;
+            case back:
+                stage--;
+                message.editMessage(EmbedUtils.getRoleGreen(green)).queue();
+                return;
             default:
                 break;
         }
@@ -132,12 +153,15 @@ public class RoleBuilder {
             case cancel:
                 endSession();
                 break;
+            case back:
+                stage--;
+                message.editMessage(EmbedUtils.getRoleBlue(blue)).queue();
+                break;
             case confirm:
                 message.editMessage(EmbedUtils.getRoleCompleteEmbed(this)).queue();
-                JSONGuildManager jgm = new JSONGuildManager(guild);
-                jgm.addRole(roleName, red, green, blue);
                 BotUtils.createRole(guild, this);
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+                break;
             default:
                 return;
         }
@@ -148,9 +172,6 @@ public class RoleBuilder {
      * @param evt
      */
     public void handleEvent(MessageReceivedEvent evt) {
-        timeoutTimer.cancel();
-        timeoutTimer = new Timer();
-        timeoutTimer.schedule(new RoleBuilder.InactiveTimer(this, guild),30*1000);
 
         switch (stage) {
             case 0:
@@ -169,6 +190,7 @@ public class RoleBuilder {
             default:
                 return;
         }
+
         evt.getMessage().delete().queue();
     }
 

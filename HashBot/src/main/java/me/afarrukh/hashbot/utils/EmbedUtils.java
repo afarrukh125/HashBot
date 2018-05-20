@@ -336,16 +336,34 @@ public class EmbedUtils {
     public static MessageEmbed getRoleConfirmEmbed(RoleBuilder rb) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(rb.color);
+        String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
         eb.setDescription("Please confirm that this is the name and colour you wish to have for the new role.");
-        eb.setTitle(rb.roleName);
+        eb.setTitle(cap);
         return eb.build();
     }
 
     public static MessageEmbed getRoleCompleteEmbed(RoleBuilder rb) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(rb.color);
+        String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
         eb.setDescription("The new role has been created.");
-        eb.setTitle(rb.roleName);
+        eb.setTitle(cap);
+        return eb.build();
+    }
+
+    public static MessageEmbed getInvalidRoleEmbed(RoleBuilder rb) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setDescription("The new role could not be created because the colour or name is invalid. Please try again.");
+        eb.setTitle("Error.");
+        return eb.build();
+    }
+
+    public static MessageEmbed getRoleExistsEmbed(RoleBuilder rb) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setDescription("The new role could not be created because this role already exists or you already have it.");
+        eb.setTitle("Error.");
         return eb.build();
     }
 }
