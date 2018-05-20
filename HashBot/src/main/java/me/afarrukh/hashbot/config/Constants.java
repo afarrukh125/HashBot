@@ -1,6 +1,15 @@
 package me.afarrukh.hashbot.config;
 
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Constants {
 
@@ -14,14 +23,11 @@ public class Constants {
     public static final String LEFTBAR = "full_moon"; //Emoji name for experience bar in stats command
     public static final String RIGHTBAR = "new_moon";
 
-    public static final String OWNER_ID = "111608457290895360";
-
     public static final int MAX_CREDIT = 30;
 
     public static final int MAX_EXP_FROM_MSG = 60; //A single message cannot give more than this much experience
     public static final int INITIAL_EXP = 10; //The amount of experience the user gets per message
     public static final int LEADERBOARD_MAX = 10;
-    public static final int IMAGE_EXP = INITIAL_EXP*2; //The amount of experience the user gets when they send an image (flat amount)
 
     public static final int SONG_COST = 15;
     public static final int PLAY_TOP_COST = 30;
@@ -36,5 +42,67 @@ public class Constants {
     public static final String UNSELECTEDPOS = "=";
 
     public static final Color EMB_COL = new Color(100, 243, 213); //The default color for embeds
+
+    //Bot configuration constants
+
+
+    /**
+     * Starts up the constants such as bot owner ids, bot token, prefix
+     */
+
+    public static ArrayList<String> ownerIds;
+    public static String token;
+
+    public static void init() {
+        String path = "res/config/settings.json";
+        File file = new File(path);
+        String prefix;
+
+        ownerIds = new ArrayList<>();
+
+        if(new File("res/config").mkdirs()) {}
+
+        try {
+            JSONArray arr = (JSONArray) new JSONParser().parse(new FileReader(file));
+            Iterator<Object> iter = arr.iterator();
+            while(iter.hasNext()) {
+                JSONObject obj = (JSONObject) iter.next();
+                prefix = (String) obj.get("prefix");
+                token = (String) obj.get("token");
+
+                JSONArray userList = (JSONArray) obj.get("ownerids");
+                for(Object o: userList) {
+                    ownerIds.add((String) o);
+                }
+                if(prefix != null)
+                    invokerChar = prefix;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot retrieve settings file. Please ensure it is there and in the correct format and then restart the bot.");
+            createJsonFile();
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createJsonFile() {
+        File src = new File("settings_template.json");
+        File dest = new File("res/config/settings.json");
+        try {
+            if (dest.createNewFile()){
+                System.out.println("File is created!");
+            }else{
+                System.out.println("File already exists.");
+            }
+            FileUtils.copyFile(src, dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

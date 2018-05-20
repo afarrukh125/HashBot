@@ -19,8 +19,10 @@ public class UserUtils {
     }
 
     public static boolean isBotAdmin(User u) {
-        if(u.getId().equals(Constants.OWNER_ID))
-            return true;
+        for(String s: Constants.ownerIds) {
+            if(u.getId().equals(s))
+                return true;
+        }
         return false;
     }
 }
