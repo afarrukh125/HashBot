@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameRoleManager {
 
-    Map<Long, GuildGameRoleManager> gameRoleManagers;
+    private final Map<Long, GuildGameRoleManager> gameRoleManagers;
 
     public GameRoleManager() {
         this.gameRoleManagers = new HashMap<>();

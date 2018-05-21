@@ -8,17 +8,16 @@ import net.dv8tion.jda.core.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GuildGameRoleManager {
 
-    private ArrayList<GameRole> gameRoles;
-    private ArrayList<RoleBuilder> roleBuilders;
-    private ArrayList<RoleAdder> roleAdders;
+    private final ArrayList<GameRole> gameRoles;
+    private final ArrayList<RoleBuilder> roleBuilders;
+    private final ArrayList<RoleAdder> roleAdders;
 
-    private Guild guild;
+    private final Guild guild;
 
     public GuildGameRoleManager(Guild guild) {
         this.guild = guild;

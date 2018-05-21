@@ -15,8 +15,8 @@ import java.util.Random;
 
 public class Invoker {
 
-    private Member member;
-    private JSONUserFileManager jsonFileManager;
+    private final Member member;
+    private final JSONUserFileManager jsonFileManager;
 
     public Invoker(Member m) {
         member = m;
@@ -92,11 +92,11 @@ public class Invoker {
         return 10 * (currentLevel+1) * (currentLevel+2);
     }
 
-    public void setLevel(int lvl) {
+    private void setLevel(int lvl) {
         jsonFileManager.updateField("level", (long) lvl);
     }
 
-    public void setExp(int exp) {
+    private void setExp(int exp) {
         jsonFileManager.updateField("score", (long) exp);
     }
 

@@ -7,7 +7,10 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,10 +36,7 @@ public class BotUtils {
 
     public static boolean isPinnedChannel(MessageReceivedEvent evt) {
         JSONGuildManager jgm = new JSONGuildManager(evt.getGuild());
-        if(evt.getTextChannel().getId().equals(jgm.getValue("pinnedchannel")))
-            return true;
-        else
-            return false;
+        return evt.getTextChannel().getId().equals(jgm.getValue("pinnedchannel"));
     }
 
     public static boolean isGameRole(Role r, Guild guild) {
@@ -110,7 +110,8 @@ public class BotUtils {
     }
 
     public static String[] createStandardNumberEmojiArray() {
-        String[] arr = new String[] {
+
+        return new String[] {
           ":one:",
           ":two:",
           ":three:",
@@ -122,8 +123,6 @@ public class BotUtils {
           ":nine:",
           ":keycap_ten:"
         };
-
-        return arr;
     }
 
     public static int getMaxEntriesOnPage(RoleAdder ra, int page) {

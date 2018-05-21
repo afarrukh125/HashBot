@@ -7,8 +7,6 @@ import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import static me.afarrukh.hashbot.utils.MusicUtils.canInteract;
-
 public class LoopCommand extends Command {
 
     public LoopCommand() {

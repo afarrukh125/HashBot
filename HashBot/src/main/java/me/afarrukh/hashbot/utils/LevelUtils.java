@@ -34,15 +34,15 @@ public class LevelUtils {
      * @return A string for this bar
      */
     public static String getBar(int num) {
-        String val = "";
+        StringBuilder val = new StringBuilder();
         for(int i = 0; i<10; i++) {
             if(i < num)
 
-                val += ":"+Constants.LEFTBAR+":";
+                val.append(":" + Constants.LEFTBAR + ":");
             else
-                val += ":"+Constants.RIGHTBAR+":";
+                val.append(":" + Constants.RIGHTBAR + ":");
         }
-        return val;
+        return val.toString();
     }
 
     /**

@@ -1,36 +1,31 @@
 package me.afarrukh.hashbot.gameroles;
 
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class RoleAdder {
-    public User user;
+    public final User user;
 
     public GameRole desiredRole = null;
 
-    private Message message;
-    public Guild guild;
+    private final Message message;
+    public final Guild guild;
     private Timer timeoutTimer;
 
     private int stage = 0;
     private int page = 1;
-    private int maxPageNumber;
+    private final int maxPageNumber;
 
     private final String back = "↩";
     private final String cancel = "\u26D4";
@@ -200,8 +195,8 @@ public class RoleAdder {
     }
 
     private class InactiveTimer extends TimerTask {
-        private RoleAdder adder;
-        private Guild guild;
+        private final RoleAdder adder;
+        private final Guild guild;
         private InactiveTimer(RoleAdder adder, Guild guild) {
             this.adder = adder;
             this.guild = guild;

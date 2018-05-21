@@ -5,7 +5,6 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.afarrukh.hashbot.utils.CmdUtils;
-import me.afarrukh.hashbot.utils.MusicUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,9 +76,8 @@ public class TrackScheduler extends AudioEventAdapter {
      * @return The current track list in an arraylist format
      */
     public ArrayList<AudioTrack> getArrayList() {
-        ArrayList<AudioTrack> trackList = new ArrayList<>();
-        trackList.addAll(queue); //Convert the queue to arraylist
-        return trackList;
+        //Convert the queue to arraylist
+        return new ArrayList<>(queue);
     }
 
     /**
@@ -113,8 +111,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void queueTop(AudioTrack track) {
         if(!player.startTrack(track, true)) {
-            ArrayList<AudioTrack> trackList = new ArrayList<>();
-            trackList.addAll(queue);
+            ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
 
             trackList.add(0, track);
 
@@ -160,7 +157,7 @@ public class TrackScheduler extends AudioEventAdapter {
                 trackList.remove(idx1); //Remove the track from index (remember the number the user knows is 1 more than real index)
             }
             replaceQueue(trackList);
-        } catch(NullPointerException e) {}
+        } catch(NullPointerException ignored) {}
     }
 
     /**
@@ -184,8 +181,8 @@ public class TrackScheduler extends AudioEventAdapter {
      * Shuffles the queue
      */
     public void shuffle() {
-        ArrayList<AudioTrack> trackList = new ArrayList<>();
-        trackList.addAll(queue); //Convert the queue to arraylist
+        //Convert the queue to arraylist
+        ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
 
         Collections.shuffle(trackList);
 

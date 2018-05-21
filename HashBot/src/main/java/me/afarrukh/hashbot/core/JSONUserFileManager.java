@@ -11,11 +11,12 @@ import java.io.*;
  * Class that manipulates the json object associated with an invoker object
  */
 
+@SuppressWarnings("unchecked")
 public class JSONUserFileManager {
 
     private JSONObject jsonObject;
-    private File file;
-    private Member member;
+    private final File file;
+    private final Member member;
 
     public JSONUserFileManager(Member m) {
         String guildId = m.getGuild().getId();
@@ -79,8 +80,7 @@ public class JSONUserFileManager {
 
     public Object getValue(Object key) {
         try {
-            Object value = jsonObject.get(key);
-            return value;
+            return jsonObject.get(key);
         } catch(NullPointerException e) {
             e.printStackTrace();
             return null;
@@ -91,7 +91,7 @@ public class JSONUserFileManager {
      * Fired when the user has no file created already, creates one with default values
      */
     @SuppressWarnings("unchecked")
-    public void createFile() {
+    private void createFile() {
         JSONObject obj = new JSONObject();
         obj.put("name", member.getUser().getName());
         obj.put("credit", 0);

@@ -16,8 +16,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import javax.security.auth.login.LoginException;
 
 public class Bot {
-    private static JDA botUser;
-    private String token;
+    private final String token;
 
     static CommandManager commandManager;
     static ReactionManager reactionManager;
@@ -32,7 +31,7 @@ public class Bot {
     }
 
     private void init() throws LoginException, InterruptedException {
-        botUser = new JDABuilder(AccountType.BOT)
+        JDA botUser = new JDABuilder(AccountType.BOT)
                 .setToken(token)
                 .addEventListener(new MessageListener())
                 .buildBlocking();

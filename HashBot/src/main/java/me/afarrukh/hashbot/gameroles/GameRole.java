@@ -1,12 +1,8 @@
 package me.afarrukh.hashbot.gameroles;
 
-import net.dv8tion.jda.core.entities.User;
-
-import java.awt.*;
-
 public class GameRole {
-    private String creatorId;
-    private String name;
+    private final String creatorId;
+    private final String name;
 
     public GameRole(String name, String creatorId) {
         this.name = name;

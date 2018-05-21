@@ -39,7 +39,7 @@ public class MusicUtils {
      * Connects to a voice channel
      * @param evt The event object used to retrieve the VoiceChannel to connect to through the Member object in the event
      */
-    public static void connectToChannel(MessageReceivedEvent evt) {
+    private static void connectToChannel(MessageReceivedEvent evt) {
         if(!evt.getGuild().getAudioManager().isConnected()) {
             Member m = evt.getMember();
             if(m.getVoiceState().inVoiceChannel()) {
@@ -47,7 +47,6 @@ public class MusicUtils {
                 audioManager.openAudioConnection(m.getVoiceState().getChannel());
             }
             else {
-                return;
             }
         }
     }
@@ -93,7 +92,7 @@ public class MusicUtils {
                 return true;
             evt.getChannel().sendMessage("You cannot interact with the bot unless you are in its voice channel").queue();
             return false;
-        }catch(NullPointerException e) {}
+        }catch(NullPointerException ignored) {}
         return false;
     }
 
@@ -111,7 +110,7 @@ public class MusicUtils {
      * @return A string with the URL to the given audio track
      */
     public static String getThumbnailURL(AudioTrack at) {
-        String vidURL = at.getInfo().uri.toString();
+        String vidURL = at.getInfo().uri;
         int idx = vidURL.indexOf("?v=");
         String imgURL = vidURL.substring(idx+3);
         return "https://img.youtube.com/vi/" +imgURL+ "/0.jpg";
@@ -126,14 +125,14 @@ public class MusicUtils {
         long currentPosition = track.getPosition();
 
         int remainder = (int) Math.round((double) currentPosition/totalDuration*Constants.MUSICBAR_SCALE);
-        String val = "";
+        StringBuilder val = new StringBuilder();
         for(int i = 0; i<Constants.MUSICBAR_SCALE; i++) {
             if(i == remainder)
-                val += ":"+Constants.SELECTEDPOS+":";
+                val.append(":" + Constants.SELECTEDPOS + ":");
             else
-                val += Constants.UNSELECTEDPOS;
+                val.append(Constants.UNSELECTEDPOS);
         }
-        return val;
+        return val.toString();
     }
 
     /**
@@ -205,7 +204,6 @@ public class MusicUtils {
 
     /**
      * The song to be removed from the queue at the given index
-     * @param a
      * @param evt
      * @param idx The current index of the song to be removed
      */

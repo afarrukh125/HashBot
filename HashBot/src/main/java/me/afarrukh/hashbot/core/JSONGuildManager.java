@@ -10,10 +10,11 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.Iterator;
 
+@SuppressWarnings("unchecked")
 public class JSONGuildManager {
     private JSONObject jsonObject;
-    private Guild guild;
-    private File file;
+    private final Guild guild;
+    private final File file;
 
     public JSONGuildManager(Guild guild) {
         this.guild = guild;
@@ -134,8 +135,7 @@ public class JSONGuildManager {
 
     public Object getValue(Object key) {
         try {
-            Object value = jsonObject.get(key);
-            return value;
+            return jsonObject.get(key);
         } catch(NullPointerException e) {
             e.printStackTrace();
             return null;

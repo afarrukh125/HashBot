@@ -10,11 +10,11 @@ public class CmdUtils {
      * @return - a string with all array elements given as a single string
      */
     public static String getParamsAsString(String[] tokens) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         for(int i=1; i<tokens.length; i++) {
-            params += tokens[i] + " ";
+            params.append(tokens[i]).append(" ");
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
     /**
@@ -24,11 +24,11 @@ public class CmdUtils {
      * @return - a string with all array elements given as a single string
      */
     public static String getParamsAsString(String[] tokens, int startIndex) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         for(int i=startIndex; i<tokens.length; i++) {
-            params += tokens[i] + " ";
+            params.append(tokens[i]).append(" ");
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
     /**
@@ -39,11 +39,11 @@ public class CmdUtils {
      * @return - a string with all array elements given as a single string
      */
     public static String getParamsAsString(String[] tokens, int startIndex, int endIndex) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         for(int i=startIndex; i<=endIndex; i++) {
-            params += tokens[i] + " ";
+            params.append(tokens[i]).append(" ");
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
     /**

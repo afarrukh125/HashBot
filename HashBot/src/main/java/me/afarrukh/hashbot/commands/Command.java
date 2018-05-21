@@ -1,7 +1,5 @@
 package me.afarrukh.hashbot.commands;
 
-import me.afarrukh.hashbot.utils.MusicUtils;
-import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -10,15 +8,15 @@ public abstract class Command {
     /**
      * The name of the command, i.e. what the user will need to type after the prefix to call it
      */
-    protected String name;
-    protected String[] aliases;
+    private final String name;
+    private final String[] aliases;
 
-    public Command(String name, String[] aliases) {
+    protected Command(String name, String[] aliases) {
         this.name = name;
         this.aliases = aliases;
     }
 
-    public Command(String name) {
+    protected Command(String name) {
         this.name = name;
         aliases = null;
     }

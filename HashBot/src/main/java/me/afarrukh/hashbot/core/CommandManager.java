@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 
 public class CommandManager {
-    private ArrayList<Command> commandList = new ArrayList<>();
+    private final ArrayList<Command> commandList = new ArrayList<>();
 
     public void processEvent(MessageReceivedEvent evt) {
         String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
@@ -29,7 +29,7 @@ public class CommandManager {
         return this;
     }
 
-    public Command commandFromName(String name) {
+    private Command commandFromName(String name) {
         for(Command c: commandList) {
             if(c.getName().equalsIgnoreCase(name))
                 return c;

@@ -4,21 +4,17 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
-import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.managers.AudioManager;
 
-public abstract class YTGenericResultHandler implements AudioLoadResultHandler {
+abstract class YTGenericResultHandler implements AudioLoadResultHandler {
 
-    GuildMusicManager gmm;
-    MessageReceivedEvent evt;
-    boolean playTop;
-    String query;
+    final GuildMusicManager gmm;
+    final MessageReceivedEvent evt;
+    final boolean playTop;
+    private final String query;
 
-    public YTGenericResultHandler(GuildMusicManager gmm, MessageReceivedEvent evt, boolean playTop) {
+    YTGenericResultHandler(GuildMusicManager gmm, MessageReceivedEvent evt, boolean playTop) {
         this.gmm = gmm;
         this.evt = evt;
         this.playTop = playTop;

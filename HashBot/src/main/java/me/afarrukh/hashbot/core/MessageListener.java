@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
@@ -8,8 +9,6 @@ import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -18,9 +17,7 @@ import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateColorEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import me.afarrukh.hashbot.config.Constants;
-
-public class MessageListener extends ListenerAdapter {
+class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
@@ -44,8 +41,8 @@ public class MessageListener extends ListenerAdapter {
             invoker.updateExperience(evt.getMessage().getContentRaw());
         }
         RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getAuthor());
-        if(rb == null)
-            return;
+        if(rb == null) {
+        }
         else
             rb.handleEvent(evt);
     }

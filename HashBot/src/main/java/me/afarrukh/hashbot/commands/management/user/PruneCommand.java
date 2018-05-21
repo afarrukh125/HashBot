@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.commands.management.user;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.utils.BotUtils;
-import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

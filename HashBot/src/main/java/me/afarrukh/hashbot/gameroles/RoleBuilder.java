@@ -1,27 +1,27 @@
 package me.afarrukh.hashbot.gameroles;
 
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
 import java.awt.*;
-import java.awt.font.NumericShaper;
-import java.text.NumberFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class RoleBuilder {
 
-    private User user;
-    private Guild guild;
+    private final User user;
+    private final Guild guild;
     private int stage = 0;
-    public Message message;
-    private TextChannel channel;
+    public final Message message;
 
     public String roleName;
     private int red = 255;
@@ -30,7 +30,7 @@ public class RoleBuilder {
 
     private Color color;
 
-    protected Timer timeoutTimer;
+    private Timer timeoutTimer;
 
     private final String cancel = "\u26D4";
     private final String confirm = "\u2705";
@@ -39,7 +39,7 @@ public class RoleBuilder {
     public RoleBuilder(MessageReceivedEvent evt, String name) {
         if(name == null)
             name = " ";
-        this.channel = evt.getTextChannel();
+        TextChannel channel = evt.getTextChannel();
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
         this.roleName = name;
@@ -143,8 +143,18 @@ public class RoleBuilder {
                 break;
         }
         stage++;
-        color = new Color(red, green, blue);
-        message.editMessage(EmbedUtils.getRoleConfirmEmbed(this)).queue();
+        try {
+            color = new Color(red, green, blue);
+            message.editMessage(EmbedUtils.getRoleConfirmEmbed(this)).queue();
+        } catch(IllegalArgumentException e) {
+            message.editMessage(new EmbedBuilder()
+                    .setColor(Constants.EMB_COL)
+                    .setTitle("Role builder terminated (Please try again)")
+                    .appendDescription(e.getLocalizedMessage()).build())
+                    .queue();
+            message.clearReactions().complete();
+            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+        }
     }
 
     private void confirmRole(GuildMessageReactionAddEvent evt) {
@@ -163,7 +173,6 @@ public class RoleBuilder {
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
                 break;
             default:
-                return;
         }
     }
 
@@ -241,8 +250,8 @@ public class RoleBuilder {
     }
 
     private class InactiveTimer extends TimerTask {
-        private RoleBuilder builder;
-        private Guild guild;
+        private final RoleBuilder builder;
+        private final Guild guild;
         private InactiveTimer(RoleBuilder builder, Guild guild) {
             this.builder = builder;
             this.guild = guild;

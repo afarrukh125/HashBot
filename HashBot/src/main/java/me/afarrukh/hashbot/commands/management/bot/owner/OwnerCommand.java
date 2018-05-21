@@ -1,8 +1,6 @@
 package me.afarrukh.hashbot.commands.management.bot.owner;
 
 import me.afarrukh.hashbot.commands.Command;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public abstract class OwnerCommand extends Command {
 
@@ -10,7 +8,7 @@ public abstract class OwnerCommand extends Command {
         super(name, aliases);
     }
 
-    public OwnerCommand(String name) {
+    OwnerCommand(String name) {
         super(name);
     }
 }
