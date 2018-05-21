@@ -428,7 +428,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(ra.guild.getIconUrl());
         eb.setTitle("Error");
-        eb.appendDescription("The role you have selected is invalid. Please try again.");
+        eb.appendDescription("The role you have selected is invalid. Please try again. (It may not exist)");
         return eb.build();
     }
 

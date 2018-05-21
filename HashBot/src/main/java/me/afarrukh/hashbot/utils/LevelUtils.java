@@ -20,7 +20,7 @@ public class LevelUtils {
         int sum = 0;
         Random random = new Random();
         int rng = random.nextInt(level) + 1;
-        sum = Constants.INITIAL_EXP + tokens.length + rng;
+        sum = Constants.INITIAL_EXP + tokens.length + rng + level;
 
         if(sum > Constants.MAX_EXP_FROM_MSG)
             return Constants.MAX_EXP_FROM_MSG;

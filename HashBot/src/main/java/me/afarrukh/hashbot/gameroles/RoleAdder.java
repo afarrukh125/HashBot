@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.gameroles;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -101,7 +102,7 @@ public class RoleAdder {
                     return;
                 page--;
                 message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
-                message.clearReactions().queue();
+                message.clearReactions().complete();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
@@ -115,7 +116,7 @@ public class RoleAdder {
                     return;
                 page++;
                 message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
-                message.clearReactions().queue();
+                message.clearReactions().complete();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
@@ -140,7 +141,7 @@ public class RoleAdder {
                 }
         }
         stage++;
-        message.clearReactions().queue();
+        message.clearReactions().complete();
         message.addReaction(back).queue();
         message.addReaction(cancel).queue();
         message.addReaction(confirm).queue();
@@ -155,7 +156,7 @@ public class RoleAdder {
                 return;
             case back:
                 stage--;
-                message.clearReactions().queue();
+                message.clearReactions().complete();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
@@ -166,19 +167,25 @@ public class RoleAdder {
                 message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
                 return;
             case confirm:
+                message.clearReactions().complete();
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
                 if(desiredRole == null) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
                     return;
                 }
-
                 if(guild.getMemberById(user.getId()).getRoles()
                         .contains(Bot.gameRoleManager.getGuildRoleManager(guild).getRoleFromGameRole(desiredRole))) {
                     message.editMessage(EmbedUtils.alreadyHasRoleEmbed(this)).queue();
                     return;
                 }
-                message.editMessage(EmbedUtils.addRoleCompleteEmbed(this)).queue();
-                BotUtils.addRoleToMember(this);
+                try {
+                    message.editMessage(EmbedUtils.addRoleCompleteEmbed(this)).queue();
+                    BotUtils.addRoleToMember(this);
+                } catch(IllegalArgumentException e) {
+                    message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
+                    JSONGuildManager jgm = new JSONGuildManager(guild);
+                    jgm.removeRole(desiredRole.getName());
+                }
                 return;
             default:
                 break;

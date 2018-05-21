@@ -69,7 +69,7 @@ public class Invoker {
         this.setExp(currentExp + amt);
         int newExp = currentExp + amt;
 
-        System.out.println("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")\n");
+        System.out.println("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")");
 
         int expForNextLevel = getExpForNextLevel();
 
