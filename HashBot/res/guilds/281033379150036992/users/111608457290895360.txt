@@ -1,1 +1,1 @@
-{"score":184,"level":4,"name":"[SAE]BSOL","time":1526842694318,"credit":734}
+{"score":0,"level":2,"name":"[SAE]BSOL","time":1526861869920,"credit":89}

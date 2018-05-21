@@ -10,4 +10,8 @@ public class GameRole {
         this.name = name;
         this.color = new Color((int) red, (int) blue, (int) green);
     }
+
+    public String getName() {
+        return name;
+    }
 }

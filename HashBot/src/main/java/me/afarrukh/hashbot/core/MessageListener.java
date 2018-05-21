@@ -14,6 +14,8 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.core.events.role.update.RoleUpdateColorEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import me.afarrukh.hashbot.config.Constants;
@@ -48,6 +50,14 @@ public class MessageListener extends ListenerAdapter {
             rb.handleEvent(evt);
     }
 
+    public void onRoleDelete(RoleDeleteEvent evt) {
+        if(BotUtils.isGameRole(evt.getRole(), evt.getGuild()))
+            new JSONGuildManager(evt.getGuild()).removeRole(evt.getRole().getName());
+    }
+
+    public void onRoleUpdateColor(RoleUpdateColorEvent evt) {
+    }
+
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent evt) {
         VoiceChannel vc = evt.getChannelLeft();
@@ -77,5 +87,8 @@ public class MessageListener extends ListenerAdapter {
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent evt) {
         if (evt.getUser().isBot()) return;
         Bot.reactionManager.sendToBuilder(evt);
+        Bot.reactionManager.sendToAdder(evt);
     }
+
+
 }

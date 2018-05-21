@@ -8,12 +8,15 @@ import net.dv8tion.jda.core.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GuildGameRoleManager {
 
     private ArrayList<GameRole> gameRoles;
     private ArrayList<RoleBuilder> roleBuilders;
+    private ArrayList<RoleAdder> roleAdders;
 
     private Guild guild;
 
@@ -21,6 +24,7 @@ public class GuildGameRoleManager {
         this.guild = guild;
         gameRoles = new ArrayList<>();
         roleBuilders = new ArrayList<>();
+        roleAdders = new ArrayList<>();
         init();
     }
 
@@ -38,6 +42,26 @@ public class GuildGameRoleManager {
             if (builder.user == user) return builder;
         }
         return null;
+    }
+
+    public RoleAdder adderForUser(User user) {
+        for(RoleAdder adder : Bot.gameRoleManager.getGuildRoleManager(guild).roleAdders) {
+            if (adder.user == user) return adder;
+        }
+        return null;
+    }
+
+    public void remove(String name) {
+        Iterator<GameRole> iter = gameRoles.iterator();
+        while(iter.hasNext()) {
+            GameRole gameRole = iter.next();
+            if(gameRole.getName().equalsIgnoreCase(name))
+                iter.remove();
+        }
+    }
+
+    public ArrayList<RoleAdder> getRoleAdders() {
+        return roleAdders;
     }
 
     public ArrayList<GameRole> getGameRoles() {

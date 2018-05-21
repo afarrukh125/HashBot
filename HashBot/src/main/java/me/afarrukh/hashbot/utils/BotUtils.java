@@ -34,10 +34,11 @@ public class BotUtils {
             return false;
     }
 
-    public static boolean isGameRole(Role r, MessageReceivedEvent evt) {
-        for(Object role: (JSONArray) new JSONGuildManager(evt.getGuild()).getValue("gameroles")) {
+    public static boolean isGameRole(Role r, Guild guild) {
+        for(Object role: (JSONArray) new JSONGuildManager(guild).getValue("gameroles")) {
             JSONObject roleObj = (JSONObject) role;
-            if(roleObj.get("name").equals(r.getName()))
+            String roleName = (String) roleObj.get("name");
+            if(roleName.equalsIgnoreCase(r.getName()))
                 return true;
         }
         return false;
@@ -82,12 +83,13 @@ public class BotUtils {
                     .queue();
         } catch(IllegalArgumentException e) {
             rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            newRole.delete().queue();
             return;
         }
 
         g.getController().addSingleRoleToMember(m, newRole).queue();
         JSONGuildManager jgm = new JSONGuildManager(g);
-        jgm.addRole(rb.roleName, rb.color.getBlue(), rb.color.getGreen(), rb.color.getBlue());
+        jgm.addRole(rb.roleName, rb.color.getRed(), rb.color.getGreen(), rb.color.getBlue());
     }
 
 

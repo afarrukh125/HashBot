@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.utils;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -8,14 +9,15 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.gameroles.GameRole;
+import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 
@@ -364,6 +366,49 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setDescription("The new role could not be created because this role already exists or you already have it.");
         eb.setTitle("Error.");
+        return eb.build();
+    }
+
+    public static MessageEmbed getGameRoleListEmbed(RoleAdder ra, int page) {
+        EmbedBuilder eb = new EmbedBuilder();
+        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.guild).getGameRoles();
+
+        eb.setColor(Constants.EMB_COL);
+        eb.setTitle("List of game roles for " + ra.guild.getName());
+
+        //If there are no songs in the queue then it will just give an embedded message for a single song.
+        if(roleList.size() == 0) {
+            return new EmbedBuilder().setTitle("No game roles")
+                    .setColor(Constants.EMB_COL)
+                    .appendDescription("Use **createrole** to add roles.")
+                    .build();
+        }
+
+        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+
+        //This block of code is to prevent the list from displaying a blank page as the last one
+        if(roleList.size()%10 == 0)
+            maxPageNumber--;
+
+        if(page > maxPageNumber) {
+            return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+        }
+
+        Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(ra.guild).getGameRoles().iterator();
+        int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+        int count = 1;
+        while(iter.hasNext()) {
+            GameRole gameRole = iter.next();
+            if(count >= startIdx && count<=targetIdx) {
+                eb.appendDescription("`"+count+ ".` " +gameRole.getName()+"\n");
+            }
+            if(count==targetIdx)
+                break;
+
+            count++;
+        }
+
         return eb.build();
     }
 }
