@@ -38,6 +38,8 @@ public class Constants {
 
     public static final int ITERABLE_MESSAGES = 500;
 
+    public static final int ROLE_CREATE_AMOUNT = 4500;
+
     public static final String SELECTEDPOS = "full_moon";
     public static final String UNSELECTEDPOS = "=";
 

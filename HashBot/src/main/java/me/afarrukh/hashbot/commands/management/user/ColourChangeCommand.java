@@ -2,13 +2,16 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class ColourChangeCommand extends Command {
 
@@ -34,7 +37,28 @@ public class ColourChangeCommand extends Command {
             int red = Integer.parseInt(tokens[maxIndex-2]);
             int green = Integer.parseInt(tokens[maxIndex-1]);
             int blue = Integer.parseInt(tokens[maxIndex]);
+
             Role desiredRole = invoker.getRole(roleName);
+            ArrayList<Role> singularRole = new ArrayList<>();
+            singularRole.add(desiredRole);
+
+            System.out.println(evt.getGuild().getMembersWithRoles(singularRole).size());
+
+            //If it is a gamerole, then the user must be the owner to change its colour
+            if(BotUtils.isGameRole(desiredRole, evt.getGuild())) {
+                if(!Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRoleFromRole(desiredRole)
+                        .getCreator().equalsIgnoreCase(evt.getAuthor().getId())) {
+                    evt.getTextChannel().sendMessage("You need to be the owner of this role to modify it as it is a game role.").queue();
+                    return;
+                }
+
+            }
+
+            //If the role isn't a custom role (i.e. only has one member in it, then do not change it)
+            if(evt.getGuild().getMembersWithRoles(singularRole).size() > 1) {
+                evt.getTextChannel().sendMessage("You cannot change this role because it is not unique to you.").queue();
+                return;
+            }
 
             if(desiredRole != null) {
                 Color prevCol = desiredRole.getColor();
@@ -49,7 +73,10 @@ public class ColourChangeCommand extends Command {
 
                 desiredRole.getManager().setColor(new Color(red, green, blue)).queue();
                 Invoker in = new Invoker(evt.getMember());
-                in.addCredit(-Constants.colChangeCred);
+
+                if(!BotUtils.isGameRole(desiredRole, evt.getGuild()))
+                    in.addCredit(-Constants.colChangeCred);
+
                 evt.getTextChannel().sendMessage("Colour changed from " +prevRed+ " " + prevGreen+ " " +prevBlue
                         +" to " + red+ " " + green+ " " +blue+ " [Cost: "+Constants.colChangeCred+" credit]").queue();
                 return;

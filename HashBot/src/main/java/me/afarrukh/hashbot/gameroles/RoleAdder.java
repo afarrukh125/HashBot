@@ -1,18 +1,26 @@
 package me.afarrukh.hashbot.gameroles;
 
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class RoleAdder {
     public User user;
+
+    public GameRole desiredRole = null;
 
     private Message message;
     public Guild guild;
@@ -20,19 +28,11 @@ public class RoleAdder {
 
     private int stage = 0;
     private int page = 1;
+    private int maxPageNumber;
 
-    private final String e_back = "↩";
+    private final String back = "↩";
     private final String cancel = "\u26D4";
-    private final String e_one = "1⃣";
-    private final String e_two = "2⃣";
-    private final String e_three = "3⃣";
-    private final String e_four = "4⃣";
-    private final String e_five = "5⃣";
-    private final String e_six = "6⃣";
-    private final String e_seven = "7⃣";
-    private final String e_eight = "8⃣";
-    private final String e_nine = "9⃣";
-    private final String e_ten = "\uD83D\uDD1F";
+    private final String[] numberEmojis;
     private final String e_left = "\u25C0";
     private final String e_right = "\u25B6";
     private final String confirm = "\u2705";
@@ -40,27 +40,30 @@ public class RoleAdder {
     public RoleAdder(MessageReceivedEvent evt) {
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
+        numberEmojis = BotUtils.createNumberEmojiArray();
 
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
 
-        message = evt.getChannel().sendMessage(EmbedUtils.getGameRoleListEmbed(this, 1)).complete();
+        message = evt.getChannel().sendMessage(EmbedUtils.getGameRoleListEmbed(this, page)).complete();
 
-        message.addReaction(e_back).queue();
+        message.addReaction(back).queue();
         message.addReaction(e_left).queue();
         message.addReaction(cancel).queue();
-        message.addReaction(e_one).queue();
-        message.addReaction(e_two).queue();
-        message.addReaction(e_three).queue();
-        message.addReaction(e_four).queue();
-        message.addReaction(e_five).queue();
-        message.addReaction(e_six).queue();
-        message.addReaction(e_seven).queue();
-        message.addReaction(e_eight).queue();
-        message.addReaction(e_nine).queue();
-        message.addReaction(e_ten).queue();
+        for(int i = 0; i<BotUtils.getMaxEntriesOnPage(this, page); i++) {
+            message.addReaction(numberEmojis[i]).queue();
+        }
         message.addReaction(e_right).queue();
-        message.addReaction(confirm).queue();
+
+        List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles();
+
+        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+
+        //This block of code is to prevent the list from displaying a blank page as the last one
+        if(roleList.size()%10 == 0)
+            maxPageNumber--;
+
+        this.maxPageNumber = maxPageNumber;
 
         Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleAdders().add(this);
     }
@@ -84,11 +87,95 @@ public class RoleAdder {
     }
 
     private void chooseRole(GuildMessageReactionAddEvent evt) {
-
+        String reactionName = evt.getReaction().getReactionEmote().getName();
+        switch(reactionName) {
+            case cancel:
+                endSession();
+                return;
+            case back:
+                return;
+            case e_left:
+                if(page <= 1)
+                    return;
+                page--;
+                message.clearReactions().queue();
+                message.addReaction(back).queue();
+                message.addReaction(e_left).queue();
+                message.addReaction(cancel).queue();
+                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(this, page); i++) {
+                    message.addReaction(numberEmojis[i]).queue();
+                }
+                message.addReaction(e_right).queue();
+                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
+                return;
+            case e_right:
+                if(page >= maxPageNumber)
+                    return;
+                page++;
+                message.clearReactions().queue();
+                message.addReaction(back).queue();
+                message.addReaction(e_left).queue();
+                message.addReaction(cancel).queue();
+                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(this, page); i++) {
+                    message.addReaction(numberEmojis[i]).queue();
+                }
+                message.addReaction(e_right).queue();
+                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
+                return;
+            case confirm:
+                return;
+            case "\uD83D\uDD1F":
+                desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().get((10*page)-1);
+                break;
+            default:
+                int index = Integer.parseInt(Character.toString(reactionName.charAt(0)));
+                desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles()
+                        .get(((page-1)*10)+(index-1));
+                break;
+        }
+        stage++;
+        message.clearReactions().queue();
+        message.addReaction(back).queue();
+        message.addReaction(cancel).queue();
+        message.addReaction(confirm).queue();
+        message.editMessage(EmbedUtils.confirmDesiredRole(this)).queue();
     }
 
     private void confirmRole(GuildMessageReactionAddEvent evt) {
+        String reactionName = evt.getReaction().getReactionEmote().getName();
+        switch(reactionName) {
+            case cancel:
+                endSession();
+                return;
+            case back:
+                stage--;
+                message.clearReactions().queue();
+                message.addReaction(back).queue();
+                message.addReaction(e_left).queue();
+                message.addReaction(cancel).queue();
+                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(this, page); i++) {
+                    message.addReaction(numberEmojis[i]).queue();
+                }
+                message.addReaction(e_right).queue();
+                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
+                return;
+            case confirm:
+                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+                if(desiredRole == null) {
+                    message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
+                    return;
+                }
 
+                if(guild.getMemberById(user.getId()).getRoles()
+                        .contains(Bot.gameRoleManager.getGuildRoleManager(guild).getRoleFromGameRole(desiredRole))) {
+                    message.editMessage(EmbedUtils.alreadyHasRoleEmbed(this)).queue();
+                    return;
+                }
+                message.editMessage(EmbedUtils.addRoleCompleteEmbed(this)).queue();
+                BotUtils.addRoleToMember(this);
+                return;
+
+        }
     }
 
     private void endSession() {
@@ -100,7 +187,7 @@ public class RoleAdder {
     private class InactiveTimer extends TimerTask {
         private RoleAdder adder;
         private Guild guild;
-        private InactiveTimer(RoleAdder dder, Guild guild) {
+        private InactiveTimer(RoleAdder adder, Guild guild) {
             this.adder = adder;
             this.guild = guild;
         }

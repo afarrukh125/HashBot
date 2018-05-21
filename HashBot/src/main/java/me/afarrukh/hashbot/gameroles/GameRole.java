@@ -1,17 +1,21 @@
 package me.afarrukh.hashbot.gameroles;
 
+import net.dv8tion.jda.core.entities.User;
+
 import java.awt.*;
 
 public class GameRole {
-    private Color color;
+    private String creatorId;
     private String name;
 
-    public GameRole(String name, long red, long blue, long green) {
+    public GameRole(String name, String creatorId) {
         this.name = name;
-        this.color = new Color((int) red, (int) blue, (int) green);
+        this.creatorId = creatorId;
     }
 
     public String getName() {
         return name;
     }
+
+    public String getCreator() { return creatorId; }
 }

@@ -72,20 +72,18 @@ public class JSONGuildManager {
         System.out.println(obj);
     }
 
-    public void addRole(String name, int red, int green, int blue) {
+    public void addRole(String name, String creatorId) {
         JSONArray arr = (JSONArray) jsonObject.get("gameroles");
         JSONObject roleObj = new JSONObject();
 
         roleObj.put("name", name);
-        roleObj.put("red", red);
-        roleObj.put("green", green);
-        roleObj.put("blue", blue);
+        roleObj.put("creatorId", creatorId);
 
         arr.add(roleObj);
 
         jsonObject.put("gameroles", arr);
 
-        Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().add(new GameRole(name, red, green, blue));
+        Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().add(new GameRole(name, creatorId));
         try {
 
             FileWriter newFile = new FileWriter(file);

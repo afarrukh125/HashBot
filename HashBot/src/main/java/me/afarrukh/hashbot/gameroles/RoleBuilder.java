@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 public class RoleBuilder {
 
-    public User user;
+    private User user;
     private Guild guild;
     private int stage = 0;
     public Message message;
@@ -28,7 +28,7 @@ public class RoleBuilder {
     private int green = 255;
     private int blue = 255;
 
-    public Color color;
+    private Color color;
 
     protected Timer timeoutTimer;
 
@@ -149,7 +149,7 @@ public class RoleBuilder {
 
     private void confirmRole(GuildMessageReactionAddEvent evt) {
 
-        switch(evt.getReaction().getReactionEmote().getName()) {
+        switch (evt.getReaction().getReactionEmote().getName()) {
             case cancel:
                 endSession();
                 break;
@@ -168,6 +168,7 @@ public class RoleBuilder {
     }
 
     /**
+
      * What happens when you actually type something to change the group name
      * @param evt
      */
@@ -225,6 +226,18 @@ public class RoleBuilder {
         Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
         message.delete().queue();
         this.timeoutTimer.cancel();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     private class InactiveTimer extends TimerTask {

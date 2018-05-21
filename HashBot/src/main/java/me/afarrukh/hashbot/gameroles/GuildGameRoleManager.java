@@ -33,13 +33,13 @@ public class GuildGameRoleManager {
         JSONArray arr = (JSONArray) jgm.getValue("gameroles");
         for(Object obj: arr) {
             JSONObject roleObj = (JSONObject) obj;
-            gameRoles.add(new GameRole((String)roleObj.get("name"), (long)roleObj.get("red"), (long)roleObj.get("green"), (long)roleObj.get("blue")));
+            gameRoles.add(new GameRole((String)roleObj.get("name"), (String)roleObj.get("creatorId")));
         }
     }
 
     public RoleBuilder builderForUser(User user) {
         for(RoleBuilder builder : Bot.gameRoleManager.getGuildRoleManager(guild).roleBuilders) {
-            if (builder.user == user) return builder;
+            if (builder.getUser() == user) return builder;
         }
         return null;
     }
@@ -58,6 +58,22 @@ public class GuildGameRoleManager {
             if(gameRole.getName().equalsIgnoreCase(name))
                 iter.remove();
         }
+    }
+
+    public GameRole getGameRoleFromRole(Role r) {
+        for(GameRole gr: gameRoles) {
+            if(gr.getName().equalsIgnoreCase(r.getName()))
+                    return gr;
+        }
+        return null;
+    }
+
+    public Role getRoleFromGameRole(GameRole gr) {
+        for(Role r: guild.getRoles()) {
+            if(r.getName().equalsIgnoreCase(gr.getName()))
+                return r;
+        }
+        return null;
     }
 
     public ArrayList<RoleAdder> getRoleAdders() {
