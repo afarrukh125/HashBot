@@ -55,7 +55,7 @@ public class ColourChangeCommand extends Command {
             }
 
             //If the role isn't a custom role (i.e. only has one member in it, then do not change it)
-            if(evt.getGuild().getMembersWithRoles(singularRole).size() > 1) {
+            if(evt.getGuild().getMembersWithRoles(singularRole).size() > 1 && !BotUtils.isGameRole(desiredRole, evt.getGuild())) {
                 evt.getTextChannel().sendMessage("You cannot change this role because it is not unique to you.").queue();
                 return;
             }

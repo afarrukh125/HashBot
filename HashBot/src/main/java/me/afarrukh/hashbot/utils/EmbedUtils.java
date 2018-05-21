@@ -419,7 +419,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(ra.guild.getIconUrl());
         eb.setTitle("Confirm role");
-        eb.appendDescription("Please confirm that you would like the followin role: " +ra.desiredRole.getName());
+        eb.appendDescription("Please confirm that you would like the following role: " +ra.desiredRole.getName());
         return eb.build();
     }
 

@@ -46,6 +46,7 @@ public class RoleAdder {
         timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
 
         message = evt.getChannel().sendMessage(EmbedUtils.getGameRoleListEmbed(this, page)).complete();
+        message.editMessage("Please wait for all emojis to appear before selecting an option.").queue();
 
         message.addReaction(back).queue();
         message.addReaction(e_left).queue();
@@ -160,7 +161,7 @@ public class RoleAdder {
                 message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
                 return;
             case confirm:
-                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
                 if(desiredRole == null) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
                     return;
