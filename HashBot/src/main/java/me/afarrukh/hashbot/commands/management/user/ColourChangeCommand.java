@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Role;
@@ -42,18 +43,6 @@ public class ColourChangeCommand extends Command {
             ArrayList<Role> singularRole = new ArrayList<>();
             singularRole.add(desiredRole);
 
-            System.out.println(evt.getGuild().getMembersWithRoles(singularRole).size());
-
-            //If it is a gamerole, then the user must be the owner to change its colour
-            if(BotUtils.isGameRole(desiredRole, evt.getGuild())) {
-                if(!Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRoleFromRole(desiredRole)
-                        .getCreator().equalsIgnoreCase(evt.getAuthor().getId())) {
-                    evt.getTextChannel().sendMessage("You need to be the owner of this role to modify it as it is a game role.").queue();
-                    return;
-                }
-
-            }
-
             //If the role isn't a custom role (i.e. only has one member in it, then do not change it)
             if(evt.getGuild().getMembersWithRoles(singularRole).size() > 1 && !BotUtils.isGameRole(desiredRole, evt.getGuild())) {
                 evt.getTextChannel().sendMessage("You cannot change this role because it is not unique to you.").queue();
@@ -73,9 +62,7 @@ public class ColourChangeCommand extends Command {
 
                 desiredRole.getManager().setColor(new Color(red, green, blue)).queue();
                 Invoker in = new Invoker(evt.getMember());
-
-                if(!BotUtils.isGameRole(desiredRole, evt.getGuild()))
-                    in.addCredit(-Constants.colChangeCred);
+                in.addCredit(-Constants.colChangeCred);
 
                 evt.getTextChannel().sendMessage("Colour changed from " +prevRed+ " " + prevGreen+ " " +prevBlue
                         +" to " + red+ " " + green+ " " +blue+ " [Cost: "+Constants.colChangeCred+" credit]").queue();

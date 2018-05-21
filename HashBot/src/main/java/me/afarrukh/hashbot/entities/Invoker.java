@@ -49,7 +49,6 @@ public class Invoker {
         long credit = getCredit();
         credit += amt;
         jsonFileManager.updateField("credit", credit);
-        System.out.print("User "+member.getUser().getName()+ " now has " + credit+ " credit. (Added " +amt+ ") | ");
     }
 
     /**
@@ -70,7 +69,7 @@ public class Invoker {
         this.setExp(currentExp + amt);
         int newExp = currentExp + amt;
 
-        System.out.print("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")\n");
+        System.out.println("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")\n");
 
         int expForNextLevel = getExpForNextLevel();
 

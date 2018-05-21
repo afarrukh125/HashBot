@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -99,6 +100,7 @@ public class RoleAdder {
                 if(page <= 1)
                     return;
                 page--;
+                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
                 message.clearReactions().queue();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
@@ -107,12 +109,12 @@ public class RoleAdder {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
-                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
                 return;
             case e_right:
                 if(page >= maxPageNumber)
                     return;
                 page++;
+                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
                 message.clearReactions().queue();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
@@ -121,7 +123,6 @@ public class RoleAdder {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
-                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
                 return;
             case confirm:
                 return;
@@ -129,10 +130,14 @@ public class RoleAdder {
                 desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().get((10*page)-1);
                 break;
             default:
-                int index = Integer.parseInt(Character.toString(reactionName.charAt(0)));
-                desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles()
-                        .get(((page-1)*10)+(index-1));
-                break;
+                try {
+                    int index = Integer.parseInt(Character.toString(reactionName.charAt(0)));
+                    desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles()
+                            .get(((page-1)*10)+(index-1));
+                    break;
+                } catch (NumberFormatException e) {
+                    return;
+                }
         }
         stage++;
         message.clearReactions().queue();
@@ -175,6 +180,8 @@ public class RoleAdder {
                 message.editMessage(EmbedUtils.addRoleCompleteEmbed(this)).queue();
                 BotUtils.addRoleToMember(this);
                 return;
+            default:
+                break;
 
         }
     }
