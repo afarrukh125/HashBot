@@ -16,6 +16,7 @@ public class ColourChangeCommand extends Command {
 
     public ColourChangeCommand() {
         super("rolecol");
+        description = "Allows you to change the colour for one of your roles";
     }
 
     @Override
@@ -38,6 +39,13 @@ public class ColourChangeCommand extends Command {
             int blue = Integer.parseInt(tokens[maxIndex]);
 
             Role desiredRole = invoker.getRole(roleName);
+
+            if(desiredRole == null) {
+                evt.getTextChannel().sendMessage("You do not have this role so you cannot modify it.").queue();
+                BotUtils.deleteLastMsg(evt);
+                return;
+            }
+
             ArrayList<Role> singularRole = new ArrayList<>();
             singularRole.add(desiredRole);
 
@@ -71,9 +79,7 @@ public class ColourChangeCommand extends Command {
 
         } catch(NumberFormatException | NullPointerException e) {
             onIncorrectParams(evt.getTextChannel());
-        } catch(IllegalArgumentException e) {
-            evt.getTextChannel().sendMessage("The values of colours must be in the range 0-255.").queue();
-        }
+        } catch(IllegalArgumentException ignore) {}
 
     }
 

@@ -12,6 +12,7 @@ public class SkipCommand extends Command {
 
     public SkipCommand() {
         super("skip", new String[]{"n", "next", "s"});
+        description = "Skips to the next song or desired position if position is provided";
     }
 
     @Override

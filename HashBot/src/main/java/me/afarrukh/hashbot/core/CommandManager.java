@@ -41,4 +41,8 @@ public class CommandManager {
         return null;
     }
 
+    public ArrayList<Command> getCommandList() {
+        return new ArrayList<>(commandList);
+    }
+
 }

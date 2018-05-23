@@ -10,6 +10,7 @@ public class ShuffleCommand extends Command {
 
     public ShuffleCommand() {
         super("shuffle");
+        description = "Shuffles the music queue";
     }
 
     @Override

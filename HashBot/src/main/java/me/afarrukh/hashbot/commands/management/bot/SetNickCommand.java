@@ -11,6 +11,7 @@ public class SetNickCommand extends Command {
 
     public SetNickCommand() {
         super("setnick");
+        description = "Sets the bot's nickname for this server/guild";
     }
 
     @Override

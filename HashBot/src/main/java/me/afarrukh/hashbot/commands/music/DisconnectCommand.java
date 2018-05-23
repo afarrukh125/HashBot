@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class DisconnectCommand extends Command {
     public DisconnectCommand() {
         super("disconnect", new String[]{"dc", "d"});
+        description = "Disconnects the bot if it is already in a voice channel";
     }
 
     @Override

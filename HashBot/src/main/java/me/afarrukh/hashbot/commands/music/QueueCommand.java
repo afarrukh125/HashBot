@@ -10,6 +10,7 @@ public class QueueCommand extends Command {
 
     public QueueCommand() {
         super("queue", new String[] {"q", "page"});
+        description = "Shows the current queue of songs";
     }
 
     @Override

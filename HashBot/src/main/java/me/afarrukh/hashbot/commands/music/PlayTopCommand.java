@@ -15,6 +15,7 @@ public class PlayTopCommand extends Command {
 
     public PlayTopCommand() {
         super("playtop", new String[] {"ptop"});
+        description = "Adds a song to the top of the music queue";
     }
 
     @Override

@@ -9,6 +9,7 @@ public class RemoveCommand extends Command {
 
     public RemoveCommand() {
         super("remove", new String[]{"rm", "r"});
+        description = "Removes a song at the specified position on the queue";
     }
 
     @Override

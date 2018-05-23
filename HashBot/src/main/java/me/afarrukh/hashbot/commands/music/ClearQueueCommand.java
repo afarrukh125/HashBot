@@ -10,6 +10,7 @@ public class ClearQueueCommand extends Command {
 
     public ClearQueueCommand() {
         super("clearqueue", new String[] {"cq", "c"});
+        description = "Clears the current queue for the music player";
     }
 
     @Override

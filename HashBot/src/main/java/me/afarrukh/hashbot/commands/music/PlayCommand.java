@@ -15,6 +15,7 @@ public class PlayCommand extends Command {
 
     public PlayCommand() {
         super("play", new String[] {"p"});
+        description = "Adds a song to the music queue";
     }
 
     @Override

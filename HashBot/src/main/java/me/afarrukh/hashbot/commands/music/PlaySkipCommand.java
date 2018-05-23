@@ -13,6 +13,7 @@ public class PlaySkipCommand extends Command {
 
     public PlaySkipCommand() {
         super("playskip", new String[]{"pskip", "ps"});
+        description = "Adds a song to the top of the queue and immediately skips to it. Basically a lazy version of ptop and skip";
     }
 
     @Override

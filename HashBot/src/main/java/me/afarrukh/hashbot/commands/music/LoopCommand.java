@@ -11,6 +11,7 @@ public class LoopCommand extends Command {
 
     public LoopCommand() {
         super("loop");
+        description = "Loops the currently playing song. Will no longer loop if next song is skipped to";
     }
 
     @Override

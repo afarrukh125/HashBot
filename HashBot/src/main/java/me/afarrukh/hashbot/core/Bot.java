@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
+import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
 import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
 import me.afarrukh.hashbot.commands.management.guild.roles.AddRoleCommand;
@@ -18,7 +20,7 @@ import javax.security.auth.login.LoginException;
 public class Bot {
     private final String token;
 
-    static CommandManager commandManager;
+    public static CommandManager commandManager;
     static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
@@ -37,14 +39,21 @@ public class Bot {
                 .buildBlocking();
 
         commandManager = new CommandManager()
+                .addCommand(new HelpCommand())
+                .addCommand(new AddRoleCommand())
+                .addCommand(new CreateRoleCommand())
+                .addCommand(new SetPinnedChannel())
+                .addCommand(new SetUnpinned())
                 .addCommand(new ColourChangeCommand())
+                .addCommand(new SetNickCommand())
+                .addCommand(new RoleRGBCommand())
                 .addCommand(new SetNameCommand())
                 .addCommand(new PingCommand())
                 .addCommand(new RewardCommand())
                 .addCommand(new StatsCommand())
                 .addCommand(new PruneCommand())
-                .addCommand(new PlayCommand())
                 .addCommand(new LeaderboardCommand())
+                .addCommand(new PlayCommand())
                 .addCommand(new QueueCommand())
                 .addCommand(new RemoveCommand())
                 .addCommand(new ClearQueueCommand())
@@ -55,12 +64,7 @@ public class Bot {
                 .addCommand(new PauseCommand())
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
-                .addCommand(new AddRoleCommand())
-                .addCommand(new CreateRoleCommand())
-                .addCommand(new SetPinnedChannel())
-                .addCommand(new SetUnpinned())
                 .addCommand(new MoveCommand())
-                .addCommand(new SetNickCommand())
                 .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand());
 

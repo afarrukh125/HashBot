@@ -12,6 +12,7 @@ public class RewardCommand extends Command {
 
     public RewardCommand() {
         super("reward");
+        description = "Rewards an amount of credit to a user";
     }
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
@@ -40,6 +41,6 @@ public class RewardCommand extends Command {
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        System.out.println("Incorrect amount given.");
+        channel.sendMessage("Usage: reward <discord user name> <amount>").queue();
     }
 }

@@ -10,6 +10,7 @@ public abstract class Command {
      */
     private final String name;
     private final String[] aliases;
+    protected String description = null;
 
     protected Command(String name, String[] aliases) {
         this.name = name;
@@ -40,5 +41,9 @@ public abstract class Command {
 
     public String[] getAliases() {
         return aliases;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

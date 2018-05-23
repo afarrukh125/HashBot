@@ -16,6 +16,7 @@ public class PruneCommand extends Command {
 
     public PruneCommand() {
         super("prune");
+        description = "Removes the last 100 messages that start with " +Constants.invokerChar + " or by the bot";
     }
 
     @Override

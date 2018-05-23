@@ -10,6 +10,7 @@ public class StatsCommand extends Command {
 
     public StatsCommand() {
         super("stats");
+        description = "Allows you to view your credit, level and experience";
     }
 
     @Override

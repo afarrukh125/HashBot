@@ -2,8 +2,12 @@ package me.afarrukh.hashbot.utils;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
+import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.CommandManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
@@ -257,29 +261,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * @return An embed with all the commands of the bot
-     */
-    public static MessageEmbed getHelpMsg() {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.setTitle("__Commands for LiveLifeBot__ (Prefix is `" +Constants.invokerChar+"`)");
-        eb.appendDescription("**play/p** `<yt link/yt search>` - Queues a song and joins the bot into the channel if it isn't already\n\n");
-        eb.appendDescription("**queue/q** `<(optional) page number>` - Lists the current queue\n\n");
-        eb.appendDescription("**skip/s/n** `<(optional) song number>` - Skips to next song or song provided\n\n");
-        eb.appendDescription("**ptop/playtop** `<yt link/yt search>` - Queues song to the top of the list\n\n");
-        eb.appendDescription("**loop** - Loops the current song, cancelled if skip command used\n\n");
-        eb.appendDescription("**seek** `<time in seconds>` - Goes to desired time in currently playing song\n\n");
-        eb.appendDescription("**pause** - Pauses the bot, type again to unpause\n\n");
-        eb.appendDescription("**clear**- Clears the queue\n\n");
-        eb.appendDescription("**join**- Joins the bot to the channel. Not sure why you'd use this instead of play\n\n");
-        eb.appendDescription("**disconnect/d/dc**- Disconnects the bot from the channel\n\n");
-        eb.appendDescription("**leaderboard**- Displays the current leaderboard for the server\n\n");
-        eb.appendDescription("**stats**- Displays your stats\n\n");
-        eb.appendDescription("**rolecol** `<role name> <red> <green> <blue>`- Changes the colour of the role if you have it\n\n");
-        return eb.build();
-    }
-
     public static MessageEmbed getRoleName(String name) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
@@ -447,6 +428,39 @@ public class EmbedUtils {
         eb.setThumbnail(ra.guild.getIconUrl());
         eb.setTitle("Error");
         eb.appendDescription("You already have this role.");
+        return eb.build();
+    }
+
+    public static MessageEmbed getHelpMsg(MessageReceivedEvent evt) {
+        EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
+        eb.setTitle("Commands List");
+
+        StringBuilder sb = new StringBuilder();
+
+        for(Command c: Bot.commandManager.getCommandList()) {
+            if(c instanceof OwnerCommand || c instanceof HelpCommand)
+                continue;
+
+            sb.append("**"+Constants.invokerChar+ "" +c.getName()+"**");
+
+            if(c.getAliases() != null) {
+                String[] aliases = c.getAliases();
+                sb.append(" (");
+                for(int i = 0; i<aliases.length-1; i++)
+                    if(!aliases[i].equalsIgnoreCase(c.getName()))
+                        sb.append(aliases[i]+"/");
+
+                if(!aliases[aliases.length-1].equalsIgnoreCase(c.getName()))
+                    sb.append(aliases[aliases.length-1]);
+                sb.append(")");
+            }
+            if(c.getDescription() != null)
+                sb.append(" - " +c.getDescription());
+            sb.append("\n\n");
+        }
+
+        eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
+        eb.appendDescription(sb.toString());
         return eb.build();
     }
 }

@@ -9,6 +9,7 @@ public class SeekCommand extends Command {
 
     public SeekCommand() {
         super("seek");
+        description = "Seeks to the particular time (in seconds) of the currently playing song.";
     }
 
     @Override
@@ -19,7 +20,7 @@ public class SeekCommand extends Command {
                 int seconds = Integer.parseInt(tokens[0]);
                 MusicUtils.seek(evt, seconds);
             } catch(NumberFormatException e) {evt.getChannel().sendMessage("Need to specify how many seconds to seek.").queue();
-            } catch(NullPointerException e) {evt.getChannel().sendMessage("Usage: ,seek <number of seconds into current song>").queue();}
+            } catch(NullPointerException e) {evt.getChannel().sendMessage("Usage: seek <number of seconds into current song>").queue();}
         }
     }
 

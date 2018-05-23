@@ -9,6 +9,7 @@ public class AddRoleCommand extends Command {
 
     public AddRoleCommand() {
         super("addrole");
+        description = "Gives you a selection of all the roles you can join on this server. These are usually game related roles";
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class NowPlayingCommand extends Command {
     public NowPlayingCommand() {
         super("current", new String[]{"np"});
+        description = "Shows the currently playing song";
     }
 
     @Override

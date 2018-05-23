@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class MoveCommand extends Command {
     public MoveCommand() {
         super("move", new String[]{"m"});
+        description = "Moves a song from one index on the list to another";
     }
 
     @Override
