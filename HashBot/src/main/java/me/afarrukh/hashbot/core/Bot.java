@@ -7,7 +7,7 @@ import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
 import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
-import me.afarrukh.hashbot.commands.management.guild.roles.AddRoleCommand;
+import me.afarrukh.hashbot.commands.management.user.AddRoleCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
@@ -42,6 +42,7 @@ public class Bot {
                 .addCommand(new HelpCommand())
                 .addCommand(new AddRoleCommand())
                 .addCommand(new CreateRoleCommand())
+                .addCommand(new RemoveRoleCommand())
                 .addCommand(new SetPinnedChannel())
                 .addCommand(new SetUnpinned())
                 .addCommand(new ColourChangeCommand())

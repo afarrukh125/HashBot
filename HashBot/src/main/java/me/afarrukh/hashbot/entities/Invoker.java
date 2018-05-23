@@ -1,11 +1,15 @@
 package me.afarrukh.hashbot.entities;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.JSONUserFileManager;
+import me.afarrukh.hashbot.gameroles.GameRole;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -110,6 +114,30 @@ public class Invoker {
 
     public long getExp() {
         return (Long) jsonFileManager.getValue("score");
+    }
+
+    public ArrayList<Role> getGameRolesAsRoles() {
+        ArrayList<Role> roleList = new ArrayList<>();
+
+        for(Role r: member.getRoles()) {
+            if(BotUtils.isGameRole(r, member.getGuild()))
+                roleList.add(r);
+        }
+
+        return roleList;
+    }
+
+    public ArrayList<GameRole> getGameRoles() {
+        ArrayList<GameRole> roleList = new ArrayList<>();
+
+        for(GameRole gr: Bot.gameRoleManager.getGuildRoleManager(member.getGuild()).getGameRoles()) {
+            for(Role r: member.getRoles()) {
+                if(r.getName().equalsIgnoreCase(gr.getName()))
+                    roleList.add(gr);
+            }
+        }
+
+        return roleList;
     }
 
     public Member getMember() {

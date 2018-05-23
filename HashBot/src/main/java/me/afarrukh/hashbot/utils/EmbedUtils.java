@@ -352,10 +352,10 @@ public class EmbedUtils {
 
     public static MessageEmbed getGameRoleListEmbed(RoleAdder ra, int page) {
         EmbedBuilder eb = new EmbedBuilder();
-        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.guild).getGameRoles();
+        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
-        eb.setTitle("List of game roles for " + ra.guild.getName());
+        eb.setTitle("List of game roles for " + ra.getGuild().getName());
 
         //If there are no songs in the queue then it will just give an embedded message for a single song.
         if(roleList.size() == 0) {
@@ -376,7 +376,7 @@ public class EmbedUtils {
         }
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
-        Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(ra.guild).getGameRoles().iterator();
+        Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().iterator();
         int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
         int count = 1;
@@ -390,24 +390,24 @@ public class EmbedUtils {
 
             count++;
         }
-        eb.setTitle("Roles for "+ra.guild.getName()+ " (Page " +page+"/"+maxPageNumber+")");
-        eb.setThumbnail(ra.guild.getIconUrl());
+        eb.setTitle("Roles for "+ra.getGuild().getName()+ " (Page " +page+"/"+maxPageNumber+")");
+        eb.setThumbnail(ra.getGuild().getIconUrl());
         return eb.build();
     }
 
     public static MessageEmbed confirmDesiredRole(RoleAdder ra) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.guild.getIconUrl());
+        eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Confirm role");
-        eb.appendDescription("Please confirm that you would like the following role: " +ra.desiredRole.getName());
+        eb.appendDescription("Please confirm that you would like the following role: " +ra.getDesiredRole().getName());
         return eb.build();
     }
 
     public static MessageEmbed getNullRoleEmbed(RoleAdder ra) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.guild.getIconUrl());
+        eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Error");
         eb.appendDescription("The role you have selected is invalid. Please try again. (It may not exist)");
         return eb.build();
@@ -416,16 +416,16 @@ public class EmbedUtils {
     public static MessageEmbed addRoleCompleteEmbed(RoleAdder ra) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.guild.getIconUrl());
+        eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Role added");
-        eb.appendDescription("You now have the role " +ra.desiredRole.getName());
+        eb.appendDescription("You now have the role " +ra.getDesiredRole().getName());
         return eb.build();
     }
 
     public static MessageEmbed alreadyHasRoleEmbed(RoleAdder ra) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.guild.getIconUrl());
+        eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Error");
         eb.appendDescription("You already have this role.");
         return eb.build();

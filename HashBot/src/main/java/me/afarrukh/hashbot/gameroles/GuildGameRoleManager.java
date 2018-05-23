@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.gameroles;
 
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.JSONGuildManager;
+import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
@@ -16,6 +17,7 @@ public class GuildGameRoleManager {
     private final ArrayList<GameRole> gameRoles;
     private final ArrayList<RoleBuilder> roleBuilders;
     private final ArrayList<RoleAdder> roleAdders;
+    private final ArrayList<RoleRemover> roleRemovers;
 
     private final Guild guild;
 
@@ -24,16 +26,23 @@ public class GuildGameRoleManager {
         gameRoles = new ArrayList<>();
         roleBuilders = new ArrayList<>();
         roleAdders = new ArrayList<>();
+        roleRemovers = new ArrayList<>();
         init();
     }
 
     private void init() {
         JSONGuildManager jgm = new JSONGuildManager(guild);
         JSONArray arr = (JSONArray) jgm.getValue("gameroles");
-        for(Object obj: arr) {
-            JSONObject roleObj = (JSONObject) obj;
-            gameRoles.add(new GameRole((String)roleObj.get("name"), (String)roleObj.get("creatorId")));
+        Iterator<Object> iter = arr.iterator();
+        while(iter.hasNext()) {
+            JSONObject roleObj = (JSONObject) iter.next();
+            String roleName = (String) roleObj.get("name");
+            if(BotUtils.doesRoleExist(guild, roleName))
+                gameRoles.add(new GameRole(roleName, (String)roleObj.get("creatorId")));
+            else
+                iter.remove();
         }
+        jgm.updateField("gameroles", arr);
     }
 
     public RoleBuilder builderForUser(User user) {
@@ -45,7 +54,14 @@ public class GuildGameRoleManager {
 
     public RoleAdder adderForUser(User user) {
         for(RoleAdder adder : Bot.gameRoleManager.getGuildRoleManager(guild).roleAdders) {
-            if (adder.user == user) return adder;
+            if (adder.getUser() == user) return adder;
+        }
+        return null;
+    }
+
+    public RoleRemover removerForUser(User user) {
+        for(RoleRemover remover: Bot.gameRoleManager.getGuildRoleManager(guild).roleRemovers) {
+            if(remover.getUser() == user) return remover;
         }
         return null;
     }
@@ -85,5 +101,9 @@ public class GuildGameRoleManager {
 
     public ArrayList<RoleBuilder> getRoleBuilders() {
         return roleBuilders;
+    }
+
+    public ArrayList<RoleRemover> getRoleRemovers() {
+        return roleRemovers;
     }
 }

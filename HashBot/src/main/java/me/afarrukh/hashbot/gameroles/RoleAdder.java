@@ -15,12 +15,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class RoleAdder {
-    public final User user;
+    private final User user;
 
-    public GameRole desiredRole = null;
+    private GameRole desiredRole = null;
 
     private final Message message;
-    public final Guild guild;
+    private final Guild guild;
     private Timer timeoutTimer;
 
     private int stage = 0;
@@ -192,6 +192,18 @@ public class RoleAdder {
         Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
         message.delete().queue();
         this.timeoutTimer.cancel();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public GameRole getDesiredRole() {
+        return desiredRole;
+    }
+
+    public Guild getGuild() {
+        return guild;
     }
 
     private class InactiveTimer extends TimerTask {

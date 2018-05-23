@@ -52,9 +52,6 @@ class MessageListener extends ListenerAdapter {
             new JSONGuildManager(evt.getGuild()).removeRole(evt.getRole().getName());
     }
 
-    public void onRoleUpdateColor(RoleUpdateColorEvent evt) {
-    }
-
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent evt) {
         VoiceChannel vc = evt.getChannelLeft();

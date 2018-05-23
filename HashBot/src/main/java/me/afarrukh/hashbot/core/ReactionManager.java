@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
+import me.afarrukh.hashbot.gameroles.RoleRemover;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
 class ReactionManager {
@@ -18,5 +19,12 @@ class ReactionManager {
         if(ra == null)
             return;
         ra.handleEvent(evt);
+    }
+
+    public void sendToRemover(GuildMessageReactionAddEvent evt) {
+        RoleRemover rr = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).removerForUser(evt.getUser());
+        if(rr == null)
+            return;
+        rr.handleEvent(evt);
     }
 }

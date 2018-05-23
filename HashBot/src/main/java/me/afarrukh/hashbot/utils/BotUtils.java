@@ -126,7 +126,7 @@ public class BotUtils {
     }
 
     public static int getMaxEntriesOnPage(RoleAdder ra, int page) {
-        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.guild).getGameRoles();
+        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles();
         Iterator<GameRole> iter = roleList.iterator();
 
         int startIdx = 1 + ((page-1)*10); //The start role on that page eg page 2 would give 11
@@ -147,9 +147,18 @@ public class BotUtils {
     }
 
     public static void addRoleToMember(RoleAdder ra) {
-        Member m = ra.guild.getMemberById(ra.user.getId());
-        Role roleToAdd = Bot.gameRoleManager.getGuildRoleManager(ra.guild).getRoleFromGameRole(ra.desiredRole);
-        ra.guild.getController().addSingleRoleToMember(m, roleToAdd).queue();
+        Member m = ra.getGuild().getMemberById(ra.getUser().getId());
+        Role roleToAdd = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getRoleFromGameRole(ra.getDesiredRole());
+        ra.getGuild().getController().addSingleRoleToMember(m, roleToAdd).queue();
+    }
+
+    public static boolean doesRoleExist(Guild g, String name) {
+        //Checks if the game role exists in the guild
+        for(Role r: g.getRoles()) {
+            if(r.getName().equalsIgnoreCase(name))
+                    return true;
+        }
+        return false;
     }
 
 
