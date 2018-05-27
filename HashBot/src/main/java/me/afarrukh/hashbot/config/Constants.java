@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.config;
 
+import me.afarrukh.hashbot.graphics.FontLoader;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,6 +19,14 @@ import java.util.Iterator;
 public class Constants {
 
     public static String invokerChar = "!";
+
+    public static int WIDTH = 600;
+    public static int HEIGHT = 200;
+
+    public static Font font28 = null;
+    public static Font font72 = null;
+
+    public static final String BG_PATH = "res/images/bg.jpg";
 
     public static final long dayToMillis = 86400000;
     public static final long minToMillis = 60000;
@@ -60,6 +69,9 @@ public class Constants {
     public static String token;
 
     public static void init() {
+        font28 = FontLoader.loadFont("res/fonts/Raleway-Regular.ttf", 28);
+
+        font72 = FontLoader.loadFont("res/fonts/Raleway-Regular.ttf", 72);
         String path = "res/config/settings.json";
         File file = new File(path);
         String prefix;

@@ -96,6 +96,12 @@ public class Invoker {
         return 10 * (currentLevel+1) * (currentLevel+2);
     }
 
+    public int getPercentageExp() {
+        int exp = (int) getExp();
+        int expToProgress = (int) getExpForNextLevel();
+        return (int) Math.round((double) exp/expToProgress*100);
+    }
+
     private void setLevel(int lvl) {
         jsonFileManager.updateField("level", (long) lvl);
     }

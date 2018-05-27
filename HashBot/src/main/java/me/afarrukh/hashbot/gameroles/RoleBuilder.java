@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RoleBuilder {
+public class RoleBuilder implements RoleGUI{
 
     private final User user;
     private final Guild guild;
@@ -237,12 +237,19 @@ public class RoleBuilder {
         this.timeoutTimer.cancel();
     }
 
+    @Override
     public User getUser() {
         return user;
     }
 
+    @Override
     public Guild getGuild() {
         return guild;
+    }
+
+    @Override
+    public Message getMessage() {
+        return message;
     }
 
     public Color getColor() {

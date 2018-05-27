@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RoleAdder {
+public class RoleAdder implements RoleGUI{
     private final User user;
 
     private GameRole desiredRole = null;
@@ -194,6 +194,7 @@ public class RoleAdder {
         this.timeoutTimer.cancel();
     }
 
+    @Override
     public User getUser() {
         return user;
     }
@@ -202,8 +203,14 @@ public class RoleAdder {
         return desiredRole;
     }
 
+    @Override
     public Guild getGuild() {
         return guild;
+    }
+
+    @Override
+    public Message getMessage() {
+        return message;
     }
 
     private class InactiveTimer extends TimerTask {
