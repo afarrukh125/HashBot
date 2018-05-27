@@ -7,26 +7,49 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b684874d-7c4f-4d17-a7a7-dd11d930f16a" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/Display.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/Text.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/HashBot_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_1_13_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_5.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/HashBot_jar/HashBot.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/HashBot_jar/HashBot.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Black.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-BlackItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-BoldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-ExtraBold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-ExtraBoldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-ExtraLight.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-ExtraLightItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Italic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Light.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-LightItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Medium.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-MediumItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-SemiBold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-SemiBoldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-Thin.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/Raleway-ThinItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/fonts/SIL Open Font License.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/res/guilds/281033379150036992/users/111608457290895360.txt" beforeDir="false" afterPath="$PROJECT_DIR$/res/guilds/281033379150036992/users/111608457290895360.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527359089395.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527359421990.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527361013066.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527361378341.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527379609983.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527379800265.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527380155747.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527380270984.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527380659875.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527380890673.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527381177959.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527381222691.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527381261764.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527381440601.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/images/[SAE]BSOL1527381503501.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/entities/Invoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/entities/Invoker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleAdder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleAdder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleRemover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleRemover.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/Bot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/Bot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/CommandManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/CommandManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/MessageListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/MessageListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,8 +67,8 @@
       <file leaf-file-name="StatsCommand.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="45" column="12" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="12" />
+            <state relative-caret-position="262">
+              <caret line="93" column="36" lean-forward="true" selection-start-line="93" selection-start-column="36" selection-end-line="93" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -56,7 +79,7 @@
       <file leaf-file-name="ImageLoader.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
+            <state relative-caret-position="289">
               <caret line="39" column="13" lean-forward="true" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -65,32 +88,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="53" column="28" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="73" column="71" lean-forward="true" selection-start-line="73" selection-start-column="71" selection-end-line="73" selection-end-column="71" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FontLoader.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="11" column="99" selection-start-line="11" selection-start-column="99" selection-end-line="11" selection-end-column="99" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Bot.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="62" column="50" selection-start-line="62" selection-start-column="50" selection-end-line="62" selection-end-column="50" />
+            <state relative-caret-position="51">
+              <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -132,9 +143,10 @@
       <find>ra.desiredRole</find>
       <find>myCanvas</find>
       <find>Color.RED</find>
+      <find>bi</find>
+      <find>EMB_COL</find>
     </findStrings>
     <replaceStrings>
-      <replace />
       <replace>e_</replace>
       <replace>r.getColor()</replace>
       <replace>rb.getColor()</replace>
@@ -145,6 +157,9 @@
       <replace>ra.getDesiredRole()</replace>
       <replace>display.getCanvas()</replace>
       <replace>Constants.EMB_COL</replace>
+      <replace />
+      <replace>bufferedImage</replace>
+      <replace>STATSIMG_COL</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -153,7 +168,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/LevelUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/CommandManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/Command.java" />
@@ -200,10 +214,11 @@
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/entities/Invoker.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsImageCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java" />
       </list>
     </option>
   </component>
@@ -298,7 +313,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="hashbot" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
@@ -314,8 +329,8 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -349,7 +364,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main Bot LiveLife Server">
+  <component name="RunManager" selected="Application.WizBot (Test Bot)">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HEIGHT" value="0" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
@@ -450,12 +465,13 @@
       <workItem from="1527196179820" duration="344000" />
       <workItem from="1527335590808" duration="176000" />
       <workItem from="1527336231569" duration="23532000" />
-      <workItem from="1527379174675" duration="2259000" />
+      <workItem from="1527379174675" duration="2455000" />
+      <workItem from="1527415025952" duration="14462000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133976000" />
+    <option name="totallyTimeSpent" value="148634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -471,12 +487,13 @@
       <window_info anchor="right" id="Maven Projects" order="4" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4978038" visible="true" weight="0.3227345" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4978038" visible="true" weight="0.3227345" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19033675" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19033675" />
       <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32750398" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
@@ -489,7 +506,6 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32750398" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -504,27 +520,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/roles/CreateRoleCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="14" column="93" selection-start-line="14" selection-start-column="93" selection-end-line="14" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/PingCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="10" column="136" selection-start-line="10" selection-start-column="136" selection-end-line="10" selection-end-column="136" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetUnpinned.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="13" column="72" selection-start-line="13" selection-start-column="72" selection-end-line="13" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/ColourChangeCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -686,13 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/RemoveRoleCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="16" column="42" lean-forward="true" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -718,13 +706,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3128">
           <caret line="196" column="13" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3825">
-          <caret line="239" column="13" selection-start-line="239" selection-start-column="13" selection-end-line="239" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -827,19 +808,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="39" column="13" lean-forward="true" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
+        <state relative-caret-position="153">
           <caret line="11" column="99" selection-start-line="11" selection-start-column="99" selection-end-line="11" selection-end-column="99" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -847,17 +818,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/RemoveRoleCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="16" column="42" lean-forward="true" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3740">
+          <caret line="266" column="27" lean-forward="true" selection-start-line="266" selection-start-column="27" selection-end-line="266" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.1/lib/src.zip!/java.base/java/util/TimerTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/fonts/VCR_OSD_MONO.ttf">
+      <provider selected="true" editor-type-id="fontseditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="53" column="28" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="73" column="71" lean-forward="true" selection-start-line="73" selection-start-column="71" selection-end-line="73" selection-end-column="71" />
+        <state relative-caret-position="51">
+          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="39" column="13" lean-forward="true" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="45" column="12" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="12" />
+        <state relative-caret-position="262">
+          <caret line="93" column="36" lean-forward="true" selection-start-line="93" selection-start-column="36" selection-end-line="93" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

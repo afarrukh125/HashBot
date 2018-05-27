@@ -25,6 +25,7 @@ public class Constants {
 
     public static Font font28 = null;
     public static Font font72 = null;
+    public static Font bigNumFont = null;
 
     public static final String BG_PATH = "res/images/bg.jpg";
 
@@ -57,6 +58,7 @@ public class Constants {
     public static final String UNSELECTEDPOS = "=";
 
     public static final Color EMB_COL = new Color(100, 243, 213); //The default color for embeds
+    public static final Color STATSIMG_COL = Color.WHITE;
 
     //Bot configuration constants
 
@@ -69,9 +71,10 @@ public class Constants {
     public static String token;
 
     public static void init() {
-        font28 = FontLoader.loadFont("res/fonts/Raleway-Regular.ttf", 28);
+        font28 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 28);
+        font72 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 72);
+        bigNumFont = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 36);
 
-        font72 = FontLoader.loadFont("res/fonts/Raleway-Regular.ttf", 72);
         String path = "res/config/settings.json";
         File file = new File(path);
         String prefix;

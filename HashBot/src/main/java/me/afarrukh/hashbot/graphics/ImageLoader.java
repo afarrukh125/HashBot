@@ -1,14 +1,13 @@
 package me.afarrukh.hashbot.graphics;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -28,18 +27,19 @@ public class ImageLoader {
     public static BufferedImage loadUrl(String path) {
         try {
             URL url = new URL(path);
-            return ImageIO.read(url.openStream());
-        } catch (MalformedURLException ignore) {
-        } catch (IOException e) {
-            try {
-                System.out.println("Exception occurred, check log.txt");
-                PrintWriter pw = new PrintWriter(new FileWriter("log.txt"));
-                e.printStackTrace(pw);
-                pw.close();
-            } catch (IOException ex) {
-            }
 
-        }
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = okHttpClient.newCall(request).execute();
+
+            if (response.body() != null) {
+                return ImageIO.read(response.body().byteStream());
+            }
+        } catch (MalformedURLException ignore) {
+        } catch (IOException e) { e.getMessage(); }
         return null;
     }
 
