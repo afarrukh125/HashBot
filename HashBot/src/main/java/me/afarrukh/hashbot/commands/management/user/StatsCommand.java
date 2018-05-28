@@ -46,12 +46,11 @@ public class StatsCommand extends Command {
             g.drawImage(profPic, 460, 10, null);
 
         String nameString = evt.getAuthor().getName();
-        if (evt.getMember().getNickname() != null && evt.getMember().getNickname().length() < 14)
+        if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length()+ evt.getAuthor().getName().length()) < 24)
             nameString += "(" + evt.getMember().getNickname() + ")";
 
-        Text.drawString(g, Integer.toString((int) invoker.getLevel()), 377, 93, false, Color.BLACK, Constants.bigNumFont);
+        Text.drawString(g, Integer.toString((int) invoker.getLevel()), 399, 78, true, Color.BLACK, Constants.bigNumFont);
 
-        g.setStroke(new BasicStroke(BasicStroke.CAP_ROUND));
         Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, Constants.font28);
         Text.drawString(g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, Constants.font28);
         Text.drawString(g, "Experience: " + invoker.getExp() + "/" + invoker.getExpForNextLevel(), originX, originY + 60, false, Constants.STATSIMG_COL,

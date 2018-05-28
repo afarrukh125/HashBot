@@ -18,6 +18,10 @@ public class PlaySkipCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        if(params == null) {
+            onIncorrectParams(evt.getTextChannel());
+            return;
+        }
         if(!MusicUtils.canInteract(evt) && !evt.getMember().getVoiceState().inVoiceChannel()) {
             evt.getChannel().sendMessage("You cannot call the bot if you are not in a voice channel.").queue();
             MusicUtils.cleanPlayMessage(evt);
