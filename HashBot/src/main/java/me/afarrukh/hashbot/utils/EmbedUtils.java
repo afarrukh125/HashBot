@@ -8,8 +8,10 @@ import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.CommandManager;
+import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.GameRole;
+import me.afarrukh.hashbot.gameroles.GuildGameRoleManager;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
@@ -435,13 +437,15 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
         eb.setTitle("Commands List");
 
+        String prefix = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix();
+
         StringBuilder sb = new StringBuilder();
 
         for(Command c: Bot.commandManager.getCommandList()) {
             if(c instanceof OwnerCommand || c instanceof HelpCommand)
                 continue;
 
-            sb.append("**"+Constants.invokerChar+ "" +c.getName()+"**");
+            sb.append("**"+prefix+ "" +c.getName()+"**");
 
             if(c.getAliases() != null) {
                 String[] aliases = c.getAliases();

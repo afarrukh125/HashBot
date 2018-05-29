@@ -94,7 +94,7 @@ public class JSONUserFileManager {
     private void createFile() {
         JSONObject obj = new JSONObject();
         obj.put("name", member.getUser().getName());
-        obj.put("credit", 0);
+        obj.put("credit", 6000);
         obj.put("time", System.currentTimeMillis());
         obj.put("level", 1);
         obj.put("score", 0);

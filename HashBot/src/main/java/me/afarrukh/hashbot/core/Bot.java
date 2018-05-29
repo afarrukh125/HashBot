@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
+import me.afarrukh.hashbot.commands.management.guild.SetPrefixCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
 import me.afarrukh.hashbot.commands.management.user.AddRoleCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
@@ -45,6 +46,7 @@ public class Bot {
                 .addCommand(new RemoveRoleCommand())
                 .addCommand(new SetPinnedChannel())
                 .addCommand(new SetUnpinned())
+                .addCommand(new SetPrefixCommand())
                 .addCommand(new ColourChangeCommand())
                 .addCommand(new SetNickCommand())
                 .addCommand(new RoleRGBCommand())

@@ -7,18 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b684874d-7c4f-4d17-a7a7-dd11d930f16a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetPrefixCommand.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/HashBot.iml" afterPath="$PROJECT_DIR$/HashBot.iml" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/HashBot_jar/HashBot.jar" afterPath="$PROJECT_DIR$/out/artifacts/HashBot_jar/HashBot.jar" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayCommand.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlaySkipCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlaySkipCommand.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayTopCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayTopCommand.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/Main.class" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/Main.class" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" afterPath="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" />
       <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/Bot.class" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/Bot.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/CommandManager.class" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/CommandManager.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/MessageListener.class" afterPath="$PROJECT_DIR$/target/classes/me/afarrukh/hashbot/core/MessageListener.class" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -34,86 +33,97 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="StatsCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java">
+      <file leaf-file-name="JSONUserFileManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="67">
-              <caret line="33" column="44" lean-forward="false" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
+            <state relative-caret-position="-792">
+              <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Command.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/Command.java">
+      <file leaf-file-name="SetPrefixCommand.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetPrefixCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="550">
+              <caret line="25" column="33" lean-forward="false" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="293">
+              <caret line="46" column="11" lean-forward="false" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JSONGuildManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="125" column="38" lean-forward="false" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
+              <folding>
+                <element signature="e#3481#3482#0" expanded="true" />
+                <element signature="e#3526#3527#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommandManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/CommandManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="88">
-              <caret line="5" column="22" lean-forward="false" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="22" column="8" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="25" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlaySkipCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlaySkipCommand.java">
+      <file leaf-file-name="MessageListener.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="352">
-              <caret line="23" column="9" lean-forward="false" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+              <caret line="31" column="19" lean-forward="false" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayTopCommand.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayTopCommand.java">
+      <file leaf-file-name="HelpCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/HelpCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="749">
-              <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+            <state relative-caret-position="154">
+              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FontLoader.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java">
+      <file leaf-file-name="EmbedUtils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="99" lean-forward="false" selection-start-line="11" selection-start-column="99" selection-end-line="11" selection-end-column="99" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="43" column="21" lean-forward="false" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+            <state relative-caret-position="331">
+              <caret line="443" column="34" lean-forward="false" selection-start-line="443" selection-start-column="34" selection-end-line="443" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java">
+      <file leaf-file-name="PruneCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1665">
-              <caret line="123" column="16" lean-forward="false" selection-start-line="123" selection-start-column="16" selection-end-line="123" selection-end-column="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="220">
+              <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -121,9 +131,12 @@
       <file leaf-file-name="GuildGameRoleManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="64" column="9" lean-forward="false" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
-              <folding />
+            <state relative-caret-position="323">
+              <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+              <folding>
+                <element signature="e#3842#3843#0" expanded="true" />
+                <element signature="e#3871#3872#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -195,9 +208,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/LevelUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/CommandManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/Command.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/SetNickCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetUnpinned.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetPinnedChannel.java" />
@@ -207,7 +217,6 @@
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/PingCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/ColourChangeCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/LeaderboardCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/RewardCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/HelpCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/ClearQueueCommand.java" />
@@ -222,12 +231,9 @@
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/ShuffleCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/SkipCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/AddRoleCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/RemoveRoleCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/ReactionManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleAdder.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleRemover.java" />
@@ -237,7 +243,6 @@
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ScreenImage.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/entities/Invoker.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsImageCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/ImageLoader.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
@@ -246,6 +251,14 @@
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlaySkipCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayTopCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetPrefixCommand.java" />
       </list>
     </option>
   </component>
@@ -287,10 +300,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -351,7 +364,30 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="hashbot" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="music" type="462c0819:PsiDirectoryNode" />
+              <item name="management" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="commands" type="462c0819:PsiDirectoryNode" />
+              <item name="management" type="462c0819:PsiDirectoryNode" />
+              <item name="guild" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="commands" type="462c0819:PsiDirectoryNode" />
+              <item name="management" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
@@ -378,7 +414,25 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="gameroles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
               <item name="graphics" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="HashBot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HashBot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hashbot" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -561,11 +615,12 @@
       <workItem from="1527379174675" duration="2455000" />
       <workItem from="1527415025952" duration="14462000" />
       <workItem from="1527530644931" duration="1311000" />
+      <workItem from="1527564103062" duration="2205000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149945000" />
+    <option name="totallyTimeSpent" value="152150000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -614,34 +669,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/LeaderboardCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="31" column="9" lean-forward="true" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/RewardCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="814">
-          <caret line="43" column="82" lean-forward="true" selection-start-line="43" selection-start-column="82" selection-end-line="43" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/HelpCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/ClearQueueCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -719,13 +746,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/BotUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
@@ -744,13 +764,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="11" column="127" lean-forward="false" selection-start-line="11" selection-start-column="127" selection-end-line="11" selection-end-column="127" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -775,22 +788,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6375">
-          <caret line="397" column="65" lean-forward="false" selection-start-line="397" selection-start-column="65" selection-end-line="397" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/RoleGUI.java" />
     <entry file="jar://C:/Program Files/Java/jdk-10.0.1/lib/src.zip!/java.desktop/java/awt/Component.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/Display.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
@@ -841,13 +840,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="62" column="50" lean-forward="false" selection-start-line="62" selection-start-column="50" selection-end-line="62" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/RemoveRoleCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -884,25 +876,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/graphics/FontLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
+        <state relative-caret-position="198">
           <caret line="11" column="99" lean-forward="false" selection-start-line="11" selection-start-column="99" selection-end-line="11" selection-end-column="99" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="64" column="9" lean-forward="false" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
+        <state relative-caret-position="946">
           <caret line="43" column="21" lean-forward="false" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
           <folding />
         </state>
@@ -910,17 +894,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/config/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1665">
+        <state relative-caret-position="2420">
           <caret line="123" column="16" lean-forward="false" selection-start-line="123" selection-start-column="16" selection-end-line="123" selection-end-column="16" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/StatsCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="67">
+        <state relative-caret-position="352">
           <caret line="33" column="44" lean-forward="false" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
           <folding />
         </state>
@@ -936,7 +920,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
+        <state relative-caret-position="286">
           <caret line="22" column="8" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="25" selection-end-column="9" />
           <folding />
         </state>
@@ -952,9 +936,97 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/music/PlayTopCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="749">
-          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+        <state relative-caret-position="485">
+          <caret line="38" column="58" lean-forward="false" selection-start-line="38" selection-start-column="58" selection-end-line="38" selection-end-column="58" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/CommandManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/bot/HelpCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/utils/EmbedUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="443" column="34" lean-forward="false" selection-start-line="443" selection-start-column="34" selection-end-line="443" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONGuildManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="125" column="38" lean-forward="false" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
+          <folding>
+            <element signature="e#3481#3482#0" expanded="true" />
+            <element signature="e#3526#3527#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/MessageListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="31" column="19" lean-forward="false" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/JSONUserFileManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-792">
+          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/gameroles/GuildGameRoleManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding>
+            <element signature="e#3842#3843#0" expanded="true" />
+            <element signature="e#3871#3872#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/core/Bot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="46" column="11" lean-forward="false" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/user/PruneCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/afarrukh/hashbot/commands/management/guild/SetPrefixCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="25" column="33" lean-forward="false" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

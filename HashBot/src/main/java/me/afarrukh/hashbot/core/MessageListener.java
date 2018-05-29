@@ -27,7 +27,7 @@ class MessageListener extends ListenerAdapter {
             return;
         if(!evt.getMessage().getAttachments().isEmpty())
             return;
-        if(evt.getMessage().getContentRaw().startsWith(Constants.invokerChar)) {
+        if(evt.getMessage().getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
             Bot.commandManager.processEvent(evt);
             return;
         }

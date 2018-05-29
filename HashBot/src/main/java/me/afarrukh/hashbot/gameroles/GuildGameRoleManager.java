@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.gameroles;
 
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.utils.BotUtils;
@@ -18,6 +19,8 @@ public class GuildGameRoleManager {
     private final ArrayList<RoleBuilder> roleBuilders;
     private final ArrayList<RoleAdder> roleAdders;
     private final ArrayList<RoleRemover> roleRemovers;
+
+    private String prefix = Constants.invokerChar;
 
     private final Guild guild;
 
@@ -43,6 +46,11 @@ public class GuildGameRoleManager {
                 iter.remove();
         }
         jgm.updateField("gameroles", arr);
+        String prefix = (String) jgm.getValue("prefix");
+        if(prefix != null)
+            this.prefix = prefix;
+        else
+            jgm.updateField("prefix", Constants.invokerChar);
     }
 
     public RoleBuilder builderForUser(User user) {
@@ -75,6 +83,12 @@ public class GuildGameRoleManager {
         }
     }
 
+    public void setPrefix(String prefix) {
+        JSONGuildManager jgm = new JSONGuildManager(guild);
+        jgm.updateField("prefix", prefix);
+        this.prefix = prefix;
+    }
+
     public GameRole getGameRoleFromRole(Role r) {
         for(GameRole gr: gameRoles) {
             if(gr.getName().equalsIgnoreCase(r.getName()))
@@ -105,5 +119,9 @@ public class GuildGameRoleManager {
 
     public ArrayList<RoleRemover> getRoleRemovers() {
         return roleRemovers;
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 }

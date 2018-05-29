@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.simple.JSONArray;
@@ -57,6 +58,7 @@ public class JSONGuildManager {
     private void createGuildFile() {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
+        obj.put("prefix", Constants.invokerChar);
         obj.put("pinnedchannel", "");
 
         JSONArray gameRoles = new JSONArray();
@@ -118,6 +120,10 @@ public class JSONGuildManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setPrefix(String prefix) {
+        updateField("prefix", prefix);
     }
 
     public void updateField(Object key, Object value) {
