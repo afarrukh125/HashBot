@@ -10,7 +10,7 @@ public class SetPrefixCommand extends Command {
 
     public SetPrefixCommand() {
         super("setprefix");
-        description = "Sets the bot prefix for this server";
+        description = "Sets the bot prefix";
     }
 
     @Override

@@ -11,7 +11,7 @@ public class RemoveRoleCommand extends Command {
 
     public RemoveRoleCommand() {
         super("removerole");
-        description = "Lets you remove a role from your list of game roles";
+        description = "Lets you remove a role from your game roles";
     }
 
     @Override

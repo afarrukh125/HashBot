@@ -11,7 +11,7 @@ public class SetUnpinned extends Command {
 
     public SetUnpinned() {
         super("setunpinned");
-        description = "Unsets the pinned message channel for this server";
+        description = "Unsets the pinned channel for this server";
     }
 
     @Override

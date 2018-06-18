@@ -11,7 +11,7 @@ public class LeaderboardCommand extends Command {
 
     public LeaderboardCommand() {
         super("leaderboard", new String[] {"lb"});
-        description = "Shows the current leaderboard for this server";
+        description = "Shows the leaderboard for this server";
     }
 
     @Override

@@ -12,7 +12,7 @@ public class RewardCommand extends Command {
 
     public RewardCommand() {
         super("reward");
-        description = "Rewards an amount of credit to a user";
+        description = "Rewards credit to a user";
     }
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {

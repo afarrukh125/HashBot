@@ -9,7 +9,7 @@ public class RoleRGBCommand extends Command {
 
     public RoleRGBCommand() {
         super("rolergb");
-        description = "Gets the red green and blue values for a particular role";
+        description = "Gets the rgb values for a particular role";
     }
 
     @Override

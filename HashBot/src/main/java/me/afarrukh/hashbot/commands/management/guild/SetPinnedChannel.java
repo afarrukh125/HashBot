@@ -11,7 +11,7 @@ public class SetPinnedChannel extends Command {
 
     public SetPinnedChannel() {
         super("setpinned");
-        description = "Sets the pinned channel for this server. This channel will only allow images to be sent";
+        description = "Sets the pin channel for this server. This channel will only allow images to be sent";
     }
 
     @Override

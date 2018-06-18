@@ -12,7 +12,7 @@ public class CreateRoleCommand extends Command {
 
     public CreateRoleCommand() {
         super("createrole");
-        description = "Allows you to add a role to this server's current list of (game) roles";
+        description = "Allows you to add to this server's current list of (game) roles";
     }
 
     @Override

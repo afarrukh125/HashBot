@@ -28,7 +28,7 @@ public class StatsCommand extends Command {
         super("stats");
         width = Constants.WIDTH;
         height = Constants.HEIGHT;
-        description = "Displays an image with your level, credit and experience.";
+        description = "Displays your statistics.";
     }
 
     @Override
