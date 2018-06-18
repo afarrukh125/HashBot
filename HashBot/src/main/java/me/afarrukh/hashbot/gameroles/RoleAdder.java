@@ -163,7 +163,7 @@ public class RoleAdder implements RoleGUI{
                 return;
             case confirm:
                 message.clearReactions().complete();
-                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
+                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleRemovers().remove(this);
                 if(desiredRole == null) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
                     return;
@@ -184,7 +184,6 @@ public class RoleAdder implements RoleGUI{
                 return;
             default:
                 break;
-
         }
     }
 

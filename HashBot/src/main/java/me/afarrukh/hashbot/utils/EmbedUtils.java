@@ -10,10 +10,7 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.CommandManager;
 import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.gameroles.GameRole;
-import me.afarrukh.hashbot.gameroles.GuildGameRoleManager;
-import me.afarrukh.hashbot.gameroles.RoleAdder;
-import me.afarrukh.hashbot.gameroles.RoleBuilder;
+import me.afarrukh.hashbot.gameroles.*;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -430,6 +427,88 @@ public class EmbedUtils {
         eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Error");
         eb.appendDescription("You already have this role.");
+        return eb.build();
+    }
+
+    public static MessageEmbed getGameRoleListEmbed(RoleRemover rr, int page) {
+        EmbedBuilder eb = new EmbedBuilder();
+        ArrayList<GameRole> roleList = new Invoker(rr.getGuild().getMember(rr.getUser())).getGameRoles();
+
+        eb.setColor(Constants.EMB_COL);
+        eb.setTitle("List of game roles for " + rr.getUser().getName());
+
+        //If there are no songs in the queue then it will just give an embedded message for a single song.
+        if(roleList.size() == 0) {
+            return new EmbedBuilder().setTitle("No game roles")
+                    .setColor(Constants.EMB_COL)
+                    .appendDescription("Use **addrole** to add roles.")
+                    .build();
+        }
+
+        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+
+        //This block of code is to prevent the list from displaying a blank page as the last one
+        if(roleList.size()%10 == 0)
+            maxPageNumber--;
+
+        if(page > maxPageNumber) {
+            return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+        }
+
+        String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
+        Iterator<GameRole> iter = roleList.iterator();
+        int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+        int count = 1;
+        while(iter.hasNext()) {
+            GameRole gameRole = iter.next();
+            if(count >= startIdx && count<=targetIdx) {
+                eb.appendDescription(emojiNumArr[(count-1)%10]+ " " +gameRole.getName()+"\n\n");
+            }
+            if(count==targetIdx)
+                break;
+
+            count++;
+        }
+        eb.setTitle("Roles for "+rr.getUser().getName()+ " (Page " +page+"/"+maxPageNumber+")");
+        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        return eb.build();
+    }
+
+    public static MessageEmbed confirmRemoveRole(RoleRemover rr, GameRole gameRole) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setTitle("Confirm role removal");
+        eb.appendDescription("Please confirm that you would like to remove the following role: " +gameRole.getName());
+
+        return eb.build();
+    }
+
+    public static MessageEmbed getNullRoleEmbed(RoleRemover rr) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setTitle("Error");
+        eb.appendDescription("The role you have selected is invalid. Please try again. (It may not exist)");
+        return eb.build();
+    }
+
+    public static MessageEmbed alreadyHasRoleEmbed(RoleRemover rr) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setTitle("Error");
+        eb.appendDescription("You already have this role.");
+        return eb.build();
+    }
+
+    public static MessageEmbed addRoleRemovedEmbed(RoleRemover rr, GameRole gr) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setTitle("Role removed");
+        eb.appendDescription("You no longer have the role " +gr.getName());
         return eb.build();
     }
 

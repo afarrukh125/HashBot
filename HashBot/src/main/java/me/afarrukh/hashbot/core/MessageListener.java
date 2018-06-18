@@ -82,6 +82,7 @@ class MessageListener extends ListenerAdapter {
         if (evt.getUser().isBot()) return;
         Bot.reactionManager.sendToBuilder(evt);
         Bot.reactionManager.sendToAdder(evt);
+        Bot.reactionManager.sendToRemover(evt);
     }
 
 

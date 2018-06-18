@@ -7,6 +7,7 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
+import me.afarrukh.hashbot.gameroles.RoleRemover;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -17,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class BotUtils {
@@ -146,10 +148,36 @@ public class BotUtils {
         return emojiCount;
     }
 
+    public static int getMaxUserRolesOnPage(RoleRemover rr, int page) {
+        Iterator<GameRole> iter = new Invoker(rr.getGuild().getMember(rr.getUser())).getGameRoles().iterator();
+
+        int startIdx = 1 + ((page-1)*10); //The start role on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last role on that page, eg page 2 would give 20
+        int count = 1;
+        int emojiCount = 0;
+        while(iter.hasNext()) {
+            iter.next();
+            if(count >= startIdx && count<=targetIdx) {
+                emojiCount++;
+            }
+            if(count==targetIdx)
+                break;
+
+            count++;
+        }
+        return emojiCount;
+    }
+
     public static void addRoleToMember(RoleAdder ra) {
         Member m = ra.getGuild().getMemberById(ra.getUser().getId());
         Role roleToAdd = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getRoleFromGameRole(ra.getDesiredRole());
         ra.getGuild().getController().addSingleRoleToMember(m, roleToAdd).queue();
+    }
+
+    public static void removeRoleFromMember(RoleRemover rr, GameRole desiredRole) {
+        Member m = rr.getGuild().getMemberById(rr.getUser().getId());
+        Role roleToRemove = Bot.gameRoleManager.getGuildRoleManager(rr.getGuild()).getRoleFromGameRole(desiredRole);
+        rr.getGuild().getController().removeSingleRoleFromMember(m, roleToRemove).queue();
     }
 
     public static boolean doesRoleExist(Guild g, String name) {
