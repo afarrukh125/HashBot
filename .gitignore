@@ -1,6 +1,6 @@
-HashBot/target/
-HashBot/out/
-HashBot/.idea/
+HashBot/target/*
+HashBot/out/*
+HashBot/.idea/*
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
