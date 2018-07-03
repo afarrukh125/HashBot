@@ -16,13 +16,15 @@ public class PauseCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if(MusicUtils.canInteract(evt)) {
-            MusicUtils.pause(evt);
-            String pau = "";
-            if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused())
-                pau = "Paused";
+            ResumeCommand resumeCommand = new ResumeCommand();
+            if(!Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
+                MusicUtils.pause(evt);
+                evt.getChannel().sendMessage("Now paused. Type " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()
+                        + resumeCommand.getName() + " to resume.").queue();
+            }
             else
-                pau = "Unpaused";
-            evt.getChannel().sendMessage(pau).queue();
+                evt.getTextChannel().sendMessage("The bot is already paused. Type " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()
+                        + resumeCommand.getName() + " to resume.").queue();
         }
     }
 

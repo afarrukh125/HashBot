@@ -170,15 +170,21 @@ public class MusicUtils {
     }
 
     /**
-     * Pauses the bot and resumes if it is already paused
+     * Pauses the bot's audio player
      * @param evt
      */
     public static void pause(MessageReceivedEvent evt) {
         AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
-        if(!ap.isPaused())
-            ap.setPaused(true);
-        else
-            ap.setPaused(false);
+        ap.setPaused(true);
+    }
+
+    /**
+     * Resumes the bot
+     * @param evt
+     */
+    public static void resume(MessageReceivedEvent evt) {
+        AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
+        ap.setPaused(false);
     }
 
     /**
