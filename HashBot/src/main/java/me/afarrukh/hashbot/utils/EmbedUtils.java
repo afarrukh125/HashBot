@@ -569,7 +569,12 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("Credits leaderboard for " +evt.getGuild().getName());
 
-        for(int i = 0; i<memberList.length; i++) {
+        int maxIndex = memberList.length;
+
+        if(maxIndex > 10)
+            maxIndex = 10;
+
+        for(int i = 0; i<maxIndex; i++) {
             Invoker invoker = new Invoker(memberList[i]);
             eb.appendDescription((i+1) + ". | **"+invoker.getMember().getEffectiveName()+"** | `Credits: " +invoker.getCredit()+"`\n\n");
         }

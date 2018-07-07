@@ -30,28 +30,26 @@ public class CommandManager {
 
     public CommandManager addCommand(Command c) {
         commandMap.put(c.getName(), c);
+        if(c.getAliases() != null) {
+            for(String alias: c.getAliases()) {
+                commandMap.put(alias, c);
+            }
+        }
         return this;
     }
 
     private Command commandFromName(String name) {
         Command command = commandMap.get(name);
-
-        if(command == null) {
-            for(Command c: commandMap.values()) {
-                if(c.getAliases() == null)
-                    continue;
-                for(String s: c.getAliases())
-                    if(s.equalsIgnoreCase(name))
-                        return c;
-            }
-            return null;
-        }
-        else
-            return command;
+        return command;
     }
 
     public ArrayList<Command> getCommandList() {
-        ArrayList<Command> commandList = new ArrayList<>(commandMap.values());
+        ArrayList<Command> commandList = new ArrayList<>();
+        for(Command c: commandMap.values()) {
+            if(commandList.contains(c))
+                continue;
+            commandList.add(c);
+        }
         commandList.sort(new Comparator<Command>() {
             @Override
             public int compare(Command c1, Command c2) {

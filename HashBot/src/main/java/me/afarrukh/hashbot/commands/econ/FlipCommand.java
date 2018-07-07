@@ -90,6 +90,8 @@ public class FlipCommand extends Command {
             sb.append(" lost ");
             eb.setTitle("You lost!");
             invoker.addCredit(Integer.parseInt(Long.toString(-amount)));
+            Invoker jdaInvoker = new Invoker(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()));
+            jdaInvoker.addCredit(Integer.parseInt(Long.toString(amount)));
             eb.setColor(Color.RED);
         }
 
