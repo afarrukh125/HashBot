@@ -98,7 +98,7 @@ public class Invoker {
 
     public int getPercentageExp() {
         int exp = (int) getExp();
-        int expToProgress = (int) getExpForNextLevel();
+        int expToProgress = getExpForNextLevel();
         return (int) Math.round((double) exp/expToProgress*100);
     }
 

@@ -1,8 +1,6 @@
 package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleRemover;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

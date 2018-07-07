@@ -17,9 +17,7 @@ public class RemoveCommand extends Command {
         try {
         if(MusicUtils.canInteract(evt))
             MusicUtils.remove(evt, Integer.parseInt(params));
-        } catch(NullPointerException e) {
-            onIncorrectParams(evt.getTextChannel());
-        } catch(NumberFormatException e) {
+        } catch(NullPointerException | NumberFormatException e) {
             onIncorrectParams(evt.getTextChannel());
         }
     }

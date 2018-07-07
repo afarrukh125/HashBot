@@ -21,8 +21,8 @@ import java.util.TimerTask;
 
 public class StatsCommand extends Command {
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     public StatsCommand() {
         super("stats");
@@ -148,7 +148,7 @@ public class StatsCommand extends Command {
     }
 
     private class DeletionTimer extends TimerTask {
-        private File file;
+        private final File file;
         private DeletionTimer(File file) {
             this.file = file;
         }

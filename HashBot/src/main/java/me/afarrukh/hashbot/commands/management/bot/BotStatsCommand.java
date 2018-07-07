@@ -1,21 +1,17 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class HelpCommand extends Command {
+public class BotStatsCommand extends Command {
 
-    public HelpCommand() {
-        super("help", new String[]{"cmds", "cmd"});
+    public BotStatsCommand() {
+        super("botstats");
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        for(MessageEmbed embed: EmbedUtils.getHelpMsg(evt))
-        evt.getTextChannel().sendMessage(embed).queue();
 
     }
 

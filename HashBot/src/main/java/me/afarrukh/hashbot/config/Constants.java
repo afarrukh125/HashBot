@@ -20,11 +20,10 @@ public class Constants {
 
     public static String invokerChar = "!";
 
-    public static int WIDTH = 600;
-    public static int HEIGHT = 200;
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 200;
 
     public static Font font28 = null;
-    public static Font font72 = null;
     public static Font bigNumFont = null;
 
     public static final String BG_PATH = "res/images/bg.jpg";
@@ -72,7 +71,7 @@ public class Constants {
 
     public static void init() {
         font28 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 28);
-        font72 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 72);
+        Font font72 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 72);
         bigNumFont = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 36);
 
         String path = "res/config/settings.json";

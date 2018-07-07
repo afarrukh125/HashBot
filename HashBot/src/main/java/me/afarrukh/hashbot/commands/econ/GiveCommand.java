@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.commands.econ;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -15,16 +16,29 @@ public class GiveCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+
+        Member m = null;
         if(params == null) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
         if(evt.getMessage().getMentionedMembers().isEmpty()) {
-            evt.getTextChannel().sendMessage("You must mention a member as second parameter.").queue();
-            return;
-        }
+            String[] userName = params.split(" ");
+            String memberByName = CmdUtils.getParamsAsString(userName, 0, userName.length-2);
+            System.out.println(memberByName);
+            for(Member member: evt.getGuild().getMembers()) {
+                if(member.getEffectiveName().equalsIgnoreCase(memberByName) || member.getUser().getName().equalsIgnoreCase(memberByName))
+                    m = member;
+            }
 
-        Member m = evt.getMessage().getMentionedMembers().get(0);
+            if(m == null) {
+                evt.getTextChannel().sendMessage("Invalid user provided.").queue();
+                return;
+            }
+        }
+        else
+            m = evt.getMessage().getMentionedMembers().get(0);
+
         int amount = 0;
         String[] tokens = params.split(" ");
 

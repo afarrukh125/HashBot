@@ -6,13 +6,12 @@ import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CommandManager {
 
-    private final HashMap<String, Command> commandMap = new HashMap<>();
+    private final Map<String, Command> commandMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public void processEvent(MessageReceivedEvent evt) {
         String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
@@ -39,8 +38,7 @@ public class CommandManager {
     }
 
     private Command commandFromName(String name) {
-        Command command = commandMap.get(name);
-        return command;
+        return commandMap.get(name);
     }
 
     public ArrayList<Command> getCommandList() {
@@ -50,14 +48,6 @@ public class CommandManager {
                 continue;
             commandList.add(c);
         }
-        commandList.sort(new Comparator<Command>() {
-            @Override
-            public int compare(Command c1, Command c2) {
-                if(c1.getName().charAt(0) < c2.getName().charAt(0))
-                    return -1;
-                return 1;
-            }
-        });
         return new ArrayList<>(commandList);
     }
 

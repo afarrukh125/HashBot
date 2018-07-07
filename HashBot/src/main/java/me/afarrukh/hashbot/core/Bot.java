@@ -11,14 +11,12 @@ import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
 import me.afarrukh.hashbot.commands.management.guild.SetPrefixCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
-import me.afarrukh.hashbot.commands.management.user.AddRoleCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.JDAInfo;
 
 import javax.security.auth.login.LoginException;
 

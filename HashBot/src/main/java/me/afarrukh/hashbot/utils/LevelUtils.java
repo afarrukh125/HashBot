@@ -86,7 +86,7 @@ public class LevelUtils {
 
         ArrayList<Member> memberList = new ArrayList<>();
         for(Member m: g.getMembers()) {
-            if(!m.getUser().isBot() && new Invoker(m).getCredit() > 0)
+            if((!m.getUser().isBot() || m.getUser().getId().equals(g.getJDA().getSelfUser().getId())))
                 memberList.add(m);
         }
 

@@ -7,11 +7,11 @@ import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEv
 
 public interface RoleGUI {
 
-    public User getUser();
+    User getUser();
 
-    public Guild getGuild();
+    Guild getGuild();
 
-    public Message getMessage();
+    Message getMessage();
 
-    public void handleEvent(GuildMessageReactionAddEvent evt);
+    void handleEvent(GuildMessageReactionAddEvent evt);
 }

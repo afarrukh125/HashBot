@@ -17,9 +17,9 @@ import java.util.TimerTask;
 
 public class RoleRemover implements RoleGUI {
 
-    private User user;
-    private Guild guild;
-    private Message message;
+    private final User user;
+    private final Guild guild;
+    private final Message message;
 
     private Timer timeoutTimer;
 
@@ -27,7 +27,7 @@ public class RoleRemover implements RoleGUI {
 
     private int page = 1;
     private int stage = 0;
-    private int maxPageNumber;
+    private final int maxPageNumber;
 
     private final String back = "↩";
     private final String cancel = "\u26D4";

@@ -3,12 +3,13 @@ package me.afarrukh.hashbot.graphics;
 import javax.swing.*;
 import java.awt.*;
 
-public class Display {
+class Display {
     private JFrame frame;
     private Canvas canvas; //This is the main object on which we will draw our game images
 
-    private String title;
-    private int width, height;
+    private final String title;
+    private final int width;
+    private final int height;
 
     public Display(String title, int width, int height) {
         this.title = title;
@@ -22,7 +23,7 @@ public class Display {
         frame = new JFrame(title);
 
         frame.setSize(width, height);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

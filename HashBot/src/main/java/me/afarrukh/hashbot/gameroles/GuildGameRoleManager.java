@@ -36,6 +36,7 @@ public class GuildGameRoleManager {
     private void init() {
         JSONGuildManager jgm = new JSONGuildManager(guild);
         JSONArray arr = (JSONArray) jgm.getValue("gameroles");
+        //noinspection unchecked
         Iterator<Object> iter = arr.iterator();
         while(iter.hasNext()) {
             JSONObject roleObj = (JSONObject) iter.next();

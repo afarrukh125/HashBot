@@ -7,8 +7,6 @@ import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.CommandManager;
-import me.afarrukh.hashbot.core.JSONGuildManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.*;
 import me.afarrukh.hashbot.music.GuildMusicManager;
@@ -19,7 +17,6 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
@@ -539,21 +536,21 @@ public class EmbedUtils {
                 pageCount++;
             }
 
-            sb.append("**"+prefix+ "" +c.getName()+"**");
+            sb.append("**").append(prefix).append(c.getName()).append("**");
 
             if(c.getAliases() != null) {
                 String[] aliases = c.getAliases();
                 sb.append(" (");
                 for(int i = 0; i<aliases.length-1; i++)
                     if(!aliases[i].equalsIgnoreCase(c.getName()))
-                        sb.append(aliases[i]+"/");
+                        sb.append(aliases[i]).append("/");
 
                 if(!aliases[aliases.length-1].equalsIgnoreCase(c.getName()))
                     sb.append(aliases[aliases.length-1]);
                 sb.append(")");
             }
             if(c.getDescription() != null)
-                sb.append(" - " +c.getDescription());
+                sb.append(" - ").append(c.getDescription());
             sb.append("\n\n");
         }
 
