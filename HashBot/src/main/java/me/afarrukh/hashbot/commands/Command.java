@@ -12,12 +12,12 @@ public abstract class Command {
     private final String[] aliases;
     protected String description = null;
 
-    protected Command(String name, String[] aliases) {
+    public Command(String name, String[] aliases) {
         this.name = name;
         this.aliases = aliases;
     }
 
-    protected Command(String name) {
+    public Command(String name) {
         this.name = name;
         aliases = null;
     }

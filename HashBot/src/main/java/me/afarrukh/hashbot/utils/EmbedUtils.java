@@ -19,6 +19,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
@@ -512,9 +513,13 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getHelpMsg(MessageReceivedEvent evt) {
+    public static ArrayList<MessageEmbed> getHelpMsg(MessageReceivedEvent evt) {
+        ArrayList<MessageEmbed> embedArrayList = new ArrayList<>();
+
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
-        eb.setTitle("Commands List");
+        eb.setTitle("Commands List (Page 1)");
+
+        int pageCount = 2;
 
         String prefix = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix();
 
@@ -523,6 +528,16 @@ public class EmbedUtils {
         for(Command c: Bot.commandManager.getCommandList()) {
             if(c instanceof OwnerCommand || c instanceof HelpCommand)
                 continue;
+
+            if(sb.toString().length() + c.getDescription().length() >= 2048) {
+                eb.appendDescription(sb.toString());
+                eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
+                sb = new StringBuilder();
+                embedArrayList.add(eb.build());
+                eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Commands List (Page " +pageCount+ ")");
+                eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
+                pageCount++;
+            }
 
             sb.append("**"+prefix+ "" +c.getName()+"**");
 
@@ -544,6 +559,22 @@ public class EmbedUtils {
 
         eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
         eb.appendDescription(sb.toString());
+
+        embedArrayList.add(eb.build());
+        return embedArrayList;
+    }
+
+    public static MessageEmbed getCreditsLeaderboardEmbed(Member[] memberList, MessageReceivedEvent evt) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setTitle("Credits leaderboard for " +evt.getGuild().getName());
+
+        for(int i = 0; i<memberList.length; i++) {
+            Invoker invoker = new Invoker(memberList[i]);
+            eb.appendDescription((i+1) + ". | **"+invoker.getMember().getEffectiveName()+"** | `Credits: " +invoker.getCredit()+"`\n\n");
+        }
+
+        eb.setThumbnail(evt.getGuild().getIconUrl());
         return eb.build();
     }
 }

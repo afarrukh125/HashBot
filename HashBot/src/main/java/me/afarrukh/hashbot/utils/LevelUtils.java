@@ -81,4 +81,30 @@ public class LevelUtils {
 
         return memberList.toArray(userArray);
     }
+
+    public static Member[] getCreditsLeaderboard(Guild g) {
+
+        ArrayList<Member> memberList = new ArrayList<>();
+        for(Member m: g.getMembers()) {
+            if(!m.getUser().isBot())
+                memberList.add(m);
+        }
+
+        Comparator<Member> memberSorter = new Comparator<Member>() {
+
+            public int compare(Member m1, Member m2) {
+                Invoker in1 = new Invoker(m1);
+                Invoker in2 = new Invoker(m2);
+                if(in2.getCredit() > in1.getCredit())
+                    return 1;
+                return -1;
+            }
+        };
+
+        memberList.sort(memberSorter);
+
+        Member[] userArray = new Member[memberList.size()];
+
+        return memberList.toArray(userArray);
+    }
 }

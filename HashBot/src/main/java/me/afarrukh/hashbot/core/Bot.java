@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
@@ -15,6 +17,7 @@ import me.afarrukh.hashbot.commands.music.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.JDAInfo;
 
 import javax.security.auth.login.LoginException;
 
@@ -25,6 +28,7 @@ public class Bot {
     static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
+    private JDA botUser;
 
     public Bot(String token) {
         this.token = token;
@@ -34,7 +38,7 @@ public class Bot {
     }
 
     private void init() throws LoginException, InterruptedException {
-        JDA botUser = new JDABuilder(AccountType.BOT)
+        botUser = new JDABuilder(AccountType.BOT)
                 .setToken(token)
                 .addEventListener(new MessageListener())
                 .buildBlocking();
@@ -63,6 +67,7 @@ public class Bot {
                 .addCommand(new PruneQueueCommand())
                 .addCommand(new DisconnectCommand())
                 .addCommand(new LoopCommand())
+                .addCommand(new FlipCommand())
                 .addCommand(new PlaySkipCommand())
                 .addCommand(new NowPlayingCommand())
                 .addCommand(new PauseCommand())
@@ -73,8 +78,18 @@ public class Bot {
                 .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand());
 
+        startUpMessages();
+
         musicManager = new MusicManager();
         gameRoleManager = new GameRoleManager();
         reactionManager = new ReactionManager();
+    }
+
+    private void startUpMessages() {
+        for(Command c: commandManager.getCommandList())
+            System.out.println("Adding " + c.getClass().getSimpleName());
+        System.out.println("Added " +commandManager.getCommandList().size()+ " commands to command manager.");
+
+        System.out.println("Started with bot user " + botUser.getSelfUser().getName());
     }
 }
