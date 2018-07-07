@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
+import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
@@ -67,6 +68,7 @@ public class Bot {
                 .addCommand(new PruneQueueCommand())
                 .addCommand(new DisconnectCommand())
                 .addCommand(new LoopCommand())
+                .addCommand(new GiveCommand())
                 .addCommand(new FlipCommand())
                 .addCommand(new PlaySkipCommand())
                 .addCommand(new NowPlayingCommand())
@@ -90,6 +92,6 @@ public class Bot {
             System.out.println("Adding " + c.getClass().getSimpleName());
         System.out.println("Added " +commandManager.getCommandList().size()+ " commands to command manager.");
 
-        System.out.println("Started with bot user " + botUser.getSelfUser().getName());
+        System.out.println("Started and ready with bot user " + botUser.getSelfUser().getName());
     }
 }

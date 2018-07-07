@@ -1,6 +1,9 @@
 HashBot/target/*
 HashBot/out/*
 HashBot/.idea/*
+HashBot/res/images/*
+HashBot/res/guilds/*
+HashBot/src/main/resources/*
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

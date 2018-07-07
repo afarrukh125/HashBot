@@ -52,6 +52,11 @@ public class FlipCommand extends Command {
             return;
         }
 
+        if(amount <= 0) {
+            evt.getTextChannel().sendMessage("You must provide an amount.").queue();
+            return;
+        }
+
         if(invoker.getCredit() < amount) {
             evt.getTextChannel().sendMessage("You do not have enough credits.").queue();
             return;
@@ -72,7 +77,6 @@ public class FlipCommand extends Command {
 
         Random random = new Random();
         int outcome = random.nextInt(2) + 1;
-        System.out.println(outcome);
 
         StringBuilder sb = new StringBuilder();
         sb.append(" You");
