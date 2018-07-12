@@ -15,7 +15,7 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
 
     @Override
     public void noMatches() {
-        evt.getChannel().sendMessage("Nothing found by that query");
+        evt.getChannel().sendMessage("Nothing found by that query").queue();
     }
 
     @Override
