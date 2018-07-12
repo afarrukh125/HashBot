@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SeekCommand extends Command {
 
     public SeekCommand() {
-        super("seek");
+        super("seek", new String[]{"skim"});
         description = "Seeks to the particular time (in seconds) of the currently playing song.";
     }
 
