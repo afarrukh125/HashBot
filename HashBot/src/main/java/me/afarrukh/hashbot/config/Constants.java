@@ -46,6 +46,8 @@ public class Constants {
     public static final int PLAY_TOP_COST = 30;
     public static final int MAX_PLAYLIST_SIZE = 300;
 
+    public static final int DISCONNECT_DELAY = 1; //The amount of minutes to wait before disconnecting after a user leaves
+
     public static final int MUSICBAR_SCALE = 35;
     public static final int MAX_VOL = 100; //The maximum volume the bot can play at.
 

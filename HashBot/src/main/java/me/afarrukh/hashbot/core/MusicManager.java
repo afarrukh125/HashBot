@@ -29,7 +29,7 @@ public class MusicManager {
         GuildMusicManager musicManager = musicManagers.get(guildId); //Gets the current music manager for this guild
 
         if(musicManager == null) { // If the guild doesn't already have a music manager then create one
-            musicManager = new GuildMusicManager(playerManager);
+            musicManager = new GuildMusicManager(playerManager, guild);
             musicManagers.put(guildId, musicManager);
         }
 
