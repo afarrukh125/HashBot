@@ -1,7 +1,8 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.core.JSONGuildManager;
+import me.afarrukh.hashbot.data.DataManager;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,8 +20,8 @@ public class SetUnpinned extends Command {
         if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
 
-        JSONGuildManager jgm = new JSONGuildManager(evt.getGuild());
-        jgm.updateField("pinnedchannel", "");
+        DataManager jgm = new GuildDataManager(evt.getGuild());
+        jgm.updateValue("pinnedchannel", "");
         evt.getTextChannel().sendMessage("There is no longer a pinned channel for this server.").queue();
         BotUtils.deleteLastMsg(evt);
     }

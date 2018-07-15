@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.Timer;
@@ -15,7 +14,7 @@ public class GuildMusicManager {
     private final TrackScheduler scheduler;
     private Timer disconnectTimer;
 
-    private Guild guild;
+    private final Guild guild;
 
     public GuildMusicManager(AudioPlayerManager manager, Guild guild) {
         player = manager.createPlayer();

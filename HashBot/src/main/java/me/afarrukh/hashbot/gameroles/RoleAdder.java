@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.gameroles;
 
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.JSONGuildManager;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.entities.Guild;
@@ -178,7 +178,7 @@ public class RoleAdder implements RoleGUI{
                     BotUtils.addRoleToMember(this);
                 } catch(IllegalArgumentException e) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
-                    JSONGuildManager jgm = new JSONGuildManager(guild);
+                    GuildDataManager jgm = new GuildDataManager(guild);
                     jgm.removeRole(desiredRole.getName());
                 }
                 return;

@@ -1,7 +1,8 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.core.JSONGuildManager;
+import me.afarrukh.hashbot.data.DataManager;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -20,8 +21,8 @@ public class SetPinnedChannel extends Command {
             return;
 
         TextChannel channel = evt.getTextChannel();
-        JSONGuildManager jgm = new JSONGuildManager(evt.getGuild());
-        jgm.updateField("pinnedchannel", channel.getId());
+        DataManager jgm = new GuildDataManager(evt.getGuild());
+        jgm.updateValue("pinnedchannel", channel.getId());
         channel.sendMessage("The new pinned channel for this server is " +channel.getName()).queue();
         BotUtils.deleteLastMsg(evt);
     }

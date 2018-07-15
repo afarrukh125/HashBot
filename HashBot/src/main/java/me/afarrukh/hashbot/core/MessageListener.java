@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
@@ -49,7 +50,7 @@ class MessageListener extends ListenerAdapter {
 
     public void onRoleDelete(RoleDeleteEvent evt) {
         if(BotUtils.isGameRole(evt.getRole(), evt.getGuild()))
-            new JSONGuildManager(evt.getGuild()).removeRole(evt.getRole().getName());
+            new GuildDataManager(evt.getGuild()).removeRole(evt.getRole().getName());
     }
 
     @Override

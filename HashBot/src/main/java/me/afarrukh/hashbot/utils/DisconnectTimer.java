@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class DisconnectTimer extends TimerTask {
 
-    private Guild guild;
+    private final Guild guild;
 
     public DisconnectTimer(Guild guild) {
         this.guild = guild;

@@ -1,23 +1,24 @@
-package me.afarrukh.hashbot.core;
+package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
-public class JSONGuildManager {
-    private JSONObject jsonObject;
-    private final Guild guild;
-    private final File file;
+public class GuildDataManager extends DataManager {
 
-    public JSONGuildManager(Guild guild) {
+    private final Guild guild;
+
+    public GuildDataManager(Guild guild) {
+        super();
         this.guild = guild;
         String guildId = guild.getId();
 
@@ -37,25 +38,11 @@ public class JSONGuildManager {
         }
     }
 
-    private void load() {
-        final JSONParser jsonParser = new JSONParser();
-        Object obj;
-
-        try {
-
-            obj = jsonParser.parse(new FileReader(file));
-            this.jsonObject = (JSONObject) obj;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            createGuildFile();
-            load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void load() {
+        initialiseData();
     }
 
-    private void createGuildFile() {
+    public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
         obj.put("prefix", Constants.invokerChar);
@@ -87,15 +74,7 @@ public class JSONGuildManager {
         jsonObject.put("gameroles", arr);
 
         Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().add(new GameRole(name, creatorId));
-        try {
-
-            FileWriter newFile = new FileWriter(file);
-            newFile.write(jsonObject.toJSONString());
-            newFile.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        flushData();
     }
 
     public void removeRole(String name) {
@@ -111,32 +90,16 @@ public class JSONGuildManager {
         jsonObject.put("gameroles", arr);
 
         Bot.gameRoleManager.getGuildRoleManager(guild).remove(name);
-
-        try {
-            FileWriter newFile = new FileWriter(file);
-            newFile.write(jsonObject.toJSONString());
-            newFile.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        flushData();
     }
 
     public void setPrefix(String prefix) {
-        updateField("prefix", prefix);
+        updateValue("prefix", prefix);
     }
 
-    public void updateField(Object key, Object value) {
+    public void updateValue(Object key, Object value) {
         jsonObject.put(key, value);
-        try {
-
-            FileWriter newFile = new FileWriter(file);
-            newFile.write(jsonObject.toJSONString());
-            newFile.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        flushData();
     }
 
     public Object getValue(Object key) {

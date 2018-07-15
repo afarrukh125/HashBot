@@ -2,7 +2,8 @@ package me.afarrukh.hashbot.gameroles;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.JSONGuildManager;
+import me.afarrukh.hashbot.data.DataManager;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
@@ -34,7 +35,7 @@ public class GuildGameRoleManager {
     }
 
     private void init() {
-        JSONGuildManager jgm = new JSONGuildManager(guild);
+        DataManager jgm = new GuildDataManager(guild);
         JSONArray arr = (JSONArray) jgm.getValue("gameroles");
         //noinspection unchecked
         Iterator<Object> iter = arr.iterator();
@@ -46,12 +47,12 @@ public class GuildGameRoleManager {
             else
                 iter.remove();
         }
-        jgm.updateField("gameroles", arr);
+        jgm.updateValue("gameroles", arr);
         String prefix = (String) jgm.getValue("prefix");
         if(prefix != null)
             this.prefix = prefix;
         else
-            jgm.updateField("prefix", Constants.invokerChar);
+            jgm.updateValue("prefix", Constants.invokerChar);
     }
 
     public RoleBuilder builderForUser(User user) {
@@ -85,8 +86,8 @@ public class GuildGameRoleManager {
     }
 
     public void setPrefix(String prefix) {
-        JSONGuildManager jgm = new JSONGuildManager(guild);
-        jgm.updateField("prefix", prefix);
+        GuildDataManager jgm = new GuildDataManager(guild);
+        jgm.updateValue("prefix", prefix);
         this.prefix = prefix;
     }
 

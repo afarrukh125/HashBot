@@ -17,7 +17,7 @@ public abstract class Command {
         this.aliases = aliases;
     }
 
-    public Command(String name) {
+    protected Command(String name) {
         this.name = name;
         aliases = null;
     }

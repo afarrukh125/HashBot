@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.JSONGuildManager;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
@@ -36,12 +36,12 @@ public class BotUtils {
     }
 
     public static boolean isPinnedChannel(MessageReceivedEvent evt) {
-        JSONGuildManager jgm = new JSONGuildManager(evt.getGuild());
+        GuildDataManager jgm = new GuildDataManager(evt.getGuild());
         return evt.getTextChannel().getId().equals(jgm.getValue("pinnedchannel"));
     }
 
     public static boolean isGameRole(Role r, Guild guild) {
-        for(Object role: (JSONArray) new JSONGuildManager(guild).getValue("gameroles")) {
+        for(Object role: (JSONArray) new GuildDataManager(guild).getValue("gameroles")) {
             JSONObject roleObj = (JSONObject) role;
             String roleName = (String) roleObj.get("name");
             if(roleName.equalsIgnoreCase(r.getName()))
@@ -94,7 +94,7 @@ public class BotUtils {
         }
 
         g.getController().addSingleRoleToMember(m, newRole).queue();
-        JSONGuildManager jgm = new JSONGuildManager(g);
+        GuildDataManager jgm = new GuildDataManager(g);
         jgm.addRole(cap, rb.getUser().getId());
         Invoker inv = new Invoker(rb.getGuild().getMemberById(rb.getUser().getId()));
         inv.addCredit(-Constants.ROLE_CREATE_AMOUNT);

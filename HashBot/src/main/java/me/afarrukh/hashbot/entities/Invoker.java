@@ -2,7 +2,8 @@ package me.afarrukh.hashbot.entities;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.JSONUserFileManager;
+import me.afarrukh.hashbot.data.DataManager;
+import me.afarrukh.hashbot.data.UserDataManager;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;
@@ -20,11 +21,11 @@ import java.util.Random;
 public class Invoker {
 
     private final Member member;
-    private final JSONUserFileManager jsonFileManager;
+    private final DataManager userFileManager;
 
     public Invoker(Member m) {
         member = m;
-        jsonFileManager = new JSONUserFileManager(m);
+        userFileManager = new UserDataManager(m);
     }
 
     public Role getRole(String name) {
@@ -41,18 +42,18 @@ public class Invoker {
      * @return true if enough time has passed, false otherwise
      */
     public boolean hasTimePassed() {
-        long time = (Long) jsonFileManager.getValue("time");
+        long time = (Long) userFileManager.getValue("time");
         if((System.currentTimeMillis() - time) < Constants.minToMillis)
             return false;
 
-        jsonFileManager.updateField("time", System.currentTimeMillis());
+        userFileManager.updateValue("time", System.currentTimeMillis());
         return true;
     }
 
     public void addCredit(int amt) {
         long credit = getCredit();
         credit += amt;
-        jsonFileManager.updateField("credit", credit);
+        userFileManager.updateValue("credit", credit);
     }
 
     /**
@@ -70,7 +71,7 @@ public class Invoker {
         this.setExp(currentExp + amt);
         int newExp = currentExp + amt;
 
-        System.out.println("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")");
+        //System.out.println("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")");
 
         int expForNextLevel = getExpForNextLevel();
 
@@ -80,7 +81,9 @@ public class Invoker {
             setExp(newExp - expForNextLevel);
             setLevel(currentLevel+1);
 
-            System.out.println(member.getUser().getName() + " has levelled up. (Now level " +(currentLevel+1)+")");
+            System.out.println("<"
+                    + member.getGuild().getName()+ "> " +
+                    member.getUser().getName() + " has levelled up. (Now level " +(currentLevel+1)+")");
         }
     }
 
@@ -90,7 +93,7 @@ public class Invoker {
      */
     public int getExpForNextLevel() {
         int currentLevel = (int) getLevel();
-        return (10 * (currentLevel+1) * (currentLevel+2))- 7*currentLevel;
+        return (10 * (currentLevel+1) * (currentLevel+2) - (8*currentLevel));
     }
 
     public int getPercentageExp() {
@@ -100,23 +103,23 @@ public class Invoker {
     }
 
     private void setLevel(int lvl) {
-        jsonFileManager.updateField("level", (long) lvl);
+        userFileManager.updateValue("level", (long) lvl);
     }
 
     private void setExp(int exp) {
-        jsonFileManager.updateField("score", (long) exp);
+        userFileManager.updateValue("score", (long) exp);
     }
 
     public long getCredit() {
-        return (Long) jsonFileManager.getValue("credit");
+        return (Long) userFileManager.getValue("credit");
     }
 
     public long getLevel() {
-        return (Long) jsonFileManager.getValue("level");
+        return (Long) userFileManager.getValue("level");
     }
 
     public long getExp() {
-        return (Long) jsonFileManager.getValue("score");
+        return (Long) userFileManager.getValue("score");
     }
 
     public ArrayList<Role> getGameRolesAsRoles() {

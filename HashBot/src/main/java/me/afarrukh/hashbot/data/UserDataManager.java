@@ -1,24 +1,23 @@
-package me.afarrukh.hashbot.core;
+package me.afarrukh.hashbot.data;
 
 import net.dv8tion.jda.core.entities.Member;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Class that manipulates the json object associated with an invoker object
  */
 
 @SuppressWarnings("unchecked")
-public class JSONUserFileManager {
+public class UserDataManager extends DataManager {
 
-    private JSONObject jsonObject;
-    private final File file;
     private final Member member;
 
-    public JSONUserFileManager(Member m) {
+    public UserDataManager(Member m) {
+        super();
         String guildId = m.getGuild().getId();
         String userId = m.getUser().getId();
 
@@ -42,40 +41,13 @@ public class JSONUserFileManager {
     /**
      * Loads the JSON object from file into instance variable
      */
-    private void load() {
-        final JSONParser jsonParser = new JSONParser();
-        Object obj;
-
-        try {
-
-            obj = jsonParser.parse(new FileReader(file));
-            this.jsonObject = (JSONObject) obj;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            createFile();
-            load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void load() {
+        initialiseData();
     }
 
-    public JSONObject getJsonObject() {
-        return jsonObject;
-    }
-
-    public void updateField(Object key, Object value) {
+    public void updateValue(Object key, Object value) {
         jsonObject.put(key, value);
-        try {
-
-            FileWriter newFile = new FileWriter(file);
-            newFile.write(jsonObject.toJSONString());
-            newFile.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        flushData();
     }
 
     public Object getValue(Object key) {
@@ -87,11 +59,12 @@ public class JSONUserFileManager {
         }
     }
 
+    @Override
     /**
      * Fired when the user has no file created already, creates one with default values
      */
     @SuppressWarnings("unchecked")
-    private void createFile() {
+    public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("name", member.getUser().getName());
         obj.put("credit", 6000);
