@@ -13,7 +13,7 @@ public class LevelUtils {
 
     /**
      * Given the message that the user has entered, gives them experience and a random value between 1 and 5 bonus
-     * @param tokens
+     * @param tokens The message provided for which experience is to be calculated
      * @return The experience to add to the user given their message
      */
     public static int getPointsFromMessage(String[] tokens, int level) {

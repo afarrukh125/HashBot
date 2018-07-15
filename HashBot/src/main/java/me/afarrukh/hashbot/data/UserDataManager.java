@@ -59,11 +59,11 @@ public class UserDataManager extends DataManager {
         }
     }
 
-    @Override
     /**
      * Fired when the user has no file created already, creates one with default values
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("name", member.getUser().getName());

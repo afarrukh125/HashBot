@@ -37,7 +37,6 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Queues the song onto the track and informs if it was immediately played or queued
      * @param track The AudioTrack to play
-     * @return Returns a boolean corresponding
      */
     public void queue(AudioTrack track) {
         if(!player.startTrack(track, true)) {
@@ -100,7 +99,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Gets the duration of the queue's AudioTracks and the remaining time of the current song
-     * @return
+     * @return Returns a string in format h:m:s of the total queue time
      */
     public String getTotalQueueTime() {
         long count = 0;
@@ -117,7 +116,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Skips to desired index
-     * @param idx
+     * @param idx The index to skip to in the queue
      */
     public void skip(int idx) {
         for(int i = 0; i<idx-1; i++) {
@@ -141,8 +140,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Gets the index of a given song (starts at 1 for user purposes)
-     * @param at The AudioTrack to be queued
-     * @return
+     * @param at The AudioTrack for which the index is to be found
+     * @return The index of the provided song
      */
     public int getSongIndex(AudioTrack at) {
         int count = 1;
@@ -180,8 +179,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Gets the total time until an audio track that has been added to the end of the queue
-     * @param at
-     * @return
+     * @param at The audio track for which the time is to be calculated
+     * @return Returns a string in HHMMSS format corresponding to how long until the song is playing
      */
     public String getTotalTimeTil(AudioTrack at) {
         int idx = getSongIndex(at)-1;
@@ -215,7 +214,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Returns the looping status of the track scheduler
-     * @return
+     * @return a boolean corresponding as to whether or not the song is looping
      */
     public boolean isLooping() {
         return looping;
@@ -223,7 +222,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Changes the looping status of the track scheduler
-     * @param loop
+     * @param loop The boolean status to which the looping is set to
      */
     public void setLooping(boolean loop) {
         looping = loop;

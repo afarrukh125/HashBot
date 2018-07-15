@@ -46,8 +46,6 @@ public class MusicUtils {
                 AudioManager audioManager = evt.getGuild().getAudioManager();
                 audioManager.openAudioConnection(m.getVoiceState().getChannel());
             }
-            else {
-            }
         }
     }
 
@@ -81,7 +79,7 @@ public class MusicUtils {
     /**
      * Checks if the bot can be interacted by a particular user (the user in the event). This depends upon whether or not the user is connected
      * into the same channel as the bot
-     * @param evt
+     * @param evt The message receieved event containing information as to whether or not a member can interact
      * @return A true or false value depending on whether or not the user can interact with the bot
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
@@ -106,7 +104,7 @@ public class MusicUtils {
 
     /**
      * Gets the URL for the thumbnail for the provided track
-     * @param at
+     * @param at The audio track for which the thumbnail URl is to be found
      * @return A string with the URL to the given audio track
      */
     public static String getThumbnailURL(AudioTrack at) {
@@ -117,7 +115,7 @@ public class MusicUtils {
     }
 
     /**
-     * @param track
+     * @param track The audio track for which the current position and total duration is to be found
      * @return A string with the highlighted current position as the appropriate string in constants file
      */
     public static String getMusicBar(AudioTrack track) {
@@ -150,28 +148,8 @@ public class MusicUtils {
     }
 
     /**
-     * Returns the current song and sends a message to the channel associated with the message received event, unused method
-     * @deprecated
-     * @param evt
-     */
-    public static void getCurrentSong(MessageReceivedEvent evt) {
-        try {
-            AudioTrack currentTrack = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
-            String message = "The currently playing song is `" +currentTrack
-                    .getInfo().title+"`";
-            int currentTime = (int) currentTrack.getPosition()/1000;
-            int totalTime = (int) (currentTrack.getDuration()/1000);
-            String times = String.format("%02d:%02d/%02d:%02d", currentTime/60, currentTime%60, totalTime/60, totalTime%60);
-            message += "\n" + times;
-            evt.getTextChannel().sendMessage(message).queue();
-        } catch(NullPointerException e) {
-            evt.getChannel().sendMessage("Nothing is playing right now.").queue();
-        }
-    }
-
-    /**
      * Pauses the bot's audio player
-     * @param evt
+     * @param evt The message received event associated with the pause request being sent
      */
     public static void pause(MessageReceivedEvent evt) {
         AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
@@ -180,7 +158,7 @@ public class MusicUtils {
 
     /**
      * Resumes the bot
-     * @param evt
+     * @param evt The message receieved event relating to the resume request
      */
     public static void resume(MessageReceivedEvent evt) {
         AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
@@ -189,7 +167,7 @@ public class MusicUtils {
 
     /**
      * Looks for a particular time in the song
-     * @param evt
+     * @param evt The message received event containing information regarding the song which is to be seeked through
      * @param seconds The time in seconds to be searched for in the currently playing song
      */
     public static void seek(MessageReceivedEvent evt, int seconds) {
@@ -211,7 +189,7 @@ public class MusicUtils {
 
     /**
      * The song to be removed from the queue at the given index
-     * @param evt
+     * @param evt The message received event associated with the song to be removed
      * @param idx The current index of the song to be removed
      */
     public static void remove(MessageReceivedEvent evt, int idx) {

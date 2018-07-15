@@ -42,6 +42,7 @@ public class GuildDataManager extends DataManager {
         initialiseData();
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
@@ -62,6 +63,11 @@ public class GuildDataManager extends DataManager {
         System.out.println(obj);
     }
 
+    /**
+     * Updates the JSON file with the current state of the JSON file after updating the gameroles array
+     * @param name The name of the role
+     * @param creatorId The ID of the user who created the game role
+     */
     public void addRole(String name, String creatorId) {
         JSONArray arr = (JSONArray) jsonObject.get("gameroles");
         JSONObject roleObj = new JSONObject();
@@ -77,6 +83,10 @@ public class GuildDataManager extends DataManager {
         flushData();
     }
 
+    /**
+     * Removes the role from the JSON object and flushes it to file
+     * @param name The name of the role to be removed from the JSON file
+     */
     public void removeRole(String name) {
         JSONArray arr = (JSONArray) jsonObject.get("gameroles");
         Iterator<Object> iter = arr.iterator();

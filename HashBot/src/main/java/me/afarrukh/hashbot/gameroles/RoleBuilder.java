@@ -179,7 +179,7 @@ public class RoleBuilder implements RoleGUI{
     /**
 
      * What happens when you actually type something to change the group name
-     * @param evt
+     * @param evt The event associated with the message received
      */
     public void handleEvent(MessageReceivedEvent evt) {
 

@@ -37,7 +37,7 @@ public class PlayTopCommand extends Command {
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
         if(params.split(" ").length == 1 && params.contains("http")) {
             Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
-            evt.getMessage().delete();
+            evt.getMessage().delete().queue();
         }
         else
             Bot.musicManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));

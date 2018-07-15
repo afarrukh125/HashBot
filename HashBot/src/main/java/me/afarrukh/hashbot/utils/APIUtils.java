@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class APIUtils {
 
+    @SuppressWarnings("ConstantConditions")
     public static String getResponseFromURL(String url) {
         try {
 

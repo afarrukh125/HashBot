@@ -12,6 +12,7 @@ public abstract class Command {
     private final String[] aliases;
     protected String description = null;
 
+
     public Command(String name, String[] aliases) {
         this.name = name;
         this.aliases = aliases;
