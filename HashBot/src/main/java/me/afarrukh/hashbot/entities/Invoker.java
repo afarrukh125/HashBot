@@ -93,7 +93,7 @@ public class Invoker {
      */
     public int getExpForNextLevel() {
         int currentLevel = (int) getLevel();
-        return (10 * (currentLevel+1) * (currentLevel+2) - (8*currentLevel));
+        return (10 * (currentLevel+1) * (currentLevel+2) - (7*currentLevel));
     }
 
     public int getPercentageExp() {
