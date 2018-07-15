@@ -43,9 +43,7 @@ class MessageListener extends ListenerAdapter {
             invoker.updateExperience(evt.getMessage().getContentRaw());
         }
         RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getAuthor());
-        if(rb == null) {
-        }
-        else
+        if(rb != null)
             rb.handleEvent(evt);
     }
 
@@ -63,8 +61,9 @@ class MessageListener extends ListenerAdapter {
         //Pause if no users in channel
         if(vc.getMembers().size() == 1 && !manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
+
             Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), 5*1000);
+            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*5*1000);
         }
 
         if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null)

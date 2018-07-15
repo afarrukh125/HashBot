@@ -36,7 +36,7 @@ public class Constants {
     public static final String LEFTBAR = "full_moon"; //Emoji name for experience bar in stats command
     public static final String RIGHTBAR = "new_moon";
 
-    public static final int MAX_CREDIT = 30;
+    public static final int MAX_CREDIT = 60;
 
     public static final int MAX_EXP_FROM_MSG = 80; //A single message cannot give more than this much experience
     public static final int INITIAL_EXP = 10; //The amount of experience the user gets per message

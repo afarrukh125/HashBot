@@ -59,10 +59,7 @@ public class Invoker {
      * Adds a random amount of credit to a user
      */
     public void addRandomCredit() {
-        Random random = new Random();
-        int rng = random.nextInt(Constants.MAX_CREDIT) + 1;
-
-        addCredit(rng);
+        addCredit(new Random().nextInt(Constants.MAX_CREDIT) + 1);
     }
 
     public void updateExperience(String msg) {

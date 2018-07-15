@@ -25,7 +25,7 @@ public class StatsCommand extends Command {
     private final int height;
 
     public StatsCommand() {
-        super("stats");
+        super("stats", new String[]{"balance", "credits"});
         width = Constants.WIDTH;
         height = Constants.HEIGHT;
         description = "Displays your statistics.";
