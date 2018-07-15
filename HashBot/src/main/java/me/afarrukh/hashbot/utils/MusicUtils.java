@@ -197,7 +197,8 @@ public class MusicUtils {
             AudioTrack track = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
 
             if(seconds > track.getDuration()/1000 || seconds < 0)
-                evt.getChannel().sendMessage("Please enter a valid time for this song to seek.").queue();
+                evt.getChannel().sendMessage("Please enter a valid time for this song to seek. " +
+                        "Maximum time in seconds for this song is " +((track.getDuration()/1000)-1)+ ".").queue();
             else {
                 int toMilliSeconds = seconds * 1000;
                 track.setPosition(toMilliSeconds);

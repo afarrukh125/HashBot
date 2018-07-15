@@ -4,10 +4,15 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.CmdUtils;
+import me.afarrukh.hashbot.utils.DisconnectTimer;
+import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -20,8 +25,10 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
     private boolean looping;
+    private final Guild guild;
 
-    public TrackScheduler(AudioPlayer player) {
+    public TrackScheduler(AudioPlayer player, Guild guild) {
+        this.guild = guild;
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
@@ -42,6 +49,14 @@ public class TrackScheduler extends AudioEventAdapter {
         player.startTrack(queue.poll(), false);
     }
 
+    @Override
+    public void onTrackStart(AudioPlayer player, AudioTrack track) {
+
+        //Invalidates the timer if it is already set and clears it if a new track starts playing
+        Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer().cancel();
+        Bot.musicManager.getGuildAudioPlayer(guild).setDisconnectTimer(new Timer());
+    }
+
     /**
      * Decides what happens when a song ends
      */
@@ -56,9 +71,12 @@ public class TrackScheduler extends AudioEventAdapter {
             return;
         }
 
-        if(endReason.mayStartNext) {
+        if(endReason.mayStartNext)
             nextTrack();
-        }
+
+        //Starting a timer to disconnect which is cancelled if the queue starts any new songs
+        Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer();
+        disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY*1000);
     }
 
     /**

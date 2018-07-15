@@ -68,7 +68,6 @@ public class Bot {
                 .addCommand(new LoopCommand())
                 .addCommand(new GiveCommand())
                 .addCommand(new FlipCommand())
-                .addCommand(new PlaySkipCommand())
                 .addCommand(new NowPlayingCommand())
                 .addCommand(new PauseCommand())
                 .addCommand(new ResumeCommand())

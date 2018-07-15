@@ -64,7 +64,7 @@ class MessageListener extends ListenerAdapter {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
             Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*5*1000);
+            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*1000);
         }
 
         if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null)

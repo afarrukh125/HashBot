@@ -20,7 +20,7 @@ public class SeekCommand extends Command {
                 int seconds = Integer.parseInt(tokens[0]);
                 MusicUtils.seek(evt, seconds);
             } catch(NumberFormatException e) {evt.getChannel().sendMessage("Need to specify how many seconds to seek.").queue();
-            } catch(NullPointerException e) {evt.getChannel().sendMessage("Usage: seek <number of seconds into current song>").queue();}
+            } catch(NullPointerException e) {evt.getChannel().sendMessage("Usage: seek/skim <number of seconds into current song>").queue();}
         }
     }
 
