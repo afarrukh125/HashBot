@@ -12,6 +12,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
+/**
+ * This class manages data for a guild. This includes things like the bot prefixes, the pinned channel
+ * (if set) and also the GameRoles.
+ */
 @SuppressWarnings("unchecked")
 public class GuildDataManager extends DataManager {
 

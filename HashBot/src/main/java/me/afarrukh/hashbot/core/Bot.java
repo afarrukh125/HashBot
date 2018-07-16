@@ -29,6 +29,10 @@ public class Bot {
     public static MusicManager musicManager;
     private JDA botUser;
 
+    /**
+     * Creates our JDA user
+     * @param token The unique token used to login to the discord servers
+     */
     public Bot(String token) {
         this.token = token;
         try {
@@ -36,6 +40,11 @@ public class Bot {
         } catch (LoginException | InterruptedException e) { e.printStackTrace(); }
     }
 
+    /**
+     * Adds the commands and initialises all the managers
+     * @throws LoginException The login servers failed
+     * @throws InterruptedException The connection was interrupted
+     */
     private void init() throws LoginException, InterruptedException {
         botUser = new JDABuilder(AccountType.BOT)
                 .setToken(token)

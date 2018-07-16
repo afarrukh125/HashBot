@@ -1,5 +1,8 @@
 package me.afarrukh.hashbot.gameroles;
 
+/**
+ * More information regarding GameRoles is given in the GameRoleManager class
+ */
 public class GameRole {
     private final String creatorId;
     private final String name;

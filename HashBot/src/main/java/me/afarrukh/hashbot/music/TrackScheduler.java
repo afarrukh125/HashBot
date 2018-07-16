@@ -25,10 +25,8 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
     private boolean looping;
-    private final Guild guild;
 
-    public TrackScheduler(AudioPlayer player, Guild guild) {
-        this.guild = guild;
+    public TrackScheduler(AudioPlayer player) {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
@@ -50,10 +48,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-
-        //Invalidates the timer if it is already set and clears it if a new track starts playing
-        Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer().cancel();
-        Bot.musicManager.getGuildAudioPlayer(guild).setDisconnectTimer(new Timer());
+        System.out.println(track.getInfo().title);
     }
 
     /**
@@ -72,10 +67,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
         if(endReason.mayStartNext)
             nextTrack();
-
-        //Starting a timer to disconnect which is cancelled if the queue starts any new songs
-        Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer();
-        disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY*1000);
+        else
+            System.out.println("Check if there is a song currently playing. If there are no more songs in queue, then success.");
     }
 
     /**

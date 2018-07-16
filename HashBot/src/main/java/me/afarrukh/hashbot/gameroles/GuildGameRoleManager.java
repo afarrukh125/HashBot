@@ -14,6 +14,10 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Further information regarding GameRoles is given in the GameRoleManager class.
+ * This class represents a GameRoleManager for an individual guild
+ */
 public class GuildGameRoleManager {
 
     private final ArrayList<GameRole> gameRoles;

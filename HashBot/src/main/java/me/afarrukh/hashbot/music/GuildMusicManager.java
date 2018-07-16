@@ -18,7 +18,7 @@ public class GuildMusicManager {
 
     public GuildMusicManager(AudioPlayerManager manager, Guild guild) {
         player = manager.createPlayer();
-        scheduler = new TrackScheduler(player, guild);
+        scheduler = new TrackScheduler(player);
         player.addListener(scheduler);
 
         this.guild = guild;
@@ -38,8 +38,9 @@ public class GuildMusicManager {
         return new AudioPlayerSendHandler(player);
     }
 
-    public void setDisconnectTimer(Timer disconnectTimer) {
-        this.disconnectTimer = disconnectTimer;
+    public void resetDisconnectTimer() {
+        this.disconnectTimer.cancel();
+        this.disconnectTimer = new Timer();
     }
 
     public Timer getDisconnectTimer() {

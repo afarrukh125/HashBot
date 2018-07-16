@@ -22,6 +22,10 @@ import java.util.Timer;
 
 class MessageListener extends ListenerAdapter {
 
+    /**
+     * Processes any message being received on every single message received event
+     * @param evt The message received event being passed in to process
+     */
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
         if(evt.isFromType(ChannelType.PRIVATE))
@@ -48,11 +52,19 @@ class MessageListener extends ListenerAdapter {
             rb.handleEvent(evt);
     }
 
+    /**
+     *
+     * @param evt The event associated with the deletion of a role
+     */
     public void onRoleDelete(RoleDeleteEvent evt) {
         if(BotUtils.isGameRole(evt.getRole(), evt.getGuild()))
             new GuildDataManager(evt.getGuild()).removeRole(evt.getRole().getName());
     }
 
+    /**
+     *
+     * @param evt The event associated with a member leaving guild voice
+     */
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent evt) {
         VoiceChannel vc = evt.getChannelLeft();
@@ -63,14 +75,18 @@ class MessageListener extends ListenerAdapter {
         if(vc.getMembers().size() == 1 && !manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
-            Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*1000);
+//            Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
+//            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*1000);
         }
 
         if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null)
             MusicUtils.disconnect(evt.getGuild());
     }
 
+    /**
+     *
+     * @param evt The event associated with a member joining guild voice
+     */
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent evt) {
         VoiceChannel vc = evt.getChannelJoined();
@@ -80,11 +96,14 @@ class MessageListener extends ListenerAdapter {
         if((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
 
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer().cancel();
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).setDisconnectTimer(new Timer());
+//            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer().cancel();
+//            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
         }
     }
 
+    /**
+     * @param evt The event associated with a reaction being added to a message
+     */
     @Override
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent evt) {
         if (evt.getUser().isBot()) return;
