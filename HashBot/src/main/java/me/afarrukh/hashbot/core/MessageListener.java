@@ -71,16 +71,19 @@ class MessageListener extends ListenerAdapter {
 
         GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
 
+        if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
+            MusicUtils.disconnect(evt.getGuild());
+            return;
+        }
+
         //Pause if no users in channel
         if(vc.getMembers().size() == 1 && !manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
-//            Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-//            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*1000);
+            System.out.println("Starting timer!");
+            Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
+            disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*1000);
         }
-
-        if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null)
-            MusicUtils.disconnect(evt.getGuild());
     }
 
     /**
@@ -96,8 +99,8 @@ class MessageListener extends ListenerAdapter {
         if((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
 
-//            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer().cancel();
-//            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
+            System.out.println("Resetting timer!");
+            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
         }
     }
 

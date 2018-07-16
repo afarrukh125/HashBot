@@ -10,6 +10,7 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.core.entities.Guild;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
@@ -25,8 +26,10 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
     private boolean looping;
+    private Guild guild;
 
-    public TrackScheduler(AudioPlayer player) {
+    public TrackScheduler(AudioPlayer player, Guild guild) {
+        this.guild = guild;
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
@@ -48,7 +51,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        System.out.println(track.getInfo().title);
+        System.out.println("<" + new Timestamp(System.currentTimeMillis()) + "> Now starting: " + track.getInfo().title);
     }
 
     /**
@@ -57,6 +60,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished and if the load failed
+        System.out.println("<" + new Timestamp(System.currentTimeMillis()) + "> Now finished: " + track.getInfo().title);
         if(isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();
@@ -67,8 +71,6 @@ public class TrackScheduler extends AudioEventAdapter {
 
         if(endReason.mayStartNext)
             nextTrack();
-        else
-            System.out.println("Check if there is a song currently playing. If there are no more songs in queue, then success.");
     }
 
     /**
@@ -219,6 +221,13 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     public void setLooping(boolean loop) {
         looping = loop;
+    }
+
+    /**
+     * @return The guild associated with this track scheduler
+     */
+    public Guild getGuild() {
+        return this.guild;
     }
 
 }
