@@ -529,7 +529,10 @@ public class EmbedUtils {
             if(c instanceof OwnerCommand || c instanceof HelpCommand)
                 continue;
 
-            if(sb.toString().length() + c.getDescription().length() >= 1500) {
+            int descLength = 0;
+            if(c.getDescription() != null)
+                descLength = c.getDescription().length();
+            if(sb.toString().length() + descLength >= 1600) {
                 eb.appendDescription(sb.toString());
                 eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
                 sb = new StringBuilder();

@@ -12,6 +12,7 @@ public class UptimeCommand extends Command {
 
     public UptimeCommand() {
         super("uptime");
+        description = "Displays the bot uptime in HH:MM:SS";
     }
 
     @Override
