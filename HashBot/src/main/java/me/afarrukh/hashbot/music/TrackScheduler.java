@@ -49,9 +49,14 @@ public class TrackScheduler extends AudioEventAdapter {
         player.startTrack(queue.poll(), false);
     }
 
+    /**
+     * Decides what happens when the song ends
+     * @param player The AudioPlayer associated with this trackscheduler
+     * @param track The track that has been started
+     */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        System.out.println("<" + new Timestamp(System.currentTimeMillis()) + "> Now starting: " + track.getInfo().title);
+        Bot.musicManager.getGuildAudioPlayer(guild).resetDisconnectTimer();
     }
 
     /**
@@ -60,7 +65,8 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished and if the load failed
-        System.out.println("<" + new Timestamp(System.currentTimeMillis()) + "> Now finished: " + track.getInfo().title);
+        Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer()
+                .schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY*1000);
         if(isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();

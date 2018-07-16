@@ -23,6 +23,8 @@ public class Constants {
     public static final int WIDTH = 600;
     public static final int HEIGHT = 200;
 
+    public static long timeStarted = 0;
+
     public static Font font28 = null;
     public static Font bigNumFont = null;
 
@@ -72,6 +74,9 @@ public class Constants {
     public static String token;
 
     public static void init() {
+
+        timeStarted = System.currentTimeMillis();
+
         font28 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 28);
         Font font72 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 72);
         bigNumFont = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 36);

@@ -80,7 +80,6 @@ class MessageListener extends ListenerAdapter {
         if(vc.getMembers().size() == 1 && !manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
-            System.out.println("Starting timer!");
             Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
             disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY*1000);
         }
@@ -99,7 +98,6 @@ class MessageListener extends ListenerAdapter {
         if((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
 
-            System.out.println("Resetting timer!");
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
         }
     }

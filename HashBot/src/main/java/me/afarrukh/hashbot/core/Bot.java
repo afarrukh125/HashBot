@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
+import me.afarrukh.hashbot.commands.management.bot.UptimeCommand;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
@@ -53,6 +54,7 @@ public class Bot {
 
         commandManager = new CommandManager()
                 .addCommand(new HelpCommand())
+                .addCommand(new UptimeCommand())
                 .addCommand(new AddRoleCommand())
                 .addCommand(new CreateRoleCommand())
                 .addCommand(new RemoveRoleCommand())
