@@ -8,10 +8,7 @@ import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.gameroles.GameRole;
-import me.afarrukh.hashbot.gameroles.RoleAdder;
-import me.afarrukh.hashbot.gameroles.RoleBuilder;
-import me.afarrukh.hashbot.gameroles.RoleRemover;
+import me.afarrukh.hashbot.gameroles.*;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -404,7 +401,26 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getNullRoleEmbed(RoleAdder ra) {
+    public static MessageEmbed confirmDeleteRole(RoleDeleter rd) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+
+        eb.setThumbnail(rd.getUser().getAvatarUrl());
+        eb.setTitle("Confirm role deletion");
+        eb.appendDescription("Please confirm that you would like to delete the following role " +rd.getRoleToBeDeleted().getName());
+        return eb.build();
+    }
+
+    public static MessageEmbed deleteRoleCompleteEmbed(RoleGUI roleGUI) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
+        eb.setTitle("Role deletion complete.");
+        eb.setDescription("The selected role was deleted from this guilds list of game roles.");
+        return eb.build();
+    }
+
+    public static MessageEmbed getNullRoleEmbed(RoleGUI ra) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(ra.getGuild().getIconUrl());
@@ -428,6 +444,48 @@ public class EmbedUtils {
         eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Error");
         eb.appendDescription("You already have this role.");
+        return eb.build();
+    }
+
+    public static MessageEmbed getCreatedRolesEmbed(RoleDeleter rd, int page, ArrayList<GameRole> createdRoles) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Constants.EMB_COL);
+
+        if(createdRoles.size() == 0) {
+            Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleDeleters().remove(rd);
+            return new EmbedBuilder().setTitle("No game roles")
+                    .setColor(Constants.EMB_COL)
+                    .appendDescription("There are no GameRoles created by you. Use **createrole** to do this.")
+                    .build();
+        }
+
+        int maxPageNumber = createdRoles.size()/10+1;
+
+        if(createdRoles.size()%10 == 0)
+            maxPageNumber--;
+
+        if(page > maxPageNumber)
+            return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+
+        String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
+        Iterator<GameRole> iter = createdRoles.iterator();
+        int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+        int count = 1;
+        while(iter.hasNext()) {
+            GameRole gameRole = iter.next();
+            if(count >= startIdx && count<=targetIdx) {
+                eb.appendDescription(emojiNumArr[(count-1)%10]+ " " +gameRole.getName()+"\n\n");
+            }
+            if(count==targetIdx)
+                break;
+
+            count++;
+        }
+
+        eb.setTitle("Roles created by "+rd.getUser().getName()+ " (Page " +page+"/"+maxPageNumber+")");
+        eb.setThumbnail(rd.getUser().getAvatarUrl());
+
         return eb.build();
     }
 

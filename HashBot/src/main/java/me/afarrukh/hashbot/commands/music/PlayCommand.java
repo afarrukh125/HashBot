@@ -1,9 +1,7 @@
 package me.afarrukh.hashbot.commands.music;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
@@ -30,10 +28,6 @@ public class PlayCommand extends Command {
             return;
         }
 
-        if(new Invoker(evt.getMember()).getCredit() < Constants.SONG_COST) {
-            evt.getTextChannel().sendMessage("You need at least " +Constants.SONG_COST+ " credit to queue songs.").queue();
-            return;
-        }
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
         if(params.split(" ").length == 1 && params.contains("http")) {
             Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));

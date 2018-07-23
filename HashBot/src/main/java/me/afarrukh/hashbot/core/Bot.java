@@ -64,6 +64,7 @@ public class Bot {
                 .addCommand(new ColourChangeCommand())
                 .addCommand(new SetNickCommand())
                 .addCommand(new RoleRGBCommand())
+                .addCommand(new DeleteRoleCommand())
                 .addCommand(new SetNameCommand())
                 .addCommand(new PingCommand())
                 .addCommand(new RewardCommand())

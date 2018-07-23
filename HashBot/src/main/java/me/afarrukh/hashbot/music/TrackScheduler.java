@@ -10,10 +10,8 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.core.entities.Guild;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;

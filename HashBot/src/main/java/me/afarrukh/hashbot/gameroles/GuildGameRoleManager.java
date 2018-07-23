@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.gameroles;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
@@ -24,6 +23,7 @@ public class GuildGameRoleManager {
     private final ArrayList<RoleBuilder> roleBuilders;
     private final ArrayList<RoleAdder> roleAdders;
     private final ArrayList<RoleRemover> roleRemovers;
+    private final ArrayList<RoleDeleter> roleDeleters;
 
     private String prefix = Constants.invokerChar;
 
@@ -35,6 +35,7 @@ public class GuildGameRoleManager {
         roleBuilders = new ArrayList<>();
         roleAdders = new ArrayList<>();
         roleRemovers = new ArrayList<>();
+        roleDeleters = new ArrayList<>();
         init();
     }
 
@@ -60,23 +61,28 @@ public class GuildGameRoleManager {
     }
 
     public RoleBuilder builderForUser(User user) {
-        for(RoleBuilder builder : Bot.gameRoleManager.getGuildRoleManager(guild).roleBuilders) {
+        for(RoleBuilder builder : roleBuilders) {
             if (builder.getUser() == user) return builder;
         }
         return null;
     }
 
     public RoleAdder adderForUser(User user) {
-        for(RoleAdder adder : Bot.gameRoleManager.getGuildRoleManager(guild).roleAdders) {
+        for(RoleAdder adder : roleAdders) {
             if (adder.getUser() == user) return adder;
         }
         return null;
     }
 
     public RoleRemover removerForUser(User user) {
-        for(RoleRemover remover: Bot.gameRoleManager.getGuildRoleManager(guild).roleRemovers) {
+        for(RoleRemover remover: roleRemovers)
             if(remover.getUser() == user) return remover;
-        }
+        return null;
+    }
+
+    public RoleDeleter deleterForUser(User user) {
+        for(RoleDeleter deleter: roleDeleters)
+            if(deleter.getUser() == user) return deleter;
         return null;
     }
 
@@ -125,6 +131,10 @@ public class GuildGameRoleManager {
 
     public ArrayList<RoleRemover> getRoleRemovers() {
         return roleRemovers;
+    }
+
+    public ArrayList<RoleDeleter> getRoleDeleters() {
+        return roleDeleters;
     }
 
     public String getPrefix() {

@@ -33,7 +33,7 @@ public class Constants {
     public static final long dayToMillis = 86400000;
     public static final long minToMillis = 60000;
 
-    public static final int colChangeCred = 1500;
+    public static final int colChangeCred = 500;
 
     public static final String LEFTBAR = "full_moon"; //Emoji name for experience bar in stats command
     public static final String RIGHTBAR = "new_moon";
@@ -44,8 +44,7 @@ public class Constants {
     public static final int INITIAL_EXP = 10; //The amount of experience the user gets per message
     public static final int LEADERBOARD_MAX = 10;
 
-    public static final int SONG_COST = 15;
-    public static final int PLAY_TOP_COST = 30;
+    public static final int PLAY_TOP_COST = 15;
     public static final int MAX_PLAYLIST_SIZE = 300;
 
     public static final int DISCONNECT_DELAY = 120; //The amount of seconds to wait before disconnecting after a user leaves
@@ -55,7 +54,7 @@ public class Constants {
 
     public static final int ITERABLE_MESSAGES = 500;
 
-    public static final int ROLE_CREATE_AMOUNT = 4500;
+    public static final int ROLE_CREATE_AMOUNT = 2500;
 
     public static final String SELECTEDPOS = "full_moon";
     public static final String UNSELECTEDPOS = "=";

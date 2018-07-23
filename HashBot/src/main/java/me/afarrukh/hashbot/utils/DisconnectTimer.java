@@ -19,7 +19,7 @@ public class DisconnectTimer extends TimerTask {
                 "no users were in the channel for more than " + Constants.DISCONNECT_DELAY +
                 " seconds while it was paused " +
                 "or the track ended and none were queued " +
-                "after 30 seconds");
+                "after " +Constants.DISCONNECT_DELAY+ " seconds.");
         MusicUtils.disconnect(guild);
     }
 }

@@ -4,10 +4,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.gameroles.GameRole;
-import me.afarrukh.hashbot.gameroles.RoleAdder;
-import me.afarrukh.hashbot.gameroles.RoleBuilder;
-import me.afarrukh.hashbot.gameroles.RoleRemover;
+import me.afarrukh.hashbot.gameroles.*;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -16,8 +13,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class BotUtils {
@@ -126,8 +123,7 @@ public class BotUtils {
         };
     }
 
-    public static int getMaxEntriesOnPage(RoleAdder ra, int page) {
-        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles();
+    public static int getMaxEntriesOnPage(List<GameRole> roleList, int page) {
         Iterator<GameRole> iter = roleList.iterator();
 
         int startIdx = 1 + ((page-1)*10); //The start role on that page eg page 2 would give 11
@@ -145,6 +141,11 @@ public class BotUtils {
             count++;
         }
         return emojiCount;
+    }
+
+    public static void deleteRole(RoleDeleter rd) {
+        Role role = Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleFromGameRole(rd.getRoleToBeDeleted());
+        role.delete().queue();
     }
 
     public static int getMaxUserRolesOnPage(RoleRemover rr, int page) {

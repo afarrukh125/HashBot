@@ -30,7 +30,6 @@ public class MusicUtils {
             musicManager.getScheduler().queueTop(track);
         }
         else {
-            invoker.addCredit(-Constants.SONG_COST);
             musicManager.getScheduler().queue(track);
         }
     }
