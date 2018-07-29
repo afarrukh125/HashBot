@@ -25,7 +25,7 @@ public class StatsCommand extends Command {
     private final int height;
 
     public StatsCommand() {
-        super("stats", new String[]{"balance", "credits"});
+        super("stats", new String[]{"balance", "credits", "bal"});
         width = Constants.WIDTH;
         height = Constants.HEIGHT;
         description = "Displays your statistics.";
@@ -54,7 +54,7 @@ public class StatsCommand extends Command {
 
         Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, Constants.font28);
         Text.drawString(g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, Constants.font28);
-        Text.drawString(g, "Experience: " + invoker.getExp() + "/" + invoker.getExpForNextLevel(), originX, originY + 60, false, Constants.STATSIMG_COL,
+        Text.drawString(g, "Exp: " + invoker.getExp() + "/" + invoker.getExpForNextLevel(), originX, originY + 60, false, Constants.STATSIMG_COL,
                 Constants.font28);
 
 
@@ -69,7 +69,7 @@ public class StatsCommand extends Command {
 
         Role r = evt.getMember().getRoles().get(0);
         if (r != null)
-            Text.drawString(g, r.getName(), originX, originY + 135, false, r.getColor(), Constants.font28);
+            Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), Constants.font28);
 
         String fileName = "res/images/" + evt.getAuthor().getName() + System.currentTimeMillis() + ".png";
 

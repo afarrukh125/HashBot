@@ -10,6 +10,7 @@ import me.afarrukh.hashbot.utils.DisconnectTimer;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
@@ -67,6 +68,14 @@ class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent evt) {
+        try {
+            Role voiceRole = evt.getGuild().getRolesByName("voice", true).get(0);
+
+            if(voiceRole != null)
+                evt.getGuild().getController().removeSingleRoleFromMember(evt.getMember(), voiceRole)
+                        .queue();
+        } catch (IndexOutOfBoundsException ignore) {}
+
         VoiceChannel vc = evt.getChannelLeft();
 
         GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
@@ -91,6 +100,14 @@ class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent evt) {
+        try {
+            Role voiceRole = evt.getGuild().getRolesByName("voice", true).get(0);
+
+            if(voiceRole != null)
+                evt.getGuild().getController().addSingleRoleToMember(evt.getMember(), voiceRole)
+                        .queue();
+        } catch (IndexOutOfBoundsException ignore) {}
+
         VoiceChannel vc = evt.getChannelJoined();
         GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
 

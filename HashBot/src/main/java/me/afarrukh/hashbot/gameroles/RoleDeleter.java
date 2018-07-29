@@ -19,9 +19,9 @@ import java.util.TimerTask;
 
 public class RoleDeleter implements RoleGUI {
 
-    private Guild guild;
-    private User user;
-    private Message message;
+    private final Guild guild;
+    private final User user;
+    private final Message message;
 
     private GameRole roleToBeDeleted = null;
 
@@ -29,7 +29,7 @@ public class RoleDeleter implements RoleGUI {
     private int page = 1;
 
     private Timer timeoutTimer;
-    private int maxPageNumber;
+    private final int maxPageNumber;
 
     private final ArrayList<GameRole> createdRoles;
 

@@ -27,7 +27,7 @@ public class RoleAdder implements RoleGUI{
     private int page = 1;
     private final int maxPageNumber;
 
-    private List<GameRole> roleList;
+    private final List<GameRole> roleList;
 
     private final String back = "↩";
     private final String cancel = "\u26D4";
@@ -68,6 +68,7 @@ public class RoleAdder implements RoleGUI{
         Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleAdders().add(this);
     }
 
+    @SuppressWarnings("Duplicates")
     public void handleEvent(GuildMessageReactionAddEvent evt) {
         timeoutTimer.cancel();
         timeoutTimer = new Timer();

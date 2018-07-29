@@ -68,6 +68,7 @@ public class RoleRemover implements RoleGUI {
         Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleRemovers().add(this);
     }
 
+    @SuppressWarnings("Duplicates")
     public void handleEvent(GuildMessageReactionAddEvent evt) {
         timeoutTimer.cancel();
         timeoutTimer = new Timer();

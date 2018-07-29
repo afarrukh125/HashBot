@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
 
+@SuppressWarnings("Duplicates")
 public class EmbedUtils {
 
     /**
