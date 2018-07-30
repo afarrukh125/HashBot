@@ -71,7 +71,9 @@ class MessageListener extends ListenerAdapter {
         try {
             Role voiceRole = evt.getGuild().getRolesByName("voice", true).get(0);
 
-            if(voiceRole != null)
+            if(voiceRole != null
+                    && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)
+                    && !evt.getMember().getUser().getId().equals(evt.getJDA().getSelfUser().getId()))
                 evt.getGuild().getController().removeSingleRoleFromMember(evt.getMember(), voiceRole)
                         .queue();
         } catch (IndexOutOfBoundsException ignore) {}
@@ -103,7 +105,9 @@ class MessageListener extends ListenerAdapter {
         try {
             Role voiceRole = evt.getGuild().getRolesByName("voice", true).get(0);
 
-            if(voiceRole != null)
+            if(voiceRole != null
+                    && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)
+                    && !evt.getMember().getUser().getId().equals(evt.getJDA().getSelfUser().getId()))
                 evt.getGuild().getController().addSingleRoleToMember(evt.getMember(), voiceRole)
                         .queue();
         } catch (IndexOutOfBoundsException ignore) {}
