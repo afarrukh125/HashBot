@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class UptimeCommand extends Command {
 
     public UptimeCommand() {
-        super("uptime");
+        super("uptime", new String[]{"up"});
         description = "Displays the bot uptime in HH:MM:SS";
     }
 
@@ -18,10 +18,15 @@ public class UptimeCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         long now = System.currentTimeMillis();
         long upTimeUnix = now - Constants.timeStarted;
+        long seconds =  (int) (upTimeUnix / 1000) % 60;
+        int minutes =   (int) (upTimeUnix / 1000 / 60) % 60;
+        int hours =     (int) (upTimeUnix / 1000 / 60 / 60) % 24;
+        int days =      (int) (upTimeUnix / 1000 / 60 / 60) / 24;
 
         evt.getTextChannel().sendMessage(new EmbedBuilder()
                 .setColor(Constants.EMB_COL)
-                .appendDescription("Bot uptime: " + CmdUtils.longToHHMMSS(upTimeUnix))
+                .appendDescription("Bot uptime: " + days + " days, "
+                        + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.")
                 .build()).queue();
     }
 
