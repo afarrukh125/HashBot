@@ -171,7 +171,7 @@ public class EmbedUtils {
     public static MessageEmbed getQueuedTopEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Queued song");
+        eb.setTitle("Queued song to top");
         eb.setColor(Constants.EMB_COL);
         eb.appendDescription("["+at.getInfo().title+"]("+at.getInfo().uri+")\n\n");
         eb.appendDescription("**Channel**: `" +at.getInfo().author + "`\n");

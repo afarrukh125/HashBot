@@ -13,6 +13,7 @@ import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
 import me.afarrukh.hashbot.commands.management.guild.SetPrefixCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetUnpinned;
 import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
+import me.afarrukh.hashbot.commands.management.guild.roles.DeleteRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import net.dv8tion.jda.core.AccountType;

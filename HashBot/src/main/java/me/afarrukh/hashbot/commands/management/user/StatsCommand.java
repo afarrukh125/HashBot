@@ -102,7 +102,7 @@ public class StatsCommand extends Command {
         //Drawings to be done in this space
         BufferedImage img = ImageLoader.loadImage(Constants.BG_PATH);
 
-        float opacity = 0.4f;
+        float opacity = 1.0f;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 
         g.drawImage(img, 0, 0, null);

@@ -39,6 +39,7 @@ public class ImageLoader {
             if (response.body() != null) {
                 return ImageIO.read(response.body().byteStream());
             }
+            response.close();
         } catch (MalformedURLException ignore) {
         } catch (IOException e) { e.getMessage(); }
         return null;

@@ -15,11 +15,6 @@ public class DisconnectTimer extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("Bot was disconnected from " +guild.getName()+ " because either " +
-                "no users were in the channel for more than " + Constants.DISCONNECT_DELAY +
-                " seconds while it was paused " +
-                "or the track ended and none were queued " +
-                "after " +Constants.DISCONNECT_DELAY+ " seconds.");
         MusicUtils.disconnect(guild);
     }
 }

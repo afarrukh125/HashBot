@@ -1,4 +1,4 @@
-package me.afarrukh.hashbot.commands.management.user;
+package me.afarrukh.hashbot.commands.management.guild.roles;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.gameroles.RoleDeleter;
