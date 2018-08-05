@@ -27,16 +27,32 @@ public class ColourChangeCommand extends Command {
             return;
         }
         try {
+            String roleName = "";
             String[] tokens = params.split(" ");
-            if(tokens.length < 4) {
-                onIncorrectParams(evt.getTextChannel());
-                return;
-            }
             int maxIndex = tokens.length - 1;
-            String roleName = CmdUtils.getParamsAsString(tokens, 0, maxIndex - 3);
-            int red = Integer.parseInt(tokens[maxIndex-2]);
-            int green = Integer.parseInt(tokens[maxIndex-1]);
-            int blue = Integer.parseInt(tokens[maxIndex]);
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+
+            if(tokens[maxIndex].startsWith("#")) {
+                roleName = CmdUtils.getParamsAsString(tokens, 0, maxIndex-1);
+
+                Color colorFromHex = Color.decode(tokens[maxIndex]);
+                red = colorFromHex.getRed();
+                green = colorFromHex.getGreen();
+                blue = colorFromHex.getBlue();
+            }
+            else {
+                if (tokens.length < 4) {
+                    onIncorrectParams(evt.getTextChannel());
+                    return;
+                }
+                roleName = CmdUtils.getParamsAsString(tokens, 0, maxIndex - 3);
+
+                red = Integer.parseInt(tokens[maxIndex-2]);
+                green = Integer.parseInt(tokens[maxIndex-1]);
+                blue = Integer.parseInt(tokens[maxIndex]);
+            }
 
             Role desiredRole = invoker.getRole(roleName);
 
@@ -55,26 +71,22 @@ public class ColourChangeCommand extends Command {
                 return;
             }
 
-            if(desiredRole != null) {
-                Color prevCol = desiredRole.getColor();
-                String prevRed = Integer.toString(prevCol.getRed());
-                String prevGreen = Integer.toString(prevCol.getGreen());
-                String prevBlue = Integer.toString(prevCol.getBlue());
+            Color prevCol = desiredRole.getColor();
+            String prevRed = Integer.toString(prevCol.getRed());
+            String prevGreen = Integer.toString(prevCol.getGreen());
+            String prevBlue = Integer.toString(prevCol.getBlue());
 
-                if(red == 0 && green == 0 && blue == 0) {
-                    evt.getTextChannel().sendMessage("You cannot use this colour. (Use at least one value above 0)").queue();
-                    return;
-                }
-
-                desiredRole.getManager().setColor(new Color(red, green, blue)).queue();
-                Invoker in = new Invoker(evt.getMember());
-                in.addCredit(-Constants.colChangeCred);
-
-                evt.getTextChannel().sendMessage("Colour changed from " +prevRed+ " " + prevGreen+ " " +prevBlue
-                        +" to " + red+ " " + green+ " " +blue+ " [Cost: "+Constants.colChangeCred+" credit]").queue();
+            if(red == 0 && green == 0 && blue == 0) {
+                evt.getTextChannel().sendMessage("You cannot use this colour. (Use at least one value above 0)").queue();
                 return;
             }
-            evt.getTextChannel().sendMessage("You do not have the role, or it doesn't exist.").queue();
+
+            desiredRole.getManager().setColor(new Color(red, green, blue)).queue();
+            Invoker in = new Invoker(evt.getMember());
+            in.addCredit(-Constants.colChangeCred);
+
+            evt.getTextChannel().sendMessage("Colour changed from " +prevRed+ " " + prevGreen+ " " +prevBlue
+                    +" to " + red+ " " + green+ " " +blue+ " [Cost: "+Constants.colChangeCred+" credit]").queue();
 
 
         } catch(NumberFormatException | NullPointerException e) {
@@ -85,6 +97,6 @@ public class ColourChangeCommand extends Command {
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        channel.sendMessage("Correct usage: rolecol <role name> <red> <green> <blue>").queue();
+        channel.sendMessage("Correct usage: rolecol <role name> <red> <green> <blue> OR rolecol <role name> <#hex>").queue();
     }
 }
