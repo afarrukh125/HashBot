@@ -39,17 +39,8 @@ public class FlipCommand extends Command {
             amount = Integer.parseInt(tokens[0]);
         } catch(NumberFormatException e) {
             if(tokens[0].equalsIgnoreCase("all")) {
-                long userCredit = invoker.getCredit();
-                if(userCredit > 10000)
-                    amount = 10000;
-                else
-                    amount = userCredit;
+                amount = invoker.getCredit();
             }
-        }
-
-        if(amount > 10000) {
-            evt.getTextChannel().sendMessage("You cannot provide more than 10000 credits").queue();
-            return;
         }
 
         if(amount <= 0) {
