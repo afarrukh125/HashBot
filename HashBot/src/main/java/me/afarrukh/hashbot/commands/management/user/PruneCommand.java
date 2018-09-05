@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -24,7 +25,7 @@ public class PruneCommand extends Command {
         MessagePaginationAction messageHistory = evt.getTextChannel().getIterableHistory();
         List<Message> messageBin = new ArrayList<>();
         for(Message m: messageHistory) {
-            if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Constants.invokerChar)) {
+            if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
                 messageBin.add(m);
             }
             if(messageBin.size() == 100)
