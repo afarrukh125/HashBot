@@ -175,7 +175,7 @@ public class MusicUtils {
 
             if(seconds > track.getDuration()/1000 || seconds < 0)
                 evt.getChannel().sendMessage("Please enter a valid time for this song to seek. " +
-                        "Maximum time in seconds for this song is " +((track.getDuration()/1000)-1)+ ".").queue();
+                        "Maximum time in seconds for this song is " +((track.getDuration()/1000)-1)+ " seconds.").queue();
             else {
                 int toMilliSeconds = seconds * 1000;
                 track.setPosition(toMilliSeconds);
