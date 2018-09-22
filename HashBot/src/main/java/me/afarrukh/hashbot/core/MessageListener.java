@@ -10,8 +10,11 @@ import me.afarrukh.hashbot.utils.DisconnectTimer;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -135,5 +138,13 @@ class MessageListener extends ListenerAdapter {
         Bot.reactionManager.sendToDeleter(evt);
     }
 
+    @Override
+    public void onGuildJoin(GuildJoinEvent evt) {
+        Bot.botUser.getPresence().setGame(Game.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+    }
 
+    @Override
+    public void onGuildLeave(GuildLeaveEvent evt) {
+        Bot.botUser.getPresence().setGame(Game.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+    }
 }

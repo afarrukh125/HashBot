@@ -30,7 +30,7 @@ public class Bot {
     static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
-    private JDA botUser;
+    public static JDA botUser;
 
     /**
      * Creates our JDA user
