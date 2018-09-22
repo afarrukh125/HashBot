@@ -67,7 +67,7 @@ public class UserDataManager extends DataManager {
     public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("name", member.getUser().getName());
-        obj.put("credit", 6000);
+        obj.put("credit", 0);
         obj.put("time", System.currentTimeMillis());
         obj.put("level", 1);
         obj.put("score", 0);
