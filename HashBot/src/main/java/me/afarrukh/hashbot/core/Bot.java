@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.core;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
+import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
 import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.PingCommand;
 import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
@@ -89,6 +90,7 @@ public class Bot {
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
                 .addCommand(new ShuffleCommand())
+                .addCommand(new UrbanDictionaryCommand())
                 .addCommand(new SkipCommand());
 
         startUpMessages();
