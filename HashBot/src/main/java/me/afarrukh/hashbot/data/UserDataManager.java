@@ -79,7 +79,7 @@ public class UserDataManager extends DataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Created file for user " +member.getUser().getName());
+        System.out.println("<" +member.getGuild().getName()+ "> " + "Created file for user " +member.getUser().getName());
         System.out.println(obj);
     }
 }

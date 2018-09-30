@@ -32,6 +32,8 @@ public class HelpCommand extends Command {
                     }
                 }
             }
+            if(categoryList.isEmpty())
+                categoryList = Bot.commandManager.getCommandList();
             for(MessageEmbed embed: EmbedUtils.getHelpMsg(evt, categoryList)) {
                 evt.getTextChannel().sendMessage(embed).queue();
             }

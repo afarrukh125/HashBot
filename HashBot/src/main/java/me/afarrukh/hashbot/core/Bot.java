@@ -14,6 +14,7 @@ import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.DeleteRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
+import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.extras.ExtrasManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -92,6 +93,7 @@ public class Bot {
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
                 .addCommand(new ShuffleCommand())
+                .addCommand(new ViewCategoriesCommand())
                 .addCommand(new UrbanDictionaryCommand())
                 .addCommand(new CheckMemoryCommand())
                 .addCommand(new SkipCommand());

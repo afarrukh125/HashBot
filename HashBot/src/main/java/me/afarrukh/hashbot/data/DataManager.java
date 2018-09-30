@@ -12,10 +12,10 @@ import java.io.*;
  * All method calls to this class will remain unchanged even if the implementation is changed.
  */
 public abstract class DataManager implements DataManagerInterface {
-    JSONObject jsonObject;
-    File file;
+    protected JSONObject jsonObject;
+    protected File file;
 
-    DataManager() {
+    protected DataManager() {
         this.jsonObject = new JSONObject();
         this.file = null;
     }
@@ -23,7 +23,7 @@ public abstract class DataManager implements DataManagerInterface {
     /**
      * Writes the data to the json object, basically updates the file with the current state of the JSON object
      */
-    void flushData() {
+    protected void flushData() {
         try {
 
             FileWriter newFile = new FileWriter(file);
@@ -38,7 +38,7 @@ public abstract class DataManager implements DataManagerInterface {
     /**
      * Loads the data into the file, basically gets wrapped by the load() method in the current inheriting classes classes
      */
-    void initialiseData() {
+    protected void initialiseData() {
         final JSONParser jsonParser = new JSONParser();
         Object obj;
 

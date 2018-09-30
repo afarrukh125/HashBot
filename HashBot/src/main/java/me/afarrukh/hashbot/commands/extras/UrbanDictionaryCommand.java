@@ -26,7 +26,12 @@ public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
         String[] definitionAndExample = result.split("<>");
         String definition = definitionAndExample[0];
         String example;
-        eb.addField(new MessageEmbed.Field(params, definition, false));
+        try {
+            eb.addField(new MessageEmbed.Field(params, definition, false));
+        } catch(IllegalArgumentException e) {
+            eb.appendDescription("**" + params + "**\n");
+            eb.appendDescription(definition);
+        }
 
         if(definitionAndExample.length == 2) {
             example = definitionAndExample[1];

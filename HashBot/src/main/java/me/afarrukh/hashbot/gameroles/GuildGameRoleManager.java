@@ -87,12 +87,7 @@ public class GuildGameRoleManager {
     }
 
     public void remove(String name) {
-        Iterator<GameRole> iter = gameRoles.iterator();
-        while(iter.hasNext()) {
-            GameRole gameRole = iter.next();
-            if(gameRole.getName().equalsIgnoreCase(name))
-                iter.remove();
-        }
+        gameRoles.removeIf(gameRole -> gameRole.getName().equalsIgnoreCase(name));
     }
 
     public void setPrefix(String prefix) {

@@ -60,8 +60,6 @@ public class UrbanDictionary {
         if(thumbsDown == 0)
             thumbsDown++;
 
-        System.out.println(thumbsUp/thumbsDown);
-
         return thumbsUp/thumbsDown;
     }
 }

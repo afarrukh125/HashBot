@@ -646,4 +646,16 @@ public class EmbedUtils {
         eb.setThumbnail(evt.getGuild().getIconUrl());
         return eb.build();
     }
+
+    public static MessageEmbed createCategoryEmbed(java.util.List<String> stringList, String prefix) {
+        EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Command categories");
+
+        for(String s: stringList) {
+            eb.appendDescription(s+"\n");
+        }
+
+        eb.setFooter("Use " +prefix+ "help <category name> to view all the commands in the category", null);
+
+        return eb.build();
+    }
 }
