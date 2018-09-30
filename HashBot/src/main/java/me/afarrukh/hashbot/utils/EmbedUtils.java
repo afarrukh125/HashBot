@@ -572,7 +572,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static ArrayList<MessageEmbed> getHelpMsg(MessageReceivedEvent evt) {
+    public static ArrayList<MessageEmbed> getHelpMsg(MessageReceivedEvent evt, java.util.List<Command> commandList) {
         ArrayList<MessageEmbed> embedArrayList = new ArrayList<>();
 
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
@@ -584,7 +584,7 @@ public class EmbedUtils {
 
         StringBuilder sb = new StringBuilder();
 
-        for(Command c: Bot.commandManager.getCommandList()) {
+        for(Command c: commandList) {
             if(c instanceof OwnerCommand || c instanceof HelpCommand)
                 continue;
 
@@ -603,15 +603,15 @@ public class EmbedUtils {
 
             sb.append("**").append(prefix).append(c.getName()).append("**");
 
-            if(c.getAliases() != null) {
-                String[] aliases = c.getAliases();
+            if(!c.getAliases().isEmpty()) {
+                java.util.List<String> aliases = c.getAliases();
                 sb.append(" (");
-                for(int i = 0; i<aliases.length-1; i++)
-                    if(!aliases[i].equalsIgnoreCase(c.getName()))
-                        sb.append(aliases[i]).append("/");
+                for(int i = 0; i<aliases.size()-1; i++)
+                    if(!aliases.get(i).equalsIgnoreCase(c.getName()))
+                        sb.append(aliases.get(i)).append("/");
 
-                if(!aliases[aliases.length-1].equalsIgnoreCase(c.getName()))
-                    sb.append(aliases[aliases.length-1]);
+                if(!aliases.get(aliases.size()-1).equalsIgnoreCase(c.getName()))
+                    sb.append(aliases.get(aliases.size()-1));
                 sb.append(")");
             }
             if(c.getDescription() != null)
@@ -622,6 +622,8 @@ public class EmbedUtils {
         eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
         eb.appendDescription(sb.toString());
 
+        eb.setFooter("If you need help with a particular category, add the commands category, e.g. " +
+                                prefix+ "help music", evt.getJDA().getSelfUser().getAvatarUrl());
         embedArrayList.add(eb.build());
         return embedArrayList;
     }

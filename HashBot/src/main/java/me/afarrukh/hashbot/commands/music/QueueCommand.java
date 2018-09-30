@@ -1,12 +1,13 @@
 package me.afarrukh.hashbot.commands.music;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class QueueCommand extends Command {
+public class QueueCommand extends Command implements MusicCommand {
 
     public QueueCommand() {
         super("queue", new String[] {"q", "page"});

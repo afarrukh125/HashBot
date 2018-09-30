@@ -40,7 +40,7 @@ public class CommandManager {
      */
     public CommandManager addCommand(Command c) {
         commandMap.put(c.getName(), c);
-        if(c.getAliases() != null) {
+        if(!c.getAliases().isEmpty()) {
             for(String alias: c.getAliases()) {
                 commandMap.put(alias, c);
             }

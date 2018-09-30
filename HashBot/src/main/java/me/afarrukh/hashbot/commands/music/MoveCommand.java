@@ -2,12 +2,13 @@ package me.afarrukh.hashbot.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class MoveCommand extends Command {
+public class MoveCommand extends Command implements MusicCommand {
     public MoveCommand() {
         super("move", new String[]{"m"});
         description = "Moves a song from one index on the list to another";

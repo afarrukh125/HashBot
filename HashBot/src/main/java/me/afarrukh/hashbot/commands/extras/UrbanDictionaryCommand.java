@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.commands.extras;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.extras.urbandict.UrbanDictionary;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -8,7 +9,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class UrbanDictionaryCommand extends Command{
+public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
 
     public UrbanDictionaryCommand() {
         super("urbandictionary", new String[]{"ud"});

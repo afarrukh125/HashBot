@@ -1,12 +1,13 @@
 package me.afarrukh.hashbot.commands.music;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class ResumeCommand extends Command {
+public class ResumeCommand extends Command implements MusicCommand {
 
     public ResumeCommand() {
         super("resume", new String[]{"res"});

@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Message;

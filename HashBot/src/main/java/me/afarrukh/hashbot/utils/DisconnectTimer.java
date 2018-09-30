@@ -1,6 +1,5 @@
 package me.afarrukh.hashbot.utils;
 
-import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.TimerTask;

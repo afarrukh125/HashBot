@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-public class PruneQueueCommand extends Command {
+public class PruneQueueCommand extends Command implements MusicCommand {
 
     public PruneQueueCommand() {
         super("prunequeue", new String[]{"pq"});

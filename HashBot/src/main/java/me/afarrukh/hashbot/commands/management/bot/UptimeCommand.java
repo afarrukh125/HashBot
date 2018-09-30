@@ -1,13 +1,13 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class UptimeCommand extends Command {
+public class UptimeCommand extends Command implements SystemCommand {
 
     public UptimeCommand() {
         super("uptime", new String[]{"up"});

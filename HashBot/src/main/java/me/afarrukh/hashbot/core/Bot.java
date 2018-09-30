@@ -14,6 +14,7 @@ import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.DeleteRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
+import me.afarrukh.hashbot.extras.ExtrasManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -30,6 +31,8 @@ public class Bot {
     static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
+    public static ExtrasManager extrasManager;
+
     public static JDA botUser;
 
     /**
@@ -96,6 +99,8 @@ public class Bot {
         startUpMessages();
 
         musicManager = new MusicManager();
+        extrasManager = new ExtrasManager();
+
         gameRoleManager = new GameRoleManager();
         reactionManager = new ReactionManager();
 

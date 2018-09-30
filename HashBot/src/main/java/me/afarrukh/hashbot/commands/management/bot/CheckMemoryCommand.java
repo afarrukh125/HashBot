@@ -1,12 +1,13 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class CheckMemoryCommand extends Command {
+public class CheckMemoryCommand extends Command implements SystemCommand {
 
     public CheckMemoryCommand() {
         super("checkmemory", new String[]{"mem"});
