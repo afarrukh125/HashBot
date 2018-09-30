@@ -29,6 +29,10 @@ public class GameRoleManager {
 
     public GameRoleManager() {
         this.gameRoleManagers = new HashMap<>();
+
+        for(Guild guild: Bot.botUser.getGuilds()) {
+            getGuildRoleManager(guild);
+        }
     }
 
     /**

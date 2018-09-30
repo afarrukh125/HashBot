@@ -1,8 +1,9 @@
-[  
-    {  
+[
+    {
         "prefix":"!",
-        "token":"",
-        "ownerids":[  
+        "fortnitekey":"KEY HERE",
+        "token":"TOKEN HERE",
+        "ownerids":[
             "111608457290895360"
         ]
     }

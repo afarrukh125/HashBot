@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.extras;
 
+import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.HashMap;
@@ -11,6 +12,10 @@ public class ExtrasManager {
 
     public ExtrasManager() {
         guildExtrasMap = new HashMap<>();
+
+        for(Guild guild: Bot.botUser.getGuilds()) {
+            getGuildExtrasManager(guild);
+        }
     }
 
     public synchronized GuildExtrasManager getGuildExtrasManager(Guild guild) {

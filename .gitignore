@@ -2,6 +2,7 @@ HashBot/target/*
 HashBot/out/*
 HashBot/.idea/*
 HashBot/res/images/*
+HashBot/res/config/*
 HashBot/res/guilds/*
 HashBot/src/main/resources/*
 HashBot/HashBot.iml

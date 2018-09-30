@@ -67,7 +67,10 @@ public class StatsCommand extends Command {
         g.setColor(Color.WHITE);
         g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
 
-        Role r = evt.getMember().getRoles().get(0);
+
+        Role r = null;
+        if(!evt.getMember().getRoles().isEmpty())
+            r = evt.getMember().getRoles().get(0);
         if (r != null)
             Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), Constants.font28);
 

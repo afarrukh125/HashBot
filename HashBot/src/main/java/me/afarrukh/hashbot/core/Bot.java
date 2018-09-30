@@ -4,6 +4,8 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
+import me.afarrukh.hashbot.commands.extras.fortnite.FortniteRegisterCommand;
+import me.afarrukh.hashbot.commands.extras.fortnite.SetFortniteChannelCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
@@ -89,6 +91,10 @@ public class Bot {
                 .addCommand(new NowPlayingCommand())
                 .addCommand(new PauseCommand())
                 .addCommand(new ResumeCommand())
+
+                .addCommand(new FortniteRegisterCommand())
+                .addCommand(new SetFortniteChannelCommand())
+
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
@@ -101,9 +107,9 @@ public class Bot {
         startUpMessages();
 
         musicManager = new MusicManager();
-        extrasManager = new ExtrasManager();
 
         gameRoleManager = new GameRoleManager();
+        extrasManager = new ExtrasManager();
         reactionManager = new ReactionManager();
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
