@@ -10,6 +10,7 @@ public class HelpCommand extends Command {
 
     public HelpCommand() {
         super("help", new String[]{"cmds", "cmd"});
+        description = "Displays all commands";
     }
 
     @Override

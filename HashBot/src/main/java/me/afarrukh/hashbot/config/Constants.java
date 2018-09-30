@@ -6,6 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.omg.SendingContext.RunTime;
 
 import java.awt.*;
 import java.io.File;
@@ -54,6 +55,8 @@ public class Constants {
 
     public static final int ITERABLE_MESSAGES = 500;
 
+    public static Long INITIAL_MEMORY;
+
     public static final int ROLE_CREATE_AMOUNT = 2500;
 
     public static final String SELECTEDPOS = "full_moon";
@@ -73,6 +76,8 @@ public class Constants {
     public static String token;
 
     public static void init() {
+
+        INITIAL_MEMORY = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
         timeStarted = System.currentTimeMillis();
 

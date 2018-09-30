@@ -4,10 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
-import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
-import me.afarrukh.hashbot.commands.management.bot.PingCommand;
-import me.afarrukh.hashbot.commands.management.bot.SetNickCommand;
-import me.afarrukh.hashbot.commands.management.bot.UptimeCommand;
+import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
 import me.afarrukh.hashbot.commands.management.guild.SetPinnedChannel;
@@ -23,6 +20,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bot {
     private final String token;
@@ -91,6 +90,7 @@ public class Bot {
                 .addCommand(new MoveCommand())
                 .addCommand(new ShuffleCommand())
                 .addCommand(new UrbanDictionaryCommand())
+                .addCommand(new CheckMemoryCommand())
                 .addCommand(new SkipCommand());
 
         startUpMessages();
@@ -103,10 +103,21 @@ public class Bot {
     }
 
     private void startUpMessages() {
-        for(Command c: commandManager.getCommandList())
+        List<Command> descriptionLessCommands = new ArrayList<>();
+
+        for(Command c: commandManager.getCommandList()) {
             System.out.println("Adding " + c.getClass().getSimpleName());
+            if(c.getDescription() == null)
+                descriptionLessCommands.add(c);
+        }
         System.out.println("Added " +commandManager.getCommandList().size()+ " commands to command manager.");
 
-        System.out.println("Started and ready with bot user " + botUser.getSelfUser().getName());
+        if(!descriptionLessCommands.isEmpty()) {
+            System.out.println("\nThe following commands do not have descriptions: ");
+            for (Command c : descriptionLessCommands) {
+                System.out.println(c.getClass().getSimpleName());
+            }
+        }
+        System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
     }
 }

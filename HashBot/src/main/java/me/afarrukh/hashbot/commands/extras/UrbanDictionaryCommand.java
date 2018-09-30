@@ -12,6 +12,7 @@ public class UrbanDictionaryCommand extends Command{
 
     public UrbanDictionaryCommand() {
         super("urbandictionary", new String[]{"ud"});
+        description = "Performs an urban dictionary search";
     }
 
     @Override
