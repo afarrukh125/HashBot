@@ -12,6 +12,7 @@ public class SetFortniteChannelCommand extends Command implements FortniteComman
     public SetFortniteChannelCommand() {
         super("setfortnitechannel");
         addAlias("setftnchannel");
+        addAlias("setfort");
 
         description = "Admin only. Sets the fortnite stats channel for this server.";
     }
@@ -19,7 +20,7 @@ public class SetFortniteChannelCommand extends Command implements FortniteComman
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if(!evt.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) {
-            evt.getTextChannel().sendMessage("Need an administrator to set this up").queue();
+            evt.getTextChannel().sendMessage("Need an administrator to set this up.").queue();
             return;
         }
 

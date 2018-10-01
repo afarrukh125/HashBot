@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.extras.fortnite.FortniteExtra;
 import me.afarrukh.hashbot.utils.APIUtils;
+import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -14,7 +15,8 @@ public class FortniteRegisterCommand extends Command implements FortniteCommand 
     public FortniteRegisterCommand() {
         super("fortniteregister");
         addAlias("ftnreg");
-        description = "Add your fortnite user to the current list of users for this server.";
+        addAlias("register");
+        description = "Add your fortnite user to the current list of users for this server. Separate the parameters with a comma.";
     }
 
     @Override
@@ -24,8 +26,10 @@ public class FortniteRegisterCommand extends Command implements FortniteCommand 
             return;
         FortniteExtra ftnExtra = Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).getFortniteExtra();
 
-        String name = params.split(",")[1].trim();
-        String platform = params.split(",")[0].trim();
+        String[] tokens = params.split(" ");
+        String platform = params.split(" ")[0].trim();
+
+        String name = CmdUtils.getParamsAsString(tokens, 1, tokens.length-1);
 
         if(!userNotFound(name, platform)) {
             evt.getTextChannel().sendMessage("The user you have entered could not be found. Please ensure the platform and username are entered properly.").queue();
@@ -49,7 +53,7 @@ public class FortniteRegisterCommand extends Command implements FortniteCommand 
     @Override
     public void onIncorrectParams(TextChannel channel) {
         channel.sendMessage("Something went wrong. Use " + Bot.gameRoleManager.getGuildRoleManager(channel.getGuild()).getPrefix()
-                            + "ftnreg <ps4/pc> <name> to register your user to this server").queue();
+                            + "ftnreg <ps4/pc> <name> to register your user to this server.").queue();
     }
 
     private boolean isInputValid(TextChannel channel, String params) {
@@ -58,15 +62,10 @@ public class FortniteRegisterCommand extends Command implements FortniteCommand 
             onIncorrectParams(channel);
             return false;
         }
-        String[] tokens = params.split(",");
-        if(tokens.length != 2) {
+        if(!params.split(" ")[0].trim().equalsIgnoreCase("ps4") && !params.split(" ")[0].trim().equalsIgnoreCase("pc")) {
             valid = false;
-            System.out.println("length");
         }
-        else if(!params.split(",")[0].trim().equalsIgnoreCase("ps4") && !params.split(",")[0].trim().equalsIgnoreCase("pc")) {
-            valid = false;
-            System.out.println("platform");
-        }
+
         if(!valid)
             onIncorrectParams(channel);
         return valid;
