@@ -2,10 +2,7 @@ package me.afarrukh.hashbot.commands.extras.fortnite;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.FortniteCommand;
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.utils.BotUtils;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -27,6 +24,8 @@ public class SetFortniteChannelCommand extends Command implements FortniteComman
         }
 
         Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).getFortniteExtra().setFortniteChannel(evt.getTextChannel());
+
+        Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).getFortniteExtra().initChannel();
 
         evt.getMessage().delete().queue();
 

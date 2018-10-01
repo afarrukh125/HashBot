@@ -13,7 +13,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class Constants {
@@ -65,6 +67,8 @@ public class Constants {
     public static final Color STATSIMG_COL = Color.WHITE;
 
     public static String FTN_KEY;
+
+    public static Map<String, String> fortAPIHeader;
     public static final int FTN_REFRESH_MIN = 2; //Number of time to wait before refreshing fortnite extra for a guild
 
     //Bot configuration constants
@@ -103,6 +107,9 @@ public class Constants {
                 prefix = (String) obj.get("prefix");
                 token = (String) obj.get("token");
                 FTN_KEY = (String) obj.get("fortnitekey");
+
+                fortAPIHeader = new HashMap<>();
+                fortAPIHeader.put("TRN-Api-Key", FTN_KEY);
 
                 JSONArray userList = (JSONArray) obj.get("ownerids");
                 for(Object o: userList) {

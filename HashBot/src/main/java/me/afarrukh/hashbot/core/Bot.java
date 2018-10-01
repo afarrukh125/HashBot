@@ -109,10 +109,11 @@ public class Bot {
         musicManager = new MusicManager();
 
         gameRoleManager = new GameRoleManager();
-        extrasManager = new ExtrasManager();
         reactionManager = new ReactionManager();
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
+
+        extrasManager = new ExtrasManager();
     }
 
     private void startUpMessages() {

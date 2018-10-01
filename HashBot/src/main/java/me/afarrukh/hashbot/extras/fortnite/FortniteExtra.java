@@ -4,7 +4,6 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.extras.Extra;
-import me.afarrukh.hashbot.graphics.Text;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
@@ -20,7 +19,7 @@ import java.util.*;
 public class FortniteExtra extends DataManager implements Extra {
 
     private Guild guild;
-    private Map<Member, FortniteEntry> memberToPlayerMap;
+    private List<FortniteEntry> entriesList;
     private TextChannel fortniteChannel;
 
     private Message infoMessage;
@@ -30,7 +29,7 @@ public class FortniteExtra extends DataManager implements Extra {
     public FortniteExtra(Guild guild) {
         super();
         this.guild = guild;
-        memberToPlayerMap = new HashMap<>();
+        entriesList = new ArrayList<>();
         fortniteChannel = null;
 
         String guildId = guild.getId();
@@ -45,6 +44,7 @@ public class FortniteExtra extends DataManager implements Extra {
 
         fillMap();
         initChannel();
+        update();
     }
 
     private void update() {
@@ -57,30 +57,81 @@ public class FortniteExtra extends DataManager implements Extra {
             infoMessage = fortniteChannel.sendMessage(getFortniteMessage()).complete();
     }
 
-    private void initChannel() {
+    private MessageEmbed getFortniteMessage(){
+        EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
+        eb.setThumbnail(guild.getIconUrl());
+
+        if(entriesList.isEmpty())
+            eb.appendDescription("No users setup for this guild. Use "
+                    + Bot.gameRoleManager.getGuildRoleManager(guild).getPrefix() + "ftnreg <pc/ps4> <name> to register to this guild.");
+        else {
+            for (FortniteEntry entry : entriesList) {
+                //Lifetime
+                StringBuilder builder = new StringBuilder();
+                builder.append("Wins: ").append(entry.getLifeTimeStatistic().getWins()).append("\n");
+                builder.append("K/D: ").append(entry.getLifeTimeStatistic().getKd()).append("\n");
+                builder.append("Win%: ").append(entry.getLifeTimeStatistic().getWinPercentage()).append("\n");
+                builder.append("Kills: ").append(entry.getLifeTimeStatistic().getKills()).append("\n");
+                builder.append("Matches: ").append(entry.getLifeTimeStatistic().getMatches());
+                eb.addField(new MessageEmbed.Field(entry.getUserName() + " Lifetime", builder.toString(), true));
+
+                //Solo
+                builder = new StringBuilder();
+                builder.append("Wins: ").append(entry.getSoloStatistic().getWins()).append("\n");
+                builder.append("K/D: ").append(entry.getSoloStatistic().getKd()).append("\n");
+                builder.append("Win%: ").append(entry.getSoloStatistic().getWinPercentage()).append("\n");
+                builder.append("Kills: ").append(entry.getSoloStatistic().getKills()).append("\n");
+                builder.append("Matches: ").append(entry.getSoloStatistic().getMatches());
+                eb.addField(new MessageEmbed.Field(entry.getUserName()+ " Solo", builder.toString(), true));
+
+                //Duo
+                builder = new StringBuilder();
+                builder.append("Wins: ").append(entry.getDuoStatistic().getWins()).append("\n");
+                builder.append("K/D: ").append(entry.getDuoStatistic().getKd()).append("\n");
+                builder.append("Win%: ").append(entry.getDuoStatistic().getWinPercentage()).append("\n");
+                builder.append("Kills: ").append(entry.getDuoStatistic().getKills()).append("\n");
+                builder.append("Matches: ").append(entry.getDuoStatistic().getMatches());
+                eb.addField(new MessageEmbed.Field(entry.getUserName() + " Duo", builder.toString(), true));
+
+                //Squad
+                builder = new StringBuilder();
+                builder.append("Wins: ").append(entry.getSquadStatistic().getWins()).append("\n");
+                builder.append("K/D: ").append(entry.getSquadStatistic().getKd()).append("\n");
+                builder.append("Win%: ").append(entry.getSquadStatistic().getWinPercentage()).append("\n");
+                builder.append("Kills: ").append(entry.getSquadStatistic().getKills()).append("\n");
+                builder.append("Matches: ").append(entry.getSquadStatistic().getMatches()).append("\n");
+                eb.addField(new MessageEmbed.Field(entry.getUserName() + " Squad", builder.toString(), true));
+
+            }
+        }
+
+        return eb.build();
+    }
+
+    public void initChannel() {
         TextChannel channelToSearch = guild.getTextChannelById((String)jsonObject.get("fortnitechannel"));
+        if(getValue("fortnitechannel").equals("-1"))
+            return;
         if(channelToSearch != null)
             fortniteChannel = channelToSearch;
         else
             return;
 
         for(Message m: fortniteChannel.getIterableHistory()) {
-            if(m.getAuthor().getId().equalsIgnoreCase(m.getGuild().getJDA().getSelfUser().getId())) {
+            if (m.getAuthor().getId().equalsIgnoreCase(m.getGuild().getJDA().getSelfUser().getId())) {
                 infoMessage = m;
                 break;
             }
         }
+
         if(infoMessage == null) {
             infoMessage = fortniteChannel.sendMessage(getFortniteMessage()).complete();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void addUser(MessageReceivedEvent evt, String params) {
+    public void addUser(MessageReceivedEvent evt, String platform, String userName) {
         Member member = evt.getMember();
-        String[] tokens = params.split(" ");
-        String platform = tokens[0];
-        String userName = tokens[1];
 
         FortniteEntry entry = new FortniteEntry(member, userName, platform);
 
@@ -99,15 +150,25 @@ public class FortniteExtra extends DataManager implements Extra {
             JSONObject iteratedObject = (JSONObject) iter.next();
             if(iteratedObject.get("memberid").equals(member.getUser().getId())) {
                 iter.remove();
-                memberToPlayerMap.remove(member);
+                if(getEntryFromMember(member) != null)
+                    entriesList.remove(getEntryFromMember(member));
             }
         }
         userList.add(userObject);
         updateValue("fortniteusers", userList);
 
-        memberToPlayerMap.put(member, entry);
+        entriesList.add(entry);
 
         update();
+    }
+
+    private FortniteEntry getEntryFromMember(Member m) {
+        for(FortniteEntry entry: entriesList) {
+            if(entry.getMember().equals(m)) {
+                return entry;
+            }
+        }
+        return null;
     }
 
     private void fillMap() {
@@ -121,7 +182,7 @@ public class FortniteExtra extends DataManager implements Extra {
 
             FortniteEntry entry = new FortniteEntry(m, userName, platform);
 
-            memberToPlayerMap.put(guild.getMemberById((String) userObject.get("memberid")), entry);
+            entriesList.add(entry);
         }
     }
 
@@ -129,26 +190,8 @@ public class FortniteExtra extends DataManager implements Extra {
         return fortniteChannel;
     }
 
-    public Map<Member, FortniteEntry> getMemberToPlayerMap() {
-        return memberToPlayerMap;
-    }
-
-    private MessageEmbed getFortniteMessage(){
-        EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
-        eb.setThumbnail(guild.getIconUrl());
-
-        Collection<FortniteEntry> values = memberToPlayerMap.values();
-
-        if(values.isEmpty())
-            eb.appendDescription("No users setup for this guild. Use "
-                    + Bot.gameRoleManager.getGuildRoleManager(guild).getPrefix() + "ftnreg <pc/ps4> <name> to register to this guild.");
-        else {
-            for (FortniteEntry entry : memberToPlayerMap.values()) {
-                eb.appendDescription(entry.getUserName() + " (" + entry.getPlatform() + ")\n");
-            }
-        }
-
-        return eb.build();
+    public List<FortniteEntry> getEntriesList() {
+        return entriesList;
     }
 
     private JSONArray getUsersAsJSONArray() {
