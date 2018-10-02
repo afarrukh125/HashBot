@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.commands.extras.fortnite;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.commands.tagging.CategorisedCommand;
 import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
@@ -17,6 +16,7 @@ public class FortniteRegisterCommand extends Command implements ExtrasCommand {
         super("fortniteregister");
         addAlias("ftnreg");
         addAlias("register");
+        addAlias("reg");
         description = "Add your fortnite user to the current list of users for this server.";
     }
 
@@ -47,8 +47,6 @@ public class FortniteRegisterCommand extends Command implements ExtrasCommand {
             evt.getTextChannel().sendMessage("The user was successfully added.").queue();
         }
 
-        evt.getMessage().delete().queue();
-
     }
 
     @Override
@@ -76,8 +74,6 @@ public class FortniteRegisterCommand extends Command implements ExtrasCommand {
         String response = APIUtils.getResponseFromURL("https://api.fortnitetracker.com/v1/profile/"+platform+"/"+name, Constants.fortAPIHeader);
         if(response == null)
             return false;
-        else if(response.contains("error"))
-            return false;
-        return true;
+        else return !response.contains("error");
     }
 }

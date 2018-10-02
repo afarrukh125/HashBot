@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.extras.fortnite;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.extras.Extra;
+import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -17,7 +17,7 @@ public class UnsetFortniteChannelCommand extends Command implements ExtrasComman
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR) && !UserUtils.isBotAdmin(evt.getAuthor()))
             return;
         Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).getFortniteExtra().unsetFortniteChannel();
         evt.getMessage().delete().queue();

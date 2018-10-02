@@ -102,6 +102,7 @@ public class Bot {
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
+                .addCommand(new TimeCreatedCommand())
                 .addCommand(new ShuffleCommand())
                 .addCommand(new ViewCategoriesCommand())
                 .addCommand(new UrbanDictionaryCommand())

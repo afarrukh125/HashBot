@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.commands.econ;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.EconCommand;
 import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -9,7 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.awt.*;
 import java.util.Random;
 
-public class FlipCommand extends Command {
+public class FlipCommand extends Command implements EconCommand {
 
     public FlipCommand() {
         super("flip", new String[]{"f"});

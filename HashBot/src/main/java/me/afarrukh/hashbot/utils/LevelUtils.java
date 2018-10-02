@@ -17,10 +17,9 @@ public class LevelUtils {
      * @return The experience to add to the user given their message
      */
     public static int getPointsFromMessage(String[] tokens, int level) {
-        int sum = 0;
         Random random = new Random();
         int rng = random.nextInt(level) + 1;
-        sum = Constants.BASE_EXP + tokens.length + rng + level;
+        int sum = Constants.BASE_EXP + tokens.length + rng + level;
 
         if(sum > Constants.MAX_EXP_FROM_MSG)
             return Constants.MAX_EXP_FROM_MSG;

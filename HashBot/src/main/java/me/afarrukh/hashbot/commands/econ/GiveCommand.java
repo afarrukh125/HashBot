@@ -1,13 +1,14 @@
 package me.afarrukh.hashbot.commands.econ;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.EconCommand;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class GiveCommand extends Command {
+public class GiveCommand extends Command implements EconCommand {
 
     public GiveCommand() {
         super("give", new String[]{"transfer"});

@@ -2,24 +2,20 @@ package me.afarrukh.hashbot.extras.fortnite.stats;
 
 public abstract class Statistic {
     
-    protected String statName;
-    protected int wins;
-    protected double kd;
-    protected double winPercentage;
-    protected int kills;
-    protected int matches;
+    String statName;
+    private int wins;
+    private double kd;
+    private double winPercentage;
+    private int kills;
+    private int matches;
 
-    protected Statistic(int wins, long kd, long winPercentage, int kills, int matches) {
+    Statistic(int wins, long kd, long winPercentage, int kills, int matches) {
         this.wins = wins;
         this.kd = kd;
         this.winPercentage = winPercentage;
         this.kills = kills;
         this.matches = matches;
         statName = null;
-    }
-
-    public void setStatName(String statName) {
-        this.statName = statName;
     }
 
     public String getStatName() {

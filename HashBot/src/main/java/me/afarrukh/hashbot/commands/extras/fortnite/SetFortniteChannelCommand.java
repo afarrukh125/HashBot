@@ -1,9 +1,10 @@
 package me.afarrukh.hashbot.commands.extras.fortnite;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.commands.tagging.CategorisedCommand;
 import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.utils.CmdUtils;
+import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -20,7 +21,7 @@ public class SetFortniteChannelCommand extends Command implements ExtrasCommand 
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!evt.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) {
+        if(!evt.getMember().getPermissions().contains(Permission.ADMINISTRATOR) && !UserUtils.isBotAdmin(evt.getAuthor())) {
             evt.getTextChannel().sendMessage("Need an administrator to set this up.").queue();
             return;
         }

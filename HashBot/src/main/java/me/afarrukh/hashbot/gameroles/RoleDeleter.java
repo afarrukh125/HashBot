@@ -228,7 +228,7 @@ public class RoleDeleter implements RoleGUI {
         private final RoleDeleter deleter;
         private final Guild guild;
 
-        public InactiveTimer(RoleDeleter deleter, Guild guild) {
+        InactiveTimer(RoleDeleter deleter, Guild guild) {
             this.deleter = deleter;
             this.guild = guild;
         }

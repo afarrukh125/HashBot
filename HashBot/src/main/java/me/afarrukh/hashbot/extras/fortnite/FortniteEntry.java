@@ -13,14 +13,14 @@ import java.text.DecimalFormat;
 
 class FortniteEntry {
 
-    private Member member;
-    private String userName;
-    private String platform;
+    private final Member member;
+    private final String userName;
+    private final String platform;
 
-    private Statistic lifeTimeStatistic;
-    private Statistic soloStatistic;
-    private Statistic duoStatistic;
-    private Statistic squadStatistic;
+    private final Statistic lifeTimeStatistic;
+    private final Statistic soloStatistic;
+    private final Statistic duoStatistic;
+    private final Statistic squadStatistic;
 
     FortniteEntry(Member member, String userName, String platform) {
         this.member = member;
@@ -113,10 +113,6 @@ class FortniteEntry {
 
     public String getUserName() {
         return userName;
-    }
-
-    public String getPlatform() {
-        return platform;
     }
 
     public Statistic getLifeTimeStatistic() {

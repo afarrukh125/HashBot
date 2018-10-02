@@ -1,11 +1,12 @@
 package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.GameRoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class AddRoleCommand extends Command {
+public class AddRoleCommand extends Command implements GameRoleCommand {
 
     public AddRoleCommand() {
         super("addrole");

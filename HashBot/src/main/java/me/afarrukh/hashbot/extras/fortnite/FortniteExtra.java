@@ -7,9 +7,9 @@ import me.afarrukh.hashbot.extras.Extra;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -20,15 +20,15 @@ import java.util.*;
 
 public class FortniteExtra extends DataManager implements Extra {
 
-    private Guild guild;
-    private List<FortniteEntry> entriesList;
+    private final Guild guild;
+    private final List<FortniteEntry> entriesList;
     private TextChannel fortniteChannel;
 
     private Message infoMessage;
 
-    private Comparator<FortniteEntry> entrySorter;
+    private final Comparator<FortniteEntry> entrySorter;
 
-    private Timer updateTimer;
+    private final Timer updateTimer;
 
     public FortniteExtra(Guild guild) {
         super();
@@ -121,7 +121,7 @@ public class FortniteExtra extends DataManager implements Extra {
         return eb.build();
     }
 
-    public void initChannel() {
+    private void initChannel() {
         TextChannel channelToSearch = guild.getTextChannelById((String) jsonObject.get("fortnitechannel"));
         if (getValue("fortnitechannel").equals("-1")) {
             System.out.println("<" +guild.getName()+ "> Server does not have this channel setup");
@@ -226,16 +226,12 @@ public class FortniteExtra extends DataManager implements Extra {
         return fortniteChannel;
     }
 
-    public List<FortniteEntry> getEntriesList() {
-        return entriesList;
-    }
-
     private JSONArray getUsersAsJSONArray() {
         return (JSONArray) getValue("fortniteusers");
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "MismatchedQueryAndUpdateOfCollection"})
     public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("fortnitechannel", "-1");
@@ -297,10 +293,6 @@ public class FortniteExtra extends DataManager implements Extra {
         }
     }
 
-    public Message getInfoMessage() {
-        return infoMessage;
-    }
-
     private void decideFile() {
         if(file.exists())
             load();
@@ -323,8 +315,11 @@ public class FortniteExtra extends DataManager implements Extra {
     }
 
     public void processEvent(MessageReceivedEvent evt) {
-        if(evt.getTextChannel().equals(getFortniteChannel()) && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
-            evt.getMessage().delete().queue();
+        if(evt.getTextChannel().equals(getFortniteChannel()) && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            try {
+                evt.getMessage().delete().queue();
+            } catch(InsufficientPermissionException ignore) {}
+        }
     }
 
     private void sortEntries() {

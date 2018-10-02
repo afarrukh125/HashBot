@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.commands.management.guild.roles;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.GameRoleCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
@@ -8,7 +9,7 @@ import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class CreateRoleCommand extends Command {
+public class CreateRoleCommand extends Command implements GameRoleCommand {
 
     public CreateRoleCommand() {
         super("createrole");
