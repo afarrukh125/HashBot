@@ -69,7 +69,7 @@ public class Constants {
     public static String FTN_KEY;
 
     public static Map<String, String> fortAPIHeader;
-    public static final int FTN_REFRESH_MIN = 2; //Number of time to wait before refreshing fortnite extra for a guild
+    public static final int FTN_REFRESH_MIN = 5; //Number of time to wait before refreshing fortnite extra for a guild
 
     //Bot configuration constants
 

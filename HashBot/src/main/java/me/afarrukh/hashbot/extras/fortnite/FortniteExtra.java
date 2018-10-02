@@ -26,6 +26,8 @@ public class FortniteExtra extends DataManager implements Extra {
 
     private Message infoMessage;
 
+    private Comparator<FortniteEntry> entrySorter;
+
     private Timer updateTimer;
 
     public FortniteExtra(Guild guild) {
@@ -45,6 +47,15 @@ public class FortniteExtra extends DataManager implements Extra {
         decideFile();
 
         fillMap();
+
+        entrySorter = (o1, o2) -> {
+            if(o1.getLifeTimeStatistic().getKd() > o2.getLifeTimeStatistic().getKd())
+                return -1;
+            else if(o1.getLifeTimeStatistic().getKd() == o2.getLifeTimeStatistic().getKd())
+                return 0;
+            return 1;
+        };
+
         initChannel();
         update();
     }
@@ -61,21 +72,21 @@ public class FortniteExtra extends DataManager implements Extra {
 
     private MessageEmbed getFortniteMessage(){
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
-        eb.setThumbnail(guild.getIconUrl());
 
         if(entriesList.isEmpty())
             eb.appendDescription("No users setup for this guild. Use "
                     + Bot.gameRoleManager.getGuildRoleManager(guild).getPrefix() + "ftnreg <pc/ps4> <name> to register to this guild.");
         else {
+            entriesList.sort(entrySorter);
             for (FortniteEntry entry : entriesList) {
                 //Lifetime
                 StringBuilder builder = new StringBuilder();
-                builder.append("Wins: ").append(entry.getLifeTimeStatistic().getWins()).append("\n");
-                builder.append("K/D: ").append(entry.getLifeTimeStatistic().getKd()).append("\n");
-                builder.append("Win%: ").append(entry.getLifeTimeStatistic().getWinPercentage()).append("\n");
-                builder.append("Kills: ").append(entry.getLifeTimeStatistic().getKills()).append("\n");
-                builder.append("Matches: ").append(entry.getLifeTimeStatistic().getMatches());
-                eb.addField(new MessageEmbed.Field(entry.getUserName() + " Lifetime", builder.toString(), true));
+//                builder.append("Wins: ").append(entry.getLifeTimeStatistic().getWins()).append("\n");
+//                builder.append("K/D: ").append(entry.getLifeTimeStatistic().getKd()).append("\n");
+//                builder.append("Win%: ").append(entry.getLifeTimeStatistic().getWinPercentage()).append("\n");
+//                builder.append("Kills: ").append(entry.getLifeTimeStatistic().getKills()).append("\n");
+//                builder.append("Matches: ").append(entry.getLifeTimeStatistic().getMatches());
+//                eb.addField(new MessageEmbed.Field(entry.getUserName() + " Lifetime", builder.toString(), true));
 
                 //Solo
                 builder = new StringBuilder();
@@ -111,11 +122,14 @@ public class FortniteExtra extends DataManager implements Extra {
     }
 
     public void initChannel() {
-        TextChannel channelToSearch = guild.getTextChannelById((String)jsonObject.get("fortnitechannel"));
-        if(getValue("fortnitechannel").equals("-1"))
+        TextChannel channelToSearch = guild.getTextChannelById((String) jsonObject.get("fortnitechannel"));
+        if (getValue("fortnitechannel").equals("-1")) {
+            System.out.println("<" +guild.getName()+ "> Server does not have this channel setup");
             return;
-        if(channelToSearch != null)
+        }
+        if (channelToSearch != null) {
             fortniteChannel = channelToSearch;
+        }
         else
             return;
 
@@ -264,10 +278,9 @@ public class FortniteExtra extends DataManager implements Extra {
     }
 
     public void setFortniteChannel(TextChannel channel) {
-        fortniteChannel = channel;
+        unsetFortniteChannel();
         updateValue("fortnitechannel", channel.getId());
         initChannel();
-        update();
     }
 
     public void unsetFortniteChannel() {
@@ -314,10 +327,15 @@ public class FortniteExtra extends DataManager implements Extra {
             evt.getMessage().delete().queue();
     }
 
+    private void sortEntries() {
+        entriesList.sort(entrySorter);
+    }
+
     private class UpdateTimer extends TimerTask {
         @Override
         public void run() {
             updateEntries();
+            sortEntries();
             update();
         }
     }

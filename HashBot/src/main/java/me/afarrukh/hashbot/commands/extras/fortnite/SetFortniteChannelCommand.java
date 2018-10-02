@@ -27,8 +27,6 @@ public class SetFortniteChannelCommand extends Command implements ExtrasCommand 
 
         Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).getFortniteExtra().setFortniteChannel(evt.getTextChannel());
 
-        Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).getFortniteExtra().initChannel();
-
         evt.getMessage().delete().queue();
 
 //        evt.getTextChannel().sendMessage(new EmbedBuilder()
