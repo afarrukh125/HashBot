@@ -148,9 +148,4 @@ class MessageListener extends ListenerAdapter {
     public void onGuildLeave(GuildLeaveEvent evt) {
         Bot.botUser.getPresence().setGame(Game.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
     }
-
-    @Override
-    public void onMessageDelete(MessageDeleteEvent evt) {
-        Bot.extrasManager.getGuildExtrasManager(evt.getGuild()).processEvent(evt);
-    }
 }

@@ -1,7 +1,8 @@
 package me.afarrukh.hashbot.commands.extras.fortnite;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.commands.tagging.FortniteCommand;
+import me.afarrukh.hashbot.commands.tagging.CategorisedCommand;
+import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.extras.fortnite.FortniteExtra;
@@ -10,13 +11,13 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class FortniteRegisterCommand extends Command implements FortniteCommand {
+public class FortniteRegisterCommand extends Command implements ExtrasCommand {
 
     public FortniteRegisterCommand() {
         super("fortniteregister");
         addAlias("ftnreg");
         addAlias("register");
-        description = "Add your fortnite user to the current list of users for this server. Separate the parameters with a comma.";
+        description = "Add your fortnite user to the current list of users for this server.";
     }
 
     @Override

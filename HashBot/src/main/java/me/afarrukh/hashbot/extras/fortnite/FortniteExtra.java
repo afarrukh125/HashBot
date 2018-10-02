@@ -5,9 +5,11 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.extras.Extra;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -162,6 +164,26 @@ public class FortniteExtra extends DataManager implements Extra {
         update();
     }
 
+    public void removeUser(MessageReceivedEvent evt) {
+        FortniteEntry entry = getEntryFromMember(evt.getMember());
+        if(entry == null) {
+            evt.getTextChannel().sendMessage("You do not have any entries setup.").queue();
+            return;
+        }
+        JSONArray userList = getUsersAsJSONArray();
+        Iterator iter = userList.iterator();
+        while(iter.hasNext()) {
+            JSONObject userObject = (JSONObject) iter.next();
+            if(userObject.get("memberid").equals(entry.getMember().getUser().getId())) {
+                iter.remove();
+            }
+        }
+        entriesList.remove(entry);
+        evt.getTextChannel().sendMessage("Removed entry for " +evt.getMember().getEffectiveName()).queue();
+        updateValue("fortniteusers", userList);
+        update();
+    }
+
     private FortniteEntry getEntryFromMember(Member m) {
         for(FortniteEntry entry: entriesList) {
             if(entry.getMember().equals(m)) {
@@ -248,6 +270,20 @@ public class FortniteExtra extends DataManager implements Extra {
         update();
     }
 
+    public void unsetFortniteChannel() {
+        fortniteChannel = null;
+        updateValue("fortnitechannel", "-1");
+        if(infoMessage != null)
+            infoMessage.delete().queue();
+        infoMessage = null;
+    }
+
+    private void updateEntries() {
+        for(FortniteEntry entry: entriesList) {
+            entry.updateEntry();
+        }
+    }
+
     public Message getInfoMessage() {
         return infoMessage;
     }
@@ -265,15 +301,23 @@ public class FortniteExtra extends DataManager implements Extra {
         }
     }
 
-    public void processEvent(MessageDeleteEvent evt) {
-        if(evt.getMessageId().equalsIgnoreCase(infoMessage.getId())) {
-            infoMessage = evt.getTextChannel().sendMessage(getFortniteMessage()).complete();
-        }
+    public void processEvent(GuildMessageDeleteEvent evt) {
+        try {
+            if (evt.getMessageId().equalsIgnoreCase(infoMessage.getId())) {
+                infoMessage = evt.getChannel().sendMessage(getFortniteMessage()).complete();
+            }
+        } catch(NullPointerException ignore) {}
+    }
+
+    public void processEvent(MessageReceivedEvent evt) {
+        if(evt.getTextChannel().equals(getFortniteChannel()) && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+            evt.getMessage().delete().queue();
     }
 
     private class UpdateTimer extends TimerTask {
         @Override
         public void run() {
+            updateEntries();
             update();
         }
     }

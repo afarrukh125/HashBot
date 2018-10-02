@@ -23,7 +23,8 @@ public class UrbanDictionary {
 
         if (listOfDefinitions.isEmpty()) return "No Results Found";
 
-        JSONObject highestThumbs = resolveHighest(listOfDefinitions);
+        //JSONObject highestThumbs = resolveHighest(listOfDefinitions);
+        JSONObject highestThumbs = (JSONObject) listOfDefinitions.get(0);
 
         StringBuilder builder = new StringBuilder();
         String definition = (String) highestThumbs.get("definition");

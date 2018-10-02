@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.extras.fortnite.FortniteExtra;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 
 public class GuildExtrasManager {
 
@@ -19,12 +20,12 @@ public class GuildExtrasManager {
         return fortniteExtra;
     }
 
-    public void processEvent(MessageDeleteEvent evt) {
+    public void processEvent(GuildMessageDeleteEvent evt) {
         fortniteExtra.processEvent(evt);
     }
 
-    public void processEvent(MessageReceivedEvent evt) {
-        //TODO code to delete messages sent to pinned channel
+    void processEvent(MessageReceivedEvent evt) {
+        fortniteExtra.processEvent(evt);
     }
 
     public Guild getGuild() {
