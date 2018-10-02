@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.extras.Extra;
+import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
@@ -118,6 +119,9 @@ public class FortniteExtra extends DataManager implements Extra {
             }
         }
 
+        eb.setFooter("You should not send messages in this channel. Stats are refreshed every " + Constants.FTN_REFRESH_MIN + " minutes.",
+                guild.getIconUrl());
+
         return eb.build();
     }
 
@@ -182,6 +186,7 @@ public class FortniteExtra extends DataManager implements Extra {
         FortniteEntry entry = getEntryFromMember(evt.getMember());
         if(entry == null) {
             evt.getTextChannel().sendMessage("You do not have any entries setup.").queue();
+            BotUtils.deleteLastMsg(evt);
             return;
         }
         JSONArray userList = getUsersAsJSONArray();
@@ -194,6 +199,7 @@ public class FortniteExtra extends DataManager implements Extra {
         }
         entriesList.remove(entry);
         evt.getTextChannel().sendMessage("Removed entry for " +evt.getMember().getEffectiveName()).queue();
+        BotUtils.deleteLastMsg(evt);
         updateValue("fortniteusers", userList);
         update();
     }

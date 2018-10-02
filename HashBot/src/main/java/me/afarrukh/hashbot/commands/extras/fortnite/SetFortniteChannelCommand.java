@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.commands.extras.fortnite;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;

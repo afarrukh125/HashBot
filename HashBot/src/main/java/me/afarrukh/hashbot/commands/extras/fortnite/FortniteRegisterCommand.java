@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.extras.fortnite.FortniteExtra;
 import me.afarrukh.hashbot.utils.APIUtils;
+import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -46,7 +47,7 @@ public class FortniteRegisterCommand extends Command implements ExtrasCommand {
         else {
             evt.getTextChannel().sendMessage("The user was successfully added.").queue();
         }
-
+        BotUtils.deleteLastMsg(evt);
     }
 
     @Override
