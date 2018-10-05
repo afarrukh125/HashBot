@@ -94,10 +94,10 @@ public class Bot {
                 .addCommand(new PauseCommand())
                 .addCommand(new ResumeCommand())
 
-                .addCommand(new FortniteRegisterCommand())
-                .addCommand(new SetFortniteChannelCommand())
-                .addCommand(new FortniteUnregisterCommand())
-                .addCommand(new UnsetFortniteChannelCommand())
+//                .addCommand(new FortniteRegisterCommand())
+//                .addCommand(new SetFortniteChannelCommand())
+//                .addCommand(new FortniteUnregisterCommand())
+//                .addCommand(new UnsetFortniteChannelCommand())
 
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
@@ -118,9 +118,9 @@ public class Bot {
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
 
-        extrasManager = new ExtrasManager();
+        //extrasManager = new ExtrasManager();
 
-        botUser.addEventListener(extrasManager);
+        //botUser.addEventListener(extrasManager);
     }
 
     private void startUpMessages() {
