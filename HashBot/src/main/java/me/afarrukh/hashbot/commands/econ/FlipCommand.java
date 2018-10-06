@@ -37,7 +37,7 @@ public class FlipCommand extends Command implements EconCommand {
         String choice = tokens[1];
 
         try {
-            amount = Integer.parseInt(tokens[0]);
+            amount = Long.parseLong(tokens[0]);
         } catch(NumberFormatException e) {
             if(tokens[0].equalsIgnoreCase("all")) {
                 amount = invoker.getCredit();

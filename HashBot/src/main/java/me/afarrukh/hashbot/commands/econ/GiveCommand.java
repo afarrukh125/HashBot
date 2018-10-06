@@ -40,11 +40,11 @@ public class GiveCommand extends Command implements EconCommand {
         else
             m = evt.getMessage().getMentionedMembers().get(0);
 
-        int amount = 0;
+        long amount = 0;
         String[] tokens = params.split(" ");
 
         try {
-            amount = Integer.parseInt(tokens[tokens.length-1]);
+            amount = Long.parseLong(tokens[tokens.length-1]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException | NullPointerException e) {
             evt.getTextChannel().sendMessage("You must provide a numerical amount to give to the mentioned user.").queue();
             return;
