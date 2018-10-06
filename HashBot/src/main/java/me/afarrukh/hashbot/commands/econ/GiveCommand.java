@@ -26,7 +26,6 @@ public class GiveCommand extends Command implements EconCommand {
         if(evt.getMessage().getMentionedMembers().isEmpty()) {
             String[] userName = params.split(" ");
             String memberByName = CmdUtils.getParamsAsString(userName, 0, userName.length-2);
-            System.out.println(memberByName);
             for(Member member: evt.getGuild().getMembers()) {
                 if(member.getEffectiveName().equalsIgnoreCase(memberByName) || member.getUser().getName().equalsIgnoreCase(memberByName))
                     m = member;

@@ -53,7 +53,7 @@ public class Invoker {
     public void addCredit(long amt) {
         long credit = getCredit();
         if(credit >= Long.MAX_VALUE) {
-            userFileManager.updateValue("credit", Long.MAX_VALUE);
+            userFileManager.updateValue("credit", Math.abs(Long.MAX_VALUE));
             return;
         }
         credit += amt;
@@ -115,7 +115,12 @@ public class Invoker {
     }
 
     public long getCredit() {
-        return (Long) userFileManager.getValue("credit");
+        long value = Math.abs((Long) userFileManager.getValue("credit"));
+        if(value <= -Long.MAX_VALUE) {
+            userFileManager.updateValue("credit", Long.MAX_VALUE - 1);
+            return Long.MAX_VALUE-1;
+        }
+        return value;
     }
 
     public long getLevel() {

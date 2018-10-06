@@ -8,7 +8,7 @@ public abstract class OwnerCommand extends Command {
         super(name, aliases);
     }
 
-    OwnerCommand(String name) {
+    public OwnerCommand(String name) {
         super(name);
     }
 }

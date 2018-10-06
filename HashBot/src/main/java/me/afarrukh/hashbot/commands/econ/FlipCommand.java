@@ -44,6 +44,14 @@ public class FlipCommand extends Command implements EconCommand {
             }
         }
 
+        Random random = new Random();
+        int outcome = random.nextInt(2) + 1;
+
+        if(amount >= Long.MAX_VALUE/2) {
+            evt.getTextChannel().sendMessage("You are too rich. You cannot flip on anything.").queue();
+            return;
+        }
+
         if(amount <= 0) {
             evt.getTextChannel().sendMessage("You must provide an amount.").queue();
             return;
@@ -67,23 +75,20 @@ public class FlipCommand extends Command implements EconCommand {
 
         EmbedBuilder eb = new EmbedBuilder();
 
-        Random random = new Random();
-        int outcome = random.nextInt(2) + 1;
-
         StringBuilder sb = new StringBuilder();
         sb.append(" You");
         if(outcome == choiceToNumber) {
             sb.append(" won ");
             eb.setTitle("You won!");
-            invoker.addCredit(Integer.parseInt(Long.toString(amount)));
+            invoker.addCredit(Long.parseLong(Long.toString(amount)));
             eb.setColor(Color.GREEN);
         }
         else {
             sb.append(" lost ");
             eb.setTitle("You lost!");
-            invoker.addCredit(Integer.parseInt(Long.toString(-amount)));
+            invoker.addCredit(Long.parseLong(Long.toString(-amount)));
             Invoker jdaInvoker = new Invoker(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()));
-            jdaInvoker.addCredit(Integer.parseInt(Long.toString(amount)));
+            jdaInvoker.addCredit(Long.parseLong(Long.toString(amount)));
             eb.setColor(Color.RED);
         }
 
