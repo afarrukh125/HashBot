@@ -23,11 +23,15 @@ public class RewardCommand extends Command {
         }
         String[] tokens = params.split(" ");
         String targetUser = CmdUtils.getParamsAsString(tokens, 0, tokens.length-2);
-        int amt = 0;
+        long amt;
 
         try {
-            amt = Integer.parseInt(tokens[tokens.length-1]);
-        } catch(NumberFormatException e) { onIncorrectParams(evt.getTextChannel()); }
+            amt = Long.parseLong(tokens[tokens.length-1]);
+        } catch(NumberFormatException e) {
+            evt.getTextChannel().sendMessage("Could not add this amount of credit, exceeds " +Long.MAX_VALUE+ ".")
+                    .queue();
+            return;
+        }
 
         for(Member m: evt.getGuild().getMembers()) {
             if(m.getUser().getName().equalsIgnoreCase(targetUser)) {

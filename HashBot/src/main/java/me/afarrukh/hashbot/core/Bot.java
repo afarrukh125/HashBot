@@ -4,10 +4,6 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
-import me.afarrukh.hashbot.commands.extras.fortnite.FortniteRegisterCommand;
-import me.afarrukh.hashbot.commands.extras.fortnite.FortniteUnregisterCommand;
-import me.afarrukh.hashbot.commands.extras.fortnite.SetFortniteChannelCommand;
-import me.afarrukh.hashbot.commands.extras.fortnite.UnsetFortniteChannelCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.RoleRGBCommand;
@@ -19,7 +15,6 @@ import me.afarrukh.hashbot.commands.management.guild.roles.DeleteRoleCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
-import me.afarrukh.hashbot.extras.ExtrasManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -36,7 +31,6 @@ public class Bot {
     static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
-    public static ExtrasManager extrasManager;
 
     public static JDA botUser;
 
@@ -93,12 +87,6 @@ public class Bot {
                 .addCommand(new NowPlayingCommand())
                 .addCommand(new PauseCommand())
                 .addCommand(new ResumeCommand())
-
-//                .addCommand(new FortniteRegisterCommand())
-//                .addCommand(new SetFortniteChannelCommand())
-//                .addCommand(new FortniteUnregisterCommand())
-//                .addCommand(new UnsetFortniteChannelCommand())
-
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
@@ -117,8 +105,6 @@ public class Bot {
         reactionManager = new ReactionManager();
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
-
-        //extrasManager = new ExtrasManager();
 
         //botUser.addEventListener(extrasManager);
     }

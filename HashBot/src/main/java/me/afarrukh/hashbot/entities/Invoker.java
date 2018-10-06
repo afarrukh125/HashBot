@@ -50,8 +50,12 @@ public class Invoker {
         return true;
     }
 
-    public void addCredit(int amt) {
+    public void addCredit(long amt) {
         long credit = getCredit();
+        if(credit >= Long.MAX_VALUE) {
+            userFileManager.updateValue("credit", Long.MAX_VALUE);
+            return;
+        }
         credit += amt;
         userFileManager.updateValue("credit", credit);
     }

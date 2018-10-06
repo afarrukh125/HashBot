@@ -23,6 +23,9 @@ public class CheckMemoryCommand extends Command implements SystemCommand {
 
         evt.getTextChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL)
                 .appendDescription("Memory usage since startup is " + memoryDiff + "MB").build()).queue();
+
+        if(memoryDiff > 30)
+            System.gc();
     }
 
     @Override
