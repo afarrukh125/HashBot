@@ -203,7 +203,7 @@ public class TrackScheduler extends AudioEventAdapter {
         queue.addAll(trackList); //Repopulate with array list elements
     }
 
-    public void interleave() {
+    public void interleave(boolean shuffle) {
         ArrayList<AudioTrack> trackArrayList = getArrayList();
         ArrayList<String> userNameList = new ArrayList<>();
         HashMap<String, BlockingQueue<AudioTrack>> trackMap = new HashMap<>(); //Maps a username to their tracks
@@ -236,7 +236,6 @@ public class TrackScheduler extends AudioEventAdapter {
             }
         }
 
-
         ArrayList<AudioTrack> shuffledTracks = new ArrayList<>();
 
         if(newTrackList.size() < trackArrayList.size()) {
@@ -246,17 +245,16 @@ public class TrackScheduler extends AudioEventAdapter {
             }
         }
 
-        Collections.shuffle(shuffledTracks);
+        if(shuffle)
+            Collections.shuffle(shuffledTracks);
+
         newTrackList.addAll(shuffledTracks);
-
         replaceQueue(newTrackList);
-
-
     }
 
     public void fairShuffle() {
         shuffle();
-        interleave();
+        interleave(true);
     }
 
     public BlockingQueue<AudioTrack> getQueue() {
