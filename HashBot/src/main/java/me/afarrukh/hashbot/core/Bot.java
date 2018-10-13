@@ -94,6 +94,7 @@ public class Bot {
                 .addCommand(new ShuffleCommand())
                 .addCommand(new FairShuffleCommand())
                 .addCommand(new InterleaveCommand())
+                .addCommand(new FairPlayCommand())
                 .addCommand(new ViewCategoriesCommand())
                 .addCommand(new UrbanDictionaryCommand())
                 .addCommand(new CheckMemoryCommand())

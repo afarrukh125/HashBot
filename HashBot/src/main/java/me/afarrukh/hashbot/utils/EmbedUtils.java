@@ -75,7 +75,11 @@ public class EmbedUtils {
                 count++;
             }
             eb.appendDescription("\n**"+queue.size()+ " songs queued** | Total duration**: `"+gmm.getScheduler().getTotalQueueTime()+ "` | **");
-            eb.setFooter("[Page "+page+"/"+maxPageNumber+"]", evt.getAuthor().getAvatarUrl());
+            StringBuilder sb = new StringBuilder();
+            sb.append("[Page ").append(page).append("/").append(maxPageNumber).append("] ");
+            if(gmm.getScheduler().isFairplay())
+                sb.append("Fairplay mode is on. Playtop and shuffle commands will not work as expected. Songs are queued fairly.");
+            eb.setFooter(sb.toString(), evt.getAuthor().getAvatarUrl());
             eb.setThumbnail(MusicUtils.getThumbnailURL(currentTrack));
             return eb.build();
         } catch(NullPointerException e) {
@@ -120,8 +124,12 @@ public class EmbedUtils {
         eb.appendDescription("**Duration**: `"+CmdUtils.longToMMSS(at.getDuration())+ "`\n");
         if(!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack()!=null) {
             eb.setTitle("Queued song");
-            eb.appendDescription("**Position in queue**: `" +ts.getSongIndex(at)+"`\n");
-            eb.appendDescription("**Playing in approximately**: `" +ts.getTotalTimeTil(at)+"`\n");
+            if(!ts.isFairplay()) {
+                eb.appendDescription("**Position in queue**: `" + ts.getSongIndex(at) + "`\n");
+                eb.appendDescription("**Playing in approximately**: `" + ts.getTotalTimeTil(at) + "`\n");
+            }
+            if(ts.isFairplay())
+                eb.setFooter("Fairplay mode is currently on. Use " +Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
         }
         eb.setThumbnail(MusicUtils.getThumbnailURL(at));
 

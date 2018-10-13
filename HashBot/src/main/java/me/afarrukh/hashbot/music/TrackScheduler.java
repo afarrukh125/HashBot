@@ -23,6 +23,7 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private BlockingQueue<AudioTrack> queue;
     private boolean looping;
+    private boolean fairplay;
     private final Guild guild;
 
     public TrackScheduler(AudioPlayer player, Guild guild) {
@@ -30,6 +31,7 @@ public class TrackScheduler extends AudioEventAdapter {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
+        fairplay = false;
     }
 
     /**
@@ -40,6 +42,8 @@ public class TrackScheduler extends AudioEventAdapter {
         if(!player.startTrack(track, true)) {
             queue.offer(track);
         }
+        if(fairplay)
+            interleave(false);
     }
 
     public void nextTrack() {
@@ -224,7 +228,8 @@ public class TrackScheduler extends AudioEventAdapter {
         if(userNameList.size() == 0)
             return;
 
-        Collections.shuffle(userNameList); //Shuffling the list of users to decide who goes first
+        if(shuffle)
+            Collections.shuffle(userNameList); //Shuffling the list of users to decide who goes first
 
         ArrayList<AudioTrack> newTrackList = new ArrayList<>();
 
@@ -284,4 +289,11 @@ public class TrackScheduler extends AudioEventAdapter {
         return this.guild;
     }
 
+    public boolean isFairplay() {
+        return fairplay;
+    }
+
+    public void setFairplay(boolean fairplay) {
+        this.fairplay = fairplay;
+    }
 }
