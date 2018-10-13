@@ -10,8 +10,7 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.core.entities.Guild;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class TrackScheduler extends AudioEventAdapter {
 
     private final AudioPlayer player;
-    private final BlockingQueue<AudioTrack> queue;
+    private BlockingQueue<AudioTrack> queue;
     private boolean looping;
     private final Guild guild;
 
@@ -82,9 +81,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param list The list to replace the current queue with
      */
     private void replaceQueue(ArrayList<AudioTrack> list) {
-        queue.clear();
-        queue.addAll(list);
-        list.clear();
+        queue = new LinkedBlockingQueue<>(list);
     }
 
     /**
@@ -198,13 +195,68 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     public void shuffle() {
         //Convert the queue to arraylist
-        ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
+        ArrayList<AudioTrack> trackList = getArrayList();
 
         Collections.shuffle(trackList);
 
         queue.clear(); //Clear the queue
         queue.addAll(trackList); //Repopulate with array list elements
-        trackList.clear(); //Now clear the arraylist to save memory
+    }
+
+    public void interleave() {
+        ArrayList<AudioTrack> trackArrayList = getArrayList();
+        ArrayList<String> userNameList = new ArrayList<>();
+        HashMap<String, BlockingQueue<AudioTrack>> trackMap = new HashMap<>(); //Maps a username to their tracks
+
+        for(AudioTrack track: trackArrayList) {
+            String userName = track.getUserData().toString();
+            if(!userNameList.contains(userName))
+                userNameList.add(userName);
+            if(trackMap.get(userName) == null)
+                trackMap.put(userName, new LinkedBlockingQueue<>());
+            trackMap.get(userName).add(track);
+        }
+
+        if(userNameList.size() == 1) {
+            shuffle();
+            return;
+        }
+        if(userNameList.size() == 0)
+            return;
+
+        Collections.shuffle(userNameList); //Shuffling the list of users to decide who goes first
+
+        ArrayList<AudioTrack> newTrackList = new ArrayList<>();
+
+        for(int i = 0; i<trackArrayList.size()/userNameList.size(); i++) {
+            for(String s: userNameList) {
+                if(trackMap.get(s).isEmpty())
+                    continue;
+                newTrackList.add(trackMap.get(s).poll());
+            }
+        }
+
+
+        ArrayList<AudioTrack> shuffledTracks = new ArrayList<>();
+
+        if(newTrackList.size() < trackArrayList.size()) {
+            for(BlockingQueue<AudioTrack> queue: trackMap.values()) {
+                if(!queue.isEmpty())
+                    shuffledTracks.addAll(queue);
+            }
+        }
+
+        Collections.shuffle(shuffledTracks);
+        newTrackList.addAll(shuffledTracks);
+
+        replaceQueue(newTrackList);
+
+
+    }
+
+    public void fairShuffle() {
+        shuffle();
+        interleave();
     }
 
     public BlockingQueue<AudioTrack> getQueue() {

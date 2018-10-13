@@ -16,14 +16,14 @@ public abstract class Command {
     private final ArrayList<String> aliases = new ArrayList<>();
     protected String description = null;
 
+    public Command(String name) {
+        this.name = name;
+    }
 
+    @Deprecated
     public Command(String name, String[] aliases) {
         this.name = name;
         this.aliases.addAll(Arrays.asList(aliases));
-    }
-
-    public Command(String name) {
-        this.name = name;
     }
 
     protected void addAlias(String s) {
