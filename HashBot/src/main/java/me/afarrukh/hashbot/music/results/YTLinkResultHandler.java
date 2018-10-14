@@ -52,12 +52,6 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
     public void trackLoaded(AudioTrack track) {
         track.setUserData(evt.getAuthor().getName());
 
-        if(playTop) {
-            evt.getChannel().sendMessage(EmbedUtils.getQueuedTopEmbed(gmm, track, evt)).queue();
-        }
-        else
-            evt.getChannel().sendMessage(EmbedUtils.getQueuedEmbed(gmm, track, evt)).queue();
-
         MusicUtils.play(evt, gmm, track, playTop);
     }
 }

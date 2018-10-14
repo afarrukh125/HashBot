@@ -27,10 +27,6 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
         }
 
         firstTrack.setUserData(evt.getAuthor().getName());
-        if(playTop)
-            evt.getChannel().sendMessage(EmbedUtils.getQueuedTopEmbed(gmm, firstTrack, evt)).queue();
-        else
-            evt.getChannel().sendMessage(EmbedUtils.getQueuedEmbed(gmm, firstTrack, evt)).queue();
 
         MusicUtils.play(evt, gmm, firstTrack, playTop);
     }

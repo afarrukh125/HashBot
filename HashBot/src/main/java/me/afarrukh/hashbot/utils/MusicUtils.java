@@ -32,6 +32,12 @@ public class MusicUtils {
         else {
             musicManager.getScheduler().queue(track);
         }
+
+        if(playTop) {
+            evt.getChannel().sendMessage(EmbedUtils.getQueuedTopEmbed(musicManager, track, evt)).queue();
+        }
+        else
+            evt.getChannel().sendMessage(EmbedUtils.getQueuedEmbed(musicManager, track, evt)).queue();
     }
 
     /**
