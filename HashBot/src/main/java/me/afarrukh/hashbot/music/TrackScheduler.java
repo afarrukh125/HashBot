@@ -221,12 +221,13 @@ public class TrackScheduler extends AudioEventAdapter {
             trackMap.get(userName).add(track);
         }
 
-        if(userNameList.size() == 1) {
+        if(userNameList.size() == 0)
+            return;
+
+        if(userNameList.size() == 1 && shuffle) {
             shuffle();
             return;
         }
-        if(userNameList.size() == 0)
-            return;
 
         if(shuffle)
             Collections.shuffle(userNameList); //Shuffling the list of users to decide who goes first
