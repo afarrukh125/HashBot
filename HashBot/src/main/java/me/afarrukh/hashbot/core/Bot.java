@@ -82,6 +82,7 @@ public class Bot {
                 .addCommand(new PruneQueueCommand())
                 .addCommand(new DisconnectCommand())
                 .addCommand(new LoopCommand())
+                .addCommand(new LoopQueueCommand())
                 .addCommand(new GiveCommand())
                 .addCommand(new FlipCommand())
                 .addCommand(new NowPlayingCommand())

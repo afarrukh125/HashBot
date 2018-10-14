@@ -10,7 +10,9 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.core.entities.Guild;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +25,8 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private BlockingQueue<AudioTrack> queue;
     private boolean looping;
-    private boolean fairplay;
+    private boolean loopingQueue;
+    private boolean fairPlay;
     private final Guild guild;
 
     public TrackScheduler(AudioPlayer player, Guild guild) {
@@ -31,7 +34,7 @@ public class TrackScheduler extends AudioEventAdapter {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
-        fairplay = false;
+        fairPlay = false;
     }
 
     /**
@@ -42,7 +45,7 @@ public class TrackScheduler extends AudioEventAdapter {
         if(!player.startTrack(track, true)) {
             queue.offer(track);
         }
-        if(fairplay)
+        if(fairPlay)
             interleave(false);
     }
 
@@ -74,6 +77,13 @@ public class TrackScheduler extends AudioEventAdapter {
             cloneTrack.setUserData(track.getUserData());
             player.startTrack(cloneTrack, false);
             return;
+        }
+
+        if(isLoopingQueue() && !isLooping()) {
+            player.stopTrack();
+            AudioTrack cloneTrack = track.makeClone();
+            cloneTrack.setUserData(track.getUserData());
+            queue(cloneTrack);
         }
 
         if(endReason.mayStartNext)
@@ -283,6 +293,14 @@ public class TrackScheduler extends AudioEventAdapter {
         looping = loop;
     }
 
+    public boolean isLoopingQueue() {
+        return loopingQueue;
+    }
+
+    public void setLoopingQueue(boolean loopingQueue) {
+        this.loopingQueue = loopingQueue;
+    }
+
     /**
      * @return The guild associated with this track scheduler
      */
@@ -290,11 +308,11 @@ public class TrackScheduler extends AudioEventAdapter {
         return this.guild;
     }
 
-    public boolean isFairplay() {
-        return fairplay;
+    public boolean isFairPlay() {
+        return fairPlay;
     }
 
-    public void setFairplay(boolean fairplay) {
-        this.fairplay = fairplay;
+    public void setFairPlay(boolean fairPlay) {
+        this.fairPlay = fairPlay;
     }
 }

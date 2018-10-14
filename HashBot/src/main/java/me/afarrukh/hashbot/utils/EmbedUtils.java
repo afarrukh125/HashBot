@@ -77,8 +77,10 @@ public class EmbedUtils {
             eb.appendDescription("\n**"+queue.size()+ " songs queued** | Total duration**: `"+gmm.getScheduler().getTotalQueueTime()+ "` | **");
             StringBuilder sb = new StringBuilder();
             sb.append("[Page ").append(page).append("/").append(maxPageNumber).append("] ");
-            if(gmm.getScheduler().isFairplay())
-                sb.append("Fairplay mode is on. Playtop command will not work as expected. Songs are queued fairly.");
+            if(gmm.getScheduler().isFairPlay())
+                sb.append("Fairplay mode is on. Playtop command will not work as expected. Songs are queued fairly. ");
+            if(gmm.getScheduler().isLoopingQueue())
+                sb.append("The queue is looping. Songs will be added to the back of the queue once they finish");
             eb.setFooter(sb.toString(), evt.getAuthor().getAvatarUrl());
             eb.setThumbnail(MusicUtils.getThumbnailURL(currentTrack));
             return eb.build();
@@ -126,7 +128,7 @@ public class EmbedUtils {
             eb.setTitle("Queued song");
             eb.appendDescription("**Position in queue**: `" + ts.getSongIndex(at) + "`\n");
             eb.appendDescription("**Playing in approximately**: `" + ts.getTotalTimeTil(at) + "`\n");
-            if(ts.isFairplay())
+            if(ts.isFairPlay())
                 eb.setFooter("Fairplay mode is currently on. Use " +Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
         }
         eb.setThumbnail(MusicUtils.getThumbnailURL(at));

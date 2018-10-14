@@ -1,11 +1,9 @@
 package me.afarrukh.hashbot.commands.management.user;
 
-import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.UserUtils;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
