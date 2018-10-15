@@ -63,6 +63,7 @@ public class MusicUtils {
         if(gm.getPlayer().getPlayingTrack() != null)
             gm.getPlayer().getPlayingTrack().stop();
         gm.getScheduler().getQueue().clear();
+        gm.getScheduler().setLoopingQueue(false);
         gm.getScheduler().setLooping(false);
         gm.getPlayer().setPaused(false);
         guild.getAudioManager().closeAudioConnection();
