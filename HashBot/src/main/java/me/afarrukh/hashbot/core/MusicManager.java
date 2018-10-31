@@ -37,6 +37,16 @@ public class MusicManager {
         return musicManager;
     }
 
+    public synchronized void resetGuildAudioPlayer(Guild guild) {
+        if(musicManagers.get(guild.getIdLong()) == null)
+            return;
+        musicManagers.remove(guild.getIdLong());
+        GuildMusicManager musicManager = new GuildMusicManager(playerManager, guild);
+        musicManagers.put(guild.getIdLong(), musicManager);
+
+
+    }
+
     public AudioPlayerManager getPlayerManager() {
         return playerManager;
     }

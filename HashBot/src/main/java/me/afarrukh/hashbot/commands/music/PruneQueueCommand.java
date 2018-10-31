@@ -16,7 +16,7 @@ public class PruneQueueCommand extends Command implements MusicCommand {
 
     public PruneQueueCommand() {
         super("prunequeue", new String[]{"pq"});
-        description = "Removes songs from any users that are no longer in voice";
+        description = "Removes songs from any users that are no longer in voice.";
     }
 
     @Override

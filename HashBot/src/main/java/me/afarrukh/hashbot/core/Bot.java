@@ -88,6 +88,7 @@ public class Bot {
                 .addCommand(new NowPlayingCommand())
                 .addCommand(new PauseCommand())
                 .addCommand(new ResumeCommand())
+                .addCommand(new ResetPlayerCommand())
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
                 .addCommand(new MoveCommand())
