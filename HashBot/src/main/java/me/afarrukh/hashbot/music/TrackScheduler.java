@@ -231,6 +231,14 @@ public class TrackScheduler extends AudioEventAdapter {
             trackMap.get(userName).add(track);
         }
 
+        if(player.getPlayingTrack() != null) {
+            AudioTrack currentTrack = player.getPlayingTrack();
+            if(userNameList.get(0).equals(currentTrack.getUserData().toString())) {
+                userNameList.remove(0);
+                userNameList.add(player.getPlayingTrack().getUserData().toString());
+            }
+        }
+
         if(userNameList.size() == 0)
             return;
 

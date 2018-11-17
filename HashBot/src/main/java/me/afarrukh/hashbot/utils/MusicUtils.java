@@ -66,6 +66,7 @@ public class MusicUtils {
         gm.getScheduler().setLoopingQueue(false);
         gm.getScheduler().setLooping(false);
         gm.getPlayer().setPaused(false);
+        gm.getDisconnectTimer().cancel();
         guild.getAudioManager().closeAudioConnection();
         gm.getPlayer().destroy();
     }
