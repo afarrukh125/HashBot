@@ -5,6 +5,8 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.graphics.ImageLoader;
 import me.afarrukh.hashbot.graphics.Text;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -42,6 +44,29 @@ public class StatsCommand extends Command {
 
         Invoker invoker = new Invoker(evt.getMember());
 
+        int exp = (int) invoker.getExp();
+        int level = (int) invoker.getLevel();
+        int nextLevelExp = invoker.getExpForNextLevel();
+
+        boolean global = false;
+
+        if(params != null && params.equalsIgnoreCase("global")) {
+            global = true;
+            exp = 0;
+            for(Guild guild: evt.getJDA().getGuilds()) {
+                Member m = guild.getMemberById(evt.getAuthor().getId());
+                if(m == null)
+                    continue;
+                Invoker tmpInvoker = new Invoker(m);
+                exp += Invoker.parseTotalExperienceFromLevel((int) tmpInvoker.getLevel());
+                exp += tmpInvoker.getExp();
+            }
+            int[] data = Invoker.parseLevelFromTotalExperience(exp);
+            level = data[0];
+            exp = data[1];
+            nextLevelExp = Invoker.getExperienceForNextLevel(level);
+        }
+
         BufferedImage profPic = ImageLoader.loadUrl(evt.getAuthor().getAvatarUrl());
         if (profPic != null)
             g.drawImage(profPic, 460, 10, null);
@@ -50,11 +75,11 @@ public class StatsCommand extends Command {
         if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length()+ evt.getAuthor().getName().length()) < 24)
             nameString += "(" + evt.getMember().getNickname() + ")";
 
-        Text.drawString(g, Integer.toString((int) invoker.getLevel()), 399, 78, true, Color.BLACK, Constants.bigNumFont);
+        Text.drawString(g, Integer.toString(level), 399, 78, true, Color.BLACK, Constants.bigNumFont);
 
         Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, Constants.font28);
         Text.drawString(g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, Constants.font28);
-        Text.drawString(g, "Exp: " + invoker.getExp() + "/" + invoker.getExpForNextLevel(), originX, originY + 60, false, Constants.STATSIMG_COL,
+        Text.drawString(g, "Exp: " + exp + "/" + nextLevelExp, originX, originY + 60, false, Constants.STATSIMG_COL,
                 Constants.font28);
 
 
@@ -65,14 +90,21 @@ public class StatsCommand extends Command {
         g.setColor(Color.GRAY);
         g.fillRect(originX, originY + 80, 100 * 3, 20);
         g.setColor(Color.WHITE);
-        g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
+        if(global)
+            g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp, level) * 3, 20);
+        else
+            g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
 
 
-        Role r = null;
-        if(!evt.getMember().getRoles().isEmpty())
-            r = evt.getMember().getRoles().get(0);
-        if (r != null)
-            Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), Constants.font28);
+        if(!global) {
+            Role r = null;
+            if (!evt.getMember().getRoles().isEmpty())
+                r = evt.getMember().getRoles().get(0);
+            if (r != null)
+                Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), Constants.font28);
+        } else {
+            Text.drawString(g, "Global Stats", originX, originY + 140, false, Color.WHITE, Constants.font28);
+        }
 
         String fileName = "res/images/" + evt.getAuthor().getName() + System.currentTimeMillis() + ".png";
 

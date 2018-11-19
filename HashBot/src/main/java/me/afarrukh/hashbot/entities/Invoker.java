@@ -92,17 +92,61 @@ public class Invoker {
     }
 
     /**
-     * The formula for the level to exp calculation
+
      * @return An integer representing how much experience the user will need for their next level
      */
     public int getExpForNextLevel() {
         int currentLevel = (int) getLevel();
-        return (10 * (currentLevel+1) * (currentLevel+2));
+        return getExperienceForNextLevel(currentLevel);
+    }
+
+    /**
+     * * The formula for the level to exp calculation
+     * @param level
+     * @return
+     */
+    public static int getExperienceForNextLevel(int level) {
+        return 10 * (level+1) * (level+2);
+    }
+
+    /**
+     * Returns the level given from the exp and the remaining exp spare.
+     * @param exp The experience to calculate from.
+     * @return An integer array where the value at index 0 is the level and index 1 is the spare experience.
+     */
+    public static int[] parseLevelFromTotalExperience(int exp) {
+        int level = 1;
+        int[] data = new int[2];
+        while(exp > getExperienceForNextLevel(level)) {
+            exp -= getExperienceForNextLevel(level);
+            level += 1;
+        }
+        data[0] = level;
+        data[1] = exp;
+        return data;
+    }
+
+    /**
+     * Gets the total experience for a given level
+     * @param lvl The level to calculate from
+     * @return The total experience for the given level
+     */
+    public static int parseTotalExperienceFromLevel(int lvl) {
+        int exp = 0;
+        for(int i = 1; i<lvl; i++) {
+            exp += getExperienceForNextLevel(i);
+        }
+        return exp;
     }
 
     public int getPercentageExp() {
         int exp = (int) getExp();
         int expToProgress = getExpForNextLevel();
+        return (int) Math.round((double) exp/expToProgress*100);
+    }
+
+    public static int getPercentageExp(int exp, int level) {
+        int expToProgress = getExperienceForNextLevel(level);
         return (int) Math.round((double) exp/expToProgress*100);
     }
 
@@ -122,6 +166,15 @@ public class Invoker {
         }
         return value;
     }
+
+//    public static void main(String[] args) {
+//        int x = parseTotalExperienceFromLevel(34) + 4801;
+//        int y = parseTotalExperienceFromLevel(23) + 663;
+//        System.out.println(x);
+//        System.out.println(y);
+//        System.out.println(x + y);
+//        System.out.println(parseLevelFromTotalExperience(x+y)[0] + ", " + parseLevelFromTotalExperience(x+y)[1]);
+//    }
 
     public long getLevel() {
         return (Long) userFileManager.getValue("level");

@@ -18,7 +18,7 @@ public class ImageLoader {
             return ImageIO.read(new File(path));
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1); //We don't want to run our game if the image fails to load.
+            System.exit(1); //We don't want to run if the image fails to load.
             //Exit code 1
         }
         return null;
