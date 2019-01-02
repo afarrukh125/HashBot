@@ -27,12 +27,12 @@ public class ColourChangeCommand extends Command {
             return;
         }
         try {
-            String roleName = "";
+            String roleName;
             String[] tokens = params.split(" ");
             int maxIndex = tokens.length - 1;
-            int red = 0;
-            int green = 0;
-            int blue = 0;
+            int red;
+            int green;
+            int blue;
 
             if(tokens[maxIndex].startsWith("#")) {
                 roleName = CmdUtils.getParamsAsString(tokens, 0, maxIndex-1);

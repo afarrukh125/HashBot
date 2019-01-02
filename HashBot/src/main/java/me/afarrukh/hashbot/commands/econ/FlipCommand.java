@@ -62,7 +62,7 @@ public class FlipCommand extends Command implements EconCommand {
             return;
         }
 
-        int choiceToNumber = 0;
+        int choiceToNumber;
 
         if(choice.equalsIgnoreCase("head") || choice.equalsIgnoreCase("heads") || choice.equalsIgnoreCase("h"))
             choiceToNumber = 1;

@@ -39,7 +39,7 @@ public class GiveCommand extends Command implements EconCommand {
         else
             m = evt.getMessage().getMentionedMembers().get(0);
 
-        long amount = 0;
+        long amount;
         String[] tokens = params.split(" ");
 
         try {

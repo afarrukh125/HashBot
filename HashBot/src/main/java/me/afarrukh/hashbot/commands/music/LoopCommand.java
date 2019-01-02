@@ -20,7 +20,7 @@ public class LoopCommand extends Command implements MusicCommand {
         if(MusicUtils.canInteract(evt)) {
             TrackScheduler trackScheduler = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
             trackScheduler.setLooping(!trackScheduler.isLooping());
-            String status = "";
+            String status;
             if(trackScheduler.isLooping())
                 status = "Now";
             else

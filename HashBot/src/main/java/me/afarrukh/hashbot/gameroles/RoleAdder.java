@@ -166,7 +166,7 @@ public class RoleAdder implements RoleGUI{
                 return;
             case confirm:
                 message.clearReactions().complete();
-                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleRemovers().remove(this);
+                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
                 if(desiredRole == null) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
                     return;
