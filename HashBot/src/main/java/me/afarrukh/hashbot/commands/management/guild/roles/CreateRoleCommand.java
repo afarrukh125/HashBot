@@ -6,10 +6,11 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.utils.BotUtils;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class CreateRoleCommand extends Command implements RoleCommand {
+public class CreateRoleCommand extends Command {
 
     public CreateRoleCommand() {
         super("createrole");
@@ -18,7 +19,10 @@ public class CreateRoleCommand extends Command implements RoleCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+
         evt.getMessage().delete().queue();
+        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+            return;
         if(evt.getGuild().getRoles().size() > 50) {
             evt.getChannel().sendMessage("Could not add role because there are too many roles.").queue();
             BotUtils.deleteLastMsg(evt);
