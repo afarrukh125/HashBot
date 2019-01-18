@@ -62,9 +62,14 @@ public class MusicUtils {
         GuildMusicManager gm = Bot.musicManager.getGuildAudioPlayer(guild);
         if(gm.getPlayer().getPlayingTrack() != null)
             gm.getPlayer().getPlayingTrack().stop();
+        gm.getScheduler().getQueue().clear();
+        gm.getScheduler().setLoopingQueue(false);
+        gm.getScheduler().setLooping(false);
+        gm.getPlayer().setPaused(false);
+        gm.getDisconnectTimer().cancel();
         guild.getAudioManager().closeAudioConnection();
         gm.getPlayer().destroy();
-        Bot.musicManager.resetGuildAudioPlayer(guild);
+        System.gc();
     }
 
     /**
