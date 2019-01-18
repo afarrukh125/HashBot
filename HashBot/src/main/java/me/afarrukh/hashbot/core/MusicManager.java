@@ -41,8 +41,7 @@ public class MusicManager {
         if(musicManagers.get(guild.getIdLong()) == null)
             return;
         musicManagers.remove(guild.getIdLong());
-        GuildMusicManager musicManager = new GuildMusicManager(playerManager, guild);
-        musicManagers.put(guild.getIdLong(), musicManager);
+        musicManagers.put(guild.getIdLong(), new GuildMusicManager(playerManager, guild));
 
 
     }

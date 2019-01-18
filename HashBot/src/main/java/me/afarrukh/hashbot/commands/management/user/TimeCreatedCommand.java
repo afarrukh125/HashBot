@@ -40,8 +40,9 @@ public class TimeCreatedCommand extends Command {
         long epochMilli = targetMember.getUser().getCreationTime().toInstant().toEpochMilli();
         Date date = new Date(epochMilli);
 
-        eb.appendDescription("Created on " +date.toString()+ ". The last time the user joined this server was " +
-                new Date(targetMember.getJoinDate().toInstant().toEpochMilli()) + ".");
+        eb.appendDescription("Created on " +date.toString()+ ".");
+//         eb.appendDescription("The last time the user joined this server was " +
+//                        new Date(targetMember.getJoinDate().toInstant().toEpochMilli()) + ".");
 
         evt.getTextChannel().sendMessage(eb.build()).queue();
 
