@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.Permission;
@@ -7,7 +8,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SetNickCommand extends Command {
+public class SetNickCommand extends Command implements AdminCommand {
 
     public SetNickCommand() {
         super("setnick");

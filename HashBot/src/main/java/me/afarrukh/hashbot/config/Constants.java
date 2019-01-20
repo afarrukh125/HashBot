@@ -54,6 +54,8 @@ public class Constants {
 
     public static final int ITERABLE_MESSAGES = 500;
 
+    public static final int UNIXTWOWEEKS = 1209600;
+
     public static Long INITIAL_MEMORY;
 
     public static final int ROLE_CREATE_AMOUNT = 2500;

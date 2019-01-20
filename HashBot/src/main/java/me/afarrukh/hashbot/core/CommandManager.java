@@ -1,13 +1,13 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
 import me.afarrukh.hashbot.utils.UserUtils;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class CommandManager {
 
@@ -26,6 +26,9 @@ public class CommandManager {
         Command command = commandFromName(commandName);
 
         if(command instanceof OwnerCommand && !UserUtils.isBotAdmin(evt.getAuthor()))
+            return;
+
+        if(command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
 
         if(command != null) command.onInvocation(evt, params); //Only does the command onInvocation method if
@@ -61,13 +64,24 @@ public class CommandManager {
      * Returns a new ArrayList with all the commands list, with duplicates omitted
      * @return A new ArrayList with all commands, derived from the commandsMap
      */
-    public ArrayList<Command> getCommandList() {
-        ArrayList<Command> commandList = new ArrayList<>();
+    public List<Command> getCommandList() {
+        List<Command> commandList = new ArrayList<>();
         for(Command c: commandMap.values()) {
             if(commandList.contains(c))
                 continue;
             commandList.add(c);
         }
+        return commandList;
+    }
+
+    public List<Command> getNonAdminCommands() {
+        List<Command> commandList = new LinkedList<>();
+
+        for(Command c: getCommandList()) {
+            if (!(c instanceof AdminCommand))
+                commandList.add(c);
+        }
+
         return new ArrayList<>(commandList);
     }
 

@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.GuildDataManager;
@@ -8,7 +9,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SetUnpinned extends Command {
+public class SetUnpinned extends Command implements AdminCommand {
 
     public SetUnpinned() {
         super("setunpinned");

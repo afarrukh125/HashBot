@@ -1,12 +1,13 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SetPrefixCommand extends Command {
+public class SetPrefixCommand extends Command implements AdminCommand {
 
     public SetPrefixCommand() {
         super("setprefix");

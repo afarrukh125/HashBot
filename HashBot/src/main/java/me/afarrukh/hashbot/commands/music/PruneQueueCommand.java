@@ -22,12 +22,12 @@ public class PruneQueueCommand extends Command implements MusicCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        List<Member> memberList = evt.getGuild().getAudioManager().getConnectedChannel().getMembers();
-
         if(evt.getGuild().getAudioManager().getConnectedChannel() == null) {
             evt.getTextChannel().sendMessage("The bot is not connected to voice.").queue();
             return;
         }
+
+        List<Member> memberList = evt.getGuild().getAudioManager().getConnectedChannel().getMembers();
 
         Queue<AudioTrack> trackQueue = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
         List<String> prunedUsers = new ArrayList<>();

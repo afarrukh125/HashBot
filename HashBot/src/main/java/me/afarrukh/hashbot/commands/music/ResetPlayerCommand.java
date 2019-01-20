@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.commands.music;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
@@ -8,7 +9,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class ResetPlayerCommand extends Command implements MusicCommand {
+public class ResetPlayerCommand extends Command implements MusicCommand, AdminCommand {
 
     public ResetPlayerCommand() {
         super("resetplayer");

@@ -1,13 +1,15 @@
 package me.afarrukh.hashbot.commands.management.guild.roles;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleDeleter;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class DeleteRoleCommand extends Command {
+public class DeleteRoleCommand extends Command implements RoleCommand, AdminCommand {
 
     public DeleteRoleCommand() {
         super("deleterole");

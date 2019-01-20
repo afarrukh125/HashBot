@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.CategorisedCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.EmbedUtils;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -20,12 +21,15 @@ public class HelpCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(params == null)
-            for(MessageEmbed embed: EmbedUtils.getHelpMsg(evt, Bot.commandManager.getCommandList()))
+        List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR) ? Bot.commandManager.getCommandList() : Bot.commandManager.getNonAdminCommands();
+        if(params == null) {
+            for (MessageEmbed embed : EmbedUtils.getHelpMsg(evt, commandList))
                 evt.getTextChannel().sendMessage(embed).queue();
+
+        }
         else {
             List<Command> categoryList = new ArrayList<>();
-            for(Command c: Bot.commandManager.getCommandList()) {
+            for(Command c: commandList) {
                 if(c instanceof CategorisedCommand) {
                     if(((CategorisedCommand) c).getType().equalsIgnoreCase(params)) {
                         categoryList.add(c);
