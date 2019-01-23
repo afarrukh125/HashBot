@@ -91,6 +91,7 @@ public class RoleAdder implements RoleGUI{
         switch(reactionName) {
             case cancel:
                 endSession();
+                message.delete().queue();
                 return;
             case back:
                 return;
@@ -150,6 +151,7 @@ public class RoleAdder implements RoleGUI{
         switch(reactionName) {
             case cancel:
                 endSession();
+                message.delete().queue();
                 return;
             case back:
                 stage--;

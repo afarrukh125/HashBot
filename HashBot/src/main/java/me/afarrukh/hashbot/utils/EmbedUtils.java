@@ -339,6 +339,7 @@ public class EmbedUtils {
         String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
         eb.setDescription("The new role has been created.");
         eb.setTitle(cap);
+        eb.setThumbnail(rb.getGuild().getIconUrl());
         return eb.build();
     }
 
@@ -445,7 +446,8 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(r.getGuild().getIconUrl());
         eb.setTitle("Role added");
-        eb.appendDescription("You now have the role " +r.getName());
+        eb.appendDescription("You now have the role " +r.getName() + ". Remember you can use " +
+                Bot.gameRoleManager.getGuildRoleManager(r.getGuild()).getPrefix() + "removerole to remove this role.");
         return eb.build();
     }
 

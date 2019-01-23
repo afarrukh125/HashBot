@@ -30,13 +30,6 @@ public class CreateRoleCommand extends Command implements RoleCommand, AdminComm
             return;
         }
 
-        if(new Invoker(evt.getMember()).getCredit() < Constants.ROLE_CREATE_AMOUNT) {
-            evt.getChannel().sendMessage("Could not add role because you do not have enough credit (Requires "
-                    +Constants.ROLE_CREATE_AMOUNT+")").queue();
-            BotUtils.deleteLastMsg(evt);
-            return;
-        }
-
         RoleBuilder rb = new RoleBuilder(evt, params);
     }
 

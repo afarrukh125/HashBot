@@ -37,13 +37,32 @@ public class RoleBuilder implements RoleGUI{
     private final String back = "↩";
 
     public RoleBuilder(MessageReceivedEvent evt, String name) {
-        if(name == null)
-            name = " ";
-        TextChannel channel = evt.getTextChannel();
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
-        this.roleName = name;
-        message = channel.sendMessage(EmbedUtils.getRoleName(name)).complete();
+        TextChannel channel = evt.getTextChannel();
+
+        if(name == null)
+            name = " ";
+
+        if(name.split(",").length > 1) {
+            String[] tokens = name.split(",");
+            this.roleName = tokens[0];
+
+            String colorString = tokens[1].replace('#', ' ').trim();
+            this.red = Integer.valueOf( colorString.substring(0, 2), 16);
+            this.green = Integer.valueOf( colorString.substring(2, 4), 16);
+            this.blue = Integer.valueOf( colorString.substring(4, 6), 16);
+
+            this.color = hexToRGB(colorString);
+            this.stage = 4;
+
+            message = channel.sendMessage(EmbedUtils.getRoleConfirmEmbed(this)).complete();
+
+        } else {
+            this.roleName = name;
+            message = channel.sendMessage(EmbedUtils.getRoleName(name)).complete();
+        }
+
         message.addReaction(back).queue();
         message.addReaction(cancel).queue();
         message.addReaction(confirm).queue();
@@ -54,6 +73,13 @@ public class RoleBuilder implements RoleGUI{
         timeoutTimer.schedule(new RoleBuilder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
 
         Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleBuilders().add(this);
+    }
+
+    public static Color hexToRGB(String colorString) {
+        return new Color(
+                Integer.valueOf( colorString.substring(0, 2), 16),
+                Integer.valueOf( colorString.substring(2, 4), 16),
+                Integer.valueOf( colorString.substring(4, 6), 16));
     }
 
     public void handleEvent(GuildMessageReactionAddEvent evt) {
