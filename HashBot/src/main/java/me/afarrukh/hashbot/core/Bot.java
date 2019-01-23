@@ -7,10 +7,7 @@ import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
-import me.afarrukh.hashbot.commands.management.guild.roles.AddRoleCommand;
-import me.afarrukh.hashbot.commands.management.guild.roles.CreateRoleCommand;
-import me.afarrukh.hashbot.commands.management.guild.roles.DeleteRoleCommand;
-import me.afarrukh.hashbot.commands.management.guild.roles.RemoveRoleCommand;
+import me.afarrukh.hashbot.commands.management.guild.roles.*;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
@@ -95,6 +92,7 @@ public class Bot {
                 .addCommand(new ShuffleCommand())
                 .addCommand(new FairShuffleCommand())
                 .addCommand(new InterleaveCommand())
+                .addCommand(new SetRoleCommand())
                 .addCommand(new FairPlayCommand())
                 .addCommand(new ViewCategoriesCommand())
                 .addCommand(new UrbanDictionaryCommand())

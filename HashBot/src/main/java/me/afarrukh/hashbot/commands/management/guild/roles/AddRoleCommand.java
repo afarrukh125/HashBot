@@ -23,6 +23,8 @@ public class AddRoleCommand extends Command implements RoleCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
+        evt.getMessage().delete().queue();
+
         if(params != null) {
             List<Role> roleList = evt.getGuild().getRolesByName(params, true);
 

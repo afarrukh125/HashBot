@@ -91,7 +91,6 @@ public class RoleAdder implements RoleGUI{
         switch(reactionName) {
             case cancel:
                 endSession();
-                message.delete().queue();
                 return;
             case back:
                 return;
@@ -151,7 +150,6 @@ public class RoleAdder implements RoleGUI{
         switch(reactionName) {
             case cancel:
                 endSession();
-                message.delete().queue();
                 return;
             case back:
                 stage--;
@@ -194,6 +192,7 @@ public class RoleAdder implements RoleGUI{
     private void endSession() {
         Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
         this.timeoutTimer.cancel();
+        message.delete().queue();
     }
 
     @Override
@@ -226,6 +225,7 @@ public class RoleAdder implements RoleGUI{
         public void run() {
             Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(adder);
             adder.timeoutTimer.cancel();
+            message.delete().queue();
         }
 
     }

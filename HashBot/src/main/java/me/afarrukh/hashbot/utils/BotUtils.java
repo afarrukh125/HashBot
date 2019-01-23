@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.*;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -93,8 +94,6 @@ public class BotUtils {
         g.getController().addSingleRoleToMember(m, newRole).queue();
         GuildDataManager jgm = new GuildDataManager(g);
         jgm.addRole(cap, rb.getUser().getId());
-        Invoker inv = new Invoker(rb.getGuild().getMemberById(rb.getUser().getId()));
-        inv.addCredit(-Constants.ROLE_CREATE_AMOUNT);
     }
 
     public static String[] createNumberEmojiArray() {
@@ -105,6 +104,12 @@ public class BotUtils {
         arr[9] = "\uD83D\uDD1F";
 
         return arr;
+    }
+
+    public static boolean isValidGameRole(Role r) {
+        return (r.hasPermission(Permission.ADMINISTRATOR) || r.hasPermission(Permission.BAN_MEMBERS)
+                || r.hasPermission(Permission.MANAGE_CHANNEL) || r.hasPermission(Permission.MANAGE_SERVER)
+                || r.hasPermission(Permission.MESSAGE_MANAGE) || r.hasPermission(Permission.VIEW_AUDIT_LOGS));
     }
 
     public static String[] createStandardNumberEmojiArray() {
