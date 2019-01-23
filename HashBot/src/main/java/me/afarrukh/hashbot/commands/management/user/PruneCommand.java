@@ -1,25 +1,16 @@
 package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.requests.restaction.pagination.MessagePaginationAction;
-import net.dv8tion.jda.core.requests.restaction.pagination.PaginationAction;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PruneCommand extends Command {
 
@@ -42,7 +33,7 @@ public class PruneCommand extends Command {
         }
         try {
             evt.getTextChannel().deleteMessages(messageBin).queue();
-            evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
+            evt.getChannel().sendMessage("Cleaned " +messageBin.size() + " bot-related messages.").queue();
             BotUtils.deleteLastMsg(evt);
         } catch(IllegalArgumentException e) {
             String[] msgData = e.getMessage().split(" ");
@@ -55,7 +46,7 @@ public class PruneCommand extends Command {
                     iter.remove();
             }
             evt.getTextChannel().deleteMessages(messageBin).queue();
-            evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
+            evt.getChannel().sendMessage("Cleaned " +messageBin.size() + " bot-related messages.").queue();
             BotUtils.deleteLastMsg(evt);
         }
     }

@@ -5,7 +5,6 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleDeleter;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

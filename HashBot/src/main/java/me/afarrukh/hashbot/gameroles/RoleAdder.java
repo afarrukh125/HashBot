@@ -31,7 +31,7 @@ public class RoleAdder implements RoleGUI{
 
     private final String back = "↩";
     private final String cancel = "\u26D4";
-    private final String[] numberEmojis;
+    private final String[] numberEmojis = BotUtils.createNumberEmojiArray();
     private final String e_left = "\u25C0";
     private final String e_right = "\u25B6";
     private final String confirm = "\u2705";
@@ -39,7 +39,6 @@ public class RoleAdder implements RoleGUI{
     public RoleAdder(MessageReceivedEvent evt) {
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
-        numberEmojis = BotUtils.createNumberEmojiArray();
 
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
@@ -168,19 +167,19 @@ public class RoleAdder implements RoleGUI{
                 message.clearReactions().complete();
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
                 if(desiredRole == null) {
-                    message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
+                    message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
                     return;
                 }
                 if(guild.getMemberById(user.getId()).getRoles()
                         .contains(Bot.gameRoleManager.getGuildRoleManager(guild).getRoleFromGameRole(desiredRole))) {
-                    message.editMessage(EmbedUtils.alreadyHasRoleEmbed(this)).queue();
+                    message.editMessage(EmbedUtils.alreadyHasRoleEmbed(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(this.desiredRole))).queue();
                     return;
                 }
                 try {
-                    message.editMessage(EmbedUtils.addRoleCompleteEmbed(this)).queue();
+                    message.editMessage(EmbedUtils.addRoleCompleteEmbed(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(this.desiredRole))).queue();
                     BotUtils.addRoleToMember(this);
                 } catch(IllegalArgumentException e) {
-                    message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
+                    message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
                     GuildDataManager jgm = new GuildDataManager(guild);
                     jgm.removeRole(desiredRole.getName());
                 }
@@ -192,7 +191,6 @@ public class RoleAdder implements RoleGUI{
 
     private void endSession() {
         Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(this);
-        message.delete().queue();
         this.timeoutTimer.cancel();
     }
 
@@ -225,7 +223,6 @@ public class RoleAdder implements RoleGUI{
         @Override
         public void run() {
             Bot.gameRoleManager.getGuildRoleManager(guild).getRoleAdders().remove(adder);
-            message.delete().queue();
             adder.timeoutTimer.cancel();
         }
 

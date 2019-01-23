@@ -12,8 +12,10 @@ import me.afarrukh.hashbot.gameroles.*;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
@@ -429,30 +431,30 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getNullRoleEmbed(RoleGUI ra) {
+    public static MessageEmbed getNullRoleEmbed(Guild guild) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.getGuild().getIconUrl());
+        eb.setThumbnail(guild.getIconUrl());
         eb.setTitle("Error");
         eb.appendDescription("The role you have selected is invalid. Please try again. (It may not exist)");
         return eb.build();
     }
 
-    public static MessageEmbed addRoleCompleteEmbed(RoleAdder ra) {
+    public static MessageEmbed addRoleCompleteEmbed(Role r) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.getGuild().getIconUrl());
+        eb.setThumbnail(r.getGuild().getIconUrl());
         eb.setTitle("Role added");
-        eb.appendDescription("You now have the role " +ra.getDesiredRole().getName());
+        eb.appendDescription("You now have the role " +r.getName());
         return eb.build();
     }
 
-    public static MessageEmbed alreadyHasRoleEmbed(RoleAdder ra) {
+    public static MessageEmbed alreadyHasRoleEmbed(Role r) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(ra.getGuild().getIconUrl());
+        eb.setThumbnail(r.getGuild().getIconUrl());
         eb.setTitle("Error");
-        eb.appendDescription("You already have this role.");
+        eb.appendDescription("You already have the role " + r.getName());
         return eb.build();
     }
 

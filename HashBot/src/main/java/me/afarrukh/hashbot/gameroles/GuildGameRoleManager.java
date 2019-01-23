@@ -105,6 +105,8 @@ public class GuildGameRoleManager {
     }
 
     public Role getRoleFromGameRole(GameRole gr) {
+        if(gr == null)
+            return null;
         for(Role r: guild.getRoles()) {
             if(r.getName().equalsIgnoreCase(gr.getName()))
                 return r;

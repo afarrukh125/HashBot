@@ -188,7 +188,7 @@ public class RoleDeleter implements RoleGUI {
                     message.editMessage(EmbedUtils.deleteRoleCompleteEmbed(this)).queue();
                     BotUtils.deleteRole(this);
                 } catch(IllegalArgumentException e) {
-                    message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
+                    message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
                     GuildDataManager jgm = new GuildDataManager(guild);
                     jgm.removeRole(roleToBeDeleted.getName());
                 }
