@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
 import java.awt.*;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,11 +50,19 @@ public class RoleBuilder implements RoleGUI{
             this.roleName = tokens[0];
 
             String colorString = tokens[1].replace('#', ' ').trim();
-            this.red = Integer.valueOf( colorString.substring(0, 2), 16);
-            this.green = Integer.valueOf( colorString.substring(2, 4), 16);
-            this.blue = Integer.valueOf( colorString.substring(4, 6), 16);
+            try {
+                this.red = Integer.valueOf(colorString.substring(0, 2), 16);
+                this.green = Integer.valueOf(colorString.substring(2, 4), 16);
+                this.blue = Integer.valueOf(colorString.substring(4, 6), 16);
 
-            this.color = hexToRGB(colorString);
+                this.color = hexToRGB(colorString);
+            } catch(NumberFormatException | StringIndexOutOfBoundsException e) {
+                Random random = new Random();
+                this.red = 255;
+                this.green = 255;
+                this.blue = 255;
+                this.color = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+            }
             this.stage = 4;
 
             message = channel.sendMessage(EmbedUtils.getRoleConfirmEmbed(this)).complete();
