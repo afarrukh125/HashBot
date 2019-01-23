@@ -11,7 +11,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Further information regarding GameRoles is given in the GameRoleManager class.
@@ -20,6 +22,8 @@ import java.util.Iterator;
 public class GuildGameRoleManager {
 
     private final ArrayList<GameRole> gameRoles;
+
+    private final Map<GameRole, Role>  roleMap;
     private final ArrayList<RoleBuilder> roleBuilders;
     private final ArrayList<RoleAdder> roleAdders;
     private final ArrayList<RoleRemover> roleRemovers;
@@ -37,6 +41,8 @@ public class GuildGameRoleManager {
         roleRemovers = new ArrayList<>();
         roleDeleters = new ArrayList<>();
         init();
+
+        roleMap = new HashMap<>();
     }
 
     private void init() {
@@ -107,9 +113,17 @@ public class GuildGameRoleManager {
     public Role getRoleFromGameRole(GameRole gr) {
         if(gr == null)
             return null;
+
+        Role role = roleMap.get(gr);
+
+        if(role != null)
+            return role;
+
         for(Role r: guild.getRoles()) {
-            if(r.getName().equalsIgnoreCase(gr.getName()))
+            if(r.getName().equalsIgnoreCase(gr.getName())) {
+                roleMap.put(gr, r);
                 return r;
+            }
         }
         return null;
     }

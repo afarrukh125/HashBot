@@ -97,6 +97,7 @@ public class Bot {
                 .addCommand(new ViewCategoriesCommand())
                 .addCommand(new UrbanDictionaryCommand())
                 .addCommand(new CheckMemoryCommand())
+                .addCommand(new RoleStatsCommand())
                 .addCommand(new SkipCommand());
 
         startUpMessages();
