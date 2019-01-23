@@ -31,34 +31,32 @@ public class PruneCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        evt.getMessage().delete().queue();
-        MessagePaginationAction history = evt.getTextChannel().getIterableHistory();
-        PaginationAction<Message, MessagePaginationAction>.PaginationIterator iter = history.iterator();
-        int count = 0;
+        MessagePaginationAction messageHistory = evt.getTextChannel().getIterableHistory();
         List<Message> messageBin = new LinkedList<>();
-
-        while(iter.hasNext() && count < 100) {
-            Message m = iter.next();
-//            System.out.println(m.getContentRaw() + ": " + System.currentTimeMillis()/1000 +" - " +  m.getCreationTime().toInstant().toEpochMilli()/1000
-//                + ", " + (System.currentTimeMillis() -  m.getCreationTime().toInstant().toEpochMilli()));
-
-            if(System.currentTimeMillis() - m.getCreationTime().toInstant().toEpochMilli() > Constants.UNIXTWOWEEKS*1000)
+        for(Message m: messageHistory) {
+            if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+                messageBin.add(m);
+            }
+            if(messageBin.size() == 100)
                 break;
-
-            if(m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
-                messageBin.add(m); count++;
-            }
-            if(m.getAuthor().equals(evt.getJDA().getSelfUser())) {
-                messageBin.add(m); count++;
-            }
         }
-        if(messageBin.size() > 2) {
+        try {
             evt.getTextChannel().deleteMessages(messageBin).queue();
-            Message m = evt.getTextChannel().sendMessage("Deleted " +count+ " bot-related messages").complete();
-            m.delete().queueAfter(2, TimeUnit.SECONDS);
-        } else {
-            Message m = evt.getTextChannel().sendMessage("Could not find any messages to clean.").complete();
-            m.delete().queueAfter(2, TimeUnit.SECONDS);
+            evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
+            BotUtils.deleteLastMsg(evt);
+        } catch(IllegalArgumentException e) {
+            String[] msgData = e.getMessage().split(" ");
+            String msgId = msgData[msgData.length -1];
+            Iterator<Message> iter = messageBin.iterator();
+            //Removing messages from message bin with id less than the message id that caused the exception
+            while(iter.hasNext()) {
+                Message delMsg = iter.next();
+                if(delMsg.getIdLong() <= Long.parseLong(msgId))
+                    iter.remove();
+            }
+            evt.getTextChannel().deleteMessages(messageBin).queue();
+            evt.getChannel().sendMessage("Cleaned. :ok_hand:").queue();
+            BotUtils.deleteLastMsg(evt);
         }
     }
 
