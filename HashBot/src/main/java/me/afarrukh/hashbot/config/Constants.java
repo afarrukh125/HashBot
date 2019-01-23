@@ -52,9 +52,7 @@ public class Constants {
     public static final int MUSICBAR_SCALE = 35;
     public static final int MAX_VOL = 100; //The maximum volume the bot can play at.
 
-    public static final int ITERABLE_MESSAGES = 500;
-
-    public static final int UNIXTWOWEEKS = 1209600;
+    public static final int UNIXTWOWEEKS = 1209600; //Unix time for two weeks in SECONDS
 
     public static Long INITIAL_MEMORY;
 

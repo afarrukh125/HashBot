@@ -39,7 +39,10 @@ public class PruneCommand extends Command {
 
         while(iter.hasNext() && count < 100) {
             Message m = iter.next();
-            if(System.currentTimeMillis() - m.getCreationTime().toInstant().toEpochMilli() > Constants.UNIXTWOWEEKS)
+//            System.out.println(m.getContentRaw() + ": " + System.currentTimeMillis()/1000 +" - " +  m.getCreationTime().toInstant().toEpochMilli()/1000
+//                + ", " + (System.currentTimeMillis() -  m.getCreationTime().toInstant().toEpochMilli()));
+
+            if(System.currentTimeMillis() - m.getCreationTime().toInstant().toEpochMilli() > Constants.UNIXTWOWEEKS*1000)
                 break;
 
             if(m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
