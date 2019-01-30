@@ -11,7 +11,7 @@ import java.util.*;
 
 public class CommandManager {
 
-    private final Map<String, Command> commandMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, Command> commandMap = new HashMap<>();
 
     /**
      * Each time a message is sent with the bot prefix is sent, this method is called to check if a command exists
@@ -33,7 +33,6 @@ public class CommandManager {
 
         if(command != null) command.onInvocation(evt, params); //Only does the command onInvocation method if
                                                                //the command is valid
-
     }
 
     /**
@@ -71,7 +70,24 @@ public class CommandManager {
                 continue;
             commandList.add(c);
         }
+        commandList.sort(new Comparator<Command>() {
+            @Override
+            public int compare(Command o1, Command o2) {
+                if(o1.getName().compareTo(o2.getName()) < 0)
+                    return -1;
+                else if(o1.getName().compareTo(o2.getName()) > 0)
+                    return 1;
+                return 0;
+            }
+        });
         return commandList;
+    }
+
+    public void removeCommand(Command c) {
+        this.commandMap.remove(c.getName());
+        for(String s: c.getAliases()) {
+            this.commandMap.remove(s);
+        }
     }
 
     public List<Command> getNonAdminCommands() {

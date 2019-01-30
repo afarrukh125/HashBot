@@ -116,8 +116,8 @@ public class Bot {
     private void setMusicOnly() {
         for(Command c: commandManager.getCommandList()) {
             if(!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
-            && !(c instanceof SetNickCommand))
-                commandManager.getCommandList().remove(c);
+            && !(c instanceof SetNickCommand) && !(c instanceof SetPrefixCommand) && !(c instanceof HelpCommand) && !(c instanceof ViewCategoriesCommand))
+                commandManager.removeCommand(c);
         }
     }
 

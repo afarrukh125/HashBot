@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class ClearQueueCommand extends Command implements MusicCommand {
 
     public ClearQueueCommand() {
-        super("clearqueue", new String[] {"cq", "c"});
+        super("clearqueue", new String[] {"cq"});
         description = "Clears the current queue for the music player";
     }
 
