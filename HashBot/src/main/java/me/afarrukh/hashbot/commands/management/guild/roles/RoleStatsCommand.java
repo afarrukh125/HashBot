@@ -8,13 +8,15 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.*;
 
-public class RoleStatsCommand extends Command implements AdminCommand, RoleCommand {
+public class RoleStatsCommand extends Command implements RoleCommand {
     public RoleStatsCommand() {
         super("rolestats");
         addAlias("rs");
@@ -35,7 +37,7 @@ public class RoleStatsCommand extends Command implements AdminCommand, RoleComma
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(evt.getGuild().getIconUrl());
-        eb.setTitle("GameRole statistics for " + evt.getGuild().getName());
+        eb.setTitle("GameRole statistics for " + evt.getGuild().getName() + " [Total " +filterBots(evt).size()+ " members]");
 
         Map<GameRole, Integer> roleMap = new HashMap<>();
 
@@ -66,5 +68,12 @@ public class RoleStatsCommand extends Command implements AdminCommand, RoleComma
     @Override
     public void onIncorrectParams(TextChannel channel) {
 
+    }
+
+    private List<Member> filterBots(MessageReceivedEvent evt) {
+        List<Member> memberList = new ArrayList<>(evt.getGuild().getMembers());
+
+        memberList.removeIf(m -> m.getUser().isBot());
+        return memberList;
     }
 }

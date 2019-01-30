@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import com.sun.org.glassfish.external.statistics.Stats;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
@@ -10,7 +11,7 @@ import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.guild.roles.*;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
-import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
+import me.afarrukh.hashbot.commands.tagging.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -100,6 +101,8 @@ public class Bot {
                 .addCommand(new RoleStatsCommand())
                 .addCommand(new SkipCommand());
 
+        //setMusicOnly();
+
         startUpMessages();
 
         musicManager = new MusicManager();
@@ -108,8 +111,14 @@ public class Bot {
         reactionManager = new ReactionManager();
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
+    }
 
-        //botUser.addEventListener(extrasManager);
+    private void setMusicOnly() {
+        for(Command c: commandManager.getCommandList()) {
+            if(!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
+            && !(c instanceof SetNickCommand))
+                commandManager.getCommandList().remove(c);
+        }
     }
 
     private void startUpMessages() {
