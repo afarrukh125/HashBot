@@ -21,7 +21,7 @@ public class CommandManager {
     public void processEvent(MessageReceivedEvent evt) {
         String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
         final String params = (tokens.length > 1) ? tokens[1] : null;
-        final String commandName = tokens[0];
+        final String commandName = tokens[0].toLowerCase();
 
         Command command = commandFromName(commandName);
 
