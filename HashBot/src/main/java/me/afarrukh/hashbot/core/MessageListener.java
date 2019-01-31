@@ -83,6 +83,9 @@ class MessageListener extends ListenerAdapter {
 
         VoiceChannel vc = evt.getChannelLeft();
 
+        if(!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
+            return;
+
         GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
 
         if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
@@ -116,6 +119,10 @@ class MessageListener extends ListenerAdapter {
         } catch (IndexOutOfBoundsException ignore) {}
 
         VoiceChannel vc = evt.getChannelJoined();
+
+        if(!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
+            return;
+
         GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
 
         //Check if the user to join is the first to join and resume if it is already paused
