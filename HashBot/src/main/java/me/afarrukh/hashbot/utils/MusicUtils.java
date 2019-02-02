@@ -23,6 +23,12 @@ public class MusicUtils {
      * @param playTop Whether or not the song is to be queued to the top of the list
      */
     public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
+
+        if(track.getDuration() >= 480000) {
+            evt.getTextChannel().sendMessage("You cannot queue a song that has a duration of more than 8 minutes.").queue();
+            return;
+        }
+
         connectToChannel(evt);
         Invoker invoker = new Invoker(evt.getMember());
         if(playTop) {

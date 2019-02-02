@@ -45,7 +45,7 @@ public class Constants {
     public static final int LEADERBOARD_MAX = 10;
 
     public static final int PLAY_TOP_COST = 15;
-    public static final int MAX_PLAYLIST_SIZE = 300;
+    public static final int MAX_PLAYLIST_SIZE = 400;
 
     public static final int DISCONNECT_DELAY = 420; //The amount of seconds to wait before disconnecting after a user leaves
 
