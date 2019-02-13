@@ -13,6 +13,7 @@ public class ViewCategoriesCommand extends Command {
 
     public ViewCategoriesCommand() {
         super("viewcategories");
+        addAlias("vc");
         description = "Displays all command categories";
     }
 

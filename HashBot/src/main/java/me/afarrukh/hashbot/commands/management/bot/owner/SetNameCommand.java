@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.commands.management.bot.owner;
 
+import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SetNameCommand extends OwnerCommand {
+public class SetNameCommand extends Command implements OwnerCommand {
 
     public SetNameCommand() {
         super("setname");

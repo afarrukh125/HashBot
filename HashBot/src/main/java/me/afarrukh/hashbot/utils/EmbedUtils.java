@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
-import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
+import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
@@ -401,6 +401,8 @@ public class EmbedUtils {
         }
         eb.setTitle("Roles for "+ra.getGuild().getName()+ " (Page " +page+"/"+maxPageNumber+")");
         eb.setThumbnail(ra.getGuild().getIconUrl());
+        if(Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().size() > 10)
+            eb.setFooter("Use the arrow reaction to move to the next page of roles", null);
         return eb.build();
     }
 

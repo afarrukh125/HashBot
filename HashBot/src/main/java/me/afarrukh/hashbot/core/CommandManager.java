@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.commands.management.bot.owner.OwnerCommand;
+import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

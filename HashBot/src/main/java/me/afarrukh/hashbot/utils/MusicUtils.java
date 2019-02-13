@@ -148,13 +148,13 @@ public class MusicUtils {
      * @param evt The event being queried for information such as the channel
      * @param vol The volume to be changed to
      */
-    public static void changeVolume(MessageReceivedEvent evt, int vol) {
+    public static void setVolume(MessageReceivedEvent evt, int vol) {
         if(vol < 0 || vol > Constants.MAX_VOL) {
-            evt.getChannel().sendMessage("You cannot set the volume to that value, you troll.").queue();
+            evt.getChannel().sendMessage("You cannot set the volume to that value").queue();
             return;
         }
-        evt.getChannel().sendMessage("Volume set to " +vol).queue();
         Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
+        evt.getChannel().sendMessage("Volume set to " + vol).queue();
     }
 
     /**
