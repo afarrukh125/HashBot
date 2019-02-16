@@ -62,7 +62,7 @@ public class EmbedUtils {
             int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
             int count = 1;
             eb.appendDescription("__Now Playing:__\n[" +currentTrack.getInfo().title+ "](" +currentTrack.getInfo().uri
-                    + ") | (`"+CmdUtils.longToMMSS(currentTrack.getDuration())+"`) `queued by: "
+                    + ") | (`"+ CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration())+"`) `queued by: "
                     +currentTrack.getUserData().toString()+ "`\n\n\n__Upcoming__\n\n");
             while(iter.hasNext()) {
                 AudioTrack at = iter.next();
@@ -511,7 +511,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("List of game roles for " + rr.getUser().getName());
 
-        //If there are no songs in the queue then it will just give an embedded message for a single song.
+        //If there are no roles in the server...
         if(roleList.size() == 0) {
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)

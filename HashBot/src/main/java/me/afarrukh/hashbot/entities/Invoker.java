@@ -208,6 +208,14 @@ public class Invoker {
         return roleList;
     }
 
+    public void addExperience(int amount) {
+        setExp((int) getExp() + amount);
+    }
+
+    public void addRandomExperience() {
+        addExperience(new Random().nextInt(Constants.RANDOM_EXPERIENCE_BOUND));
+    }
+
     public Member getMember() {
         return member;
     }

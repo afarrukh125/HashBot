@@ -12,6 +12,8 @@ import me.afarrukh.hashbot.commands.management.guild.roles.*;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import me.afarrukh.hashbot.commands.tagging.*;
+import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -20,6 +22,7 @@ import net.dv8tion.jda.core.entities.Game;
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class Bot {
     private final String token;
@@ -110,6 +113,9 @@ public class Bot {
         reactionManager = new ReactionManager();
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
+
+        Timer experienceTimer = new Timer();
+        experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER*1000, Constants.EXPERIENCE_TIMER*1000);
     }
 
     private void setMusicOnly() {
