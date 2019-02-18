@@ -73,22 +73,8 @@ public class Invoker {
         int currentExp = (int) getExp();
 
         this.setExp(currentExp + amt);
-        int newExp = currentExp + amt;
 
-        //System.out.println("User " +member.getUser().getName()+ " now has " +(newExp)+ " experience. (Added " +amt+ ")");
-
-        int expForNextLevel = getExpForNextLevel();
-
-        if(newExp >= expForNextLevel) {
-            int currentLevel = (int) getLevel();
-
-            setExp(newExp - expForNextLevel);
-            setLevel(currentLevel+1);
-
-            System.out.println("<"
-                    + member.getGuild().getName()+ "> " +
-                    member.getUser().getName() + " has levelled up. (Now level " +(currentLevel+1)+")");
-        }
+        checkExperience(currentExp, amt);
     }
 
     /**
@@ -167,15 +153,6 @@ public class Invoker {
         return value;
     }
 
-//    public static void main(String[] args) {
-//        int x = parseTotalExperienceFromLevel(34) + 4801;
-//        int y = parseTotalExperienceFromLevel(23) + 663;
-//        System.out.println(x);
-//        System.out.println(y);
-//        System.out.println(x + y);
-//        System.out.println(parseLevelFromTotalExperience(x+y)[0] + ", " + parseLevelFromTotalExperience(x+y)[1]);
-//    }
-
     public long getLevel() {
         return (Long) userFileManager.getValue("level");
     }
@@ -213,7 +190,29 @@ public class Invoker {
     }
 
     public void addRandomExperience() {
-        addExperience(new Random().nextInt(Constants.RANDOM_EXPERIENCE_BOUND));
+        int amt = new Random().nextInt(Constants.RANDOM_EXPERIENCE_BOUND);
+        int currentExp = (int) getExp();
+
+        addExperience(amt);
+
+        checkExperience(currentExp, amt);
+    }
+
+    private void checkExperience(int currentExp, int amt) {
+        int newExp = currentExp + amt;
+
+        int expForNextLevel = getExpForNextLevel();
+
+        if(newExp >= expForNextLevel) {
+            int currentLevel = (int) getLevel();
+
+            setExp(newExp - expForNextLevel);
+            setLevel(currentLevel+1);
+
+            System.out.println("<"
+                    + member.getGuild().getName()+ "> " +
+                    member.getUser().getName() + " has levelled up. (Now level " +(currentLevel+1)+")");
+        }
     }
 
     public Member getMember() {
