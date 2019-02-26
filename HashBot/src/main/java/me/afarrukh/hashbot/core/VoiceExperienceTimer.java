@@ -22,6 +22,10 @@ public class VoiceExperienceTimer extends TimerTask {
                 for(Member m: vc.getMembers()) {
                     if(m.getUser().isBot())
                         continue;
+                    if(m.getVoiceState().isMuted() || m.getVoiceState().isDeafened())
+                        continue;
+                    if(m.getVoiceState().getChannel().equals(g.getAfkChannel()))
+                        continue;
                     Invoker invoker = new Invoker(m);
                     invoker.addRandomExperience();
                     invoker.addRandomCredit();

@@ -30,7 +30,6 @@ public class Constants {
 
     public static final String BG_PATH = "res/images/dark.jpg";
 
-    public static final long dayToMillis = 86400000;
     public static final long minToMillis = 60000;
 
     public static final int colChangeCred = 500;
@@ -52,11 +51,7 @@ public class Constants {
     public static final int MUSICBAR_SCALE = 35;
     public static final int MAX_VOL = 100; //The maximum volume the bot can play at.
 
-    public static final int UNIXTWOWEEKS = 1209600; //Unix time for two weeks in SECONDS
-
     public static Long INITIAL_MEMORY;
-
-    public static final int ROLE_CREATE_AMOUNT = 2500;
 
     public static final String SELECTEDPOS = "full_moon";
     public static final String UNSELECTEDPOS = "=";
@@ -65,7 +60,7 @@ public class Constants {
     public static final Color STATSIMG_COL = Color.WHITE;
 
     public static final int RANDOM_EXPERIENCE_BOUND = 50;
-    public static final int EXPERIENCE_TIMER = 60; // Seconds to tick for experience
+    public static final int EXPERIENCE_TIMER = 150; // Seconds to tick for experience
 
 
     //Bot configuration constants

@@ -10,6 +10,7 @@ public class RemoveRoleCommand extends Command implements RoleCommand {
 
     public RemoveRoleCommand() {
         super("removerole");
+        addAlias("removeroles");
         description = "Lets you remove a role from your game roles";
     }
 
