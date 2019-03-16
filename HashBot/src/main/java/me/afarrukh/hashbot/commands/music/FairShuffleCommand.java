@@ -17,10 +17,11 @@ public class FairShuffleCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().fairShuffle();
-            evt.getChannel().sendMessage("Shuffled the playlist fairly :ok_hand:").queue();
-        }
+        if(!MusicUtils.canInteract(evt))
+            return;
+
+        Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().fairShuffle();
+        evt.getChannel().sendMessage("Shuffled the playlist fairly :ok_hand:").queue();
     }
 
     @Override

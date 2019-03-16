@@ -18,22 +18,23 @@ public class FairPlayCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
-            TrackScheduler ts = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+        if(!MusicUtils.canInteract(evt))
+            return;
 
-            if(ts.isLoopingQueue()) {
-                evt.getTextChannel().sendMessage("Cannot use this feature unless looping queue is disabled.").queue();
-                return;
-            }
+        TrackScheduler ts = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
 
-            ts.setFairPlay(!ts.isFairPlay());
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("Fairplay mode is now ");
-            final String onOrOff = ts.isFairPlay() ? "on" : "off";
-            sb.append(onOrOff).append(".");
-            evt.getTextChannel().sendMessage(sb.toString()).queue();
+        if (ts.isLoopingQueue()) {
+            evt.getTextChannel().sendMessage("Cannot use this feature unless looping queue is disabled.").queue();
+            return;
         }
+
+        ts.setFairPlay(!ts.isFairPlay());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Fairplay mode is now ");
+        final String onOrOff = ts.isFairPlay() ? "on" : "off";
+        sb.append(onOrOff).append(".");
+        evt.getTextChannel().sendMessage(sb.toString()).queue();
     }
 
     @Override

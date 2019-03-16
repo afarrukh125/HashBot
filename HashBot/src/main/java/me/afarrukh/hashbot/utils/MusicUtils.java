@@ -87,26 +87,27 @@ public class MusicUtils {
     }
 
     /**
-     * Checks if the bot can be interacted by a particular user (the user in the event). This depends upon whether or not the user is connected
-     * into the same channel as the bot
-     * @param evt The message receieved event containing information as to whether or not a member can interact
-     * @return A true or false value depending on whether or not the user can interact with the bot
-     */
-    public static boolean canInteract(MessageReceivedEvent evt) {
-        if(evt.getMember().getVoiceState().getChannel() == null) // If the member is not connected to a channel
-            return false;
-        if(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()).getVoiceState().getChannel() == null)
-            return true; // If the bot user is not connected to a channel then we know we can queue commands on it and it will join.
-        return evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()).getVoiceState().getChannel().getId()
-                .equals(evt.getMember().getVoiceState().getChannel().getId()); // If the user and the bot are not in the same channel then return false, otherwise true
-    }
-
-    /**
      * Deletes the last bot message and message event message for 'play' commands mainly
      */
     public static void cleanPlayMessage(MessageReceivedEvent evt) {
         BotUtils.deleteLastMsg(evt);
         evt.getMessage().delete().queue();
+    }
+
+    /**
+     *
+     * @param evt The event associated with the call
+     * @return True or false depending on whether music commands can be called
+     */
+    public static boolean canInteract(MessageReceivedEvent evt) {
+        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() == null || evt.getMember().getVoiceState().getChannel() == null)
+            return false;
+
+        if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel()
+                .equals(evt.getMember().getVoiceState().getChannel()))
+            return false;
+
+        return true;
     }
 
     /**

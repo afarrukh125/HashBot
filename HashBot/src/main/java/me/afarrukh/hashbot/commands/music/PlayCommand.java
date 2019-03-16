@@ -23,9 +23,16 @@ public class PlayCommand extends Command implements MusicCommand {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
-        if(!MusicUtils.canInteract(evt)) {
-            evt.getTextChannel().sendMessage("You need to be in the same channel as the bot, and the bot needs to be connected.").queue();
+
+        if (evt.getMember().getVoiceState().getChannel() == null)
             return;
+
+        if(evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
+            if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
+                // If the bot is not in the same channel as the user (assuming already connected) then return
+                evt.getTextChannel().sendMessage("You must be in the same channel as the bot to queue songs to it.").queue();
+                return;
+            }
         }
 
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
