@@ -20,12 +20,13 @@ public class RoleStatsCommand extends Command implements RoleCommand {
     public RoleStatsCommand() {
         super("rolestats");
         addAlias("rs");
+        addAlias("rolecount");
         description = "View how many members belong in each role.";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<GameRole> roleList = new ArrayList<>(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRoles());
+        List<Role> roleList = new ArrayList<>(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRolesAsRoles());
 
         if(roleList.isEmpty()) {
             evt.getTextChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("No GameRoles on this server.")
@@ -39,13 +40,10 @@ public class RoleStatsCommand extends Command implements RoleCommand {
         eb.setThumbnail(evt.getGuild().getIconUrl());
         eb.setTitle("GameRole statistics for " + evt.getGuild().getName() + " [Total " +filterBots(evt).size()+ " members]");
 
-        Map<GameRole, Integer> roleMap = new HashMap<>();
+        Map<Role, Integer> roleMap = new HashMap<>();
 
-        for(GameRole gr: roleList) {
-            Role r = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(gr);
-            if(r != null) {
-                roleMap.put(gr, evt.getGuild().getMembersWithRoles(r).size());
-            }
+        for(Role r: roleList) {
+            roleMap.put(r, evt.getGuild().getMembersWithRoles(r).size());
         }
 
         roleList.sort((o1, o2) -> {
@@ -57,7 +55,7 @@ public class RoleStatsCommand extends Command implements RoleCommand {
         });
 
         int count = 1;
-        for(GameRole r: roleList) {
+        for(Role r: roleList) {
             eb.appendDescription("`"+count + ".` **" + r.getName() + "**: " +roleMap.get(r)+ " members\n\n");
             count++;
         }

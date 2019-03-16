@@ -23,9 +23,8 @@ public class PlayCommand extends Command implements MusicCommand {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
-        if(!MusicUtils.canInteract(evt) && !evt.getMember().getVoiceState().inVoiceChannel()) {
-            evt.getChannel().sendMessage("You cannot call the bot if you are not in a voice channel.").queue();
-            MusicUtils.cleanPlayMessage(evt);
+        if(!MusicUtils.canInteract(evt)) {
+            evt.getTextChannel().sendMessage("You need to be in the same channel as the bot, and the bot needs to be connected.").queue();
             return;
         }
 

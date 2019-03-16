@@ -32,11 +32,7 @@ class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
-        if(evt.isFromType(ChannelType.PRIVATE))
-            return;
         if(evt.getAuthor().isBot())
-            return;
-        if(!evt.getMessage().getAttachments().isEmpty())
             return;
         if(evt.getMessage().getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
             Bot.commandManager.processEvent(evt);
@@ -49,7 +45,10 @@ class MessageListener extends ListenerAdapter {
         Invoker invoker = new Invoker(evt.getMember());
         if(invoker.hasTimePassed()) {
             invoker.addRandomCredit();
-            invoker.updateExperience(evt.getMessage().getContentRaw());
+            if(!evt.getMessage().getAttachments().isEmpty())
+                invoker.addRandomExperience();
+            else
+                invoker.updateExperience(evt.getMessage().getContentRaw());
         }
         RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getAuthor());
         if(rb != null)
@@ -71,19 +70,10 @@ class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent evt) {
-        try {
-            Role voiceRole = evt.getGuild().getRolesByName("voice", true).get(0);
-
-            if(voiceRole != null
-                    && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)
-                    && !evt.getMember().getUser().getId().equals(evt.getJDA().getSelfUser().getId()))
-                evt.getGuild().getController().removeSingleRoleFromMember(evt.getMember(), voiceRole)
-                        .queue();
-        } catch (IndexOutOfBoundsException ignore) {}
 
         VoiceChannel vc = evt.getChannelLeft();
 
-        if(!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
+        if(!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()))) // If the channel that the event is associated with does not contain the bot
             return;
 
         GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());

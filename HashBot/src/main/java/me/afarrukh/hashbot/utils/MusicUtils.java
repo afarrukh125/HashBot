@@ -93,15 +93,12 @@ public class MusicUtils {
      * @return A true or false value depending on whether or not the user can interact with the bot
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
-        try {
-            String memberChannel = evt.getMember().getVoiceState().getAudioChannel().getId();
-            String botChannel = evt.getGuild().getAudioManager().getConnectedChannel().getId();
-            if(memberChannel.equals(botChannel))
-                return true;
-            evt.getChannel().sendMessage("You cannot interact with the bot unless you are in its voice channel").queue();
+        if(evt.getMember().getVoiceState().getChannel() == null) // If the member is not connected to a channel
             return false;
-        }catch(NullPointerException ignored) {}
-        return false;
+        if(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()).getVoiceState().getChannel() == null)
+            return true; // If the bot user is not connected to a channel then we know we can queue commands on it and it will join.
+        return evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()).getVoiceState().getChannel().getId()
+                .equals(evt.getMember().getVoiceState().getChannel().getId()); // If the user and the bot are not in the same channel then return false, otherwise true
     }
 
     /**

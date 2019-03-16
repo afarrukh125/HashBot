@@ -10,10 +10,7 @@ import net.dv8tion.jda.core.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Further information regarding GameRoles is given in the GameRoleManager class.
@@ -134,6 +131,10 @@ public class GuildGameRoleManager {
 
     public ArrayList<GameRole> getGameRoles() {
         return gameRoles;
+    }
+
+    public List<Role> getGameRolesAsRoles() {
+        return new ArrayList<>(roleMap.values());
     }
 
     public ArrayList<RoleBuilder> getRoleBuilders() {
