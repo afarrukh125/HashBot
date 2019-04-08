@@ -84,12 +84,12 @@ public class FlipCommand extends Command implements EconCommand {
 
         if(rolledValue == userInputMap.get(choice)) {
             // If they flipped on the right choice then reward them
-            sb.append("You won " + amount + " credits!");
+            sb.append("You won ").append(amount).append(" credits!");
             eb.setColor(Color.GREEN);
             invoker.addCredit(amount);
         } else {
             // Otherwise take away credits
-            sb.append("You lost " + amount + " credits!");
+            sb.append("You lost ").append(amount).append(" credits!");
             eb.setColor(Color.RED);
             if(invoker.getCredit() - amount < 0)
                 invoker.addCredit(-invoker.getCredit());
@@ -97,7 +97,7 @@ public class FlipCommand extends Command implements EconCommand {
                 invoker.addCredit(-amount);
         }
 
-        sb.append("\n\n You now have " + invoker.getCredit() + " credits.");
+        sb.append("\n\n You now have ").append(invoker.getCredit()).append(" credits.");
 
         eb.setDescription(sb.toString());
 

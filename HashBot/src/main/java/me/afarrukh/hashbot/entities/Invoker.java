@@ -22,10 +22,12 @@ public class Invoker {
 
     private final Member member;
     private final DataManager userFileManager;
+    private long credit;
 
     public Invoker(Member m) {
         member = m;
         userFileManager = new UserDataManager(m);
+        credit = (Long) userFileManager.getValue("credit");
     }
 
     public Role getRole(String name) {
@@ -51,13 +53,13 @@ public class Invoker {
     }
 
     public void addCredit(long amt) {
-        long credit = getCredit();
-        if(credit >= Long.MAX_VALUE) {
+        if(this.credit >= Long.MAX_VALUE) {
             userFileManager.updateValue("credit", Math.abs(Long.MAX_VALUE));
+            credit = Long.MAX_VALUE;
             return;
         }
+        userFileManager.updateValue("credit", credit + amt);
         credit += amt;
-        userFileManager.updateValue("credit", credit);
     }
 
     /**
@@ -145,12 +147,7 @@ public class Invoker {
     }
 
     public long getCredit() {
-        long value = Math.abs((Long) userFileManager.getValue("credit"));
-        if(value <= -Long.MAX_VALUE) {
-            userFileManager.updateValue("credit", Long.MAX_VALUE - 1);
-            return Long.MAX_VALUE-1;
-        }
-        return value;
+        return credit;
     }
 
     public long getLevel() {
