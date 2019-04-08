@@ -2,12 +2,15 @@ package me.afarrukh.hashbot.commands.econ;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.EconCommand;
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class FlipCommand extends Command implements EconCommand {
@@ -19,87 +22,92 @@ public class FlipCommand extends Command implements EconCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        // Checking parameter validity
         if(params == null) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
 
-        Invoker invoker = new Invoker(evt.getMember());
-
-        String[] tokens = params.split(" ");
-
-        if(tokens[0] == null || tokens[1] == null) {
+        if(params.split(" ").length != 2) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
 
-        long amount = 0;
+        // Converting user input into variables
+        String[] tokens = params.split(" ");
         String choice = tokens[1];
+        long amount = 0;
 
+        Invoker invoker = new Invoker(evt.getMember());
+        // Converting user input amount from String to long
         try {
             amount = Long.parseLong(tokens[0]);
-        } catch(NumberFormatException e) {
-            if(tokens[0].equalsIgnoreCase("all")) {
+        } catch (NumberFormatException e) {
+            if(tokens[0].equalsIgnoreCase("all"))
                 amount = invoker.getCredit();
+            else {
+                evt.getTextChannel().sendMessage("Please enter a valid amount.").queue();
+                return;
             }
         }
 
-        Random random = new Random();
-        int outcome = random.nextInt(2) + 1;
+        // Mapping user input to number rolls.
+        final Map<String, Integer> userInputMap = new HashMap<>();
+        userInputMap.put("heads", 1); userInputMap.put("h", 1); userInputMap.put("head", 1);
+        userInputMap.put("tails", 2); userInputMap.put("t", 2); userInputMap.put("tail", 2);
 
-        if(amount >= Long.MAX_VALUE/2) {
-            evt.getTextChannel().sendMessage("You are too rich. You cannot flip on anything.").queue();
+        // Checking if the user choice entered is valid
+        if(userInputMap.get(tokens[1]) == null) {
+            evt.getTextChannel().sendMessage("You must flip on either heads or tails.").queue();
             return;
         }
 
-        if(amount <= 0) {
-            evt.getTextChannel().sendMessage("You must provide an amount.").queue();
-            return;
-        }
-
-        if(invoker.getCredit() < amount) {
+        if(invoker.getCredit() < amount || invoker.getCredit() <= 0) {
             evt.getTextChannel().sendMessage("You do not have enough credits.").queue();
             return;
         }
 
-        int choiceToNumber;
+        // Mapping roll outcome to name
+        final Map<Integer, String> outcomeMap = new HashMap<>();
+        outcomeMap.put(1, "heads");
+        outcomeMap.put(2, "tails");
 
-        if(choice.equalsIgnoreCase("head") || choice.equalsIgnoreCase("heads") || choice.equalsIgnoreCase("h"))
-            choiceToNumber = 1;
-        else if(choice.equalsIgnoreCase("tail") || choice.equalsIgnoreCase("tails") || choice.equalsIgnoreCase("t"))
-            choiceToNumber = 2;
-        else {
-            evt.getTextChannel().sendMessage("You can only flip on heads or tails.").queue();
-            return;
-        }
-
-        EmbedBuilder eb = new EmbedBuilder();
+        int rolledValue = new Random().nextInt(2) + 1;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" You");
-        if(outcome == choiceToNumber) {
-            sb.append(" won ");
-            eb.setTitle("You won!");
-            invoker.addCredit(Long.parseLong(Long.toString(amount)));
+        EmbedBuilder eb = new EmbedBuilder();
+
+        eb.setTitle("You flipped " + outcomeMap.get(rolledValue) + "!");
+
+        String thumbnailPath = rolledValue == 1 ? Constants.FLIP_HEAD : Constants.FLIP_TAIL;
+        eb.setThumbnail(thumbnailPath);
+
+        if(rolledValue == userInputMap.get(choice)) {
+            // If they flipped on the right choice then reward them
+            sb.append("You won " + amount + " credits!");
             eb.setColor(Color.GREEN);
-        }
-        else {
-            sb.append(" lost ");
-            eb.setTitle("You lost!");
-            invoker.addCredit(Long.parseLong(Long.toString(-amount)));
-            Invoker jdaInvoker = new Invoker(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()));
-            jdaInvoker.addCredit(Long.parseLong(Long.toString(amount)));
+            invoker.addCredit(amount);
+        } else {
+            // Otherwise take away credits
+            sb.append("You lost " + amount + " credits!");
             eb.setColor(Color.RED);
+            if(invoker.getCredit() - amount < 0)
+                invoker.addCredit(-invoker.getCredit());
+            else
+                invoker.addCredit(-amount);
         }
 
-        sb.append(amount).append(" credits.");
-        sb.append(" Your current balance is ").append(invoker.getCredit()).append(".");
+        sb.append("\n\n You now have " + invoker.getCredit() + " credits.");
+
         eb.setDescription(sb.toString());
+
         evt.getTextChannel().sendMessage(eb.build()).queue();
+
     }
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
         channel.sendMessage("Usage: flip <amount> <heads or tails>").queue();
+
     }
 }

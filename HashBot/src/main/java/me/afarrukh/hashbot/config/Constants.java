@@ -29,6 +29,8 @@ public class Constants {
     public static Font bigNumFont = null;
 
     public static final String BG_PATH = "res/images/dark.jpg";
+    public static final String FLIP_HEAD = "https://cdn.discordapp.com/attachments/281033379150036992/564885363059982338/head.png";
+    public static final String FLIP_TAIL = "https://cdn.discordapp.com/attachments/281033379150036992/564885363085148168/tail.png";
 
     public static final long minToMillis = 60000;
 
