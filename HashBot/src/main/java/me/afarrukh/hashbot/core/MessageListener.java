@@ -154,8 +154,8 @@ class MessageListener extends ListenerAdapter {
             if(gdm.isPinned(evt.getMessageId())) {
 
                 // Get the associated pinned message and delete it
-                String pinnedMessageId = gdm.getPinnedMessageIdFromOriginalMessage(evt.getMessageId());
-                evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).deleteMessageById((pinnedMessageId)).queue();
+//                String pinnedMessageId = gdm.getPinnedMessageIdFromOriginalMessage(evt.getMessageId());
+//                evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).deleteMessageById((pinnedMessageId)).queue();
 
                 // Remove from data manager
                 gdm.deletePinnedEntryByOriginal(evt.getMessageId());
