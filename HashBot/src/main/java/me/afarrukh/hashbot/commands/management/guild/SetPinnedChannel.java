@@ -22,8 +22,8 @@ public class SetPinnedChannel extends Command implements AdminCommand {
             return;
 
         TextChannel channel = evt.getTextChannel();
-        DataManager jgm = new GuildDataManager(evt.getGuild());
-        jgm.updateValue("pinnedchannel", channel.getId());
+        GuildDataManager jgm = new GuildDataManager(evt.getGuild());
+        jgm.setPinnedChannel(channel.getId());
         channel.sendMessage("The new pinned channel for this server is " +channel.getName()).queue();
         BotUtils.deleteLastMsg(evt);
     }

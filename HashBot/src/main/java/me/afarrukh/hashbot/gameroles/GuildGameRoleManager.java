@@ -20,6 +20,8 @@ public class GuildGameRoleManager {
 
     private final ArrayList<GameRole> gameRoles;
 
+    private static final String pinnedKey = "pThreshold";
+
     private final Map<GameRole, Role>  roleMap;
     private final ArrayList<RoleBuilder> roleBuilders;
     private final ArrayList<RoleAdder> roleAdders;
@@ -27,6 +29,7 @@ public class GuildGameRoleManager {
     private final ArrayList<RoleDeleter> roleDeleters;
 
     private String prefix = Constants.invokerChar;
+    private int pinThreshold = Constants.PIN_THRESHOLD;
 
     private final Guild guild;
 
@@ -65,6 +68,13 @@ public class GuildGameRoleManager {
             this.prefix = prefix;
         else
             jgm.updateValue("prefix", Constants.invokerChar);
+
+        // Setting the pinned threshold
+        String threshold = (String) jgm.getValue(pinnedKey);
+        if(threshold != null)
+            this.pinThreshold = Integer.parseInt(threshold);
+        else
+            jgm.updateValue(pinnedKey, Long.toString(this.pinThreshold));
     }
 
     public RoleBuilder builderForUser(User user) {
@@ -101,6 +111,12 @@ public class GuildGameRoleManager {
         GuildDataManager jgm = new GuildDataManager(guild);
         jgm.updateValue("prefix", prefix);
         this.prefix = prefix;
+    }
+
+    public void setPinThreshold(int amount) {
+        GuildDataManager jgm = new GuildDataManager(guild);
+        this.pinThreshold = amount;
+        jgm.updateValue(pinnedKey, Integer.toString(amount));
     }
 
     public GameRole getGameRoleFromRole(Role r) {
@@ -155,5 +171,9 @@ public class GuildGameRoleManager {
 
     public String getPrefix() {
         return prefix;
+    }
+
+    public int getPinThreshold() {
+        return pinThreshold;
     }
 }

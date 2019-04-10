@@ -21,6 +21,8 @@ public class GuildDataManager extends DataManager {
 
     private final Guild guild;
 
+    private static final String pinnedKey = "pinnedchannel";
+
     public GuildDataManager(Guild guild) {
         super();
         this.guild = guild;
@@ -51,7 +53,7 @@ public class GuildDataManager extends DataManager {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
         obj.put("prefix", Constants.invokerChar);
-        obj.put("pinnedchannel", "");
+        obj.put(pinnedKey, "");
 
         JSONArray gameRoles = new JSONArray();
 
@@ -109,6 +111,18 @@ public class GuildDataManager extends DataManager {
 
     public void setPrefix(String prefix) {
         updateValue("prefix", prefix);
+    }
+
+    public void setPinnedChannel(String id) {
+        updateValue(pinnedKey, id);
+    }
+
+    public void unsetPinnedChannel() {
+        updateValue(pinnedKey, "");
+    }
+
+    public String getPinnedChannelId() {
+        return (String) jsonObject.get(pinnedKey);
     }
 
     public void updateValue(Object key, Object value) {

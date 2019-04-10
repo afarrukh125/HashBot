@@ -5,7 +5,6 @@ import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
-import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;

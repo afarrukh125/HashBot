@@ -1,6 +1,5 @@
 package me.afarrukh.hashbot.utils;
 
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.entities.Invoker;

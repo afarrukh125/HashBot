@@ -9,7 +9,6 @@ import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -38,7 +37,7 @@ class MessageListener extends ListenerAdapter {
             Bot.commandManager.processEvent(evt);
             return;
         }
-        if(evt.getMessage().getAttachments().isEmpty() && BotUtils.isPinnedChannel(evt) && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+        if(BotUtils.isPinnedChannel(evt) && !evt.getMember().getUser().getId().equals(Bot.botUser.getSelfUser().getId())) {
             evt.getMessage().delete().queue();
             return;
         }
@@ -98,16 +97,6 @@ class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent evt) {
-        try {
-            Role voiceRole = evt.getGuild().getRolesByName("voice", true).get(0);
-
-            if(voiceRole != null
-                    && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)
-                    && !evt.getMember().getUser().getId().equals(evt.getJDA().getSelfUser().getId()))
-                evt.getGuild().getController().addSingleRoleToMember(evt.getMember(), voiceRole)
-                        .queue();
-        } catch (IndexOutOfBoundsException ignore) {}
-
         VoiceChannel vc = evt.getChannelJoined();
 
         if(!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
@@ -129,6 +118,7 @@ class MessageListener extends ListenerAdapter {
     @Override
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent evt) {
         if (evt.getUser().isBot()) return;
+        Bot.reactionManager.processForPinning(evt);
         Bot.reactionManager.sendToBuilder(evt);
         Bot.reactionManager.sendToAdder(evt);
         Bot.reactionManager.sendToRemover(evt);

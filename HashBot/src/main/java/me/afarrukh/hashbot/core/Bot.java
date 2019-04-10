@@ -1,6 +1,5 @@
 package me.afarrukh.hashbot.core;
 
-import com.sun.org.glassfish.external.statistics.Stats;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
@@ -11,9 +10,10 @@ import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.guild.roles.*;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
-import me.afarrukh.hashbot.commands.tagging.*;
+import me.afarrukh.hashbot.commands.tagging.MusicCommand;
+import me.afarrukh.hashbot.commands.tagging.SystemCommand;
+import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -89,8 +89,11 @@ public class Bot {
                 .addCommand(new ResumeCommand())
                 .addCommand(new ResetPlayerCommand())
                 .addCommand(new SetVolumeCommand())
+                .addCommand(new SetPinThresholdCommand())
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())
+                .addCommand(new SetPinnedChannel())
+                .addCommand(new SetUnpinnedCommand())
                 .addCommand(new MoveCommand())
                 .addCommand(new TimeCreatedCommand())
                 .addCommand(new ShuffleCommand())
@@ -119,6 +122,9 @@ public class Bot {
         experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER*1000, Constants.EXPERIENCE_TIMER*1000);
     }
 
+    /**
+     * Removes all commands that are not music related commands.
+     */
     private void setMusicOnly() {
         for(Command c: commandManager.getCommandList()) {
             if(!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
