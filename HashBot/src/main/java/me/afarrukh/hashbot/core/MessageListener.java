@@ -17,6 +17,7 @@ import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -133,5 +134,21 @@ class MessageListener extends ListenerAdapter {
     @Override
     public void onGuildLeave(GuildLeaveEvent evt) {
         Bot.botUser.getPresence().setGame(Game.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+    }
+
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent evt) {
+        GuildDataManager gdm = new GuildDataManager(evt.getGuild());
+
+        if(evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()) == null)
+            return;
+
+        if(evt.getChannel().getId().equals(gdm.getPinnedChannelId())) {
+            gdm.deletePinnedEntryByNew(evt.getMessageId());
+        } else {
+            if(gdm.isPinned(evt.getMessageId()))
+                gdm.deletePinnedEntryByOriginal(evt.getMessageId());
+        }
+
     }
 }

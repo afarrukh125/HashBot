@@ -24,8 +24,8 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
             int newValue = Integer.parseInt(params);
-            if(newValue <= 1) {
-                evt.getTextChannel().sendMessage("The minimum pin threshold value is 2").queue();
+            if(newValue <= 0) {
+                evt.getTextChannel().sendMessage("The minimum pin threshold value is 1").queue();
                 return;
             }
             Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);

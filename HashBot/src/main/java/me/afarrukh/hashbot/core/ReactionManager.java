@@ -54,29 +54,40 @@ class ReactionManager {
         if(m == null) // Message might not exist since it might have been deleted
             return;
 
+        final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
 
-        Set<User> userSet = new HashSet<>();
+        // Getting the pinned channel ID from storage
+        GuildDataManager gdm = new GuildDataManager(evt.getGuild());
 
-        MessageReaction footerReaction = m.getReactions().get(0);
-
-        for(MessageReaction reaction: m.getReactions()) {
-            for(User u: reaction.getUsers()) {
-                if(reaction.getCount() > footerReaction.getCount())
-                    footerReaction = reaction;
-                userSet.add(u);
-            }
-        }
-
-        if(userSet.size() < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold())
+        if(gdm.isPinned(m.getId()))
             return;
 
-        String pinnedChannelId = evt.getGuild().getTextChannelById(new GuildDataManager(evt.getGuild()).getPinnedChannelId()).getId();
+        String pinnedChannelId = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
 
+        // Checking if the current channel is the pinned channel. If it is then we od not proceed
         if(pinnedChannelId.equals(evt.getChannel().getId()))
             return;
 
+        // Checking if the pinned channel has been set
         MessageChannel channel = evt.getGuild().getTextChannelById(pinnedChannelId);
         if(channel == null)
+            return;
+
+        int size = 0;
+
+        for(MessageReaction reaction: m.getReactions()) {
+            if(reaction.getReactionEmote().getName().equals(reactionId)) {
+                size = reaction.getCount();
+                break;
+            }
+        }
+
+        // If no reactions have been added then return
+        if(size == 0)
+            return;
+
+        // If we haven't yet passed the threshold then return
+        if(size < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold())
             return;
 
         EmbedBuilder eb = new EmbedBuilder();
@@ -98,7 +109,9 @@ class ReactionManager {
                 ,
                 m.getAuthor().getAvatarUrl());
 
-        channel.sendMessage(eb.build()).queue();
+        Message newMessage = channel.sendMessage(eb.build()).complete();
+
+        gdm.addAsPinned(m.getId(), newMessage.getId());
 
 
     }

@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * This class manages data for a guild. This includes things like the bot prefixes, the pinned channel
@@ -21,12 +21,17 @@ public class GuildDataManager extends DataManager {
 
     private final Guild guild;
 
-    private static final String pinnedKey = "pinnedchannel";
+    private static final String pinnedChannelKey = "pinnedchannel";
+    private static final String pinnedMessages = "pinnedmessages";
+
+    private Map<String, String> pinnedMessageMap;
 
     public GuildDataManager(Guild guild) {
         super();
         this.guild = guild;
         String guildId = guild.getId();
+
+        pinnedMessageMap = new HashMap<>();
 
         String filePath = "res/guilds/" +guildId+ "/data/" +"data.json";
 
@@ -46,6 +51,21 @@ public class GuildDataManager extends DataManager {
 
     public void load() {
         initialiseData();
+
+        JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
+
+        if(arr == null) {
+            arr = new JSONArray();
+            jsonObject.put(pinnedMessages, arr);
+            flushData();
+        } else {
+            for (Object o : arr) {
+                JSONObject obj = (JSONObject) o;
+                for(Object o2: obj.keySet()) {
+                    pinnedMessageMap.put(o2.toString(), (String) obj.get(o2));
+                }
+            }
+        }
     }
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
@@ -53,7 +73,7 @@ public class GuildDataManager extends DataManager {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
         obj.put("prefix", Constants.invokerChar);
-        obj.put(pinnedKey, "");
+        obj.put(pinnedChannelKey, "");
 
         JSONArray gameRoles = new JSONArray();
 
@@ -114,19 +134,66 @@ public class GuildDataManager extends DataManager {
     }
 
     public void setPinnedChannel(String id) {
-        updateValue(pinnedKey, id);
+        updateValue(pinnedChannelKey, id);
     }
 
     public void unsetPinnedChannel() {
-        updateValue(pinnedKey, "");
+        updateValue(pinnedChannelKey, "");
+    }
+
+    public void addAsPinned(String originalId, String pinnedId) {
+        pinnedMessageMap.put(originalId, pinnedId);
+        JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
+
+        JSONObject object = new JSONObject();
+        object.put(originalId, pinnedId);
+
+        arr.add(object);
+
+        jsonObject.put(pinnedMessages, arr);
+        flushData();
+    }
+
+    public boolean isPinned(String id) {
+        return pinnedMessageMap.get(id) != null;
     }
 
     public String getPinnedChannelId() {
-        return (String) jsonObject.get(pinnedKey);
+        return (String) jsonObject.get(pinnedChannelKey);
     }
 
     public void updateValue(Object key, Object value) {
         jsonObject.put(key, value);
+        flushData();
+    }
+
+    public void deletePinnedEntryByOriginal(String id) {
+        JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
+        Iterator<Object> iter = arr.iterator();
+        while(iter.hasNext()) {
+            JSONObject obj = (JSONObject) iter.next();
+            if(obj.keySet().contains(id)) {
+                iter.remove();
+                pinnedMessageMap.remove(id);
+            }
+        }
+        jsonObject.put(pinnedMessages, arr);
+        flushData();
+    }
+
+    public void deletePinnedEntryByNew(String id) {
+        JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
+        Iterator<Object> iter = arr.iterator();
+        while(iter.hasNext()) {
+            JSONObject obj = (JSONObject) iter.next();
+            for(Object o2: obj.keySet()) {
+                if (id.equals(obj.get(o2))) {
+                    iter.remove();
+                    pinnedMessageMap.remove(o2.toString());
+                }
+            }
+        }
+        jsonObject.put(pinnedMessages, arr);
         flushData();
     }
 
