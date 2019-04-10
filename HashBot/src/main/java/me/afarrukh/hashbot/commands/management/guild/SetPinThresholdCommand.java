@@ -23,7 +23,13 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
-            Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(Integer.parseInt(params));
+            int newValue = Integer.parseInt(params);
+            if(newValue <= 1) {
+                evt.getTextChannel().sendMessage("The minimum pin threshold value is 2").queue();
+                return;
+            }
+            Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);
+            evt.getTextChannel().sendMessage("The pinned threshold is now " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()).queue();
         } catch(NumberFormatException e) {
             evt.getTextChannel().sendMessage("Please enter a numerical value for threshold. The threshold is the number of reactions needed for a message to be pinned.")
                     .queue();

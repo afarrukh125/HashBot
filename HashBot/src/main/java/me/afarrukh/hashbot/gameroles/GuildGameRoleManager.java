@@ -74,7 +74,7 @@ public class GuildGameRoleManager {
         if(threshold != null)
             this.pinThreshold = Integer.parseInt(threshold);
         else
-            jgm.updateValue(pinnedKey, this.pinThreshold);
+            jgm.updateValue(pinnedKey, Long.toString(this.pinThreshold));
     }
 
     public RoleBuilder builderForUser(User user) {
@@ -115,7 +115,8 @@ public class GuildGameRoleManager {
 
     public void setPinThreshold(int amount) {
         GuildDataManager jgm = new GuildDataManager(guild);
-        jgm.updateValue(pinnedKey, amount);
+        this.pinThreshold = amount;
+        jgm.updateValue(pinnedKey, Integer.toString(amount));
     }
 
     public GameRole getGameRoleFromRole(Role r) {
