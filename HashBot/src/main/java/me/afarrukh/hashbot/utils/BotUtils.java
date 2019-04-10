@@ -185,13 +185,19 @@ public class BotUtils {
         rr.getGuild().getController().removeSingleRoleFromMember(m, roleToRemove).queue();
     }
 
-    public static boolean doesRoleExist(Guild g, String name) {
+    /**
+     * Returns a role object for a given guild and role name
+     * @param g The guild to check
+     * @param name The role name to check for
+     * @return The role object if found, null if not found
+     */
+    public static Role getRoleByName(Guild g, String name) {
         //Checks if the game role exists in the guild
         for(Role r: g.getRoles()) {
             if(r.getName().equalsIgnoreCase(name))
-                    return true;
+                    return r;
         }
-        return false;
+        return null;
     }
 
 

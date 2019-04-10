@@ -76,11 +76,9 @@ public class ClearCommand extends Command {
                             msgCount--;
                         }
                     } catch(NumberFormatException ex) {
-                        // Temporary solution to fixing clear command exception, will remove later. [08/04/2019]
-                        PrivateChannel privateChannel = evt.getJDA().getUserById("281032702327652352").openPrivateChannel().complete();
-                        privateChannel.sendMessage("```java\n" + ex.getMessage() + "```").queue();
-                        privateChannel.sendMessage("The associated message ID was " + msgId + " and the deleted ID it compared to was " + delMsg.getIdLong()).queue();
-                        privateChannel.close().queue();
+                        // Temporary solution to fixing clear command exception, will remove later. [10/04/2019]
+                        System.out.println("ClearCommand@onInvocation: " + "```java\n" + ex.getMessage() + "```");
+                        System.out.println("ClearCommand@onInvocation: " + "The associated message ID was " + msgId + " and the deleted ID it compared to was " + delMsg.getIdLong());
                     }
                 }
                 if(messageBin.size() > 0)

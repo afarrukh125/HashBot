@@ -37,9 +37,9 @@ public class GuildGameRoleManager {
         roleAdders = new ArrayList<>();
         roleRemovers = new ArrayList<>();
         roleDeleters = new ArrayList<>();
-        init();
 
         roleMap = new HashMap<>();
+        init();
     }
 
     private void init() {
@@ -50,8 +50,12 @@ public class GuildGameRoleManager {
         while(iter.hasNext()) {
             JSONObject roleObj = (JSONObject) iter.next();
             String roleName = (String) roleObj.get("name");
-            if(BotUtils.doesRoleExist(guild, roleName))
-                gameRoles.add(new GameRole(roleName, (String)roleObj.get("creatorId")));
+            Role role = BotUtils.getRoleByName(guild, roleName);
+            if(role != null) {
+                GameRole gameRole = new GameRole(roleName, (String) roleObj.get("creatorId"));
+                gameRoles.add(gameRole);
+                roleMap.put(gameRole, role);
+            }
             else
                 iter.remove();
         }
