@@ -64,6 +64,8 @@ public class Constants {
     public static final int RANDOM_EXPERIENCE_BOUND = 50;
     public static final int EXPERIENCE_TIMER = 150; // Seconds to tick for experience
 
+    public static final int PIN_THRESHOLD = 5;
+
 
     //Bot configuration constants
 

@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
-import java.util.Iterator;
 import java.util.TimerTask;
 
 public class VoiceExperienceTimer extends TimerTask {

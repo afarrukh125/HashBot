@@ -111,6 +111,14 @@ public class GuildDataManager extends DataManager {
         updateValue("prefix", prefix);
     }
 
+    public void setPinnedChannel(String id) {
+        updateValue("pinnedchannel", id);
+    }
+
+    public void unsetPinnedChannel() {
+        updateValue("pinnedchannel", "");
+    }
+
     public void updateValue(Object key, Object value) {
         jsonObject.put(key, value);
         flushData();

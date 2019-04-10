@@ -4,27 +4,26 @@ import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.GuildDataManager;
-import me.afarrukh.hashbot.utils.BotUtils;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SetUnpinned extends Command implements AdminCommand {
+import java.util.concurrent.TimeUnit;
 
-    public SetUnpinned() {
+public class SetUnpinnedCommand extends Command implements AdminCommand {
+
+    public SetUnpinnedCommand() {
         super("setunpinned");
         description = "Unsets the pinned channel for this server";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
-            return;
 
-        DataManager jgm = new GuildDataManager(evt.getGuild());
-        jgm.updateValue("pinnedchannel", "");
-        evt.getTextChannel().sendMessage("There is no longer a pinned channel for this server.").queue();
-        BotUtils.deleteLastMsg(evt);
+        GuildDataManager jgm = new GuildDataManager(evt.getGuild());
+        jgm.unsetPinnedChannel();
+        Message message = evt.getTextChannel().sendMessage("There is no longer a pinned channel for this server.").complete();
+        message.delete().queueAfter(2, TimeUnit.SECONDS);
     }
 
     @Override

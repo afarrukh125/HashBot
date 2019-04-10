@@ -9,7 +9,6 @@ import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -129,6 +128,7 @@ class MessageListener extends ListenerAdapter {
     @Override
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent evt) {
         if (evt.getUser().isBot()) return;
+        Bot.reactionManager.processForPinning(evt);
         Bot.reactionManager.sendToBuilder(evt);
         Bot.reactionManager.sendToAdder(evt);
         Bot.reactionManager.sendToRemover(evt);
