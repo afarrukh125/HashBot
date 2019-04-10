@@ -143,6 +143,7 @@ public class GuildDataManager extends DataManager {
 
     public void addAsPinned(String originalId, String pinnedId) {
         pinnedMessageMap.put(originalId, pinnedId);
+
         JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
 
         JSONObject object = new JSONObject();
@@ -195,6 +196,10 @@ public class GuildDataManager extends DataManager {
         }
         jsonObject.put(pinnedMessages, arr);
         flushData();
+    }
+
+    public String getPinnedMessageIdFromOriginalMessage(String s) {
+        return pinnedMessageMap.get(s);
     }
 
     public Object getValue(Object key) {

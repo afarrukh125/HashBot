@@ -140,14 +140,26 @@ class MessageListener extends ListenerAdapter {
     public void onGuildMessageDelete(GuildMessageDeleteEvent evt) {
         GuildDataManager gdm = new GuildDataManager(evt.getGuild());
 
+        if(gdm.getPinnedChannelId().equals(""))
+            return;
+
         if(evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()) == null)
             return;
 
+        // If the message deleted is a pinned message remove its entry by pinned message id
         if(evt.getChannel().getId().equals(gdm.getPinnedChannelId())) {
             gdm.deletePinnedEntryByNew(evt.getMessageId());
         } else {
-            if(gdm.isPinned(evt.getMessageId()))
+            // Otherwise remove it by normal message id
+            if(gdm.isPinned(evt.getMessageId())) {
+
+                // Get the associated pinned message and delete it
+                String pinnedMessageId = gdm.getPinnedMessageIdFromOriginalMessage(evt.getMessageId());
+                evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).deleteMessageById((pinnedMessageId)).queue();
+
+                // Remove from data manager
                 gdm.deletePinnedEntryByOriginal(evt.getMessageId());
+            }
         }
 
     }
