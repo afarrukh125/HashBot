@@ -60,6 +60,7 @@ public class RoleStatsCommand extends Command implements RoleCommand {
             count++;
         }
 
+        eb.setFooter("You can check which members have this role using " + new ListMembersCommand().getName() + " command.", evt.getMember().getUser().getAvatarUrl());
         evt.getTextChannel().sendMessage(eb.build()).queue();
     }
 
