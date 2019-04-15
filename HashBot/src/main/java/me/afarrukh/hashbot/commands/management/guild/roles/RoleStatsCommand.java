@@ -20,6 +20,7 @@ public class RoleStatsCommand extends Command implements RoleCommand {
         super("rolestats");
         addAlias("rs");
         addAlias("rolecount");
+        addAlias("rc");
         description = "View how many members belong in each role.";
     }
 
