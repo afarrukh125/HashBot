@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.GuildDataManager;
+import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.music.GuildMusicManager;
@@ -60,8 +61,10 @@ class MessageListener extends ListenerAdapter {
      * @param evt The event associated with the deletion of a role
      */
     public void onRoleDelete(RoleDeleteEvent evt) {
-        if(BotUtils.isGameRole(evt.getRole(), evt.getGuild()))
-            new GuildDataManager(evt.getGuild()).removeRole(evt.getRole().getName());
+        if(BotUtils.isGameRole(evt.getRole(), evt.getGuild())) {
+            GuildDataMapper.getInstance().getDataManager(evt.getGuild()).removeRole(evt.getRole().getName()); // Remove from file
+            Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).removeRole(evt.getRole().getName()); // Remove from live game role list
+        }
     }
 
     /**
@@ -138,7 +141,7 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageDelete(GuildMessageDeleteEvent evt) {
-        GuildDataManager gdm = new GuildDataManager(evt.getGuild());
+        GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
         if(gdm.getPinnedChannelId().equals(""))
             return;

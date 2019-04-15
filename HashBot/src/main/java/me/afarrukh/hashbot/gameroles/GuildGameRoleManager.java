@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.gameroles;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.GuildDataManager;
+import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.core.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.nio.MappedByteBuffer;
 import java.util.*;
 
 /**
@@ -17,8 +19,6 @@ import java.util.*;
  * This class represents a GameRoleManager for an individual guild
  */
 public class GuildGameRoleManager {
-
-    private final ArrayList<GameRole> gameRoles;
 
     private static final String pinnedKey = "pThreshold";
 
@@ -35,7 +35,6 @@ public class GuildGameRoleManager {
 
     public GuildGameRoleManager(Guild guild) {
         this.guild = guild;
-        gameRoles = new ArrayList<>();
         roleBuilders = new ArrayList<>();
         roleAdders = new ArrayList<>();
         roleRemovers = new ArrayList<>();
@@ -46,17 +45,17 @@ public class GuildGameRoleManager {
     }
 
     private void init() {
-        DataManager jgm = new GuildDataManager(guild);
+        DataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
         JSONArray arr = (JSONArray) jgm.getValue("gameroles");
         //noinspection unchecked
         Iterator<Object> iter = arr.iterator();
         while(iter.hasNext()) {
             JSONObject roleObj = (JSONObject) iter.next();
             String roleName = (String) roleObj.get("name");
-            Role role = BotUtils.getRoleByName(guild, roleName);
-            if(role != null) {
+            List<Role> roleList = guild.getRolesByName(roleName, true);
+            if(!roleList.isEmpty()) {
+                Role role = roleList.get(0);
                 GameRole gameRole = new GameRole(roleName, (String) roleObj.get("creatorId"));
-                gameRoles.add(gameRole);
                 roleMap.put(gameRole, role);
             }
             else
@@ -103,24 +102,29 @@ public class GuildGameRoleManager {
         return null;
     }
 
-    public void remove(String name) {
-        gameRoles.removeIf(gameRole -> gameRole.getName().equalsIgnoreCase(name));
+    public void removeRole(String name) {
+        for(GameRole gr: new HashSet<>(roleMap.keySet())) {
+            if(gr.getName().equalsIgnoreCase(name)) {
+                roleMap.remove(gr);
+                return;
+            }
+        }
     }
 
     public void setPrefix(String prefix) {
-        GuildDataManager jgm = new GuildDataManager(guild);
+        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
         jgm.updateValue("prefix", prefix);
         this.prefix = prefix;
     }
 
     public void setPinThreshold(int amount) {
-        GuildDataManager jgm = new GuildDataManager(guild);
+        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
         this.pinThreshold = amount;
         jgm.updateValue(pinnedKey, Integer.toString(amount));
     }
 
     public GameRole getGameRoleFromRole(Role r) {
-        for(GameRole gr: gameRoles) {
+        for(GameRole gr: roleMap.keySet()) {
             if(gr.getName().equalsIgnoreCase(r.getName()))
                     return gr;
         }
@@ -150,11 +154,28 @@ public class GuildGameRoleManager {
     }
 
     public ArrayList<GameRole> getGameRoles() {
-        return gameRoles;
+        return new ArrayList<>(roleMap.keySet());
     }
 
+    /**
+     * Returns a linked list of roles.
+     * @return The list of game roles for the guild as roles.
+     */
     public List<Role> getGameRolesAsRoles() {
         return new ArrayList<>(roleMap.values());
+    }
+
+    public void addGameRole(GameRole gameRole) {
+        roleMap.put(gameRole, guild.getRolesByName(gameRole.getName(), true).get(0));
+    }
+
+    /**
+     * This one should be used during runtime
+     * @param gameRole The game role to be added
+     * @param role The role this game role is to be mapped to
+     */
+    public void addGameRole(GameRole gameRole, Role role) {
+        roleMap.put(gameRole, role);
     }
 
     public ArrayList<RoleBuilder> getRoleBuilders() {

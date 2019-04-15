@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.gameroles;
 
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
+import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.entities.Guild;
@@ -180,7 +181,7 @@ public class RoleAdder implements RoleGUI{
                     BotUtils.addRoleToMember(this);
                 } catch(IllegalArgumentException e) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
-                    GuildDataManager jgm = new GuildDataManager(guild);
+                    GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
                     jgm.removeRole(desiredRole.getName());
                 }
                 return;

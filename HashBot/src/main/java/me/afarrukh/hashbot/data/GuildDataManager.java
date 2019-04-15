@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -24,14 +25,18 @@ public class GuildDataManager extends DataManager {
     private static final String pinnedChannelKey = "pinnedchannel";
     private static final String pinnedMessages = "pinnedmessages";
 
-    private Map<String, String> pinnedMessageMap;
+    private static final String autoPinKey = "autopinchannels";
 
-    public GuildDataManager(Guild guild) {
+    private Map<String, String> pinnedMessageMap;
+    private List<String> autoPinChannels;
+
+    GuildDataManager(Guild guild) {
         super();
         this.guild = guild;
         String guildId = guild.getId();
 
         pinnedMessageMap = new HashMap<>();
+        autoPinChannels = new ArrayList<>();
 
         String filePath = "res/guilds/" +guildId+ "/data/" +"data.json";
 
@@ -52,18 +57,30 @@ public class GuildDataManager extends DataManager {
     public void load() {
         initialiseData();
 
-        JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
+        JSONArray pinnedChannelArr = (JSONArray) jsonObject.get(pinnedMessages);
 
-        if(arr == null) {
-            arr = new JSONArray();
-            jsonObject.put(pinnedMessages, arr);
+        if(pinnedChannelArr == null) {
+            pinnedChannelArr = new JSONArray();
+            jsonObject.put(pinnedMessages, pinnedChannelArr);
             flushData();
         } else {
-            for (Object o : arr) {
+            for (Object o : pinnedChannelArr) {
                 JSONObject obj = (JSONObject) o;
                 for(Object o2: obj.keySet()) {
                     pinnedMessageMap.put(o2.toString(), (String) obj.get(o2));
                 }
+            }
+        }
+
+        JSONArray autoPinArray = (JSONArray) jsonObject.get(autoPinKey);
+        if(autoPinArray == null) {
+            autoPinArray = new JSONArray();
+            jsonObject.put(autoPinKey, autoPinArray);
+            flushData();
+        } else {
+            for(Object o: autoPinArray) {
+                System.out.println("GuildDataManager@load: " + o);
+                autoPinChannels.add(o.toString());
             }
         }
     }
@@ -105,7 +122,6 @@ public class GuildDataManager extends DataManager {
 
         jsonObject.put("gameroles", arr);
 
-        Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().add(new GameRole(name, creatorId));
         flushData();
     }
 
@@ -125,7 +141,7 @@ public class GuildDataManager extends DataManager {
         }
         jsonObject.put("gameroles", arr);
 
-        Bot.gameRoleManager.getGuildRoleManager(guild).remove(name);
+        Bot.gameRoleManager.getGuildRoleManager(guild).removeRole(name);
         flushData();
     }
 
@@ -166,6 +182,15 @@ public class GuildDataManager extends DataManager {
     public void updateValue(Object key, Object value) {
         jsonObject.put(key, value);
         flushData();
+    }
+
+    public void addAutoPinChannel(String channelId) {
+        autoPinChannels.add(channelId);
+        JSONArray arr = (JSONArray) jsonObject.get(autoPinKey);
+        arr.add(channelId);
+        jsonObject.put(autoPinKey, arr);
+        flushData();
+
     }
 
     public void deletePinnedEntryByOriginal(String id) {
@@ -211,7 +236,7 @@ public class GuildDataManager extends DataManager {
         }
     }
 
-
-
-
+    public List<String> getAutoPinChannels() {
+        return autoPinChannels;
+    }
 }

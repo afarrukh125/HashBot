@@ -32,12 +32,14 @@ public class ListMembersCommand extends Command implements AdminCommand {
             return;
         }
 
-        Role r = evt.getGuild().getRolesByName(params, true).get(0); // Grab role by the name
+        List<Role> roleList = evt.getGuild().getRolesByName(params, true);
 
-        if(r == null) { // If the role does not exist...
+        if(roleList.isEmpty()) { // If the role does not exist...
             evt.getTextChannel().sendMessage("The role you have provided does not exist.").queue();
             return;
         }
+
+        Role r = roleList.get(0); // Grab role by the name
 
         List<Member> memberList = evt.getGuild().getMembersWithRoles(r);
 

@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.GuildDataManager;
+import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.gameroles.RoleDeleter;
@@ -57,7 +58,7 @@ class ReactionManager {
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
 
         // Getting the pinned channel ID from storage
-        GuildDataManager gdm = new GuildDataManager(evt.getGuild());
+        GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
         if(gdm.isPinned(m.getId()))
             return;

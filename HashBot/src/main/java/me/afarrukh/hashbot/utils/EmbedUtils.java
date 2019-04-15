@@ -361,7 +361,7 @@ public class EmbedUtils {
 
     public static MessageEmbed getGameRoleListEmbed(RoleAdder ra, int page) {
         EmbedBuilder eb = new EmbedBuilder();
-        ArrayList<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles();
+        java.util.List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("List of game roles for " + ra.getGuild().getName());

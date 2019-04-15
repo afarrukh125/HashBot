@@ -205,6 +205,7 @@ public class RoleBuilder implements RoleGUI{
             case confirm:
                 message.editMessage(EmbedUtils.getRoleCompleteEmbed(this)).queue();
                 BotUtils.createRole(guild, this);
+
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
                 break;
             default:

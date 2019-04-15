@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
+import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.*;
 import net.dv8tion.jda.core.Permission;
@@ -33,12 +34,12 @@ public class BotUtils {
     }
 
     public static boolean isPinnedChannel(MessageReceivedEvent evt) {
-        GuildDataManager jgm = new GuildDataManager(evt.getGuild());
+        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
         return evt.getTextChannel().getId().equals(jgm.getValue("pinnedchannel"));
     }
 
     public static boolean isGameRole(Role r, Guild guild) {
-        for(Object role: (JSONArray) new GuildDataManager(guild).getValue("gameroles")) {
+        for(Object role: (JSONArray) GuildDataMapper.getInstance().getDataManager(guild).getValue("gameroles")) {
             JSONObject roleObj = (JSONObject) role;
             String roleName = (String) roleObj.get("name");
             if(roleName.equalsIgnoreCase(r.getName()))
@@ -47,7 +48,7 @@ public class BotUtils {
         return false;
     }
 
-    public static void createRole(Guild g, RoleBuilder rb) {
+    public static void createRole(Guild guild, RoleBuilder rb) {
         //Validating if the role is already existing in the guild
         if(rb.getColor().getBlue() == 0 && rb.getColor().getGreen() == 0 && rb.getColor().getRed() == 0) {
             rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
@@ -64,20 +65,20 @@ public class BotUtils {
             return;
         }
 
-        for(Role r: g.getRoles()) {
+        for(Role r: guild.getRoles()) {
             if (r.getName().equalsIgnoreCase(rb.roleName)) {
                 rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
                 return;
             }
         }
-        Member m = g.getMemberById(rb.getUser().getId());
+        Member m = guild.getMemberById(rb.getUser().getId());
         for(Role r: m.getRoles())
             if (r.getName().equalsIgnoreCase(rb.roleName)) {
                 rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
                 return;
             }
 
-        Role newRole = g.getController().createRole().complete();
+        Role newRole = guild.getController().createRole().complete();
 
         String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
 
@@ -90,8 +91,10 @@ public class BotUtils {
             return;
         }
 
-        g.getController().addSingleRoleToMember(m, newRole).queue();
-        GuildDataManager jgm = new GuildDataManager(g);
+        guild.getController().addSingleRoleToMember(m, newRole).queue();
+
+        Bot.gameRoleManager.getGuildRoleManager(guild).addGameRole(new GameRole(cap, rb.getUser().getId()), newRole);
+        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
         jgm.addRole(cap, rb.getUser().getId());
     }
 

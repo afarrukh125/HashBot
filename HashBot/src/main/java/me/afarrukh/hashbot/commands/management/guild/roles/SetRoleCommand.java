@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
+import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -51,7 +52,7 @@ public class SetRoleCommand extends Command implements AdminCommand, RoleCommand
                     .queue();
             return;
         }
-        GuildDataManager jgm = new GuildDataManager(evt.getGuild());
+        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
         jgm.addRole(targetRole.getName(), evt.getAuthor().getId());
 
         evt.getTextChannel().sendMessage("The role " +targetRole.getName()+ " has been added to the list of game roles for this server.").queue();
