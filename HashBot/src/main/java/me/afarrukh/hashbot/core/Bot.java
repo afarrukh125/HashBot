@@ -42,18 +42,18 @@ public class Bot {
         this.token = token;
         try {
             init();
-        } catch (LoginException e) { e.printStackTrace(); }
+        } catch (LoginException | InterruptedException e) { e.printStackTrace(); }
     }
 
     /**
      * Adds the commands and initialises all the managers
      * @throws LoginException The login servers failed
      */
-    private void init() throws LoginException {
+    private void init() throws LoginException, InterruptedException {
         botUser = new JDABuilder(AccountType.BOT)
                 .setToken(token)
                 .addEventListener(new MessageListener())
-                .build();
+                .build().awaitReady();
 
         commandManager = new CommandManager()
                 .addCommand(new HelpCommand())
@@ -117,17 +117,10 @@ public class Bot {
         Timer experienceTimer = new Timer();
         experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER*1000, Constants.EXPERIENCE_TIMER*1000);
 
-        new Thread(() -> {
-            if(botUser.getGuilds().isEmpty())
-                System.out.println("Waiting for guilds to load... ");
-            while(botUser.getGuilds().isEmpty()) {
-                // Waiting on guilds to become available
-            }
-            botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
-            System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
-        }).start();
-
         startUpMessages();
+
+        botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
+        System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
     }
 
     /**
