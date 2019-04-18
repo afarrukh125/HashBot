@@ -22,6 +22,7 @@ public class HelpCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR) ? Bot.commandManager.getCommandList() : Bot.commandManager.getNonAdminCommands();
+
         if(params == null) {
             for (MessageEmbed embed : EmbedUtils.getHelpMsg(evt, commandList))
                 evt.getTextChannel().sendMessage(embed).queue();

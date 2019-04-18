@@ -42,19 +42,18 @@ public class Bot {
         this.token = token;
         try {
             init();
-        } catch (LoginException | InterruptedException e) { e.printStackTrace(); }
+        } catch (LoginException e) { e.printStackTrace(); }
     }
 
     /**
      * Adds the commands and initialises all the managers
      * @throws LoginException The login servers failed
-     * @throws InterruptedException The connection was interrupted
      */
-    private void init() throws LoginException, InterruptedException {
+    private void init() throws LoginException {
         botUser = new JDABuilder(AccountType.BOT)
                 .setToken(token)
                 .addEventListener(new MessageListener())
-                .buildBlocking();
+                .build();
 
         commandManager = new CommandManager()
                 .addCommand(new HelpCommand())
@@ -110,17 +109,25 @@ public class Bot {
 
         //setMusicOnly();
 
-        startUpMessages();
-
         musicManager = new MusicManager();
 
         gameRoleManager = new GameRoleManager();
         reactionManager = new ReactionManager();
 
-        botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
-
         Timer experienceTimer = new Timer();
         experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER*1000, Constants.EXPERIENCE_TIMER*1000);
+
+        new Thread(() -> {
+            if(botUser.getGuilds().isEmpty())
+                System.out.println("Waiting for guilds to load... ");
+            while(botUser.getGuilds().isEmpty()) {
+                // Waiting on guilds to become available
+            }
+            botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
+            System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
+        }).start();
+
+        startUpMessages();
     }
 
     /**
@@ -150,6 +157,5 @@ public class Bot {
                 System.out.println(c.getClass().getSimpleName());
             }
         }
-        System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
     }
 }

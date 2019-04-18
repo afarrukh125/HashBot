@@ -79,7 +79,6 @@ public class GuildDataManager extends DataManager {
             flushData();
         } else {
             for(Object o: autoPinArray) {
-                System.out.println("GuildDataManager@load: " + o);
                 autoPinChannels.add(o.toString());
             }
         }
