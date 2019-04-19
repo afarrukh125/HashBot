@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.commands.management.bot;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -26,7 +27,8 @@ public class UptimeCommand extends Command implements SystemCommand {
         evt.getTextChannel().sendMessage(new EmbedBuilder()
                 .setColor(Constants.EMB_COL)
                 .appendDescription("Bot uptime: " + days + " days, "
-                        + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.")
+                        + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.\n\n")
+                .appendDescription("There have been " + Bot.commandManager.getCommandCount() + " commands executed this session.")
                 .build()).queue();
     }
 

@@ -12,6 +12,7 @@ import java.util.*;
 public class CommandManager {
 
     private final Map<String, Command> commandMap = new HashMap<>();
+    private int commandCount = 0;
 
     /**
      * Each time a message is sent with the bot prefix is sent, this method is called to check if a command exists
@@ -31,8 +32,10 @@ public class CommandManager {
         if(command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
 
-        if(command != null) command.onInvocation(evt, params); //Only does the command onInvocation method if
-                                                               //the command is valid
+        if(command != null)  {
+            this.commandCount += 1;
+            command.onInvocation(evt, params); //Only does the command onInvocation method if class is valid
+        }
     }
 
     /**
@@ -48,6 +51,10 @@ public class CommandManager {
             }
         }
         return this;
+    }
+
+    public int getCommandCount() {
+        return commandCount;
     }
 
     /**
