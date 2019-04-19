@@ -43,6 +43,11 @@ public class ClearCommand extends Command {
             return;
         }
 
+        if(amt > 1000) {
+            evt.getTextChannel().sendMessage("You can only delete up to 1000 messages at a time with this command.").queue();
+            return;
+        }
+
 
         List<List<Message>> messageBins = new ArrayList<>();
         Iterator<Message> iter = evt.getTextChannel().getIterableHistory().iterator();

@@ -89,7 +89,7 @@ public class GuildDataManager extends DataManager {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
         obj.put("prefix", Constants.invokerChar);
-        obj.put(pinnedChannelKey, "");
+        obj.put(pinnedChannelKey, "1"); // Default value
 
         JSONArray gameRoles = new JSONArray();
 
@@ -174,7 +174,14 @@ public class GuildDataManager extends DataManager {
         return pinnedMessageMap.get(id) != null;
     }
 
+    /**
+     * Returns the pinned channel ID for the guild held in this GuildDataManager object
+     * @return A string of "1" if the guild has no pinned channel, otherwise returns the channel ID of the pinned channel
+     */
     public String getPinnedChannelId() {
+        if(jsonObject.get(pinnedChannelKey).equals(""))
+            return "1";
+
         return (String) jsonObject.get(pinnedChannelKey);
     }
 
