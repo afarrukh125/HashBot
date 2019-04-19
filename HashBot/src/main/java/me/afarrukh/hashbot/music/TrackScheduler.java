@@ -71,17 +71,21 @@ public class TrackScheduler extends AudioEventAdapter {
         // Only start the next track if the current one is finished and if the load failed
 
         // This is a temporary fix to our issue of the song not finishing TODO remove this
-        if(endReason.name().equalsIgnoreCase("FINISHED") && (track.getPosition() != track.getDuration())) {
+        if(endReason.name().equalsIgnoreCase("FINISHED") &&
+                (!CmdUtils.longToMMSS(track.getPosition()).equalsIgnoreCase(CmdUtils.longToMMSS(track.getDuration())))) {
 
+            player.stopTrack();
             System.out.println("TrackScheduler@onTrackEnd: Song ended at " + CmdUtils.longToMMSS(track.getPosition()) + "/" +
                     CmdUtils.longToMMSS(track.getDuration()));
 
             System.out.println("TrackScheduler@onTrackEnd: Starting track from the early ended position");
             AudioTrack clone = track.makeClone();
             clone.setPosition(track.getPosition());
+            clone.setUserData(track.getUserData());
             player.startTrack(clone, false);
             return;
         }
+
         Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer()
                 .schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY*1000);
         if(isLooping()) {
