@@ -7,6 +7,7 @@ import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.gameroles.RoleDeleter;
 import me.afarrukh.hashbot.gameroles.RoleRemover;
+import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -48,11 +49,12 @@ class ReactionManager {
     /**
      * We decide here if we want to post the message to the pinned channel depending on the reaction count
      * We are testing for distinct users, hence we use the Set class. Algorithm is unfortunately O(n^2)
+     *
      * @param evt The event associated with the reaction being added
      */
     void processForPinning(GuildMessageReactionAddEvent evt) {
         Message m = evt.getChannel().getMessageById(evt.getMessageId()).complete();
-        if(m == null) // Message might not exist since it might have been deleted
+        if (m == null) // Message might not exist since it might have been deleted
             return;
 
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
@@ -60,64 +62,37 @@ class ReactionManager {
         // Getting the pinned channel ID from storage
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
-        if(gdm.isPinned(m.getId()))
+        if (gdm.isPinned(m.getId()))
             return;
 
-        TextChannel pinnedChannel = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId());
-        if(pinnedChannel == null)
-            return;
-
-        String pinnedChannelId = pinnedChannel.getId();
+        String pinnedChannelId = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
 
         // Checking if the current channel is the pinned channel. If it is then we od not proceed
-        if(pinnedChannelId.equals(evt.getChannel().getId()))
+        if (pinnedChannelId.equals(evt.getChannel().getId()))
             return;
 
         // Checking if the pinned channel has been set
         MessageChannel channel = evt.getGuild().getTextChannelById(pinnedChannelId);
-        if(channel == null)
+        if (channel == null)
             return;
 
         int size = 0;
 
-        for(MessageReaction reaction: m.getReactions()) {
-            if(reaction.getReactionEmote().getName().equals(reactionId)) {
+        for (MessageReaction reaction : m.getReactions()) {
+            if (reaction.getReactionEmote().getName().equals(reactionId)) {
                 size = reaction.getCount();
                 break;
             }
         }
 
         // If no reactions have been added then return
-        if(size == 0)
+        if (size == 0)
             return;
 
         // If we haven't yet passed the threshold then return
-        if(size < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold())
+        if (size < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold())
             return;
 
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-
-        eb.appendDescription(m.getContentRaw());
-        eb.setTitle(m.getMember().getEffectiveName());
-
-        // Set the embed's image to be the attachment's image ONLY if it is an image
-        if(!m.getAttachments().isEmpty()) {
-            if (m.getAttachments().get(0).isImage())
-                eb.setImage(m.getAttachments().get(0).getUrl());
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(m.getCreationTime().toInstant().toEpochMilli());
-
-        eb.setFooter(evt.getChannel().getName() + " - " + calendar.getTime().toString()
-                ,
-                m.getAuthor().getAvatarUrl());
-
-        Message newMessage = channel.sendMessage(eb.build()).complete();
-
-        gdm.addAsPinned(m.getId(), newMessage.getId());
-
-
+        MessageUtils.pinMessage(m, channel);
     }
 }
