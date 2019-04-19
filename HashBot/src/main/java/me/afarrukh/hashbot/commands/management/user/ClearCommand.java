@@ -49,7 +49,7 @@ public class ClearCommand extends Command {
 
         while(amt > 0) {
             List<Message> messageBin = new LinkedList<>();
-            while(messageBin.size() < 100 && amt > 0) {
+            while(messageBin.size() < 100 && amt > 0 && iter.hasNext()) {
                 messageBin.add(iter.next());
                 amt--;
             }

@@ -63,7 +63,11 @@ class ReactionManager {
         if(gdm.isPinned(m.getId()))
             return;
 
-        String pinnedChannelId = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
+        TextChannel pinnedChannel = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId());
+        if(pinnedChannel == null)
+            return;
+
+        String pinnedChannelId = pinnedChannel.getId();
 
         // Checking if the current channel is the pinned channel. If it is then we od not proceed
         if(pinnedChannelId.equals(evt.getChannel().getId()))
