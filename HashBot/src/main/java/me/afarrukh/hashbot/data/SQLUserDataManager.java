@@ -124,7 +124,7 @@ public class SQLUserDataManager implements IDataManager {
             }
 
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE USER SET " + key + "=? WHERE id=" + member.getUser().getId());
+            PreparedStatement ps = conn.prepareStatement("UPDATE USER SET " + key + "=? WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
             ps.setObject(1, value);
             ps.execute();
         } catch (SQLException e) {
