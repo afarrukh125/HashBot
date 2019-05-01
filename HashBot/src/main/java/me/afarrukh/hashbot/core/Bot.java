@@ -168,7 +168,7 @@ public class Bot {
                     try {
                         SQLUserDataManager.updateUsernames(g);
                         for(Member m: g.getMembers()) {
-                            if(SQLUserDataManager.getUserData(m).next())
+                            if(!SQLUserDataManager.getUserData(m).next())
                                 SQLUserDataManager.addMember(m);
                         }
                     } catch (ClassNotFoundException | SQLException e) {

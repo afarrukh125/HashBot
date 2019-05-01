@@ -155,7 +155,11 @@ public class Invoker {
     }
 
     public long getExp() {
-        return Long.parseLong((String) userFileManager.getValue("exp"));
+        try {
+            return Long.parseLong((String) userFileManager.getValue("exp"));
+        } catch (NumberFormatException e) {
+            return Long.parseLong( ((String) userFileManager.getValue("exp")).split("\\.")[0]);
+        }
     }
 
     public ArrayList<Role> getGameRolesAsRoles() {

@@ -184,7 +184,12 @@ public class SQLUserDataManager implements IDataManager {
                 if(member.getUser().isBot())
                     continue;
                 int lvl = rs.getInt("level");
-                long exp = Long.parseLong(rs.getString("exp"));
+                long exp;
+                try {
+                    exp = Long.parseLong(rs.getString("exp"));
+                } catch (NumberFormatException e) {
+                    exp = Long.parseLong(rs.getString("exp").split("\\.")[0]);
+                }
                 memberData.add(new MemberData(member, lvl, exp));
             }
 
