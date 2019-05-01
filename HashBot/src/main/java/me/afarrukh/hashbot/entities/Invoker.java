@@ -3,6 +3,8 @@ package me.afarrukh.hashbot.entities;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.DataManager;
+import me.afarrukh.hashbot.data.IDataManager;
+import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.data.UserDataManager;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
@@ -21,13 +23,13 @@ import java.util.Random;
 public class Invoker {
 
     private final Member member;
-    private final DataManager userFileManager;
+    private final IDataManager userFileManager;
     private long credit;
 
     public Invoker(Member m) {
         member = m;
-        userFileManager = new UserDataManager(m);
-        credit = (Long) userFileManager.getValue("credit");
+        userFileManager = new SQLUserDataManager(m);
+        credit = Long.parseLong((String) userFileManager.getValue("credit"));
     }
 
     public Role getRole(String name) {
@@ -44,7 +46,7 @@ public class Invoker {
      * @return true if enough time has passed, false otherwise
      */
     public boolean hasTimePassed() {
-        long time = (Long) userFileManager.getValue("time");
+        long time = Long.parseLong((String) userFileManager.getValue("time"));
         if((System.currentTimeMillis() - time) < Constants.minToMillis)
             return false;
 
@@ -53,9 +55,9 @@ public class Invoker {
     }
 
     public void addCredit(long amt) {
-        if(this.credit >= Long.MAX_VALUE) {
-            userFileManager.updateValue("credit", Math.abs(Long.MAX_VALUE));
-            credit = Long.MAX_VALUE;
+        if(this.credit >= Integer.MAX_VALUE) {
+            userFileManager.updateValue("credit", Integer.MAX_VALUE);
+            credit = Integer.MAX_VALUE;
             return;
         }
         userFileManager.updateValue("credit", credit + amt);
@@ -90,7 +92,7 @@ public class Invoker {
 
     /**
      * * The formula for the level to exp calculation
-     * @param level
+     * @param level The level to calculate experience for
      * @return
      */
     public static int getExperienceForNextLevel(int level) {
@@ -143,19 +145,19 @@ public class Invoker {
     }
 
     private void setExp(int exp) {
-        userFileManager.updateValue("score", (long) exp);
+        userFileManager.updateValue("exp", (long) exp);
     }
 
     public long getCredit() {
         return credit;
     }
 
-    public long getLevel() {
-        return (Long) userFileManager.getValue("level");
+    public int getLevel() {
+        return (Integer) userFileManager.getValue("level");
     }
 
     public long getExp() {
-        return (Long) userFileManager.getValue("score");
+        return Long.parseLong((String) userFileManager.getValue("exp"));
     }
 
     public ArrayList<Role> getGameRolesAsRoles() {

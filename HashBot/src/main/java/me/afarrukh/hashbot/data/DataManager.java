@@ -11,7 +11,7 @@ import java.io.*;
  * In future, if a new method is chosen, the methods in this class would simply need to be rewritten
  * All method calls to this class will remain unchanged even if the implementation is changed.
  */
-public abstract class DataManager implements DataManagerInterface {
+public abstract class DataManager implements IDataManager {
     protected JSONObject jsonObject;
     protected File file;
 

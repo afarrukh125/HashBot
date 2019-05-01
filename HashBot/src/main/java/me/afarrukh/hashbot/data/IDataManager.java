@@ -6,7 +6,7 @@ package me.afarrukh.hashbot.data;
  * it will be easy to modify the code underneath without changing the interactions and calls to them.
  * Consider SQLite or simply MySQL in future.
  */
-public interface DataManagerInterface {
+public interface IDataManager {
 
     void load();
     void writePresets();
