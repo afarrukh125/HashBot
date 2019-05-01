@@ -1,8 +1,12 @@
 package me.afarrukh.hashbot.data;
 
+import me.afarrukh.hashbot.entities.Invoker;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +28,7 @@ public class SQLUserDataManager implements IDataManager {
                 getConnection();
 
             if (getUserData(member) == null)
-                addUser(member);
+                addMember(member);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("SQLUserDataManager@SQLUserDataManager: " + e.getLocalizedMessage());
             System.out.println("SQLUserDataManager@SQLUserDataManager: " + "failed to create user profile");
@@ -40,13 +44,13 @@ public class SQLUserDataManager implements IDataManager {
         return statement.executeQuery("SELECT id, exp, level, time, credit, guild FROM USER WHERE id = " + m.getUser().getId() + " AND guild = " + member.getGuild().getId());
     }
 
-    private void getConnection() throws ClassNotFoundException, SQLException {
+    private static void getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection("jdbc:sqlite:HashBot.db");
         initialise();
     }
 
-    private void initialise() throws SQLException {
+    private static void initialise() throws SQLException {
         if (!hasData) {
             hasData = true;
 
@@ -59,21 +63,11 @@ public class SQLUserDataManager implements IDataManager {
                 Statement statement2 = conn.createStatement();
                 statement2.execute("CREATE TABLE user(id VARCHAR(60)," +
                         "exp VARCHAR(60), level integer, time VARCHAR(60), credit VARCHAR(60), guild VARCHAR(60))");
-
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO user values(?, ?, ?, ?, ?, ?);");
-                ps.setString(1, "281032702327652352");
-                ps.setString(2, "6549");
-                ps.setInt(3, 136);
-                ps.setString(4, "1330");
-                ps.setString(5, "18464");
-                ps.setString(6, member.getGuild().getId());
-
-                ps.execute();
             }
         }
     }
 
-    public void addUser(Member member) throws ClassNotFoundException, SQLException {
+    public static void addMember(Member member) throws ClassNotFoundException, SQLException {
         if (conn == null)
             getConnection();
 
@@ -111,7 +105,7 @@ public class SQLUserDataManager implements IDataManager {
             ResultSet rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
             if(!rs.next()) {
                 rs.close();
-                addUser(member);
+                addMember(member);
                 rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
             }
             return rs.getObject(key.toString());
@@ -136,5 +130,56 @@ public class SQLUserDataManager implements IDataManager {
         } catch (SQLException e) {
 
         }
+    }
+
+    public static List<Member> getMemberData(Guild guild) {
+        if (conn == null)
+            try {
+                getConnection();
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT id, level, exp FROM USER WHERE guild=" + guild.getId());
+
+            List<MemberData> memberData = new ArrayList<>();
+
+            while (rs.next()) {
+                Member member = guild.getMemberById(rs.getString("id"));
+                if(member == null)
+                    continue;
+                if(member.getUser().isBot())
+                    continue;
+                int lvl = rs.getInt("level");
+                long exp = Long.parseLong(rs.getString("exp"));
+                memberData.add(new MemberData(member, lvl, exp));
+            }
+
+            Comparator<MemberData> memberDataSorter = new Comparator<MemberData>() {
+                @Override
+                public int compare(MemberData o1, MemberData o2) {
+                    if(o1.getLevel() > o2.getLevel())
+                        return -1;
+                    if(o1.getLevel() == o2.getLevel()) {
+                        if (o2.getExp() > o1.getExp())
+                            return 1;
+                        return -1;
+                    }
+                    return 1;
+                }
+            };
+
+            memberData.sort(memberDataSorter);
+            List<Member> memberList = new ArrayList<>();
+            for(MemberData md: memberData) {
+                memberList.add(md.getMember());
+            }
+            return memberList;
+
+
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
     }
 }

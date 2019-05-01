@@ -1,12 +1,14 @@
 package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 public class LevelUtils {
@@ -52,29 +54,7 @@ public class LevelUtils {
      */
     public static Member[] getLeaderboard(Guild g) {
 
-        ArrayList<Member> memberList = new ArrayList<>();
-        for(Member m: g.getMembers()) {
-            if(!m.getUser().isBot())
-                memberList.add(m);
-        }
-
-        Comparator<Member> memberSorter = new Comparator<Member>() {
-
-            public int compare(Member m1, Member m2) {
-                Invoker in1 = new Invoker(m1);
-                Invoker in2 = new Invoker(m2);
-                if(in2.getLevel() > in1.getLevel())
-                    return 1;
-                if(in1.getLevel() == in2.getLevel()) {
-                    if(in2.getExp() > in1.getExp())
-                        return 1;
-                    return -1;
-                }
-                return -1;
-            }
-        };
-
-        memberList.sort(memberSorter);
+        List<Member> memberList = SQLUserDataManager.getMemberData(g);
 
         Member[] userArray = new Member[memberList.size()];
 
