@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import net.dv8tion.jda.core.entities.Message;

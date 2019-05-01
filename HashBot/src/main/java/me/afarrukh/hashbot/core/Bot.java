@@ -14,12 +14,17 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -121,6 +126,8 @@ public class Bot {
 
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
         System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
+
+        setupNames();
     }
 
     /**
@@ -150,5 +157,25 @@ public class Bot {
                 System.out.println(c.getClass().getSimpleName());
             }
         }
+    }
+
+    private void setupNames() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SQLUserDataManager userDataManager = new SQLUserDataManager(botUser.getGuilds().get(0).getMemberById(botUser.getSelfUser().getId()));
+                for(Guild g: botUser.getGuilds()) {
+                    try {
+                        SQLUserDataManager.updateUsernames(g);
+                        for(Member m: g.getMembers()) {
+                            if(SQLUserDataManager.getUserData(m).next())
+                                SQLUserDataManager.addMember(m);
+                        }
+                    } catch (ClassNotFoundException | SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

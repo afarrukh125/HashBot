@@ -2,9 +2,7 @@ package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.gameroles.GameRole;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

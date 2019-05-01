@@ -1,13 +1,12 @@
 package me.afarrukh.hashbot.data;
 
-import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,13 +34,13 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
-    public ResultSet getUserData(Member m) throws ClassNotFoundException, SQLException {
+    public static ResultSet getUserData(Member m) throws ClassNotFoundException, SQLException {
         if (conn == null)
             getConnection();
 
         Statement statement = conn.createStatement();
 
-        return statement.executeQuery("SELECT id, exp, level, time, credit, guild FROM USER WHERE id = " + m.getUser().getId() + " AND guild = " + member.getGuild().getId());
+        return statement.executeQuery("SELECT id, exp, level, time, credit, guild FROM USER WHERE id = " + m.getUser().getId() + " AND guild = " + m.getGuild().getId());
     }
 
     private static void getConnection() throws ClassNotFoundException, SQLException {
@@ -67,6 +66,29 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
+    public static ResultSet getUserNameData(User u) throws SQLException, ClassNotFoundException {
+        if(conn == null)
+            getConnection();
+
+        Statement statement = conn.createStatement();
+        return statement.executeQuery("SELECT * FROM username WHERE id="+u.getId());
+    }
+
+    public static void updateUsernames(Guild g) throws ClassNotFoundException, SQLException {
+        if(conn == null)
+            getConnection();
+
+        for(Member m: g.getMembers()) {
+            if(SQLUserDataManager.getUserNameData(m.getUser()).next())
+                continue;
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO username VALUES (?, ?);");
+            ps.setString(1, m.getUser().getName());
+            ps.setString(2, m.getUser().getId());
+            ps.execute();
+        }
+
+    }
+
     public static void addMember(Member member) throws ClassNotFoundException, SQLException {
         if (conn == null)
             getConnection();
@@ -80,6 +102,15 @@ public class SQLUserDataManager implements IDataManager {
         ps.setString(6, member.getGuild().getId());
 
         ps.execute();
+
+        if(getUserNameData(member.getUser()).next())
+            return;
+
+        PreparedStatement ps2 = conn.prepareStatement("INSERT INTO username VALUES (?, ?);");
+        ps2.setString(1, member.getUser().getName());
+        ps2.setString(2, member.getUser().getId());
+
+        ps2.execute();
     }
 
     @Override

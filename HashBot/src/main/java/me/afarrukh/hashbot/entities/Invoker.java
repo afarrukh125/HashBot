@@ -2,10 +2,8 @@ package me.afarrukh.hashbot.entities;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.IDataManager;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import me.afarrukh.hashbot.data.UserDataManager;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;

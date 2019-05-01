@@ -1,6 +1,5 @@
 package me.afarrukh.hashbot.core;
 
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
@@ -8,13 +7,10 @@ import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.gameroles.RoleDeleter;
 import me.afarrukh.hashbot.gameroles.RoleRemover;
 import me.afarrukh.hashbot.utils.MessageUtils;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
-
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 class ReactionManager {
 
