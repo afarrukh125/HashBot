@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
+import me.afarrukh.hashbot.gameroles.RoleGUI;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
@@ -49,9 +50,11 @@ class MessageListener extends ListenerAdapter {
             else
                 invoker.updateExperience(evt.getMessage().getContentRaw());
         }
-        RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getAuthor());
-        if(rb != null)
-            rb.handleEvent(evt);
+        RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getAuthor());
+        if(rb == null)
+            return;
+        if(rb instanceof RoleBuilder)
+            ((RoleBuilder) rb).handleEvent(evt);
     }
 
     /**
@@ -121,10 +124,7 @@ class MessageListener extends ListenerAdapter {
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent evt) {
         if (evt.getUser().isBot()) return;
         Bot.reactionManager.processForPinning(evt);
-        Bot.reactionManager.sendToBuilder(evt);
-        Bot.reactionManager.sendToAdder(evt);
-        Bot.reactionManager.sendToRemover(evt);
-        Bot.reactionManager.sendToDeleter(evt);
+        Bot.reactionManager.sendToModifier(evt);
     }
 
     @Override

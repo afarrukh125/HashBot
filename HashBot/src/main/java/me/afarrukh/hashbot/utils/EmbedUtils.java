@@ -467,7 +467,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
 
         if(createdRoles.size() == 0) {
-            Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleDeleters().remove(rd);
+            Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleModifiers().remove(rd);
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
                     .appendDescription("There are no GameRoles created by you. Use **createrole** to do this.")

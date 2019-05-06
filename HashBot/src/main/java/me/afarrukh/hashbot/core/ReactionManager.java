@@ -2,10 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
-import me.afarrukh.hashbot.gameroles.RoleAdder;
-import me.afarrukh.hashbot.gameroles.RoleBuilder;
-import me.afarrukh.hashbot.gameroles.RoleDeleter;
-import me.afarrukh.hashbot.gameroles.RoleRemover;
+import me.afarrukh.hashbot.gameroles.*;
 import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -14,32 +11,11 @@ import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEv
 
 class ReactionManager {
 
-    void sendToBuilder(GuildMessageReactionAddEvent evt) {
-        RoleBuilder rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).builderForUser(evt.getUser());
+    void sendToModifier(GuildMessageReactionAddEvent evt) {
+        RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getUser());
         if(rb == null)
             return;
         rb.handleEvent(evt);
-    }
-
-    void sendToAdder(GuildMessageReactionAddEvent evt) {
-        RoleAdder ra = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).adderForUser(evt.getUser());
-        if(ra == null)
-            return;
-        ra.handleEvent(evt);
-    }
-
-    void sendToRemover(GuildMessageReactionAddEvent evt) {
-        RoleRemover rr = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).removerForUser(evt.getUser());
-        if(rr == null)
-            return;
-        rr.handleEvent(evt);
-    }
-
-    public void sendToDeleter(GuildMessageReactionAddEvent evt) {
-        RoleDeleter rd = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).deleterForUser(evt.getUser());
-        if(rd == null)
-            return;
-        rd.handleEvent(evt);
     }
 
     /**

@@ -66,7 +66,7 @@ public class RoleRemover implements RoleGUI {
 
         this.maxPageNumber = maxPageNumber;
 
-        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleRemovers().add(this);
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().add(this);
     }
 
     @SuppressWarnings("Duplicates")
@@ -168,7 +168,7 @@ public class RoleRemover implements RoleGUI {
                 return;
             case confirm:
                 message.clearReactions().complete();
-                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleRemovers().remove(this);
+                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
                 if(desiredRole == null) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this)).queue();
                     return;
@@ -188,7 +188,7 @@ public class RoleRemover implements RoleGUI {
     }
 
     private void endSession() {
-        Bot.gameRoleManager.getGuildRoleManager(guild).getRoleRemovers().remove(this);
+        Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
         message.delete().queue();
         this.timeoutTimer.cancel();
     }
@@ -217,7 +217,7 @@ public class RoleRemover implements RoleGUI {
         }
         @Override
         public void run() {
-            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleRemovers().remove(remover);
+            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(remover);
             message.delete().queue();
             remover.timeoutTimer.cancel();
         }

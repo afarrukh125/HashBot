@@ -81,7 +81,7 @@ public class RoleBuilder implements RoleGUI{
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleBuilder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
 
-        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleBuilders().add(this);
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().add(this);
     }
 
     public static Color hexToRGB(String colorString) {
@@ -188,7 +188,7 @@ public class RoleBuilder implements RoleGUI{
                     .appendDescription(e.getLocalizedMessage()).build())
                     .queue();
             message.clearReactions().complete();
-            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
         }
     }
 
@@ -206,7 +206,7 @@ public class RoleBuilder implements RoleGUI{
                 message.editMessage(EmbedUtils.getRoleCompleteEmbed(this)).queue();
                 BotUtils.createRole(guild, this);
 
-                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
                 break;
             default:
         }
@@ -268,7 +268,7 @@ public class RoleBuilder implements RoleGUI{
     }
 
     private void endSession() {
-        Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(this);
+        Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
         message.delete().queue();
         this.timeoutTimer.cancel();
     }
@@ -301,7 +301,7 @@ public class RoleBuilder implements RoleGUI{
         }
         @Override
         public void run() {
-            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleBuilders().remove(builder);
+            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(builder);
             message.delete().queue();
             builder.timeoutTimer.cancel();
         }

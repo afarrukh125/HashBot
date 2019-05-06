@@ -21,10 +21,7 @@ public class GuildGameRoleManager {
     private static final String pinnedKey = "pThreshold";
 
     private final Map<GameRole, Role>  roleMap;
-    private final ArrayList<RoleBuilder> roleBuilders;
-    private final ArrayList<RoleAdder> roleAdders;
-    private final ArrayList<RoleRemover> roleRemovers;
-    private final ArrayList<RoleDeleter> roleDeleters;
+    private final List<RoleGUI> roleModifiers;
 
     private String prefix = Constants.invokerChar;
     private int pinThreshold = Constants.PIN_THRESHOLD;
@@ -33,10 +30,7 @@ public class GuildGameRoleManager {
 
     public GuildGameRoleManager(Guild guild) {
         this.guild = guild;
-        roleBuilders = new ArrayList<>();
-        roleAdders = new ArrayList<>();
-        roleRemovers = new ArrayList<>();
-        roleDeleters = new ArrayList<>();
+        roleModifiers = new ArrayList<>();
 
         roleMap = new HashMap<>();
         init();
@@ -74,29 +68,11 @@ public class GuildGameRoleManager {
             jgm.updateValue(pinnedKey, Long.toString(this.pinThreshold));
     }
 
-    public RoleBuilder builderForUser(User user) {
-        for(RoleBuilder builder : roleBuilders) {
-            if (builder.getUser() == user) return builder;
+    public RoleGUI modifierForUser(User user) {
+        for(RoleGUI gui: roleModifiers) {
+            if(gui.getUser().equals(user))
+                return gui;
         }
-        return null;
-    }
-
-    public RoleAdder adderForUser(User user) {
-        for(RoleAdder adder : roleAdders) {
-            if (adder.getUser() == user) return adder;
-        }
-        return null;
-    }
-
-    public RoleRemover removerForUser(User user) {
-        for(RoleRemover remover: roleRemovers)
-            if(remover.getUser() == user) return remover;
-        return null;
-    }
-
-    public RoleDeleter deleterForUser(User user) {
-        for(RoleDeleter deleter: roleDeleters)
-            if(deleter.getUser() == user) return deleter;
         return null;
     }
 
@@ -147,8 +123,8 @@ public class GuildGameRoleManager {
         return null;
     }
 
-    public ArrayList<RoleAdder> getRoleAdders() {
-        return roleAdders;
+    public List<RoleGUI> getRoleModifiers() {
+        return roleModifiers;
     }
 
     public ArrayList<GameRole> getGameRoles() {
@@ -174,18 +150,6 @@ public class GuildGameRoleManager {
      */
     public void addGameRole(GameRole gameRole, Role role) {
         roleMap.put(gameRole, role);
-    }
-
-    public ArrayList<RoleBuilder> getRoleBuilders() {
-        return roleBuilders;
-    }
-
-    public ArrayList<RoleRemover> getRoleRemovers() {
-        return roleRemovers;
-    }
-
-    public ArrayList<RoleDeleter> getRoleDeleters() {
-        return roleDeleters;
     }
 
     public String getPrefix() {
