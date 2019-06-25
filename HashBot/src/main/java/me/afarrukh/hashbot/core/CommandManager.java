@@ -8,10 +8,11 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
 
-    private final Map<String, Command> commandMap = new HashMap<>();
+    private final Map<String, Command> commandMap = new ConcurrentHashMap<>();
     private int commandCount = 0;
 
     /**
@@ -45,11 +46,16 @@ public class CommandManager {
      */
     public CommandManager addCommand(Command c) {
         commandMap.put(c.getName(), c);
-        if(!c.getAliases().isEmpty()) {
-            for(String alias: c.getAliases()) {
-                commandMap.put(alias, c);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(!c.getAliases().isEmpty()) {
+                    for(String alias: c.getAliases()) {
+                        commandMap.put(alias, c);
+                    }
+                }
             }
-        }
+        }).start();
         return this;
     }
 
