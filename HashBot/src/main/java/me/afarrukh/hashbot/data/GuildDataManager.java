@@ -28,7 +28,7 @@ public class GuildDataManager extends DataManager {
     private Map<String, String> pinnedMessageMap;
     private List<String> autoPinChannels;
 
-    GuildDataManager(Guild guild) {
+    public GuildDataManager(Guild guild) {
         super();
         this.guild = guild;
         String guildId = guild.getId();
@@ -238,6 +238,15 @@ public class GuildDataManager extends DataManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Checks whether the message with the given id is a bot message that represents another message that was pinned.
+     * @param id The id of the message
+     * @return A boolean corresponding to whether the message is a bot message that represents a pinned message.
+     */
+    public boolean isBotPinMessage(String id) {
+        return pinnedMessageMap.values().contains(id);
     }
 
     public List<String> getAutoPinChannels() {

@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -24,7 +25,10 @@ public class PruneCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         MessagePaginationAction messageHistory = evt.getTextChannel().getIterableHistory();
         List<Message> messageBin = new LinkedList<>();
+        GuildDataManager gdm = new GuildDataManager(evt.getGuild());
         for(Message m: messageHistory) {
+            if(gdm.isBotPinMessage(m.getId())) // Do not want to clear any bot pinned message
+                continue;
             if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
                 messageBin.add(m);
             }
@@ -45,9 +49,13 @@ public class PruneCommand extends Command {
                 if(delMsg.getIdLong() <= Long.parseLong(msgId))
                     iter.remove();
             }
-            evt.getTextChannel().deleteMessages(messageBin).queue();
-            evt.getChannel().sendMessage("Cleaned " +messageBin.size() + " bot-related messages.").queue();
-            BotUtils.deleteLastMsg(evt);
+            int delCount = messageBin.size();
+            if(delCount < 2 || delCount > 100)
+                delCount = 0;
+            else
+                evt.getTextChannel().deleteMessages(messageBin).queue();
+            Message m = evt.getChannel().sendMessage("Cleaned " +delCount + " bot-related messages.").complete();
+            m.delete().queue();
         }
     }
 
