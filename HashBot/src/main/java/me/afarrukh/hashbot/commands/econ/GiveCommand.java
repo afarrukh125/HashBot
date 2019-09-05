@@ -11,7 +11,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class GiveCommand extends Command implements EconCommand {
 
     public GiveCommand() {
-        super("give", new String[]{"transfer"});
+        super("give");
+        addAlias("transfer");
         description = "Transfers credit to the mentioned user";
     }
 

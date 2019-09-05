@@ -3,9 +3,7 @@ package me.afarrukh.hashbot.commands;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class Command {
 
@@ -13,17 +11,11 @@ public abstract class Command {
      * The name of the command, i.e. what the user will need to type after the prefix to call it
      */
     private final String name;
-    private final ArrayList<String> aliases = new ArrayList<>();
+    private final Set<String> aliases = new HashSet<>();
     protected String description = null;
 
     public Command(String name) {
         this.name = name;
-    }
-
-    @Deprecated
-    public Command(String name, String[] aliases) {
-        this.name = name;
-        this.aliases.addAll(Arrays.asList(aliases));
     }
 
     protected void addAlias(String s) {
@@ -47,7 +39,7 @@ public abstract class Command {
         return name;
     }
 
-    public List<String> getAliases() {
+    public Set<String> getAliases() {
         return aliases;
     }
 

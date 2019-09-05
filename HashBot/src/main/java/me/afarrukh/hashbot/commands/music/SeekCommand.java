@@ -9,7 +9,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SeekCommand extends Command implements MusicCommand {
 
     public SeekCommand() {
-        super("seek", new String[]{"skim", "ff"});
+        super("seek");
+        addAlias("skim");
+        addAlias("ff");
         description = "Seeks to the particular time (in seconds) of the currently playing song.";
     }
 

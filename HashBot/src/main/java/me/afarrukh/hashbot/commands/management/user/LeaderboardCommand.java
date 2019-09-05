@@ -10,7 +10,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class LeaderboardCommand extends Command {
 
     public LeaderboardCommand() {
-        super("leaderboard", new String[] {"lb"});
+        super("leaderboard");
+        addAlias("lb");
         description = "Shows the leaderboard for this server";
     }
 

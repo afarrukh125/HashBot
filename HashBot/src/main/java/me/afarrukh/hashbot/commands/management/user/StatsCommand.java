@@ -27,7 +27,10 @@ public class StatsCommand extends Command {
     private final int height;
 
     public StatsCommand() {
-        super("stats", new String[]{"balance", "credits", "bal"});
+        super("stats");
+        addAlias("balance");
+        addAlias("credits");
+        addAlias("bal");
         width = Constants.WIDTH;
         height = Constants.HEIGHT;
         description = "Displays your statistics.";

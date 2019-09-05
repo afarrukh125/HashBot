@@ -11,7 +11,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class UptimeCommand extends Command implements SystemCommand {
 
     public UptimeCommand() {
-        super("uptime", new String[]{"up"});
+        super("uptime");
+        addAlias("up");
         description = "Displays the bot uptime in HH:MM:SS";
     }
 

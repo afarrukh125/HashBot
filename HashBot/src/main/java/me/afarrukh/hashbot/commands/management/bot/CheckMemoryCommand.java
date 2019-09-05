@@ -10,7 +10,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class CheckMemoryCommand extends Command implements SystemCommand {
 
     public CheckMemoryCommand() {
-        super("checkmemory", new String[]{"mem"});
+        super("checkmemory");
+        addAlias("mem");
         description = "Displays memory used in megabytes.";
     }
 

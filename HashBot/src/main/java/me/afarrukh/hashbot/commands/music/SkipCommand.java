@@ -12,7 +12,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SkipCommand extends Command implements MusicCommand {
 
     public SkipCommand() {
-        super("skip", new String[]{"n", "next", "s"});
+        super("skip");
+        addAlias("n");
+        addAlias("next");
+        addAlias("s");
         description = "Skips to the next song or desired position if position is provided";
     }
 

@@ -14,7 +14,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class PlayTopCommand extends Command implements MusicCommand {
 
     public PlayTopCommand() {
-        super("playtop", new String[] {"ptop"});
+        super("playtop");
+        addAlias("ptop");
         description = "Adds a song to the top of the music queue";
     }
 

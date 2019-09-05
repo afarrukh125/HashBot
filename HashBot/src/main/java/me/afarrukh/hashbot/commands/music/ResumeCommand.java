@@ -10,7 +10,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class ResumeCommand extends Command implements MusicCommand {
 
     public ResumeCommand() {
-        super("resume", new String[]{"res"});
+        super("resume");
+        addAlias("res");
         description = "Resumes the music player";
     }
 

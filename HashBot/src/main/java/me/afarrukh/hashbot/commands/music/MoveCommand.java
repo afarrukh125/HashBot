@@ -10,7 +10,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class MoveCommand extends Command implements MusicCommand {
     public MoveCommand() {
-        super("move", new String[]{"m"});
+        super("move");
+        addAlias("m");
         description = "Moves a song from one index on the list to another";
     }
 

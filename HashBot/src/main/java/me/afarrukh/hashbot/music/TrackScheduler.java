@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import me.afarrukh.hashbot.commands.music.FairShuffleCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.CmdUtils;
@@ -217,6 +218,18 @@ public class TrackScheduler extends AudioEventAdapter {
         queue.addAll(trackList); //Repopulate with array list elements
     }
 
+    /**
+     * An O(mn) algorithm, where
+     * m is the size of the set representing the users that have queued a track
+     * n is the number of total tracks in the queue
+     * And interleaves the track, such that, while assuming all users in the chat have queued an equal number of track,
+     * no m tracks in a row are queued by the same user. It essentially ensures that, for as long as possible, each
+     * subsequent track in the queue is by a different user. If one user has queued significantly more tracks than the
+     * other users, then all excess tracks are appended to the end of the list.
+     * @param shuffle Whether or not to shuffle the tracks before performing the algorithm.
+     *                See <code>FairShuffleCommand</code> for an example use of this.
+     * @see FairShuffleCommand#FairShuffleCommand()
+     */
     public void interleave(boolean shuffle) {
         ArrayList<AudioTrack> trackArrayList = getArrayList();
         ArrayList<String> userNameList = new ArrayList<>();

@@ -20,6 +20,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -618,7 +619,7 @@ public class EmbedUtils {
             sb.append("**").append(prefix).append(c.getName()).append("**");
 
             if(!c.getAliases().isEmpty()) {
-                java.util.List<String> aliases = c.getAliases();
+                java.util.List<String> aliases = new ArrayList<>(c.getAliases());
                 sb.append(" (");
                 for(int i = 0; i<aliases.size()-1; i++)
                     if(!aliases.get(i).equalsIgnoreCase(c.getName()))

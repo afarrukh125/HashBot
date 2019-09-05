@@ -16,7 +16,8 @@ import java.util.Random;
 public class FlipCommand extends Command implements EconCommand {
 
     public FlipCommand() {
-        super("flip", new String[]{"f"});
+        super("flip");
+        addAlias("f");
         description = "Flips a coin on head or tails. You can choose an amount.";
     }
 

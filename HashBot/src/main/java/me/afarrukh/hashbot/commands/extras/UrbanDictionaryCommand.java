@@ -12,7 +12,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
 
     public UrbanDictionaryCommand() {
-        super("urbandictionary", new String[]{"ud"});
+        super("urbandictionary");
+        addAlias("ud");
         description = "Performs an urban dictionary search";
     }
 

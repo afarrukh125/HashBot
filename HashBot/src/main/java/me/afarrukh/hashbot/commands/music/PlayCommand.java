@@ -12,7 +12,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class PlayCommand extends Command implements MusicCommand {
 
     public PlayCommand() {
-        super("play", new String[] {"p"});
+        super("play");
+        addAlias("p");
         description = "Adds a song to the music queue";
     }
 

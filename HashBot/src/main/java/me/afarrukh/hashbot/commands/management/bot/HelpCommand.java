@@ -15,7 +15,9 @@ import java.util.List;
 public class HelpCommand extends Command {
 
     public HelpCommand() {
-        super("help", new String[]{"cmds", "cmd"});
+        super("help");
+        addAlias("cmds");
+        addAlias("cmd");
         description = "Displays all commands provide a parameter e.g. music to see commands only of that category";
     }
 

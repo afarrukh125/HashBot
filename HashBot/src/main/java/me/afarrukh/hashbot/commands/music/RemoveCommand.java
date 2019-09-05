@@ -9,7 +9,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class RemoveCommand extends Command implements MusicCommand {
 
     public RemoveCommand() {
-        super("remove", new String[]{"rm", "r"});
+        super("remove");
+        addAlias("rm");
+        addAlias("r");
         description = "Removes a song at the specified position on the queue";
     }
 

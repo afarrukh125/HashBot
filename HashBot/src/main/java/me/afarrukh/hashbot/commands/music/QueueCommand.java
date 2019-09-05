@@ -10,7 +10,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class QueueCommand extends Command implements MusicCommand {
 
     public QueueCommand() {
-        super("queue", new String[] {"q", "page"});
+        super("queue");
+        addAlias("q");
+        addAlias("page");
         description = "Shows the current queue of songs";
     }
 
