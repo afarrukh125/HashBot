@@ -20,7 +20,6 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -99,7 +98,11 @@ public class EmbedUtils {
      */
     public static MessageEmbed getSingleSongEmbed(AudioTrack currentTrack, MessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Currently playing");
+        StringBuilder sb = new StringBuilder(); // Building the title
+        sb.append("Currently playing");
+        if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping())
+            sb.append(" [Looping]");
+        eb.setTitle(sb.toString());
         eb.appendDescription("["+currentTrack.getInfo().title+"]("+currentTrack.getInfo().uri+")\n\n");
         eb.appendDescription("**Channel**: `" +currentTrack.getInfo().author + "`\n");
         eb.appendDescription("**Queued by**: `"+currentTrack.getUserData().toString()+ "`\n");
@@ -253,21 +256,6 @@ public class EmbedUtils {
      */
     public static MessageEmbed getNothingPlayingEmbed() {
         return new EmbedBuilder().setDescription("Nothing playing right now.").setColor(Constants.EMB_COL).build();
-    }
-
-    /**
-     * Unused method due to the nature of it's looks. May be worked on in future. Deprecated for now
-     * @param query The string that is being searched for
-     * @return A message embed containing the relevant information
-     * @deprecated
-     */
-    public static MessageEmbed getSearchingEmbed(String query) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.appendDescription(":mag:**Searching** "+query);
-        eb.setTitle("Searching for query");
-        eb.setThumbnail("https://afarrukh.me/thumbnails/YTLogo.png");
-        return eb.build();
     }
 
     public static MessageEmbed getRoleName(String name) {

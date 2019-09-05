@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
-import me.afarrukh.hashbot.gameroles.*;
+import me.afarrukh.hashbot.gameroles.RoleGUI;
 import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;

@@ -23,7 +23,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 
 import javax.security.auth.login.LoginException;
-import java.sql.SQLData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
