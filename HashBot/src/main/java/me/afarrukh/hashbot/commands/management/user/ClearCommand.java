@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.commands.management.user;
 
+import me.afarrukh.hashbot.commands.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Abdullah on 08/04/2019 20:22
  */
-public class ClearCommand extends Command {
+public class ClearCommand extends Command implements AdminCommand {
 
     public ClearCommand() {
         super("clear");
