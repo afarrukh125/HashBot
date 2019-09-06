@@ -8,6 +8,10 @@ import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class YTLinkResultHandler extends YTGenericResultHandler {
 
     public YTLinkResultHandler(GuildMusicManager gmm, MessageReceivedEvent evt, boolean playTop) {
@@ -33,10 +37,19 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
             return;
         }
 
+        List<AudioTrack> playlistTracks = new ArrayList<>(playlist.getTracks());
+
+        String[] tokens = evt.getMessage().getContentRaw().split(" ");
+        // Checking flag provided by user-typed command
+        if(tokens.length > 2) {
+            if (tokens[2].equals("shuffle"))
+                Collections.shuffle(playlistTracks);
+        }
+
         firstTrack.setUserData(evt.getAuthor().getName());
         MusicUtils.play(evt, gmm, firstTrack, playTop);
 
-        for(AudioTrack track: playlist.getTracks()) {
+        for(AudioTrack track: playlistTracks) {
             if(track.equals(firstTrack))
                 continue;
 
