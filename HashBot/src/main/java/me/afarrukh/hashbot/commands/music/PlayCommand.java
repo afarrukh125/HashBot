@@ -36,7 +36,11 @@ public class PlayCommand extends Command implements MusicCommand {
         }
 
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
-        if(params.split(" ").length == 1 && params.contains("http")) {
+        // To account for shuffling the list, we have the first branch
+        if(params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
+            Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false));
+            evt.getMessage().delete().queue();
+        } else if(params.split(" ").length == 1 && params.contains("http")) {
             Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
         }
