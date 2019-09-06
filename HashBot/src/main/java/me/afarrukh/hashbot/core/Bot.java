@@ -14,6 +14,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -26,6 +27,7 @@ import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Timer;
 
 public class Bot {
@@ -35,22 +37,27 @@ public class Bot {
     static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
+    private CommandLineInputManager ownerInputManager;
 
     public static JDA botUser;
 
     /**
      * Creates our JDA user
+     *
      * @param token The unique token used to login to the discord servers
      */
     public Bot(String token) {
         this.token = token;
         try {
             init();
-        } catch (LoginException | InterruptedException e) { e.printStackTrace(); }
+        } catch (LoginException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Adds the commands and initialises all the managers
+     *
      * @throws LoginException The login servers failed
      */
     private void init() throws LoginException, InterruptedException {
@@ -119,7 +126,7 @@ public class Bot {
         reactionManager = new ReactionManager();
 
         Timer experienceTimer = new Timer();
-        experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER*1000, Constants.EXPERIENCE_TIMER*1000);
+        experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER * 1000, Constants.EXPERIENCE_TIMER * 1000);
 
         startUpMessages();
 
@@ -127,15 +134,26 @@ public class Bot {
         System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
 
         setupNames();
+
+        ownerInputManager = new CommandLineInputManager();
+
+        new Thread(() -> {
+            while (true) {
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.next();
+                ownerInputManager.processInput(input);
+            }
+        }
+        ).start();
     }
 
     /**
      * Removes all commands that are not music related commands.
      */
     private void setMusicOnly() {
-        for(Command c: commandManager.getCommandList()) {
-            if(!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
-            && !(c instanceof SetNickCommand) && !(c instanceof SetPrefixCommand) && !(c instanceof HelpCommand) && !(c instanceof ViewCategoriesCommand))
+        for (Command c : commandManager.getCommandList()) {
+            if (!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
+                    && !(c instanceof SetNickCommand) && !(c instanceof SetPrefixCommand) && !(c instanceof HelpCommand) && !(c instanceof ViewCategoriesCommand))
                 commandManager.removeCommand(c);
         }
     }
@@ -143,14 +161,14 @@ public class Bot {
     private void startUpMessages() {
         List<Command> descriptionLessCommands = new ArrayList<>();
 
-        for(Command c: commandManager.getCommandList()) {
+        for (Command c : commandManager.getCommandList()) {
             System.out.println("Adding " + c.getClass().getSimpleName());
-            if(c.getDescription() == null)
+            if (c.getDescription() == null)
                 descriptionLessCommands.add(c);
         }
-        System.out.println("Added " +commandManager.getCommandList().size()+ " commands to command manager.");
+        System.out.println("Added " + commandManager.getCommandList().size() + " commands to command manager.");
 
-        if(!descriptionLessCommands.isEmpty()) {
+        if (!descriptionLessCommands.isEmpty()) {
             System.out.println("\nThe following commands do not have descriptions: ");
             for (Command c : descriptionLessCommands) {
                 System.out.println(c.getClass().getSimpleName());
@@ -163,11 +181,11 @@ public class Bot {
             @Override
             public void run() {
                 SQLUserDataManager userDataManager = new SQLUserDataManager(botUser.getGuilds().get(0).getMemberById(botUser.getSelfUser().getId()));
-                for(Guild g: botUser.getGuilds()) {
+                for (Guild g : botUser.getGuilds()) {
                     try {
                         SQLUserDataManager.updateUsernames(g);
-                        for(Member m: g.getMembers()) {
-                            if(!SQLUserDataManager.getUserData(m).next())
+                        for (Member m : g.getMembers()) {
+                            if (!SQLUserDataManager.getUserData(m).next())
                                 SQLUserDataManager.addMember(m);
                         }
                     } catch (ClassNotFoundException | SQLException e) {
