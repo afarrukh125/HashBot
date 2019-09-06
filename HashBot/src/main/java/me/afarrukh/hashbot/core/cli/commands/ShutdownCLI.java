@@ -11,12 +11,16 @@ import me.afarrukh.hashbot.core.cli.CLICommand;
 public class ShutdownCLI extends CLICommand {
     public ShutdownCLI() {
         super("shutdown");
+        addAlias("exit");
+        addAlias("stop");
     }
 
     @Override
     public void onInvocation(String params) {
 
+        System.out.println("Shutting down the bot...");
         Bot.botUser.shutdown();
+        System.out.println("Shut down successfully.");
         System.exit(0);
     }
 }

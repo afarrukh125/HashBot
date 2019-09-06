@@ -24,32 +24,35 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
     }
 
     @Override
-    public void playlistLoaded(AudioPlaylist playlist) {
+    public void playlistLoaded(AudioPlaylist playlistTracks) {
         evt.getMessage().delete().queue();
-        AudioTrack firstTrack = playlist.getSelectedTrack();
 
-        if(firstTrack == null) {
-            firstTrack = playlist.getTracks().get(0);
-        }
+        // Load the playlist tracks into an array list, which we can optionally shuffle
+        List<AudioTrack> playlist = new ArrayList<>(playlistTracks.getTracks());
 
-        if(playlist.getTracks().size() > Constants.MAX_PLAYLIST_SIZE) {
-            evt.getChannel().sendMessage("Cannot queue playlist larger than " +Constants.MAX_PLAYLIST_SIZE).queue();
-            return;
-        }
-
-        List<AudioTrack> playlistTracks = new ArrayList<>(playlist.getTracks());
-
+        // Now we are checking whether the user chose to shuffle the list before adding it
         String[] tokens = evt.getMessage().getContentRaw().split(" ");
-        // Checking flag provided by user-typed command
         if(tokens.length > 2) {
             if (tokens[2].equals("shuffle"))
-                Collections.shuffle(playlistTracks);
+                Collections.shuffle(playlist);
+        }
+
+        // We need the firstTrack to create the embed
+        AudioTrack firstTrack = playlistTracks.getSelectedTrack();
+
+        if(firstTrack == null) {
+            firstTrack = playlist.get(0);
+        }
+
+        if(playlist.size() > Constants.MAX_PLAYLIST_SIZE) {
+            evt.getChannel().sendMessage("Cannot queue playlist larger than " +Constants.MAX_PLAYLIST_SIZE).queue();
+            return;
         }
 
         firstTrack.setUserData(evt.getAuthor().getName());
         MusicUtils.play(evt, gmm, firstTrack, playTop);
 
-        for(AudioTrack track: playlistTracks) {
+        for(AudioTrack track: playlist) {
             if(track.equals(firstTrack))
                 continue;
 
@@ -57,7 +60,7 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
             gmm.getScheduler().queue(track);
         }
 
-        evt.getChannel().sendMessage(EmbedUtils.getPlaylistEmbed(gmm, playlist)).queue();
+        evt.getChannel().sendMessage(EmbedUtils.getPlaylistEmbed(gmm, playlistTracks)).queue();
 
     }
 
