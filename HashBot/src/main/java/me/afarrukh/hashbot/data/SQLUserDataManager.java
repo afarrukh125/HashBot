@@ -6,19 +6,14 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
-import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 
-import javax.cache.configuration.CompleteConfiguration;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 /**
  * Created by Abdullah on 01/05/2019 00:03
@@ -284,7 +279,7 @@ public class SQLUserDataManager implements IDataManager {
                 try {
                     pstrack.execute();
                 } catch(SQLException e) {
-                    System.out.println("Duplicate track detected... continuing. [" + track.getInfo().title + "]");
+                    // Duplicate track detected, ignore
                 }
 
 
@@ -305,12 +300,13 @@ public class SQLUserDataManager implements IDataManager {
     public synchronized List<AudioTrack> getPlaylistByName(String name) {
         checkConn();
 
+        // TODO Fix the asynchronous behaviour of the playlist loading
         final List<AudioTrack> trackList = new ArrayList<>();
 
         try {
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
                     "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id";
-            System.out.println(query);
+
             ResultSet rs = conn.createStatement().executeQuery(query);
 
             int tracks = 0;

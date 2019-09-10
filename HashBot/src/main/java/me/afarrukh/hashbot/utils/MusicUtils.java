@@ -45,7 +45,7 @@ public class MusicUtils {
      * Connects to a voice channel
      * @param caller The user who called the command that caused the bot to connect
      */
-    private static void connectToChannel(Member caller) {
+    public static void connectToChannel(Member caller) {
         if(!caller.getGuild().getAudioManager().isConnected()) {
             if(caller.getVoiceState().inVoiceChannel()) {
                 AudioManager audioManager = caller.getGuild().getAudioManager();
