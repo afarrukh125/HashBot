@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.data;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.afarrukh.hashbot.exceptions.PlaylistException;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -67,19 +69,19 @@ public class SQLUserDataManager implements IDataManager {
     }
 
     public static ResultSet getUserNameData(User u) throws SQLException, ClassNotFoundException {
-        if(conn == null)
+        if (conn == null)
             getConnection();
 
         Statement statement = conn.createStatement();
-        return statement.executeQuery("SELECT * FROM username WHERE id="+u.getId());
+        return statement.executeQuery("SELECT * FROM username WHERE id=" + u.getId());
     }
 
     public static void updateUsernames(Guild g) throws ClassNotFoundException, SQLException {
-        if(conn == null)
+        if (conn == null)
             getConnection();
 
-        for(Member m: g.getMembers()) {
-            if(SQLUserDataManager.getUserNameData(m.getUser()).next())
+        for (Member m : g.getMembers()) {
+            if (SQLUserDataManager.getUserNameData(m.getUser()).next())
                 continue;
             PreparedStatement ps = conn.prepareStatement("INSERT INTO username VALUES (?, ?);");
             ps.setString(1, m.getUser().getName());
@@ -103,7 +105,7 @@ public class SQLUserDataManager implements IDataManager {
 
         ps.execute();
 
-        if(getUserNameData(member.getUser()).next())
+        if (getUserNameData(member.getUser()).next())
             return;
 
         PreparedStatement ps2 = conn.prepareStatement("INSERT INTO username VALUES (?, ?);");
@@ -134,7 +136,7 @@ public class SQLUserDataManager implements IDataManager {
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
-            if(!rs.next()) {
+            if (!rs.next()) {
                 rs.close();
                 addMember(member);
                 rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
@@ -179,9 +181,9 @@ public class SQLUserDataManager implements IDataManager {
 
             while (rs.next()) {
                 Member member = guild.getMemberById(rs.getString("id"));
-                if(member == null)
+                if (member == null)
                     continue;
-                if(member.getUser().isBot())
+                if (member.getUser().isBot())
                     continue;
                 int lvl = rs.getInt("level");
                 long exp;
@@ -196,9 +198,9 @@ public class SQLUserDataManager implements IDataManager {
             Comparator<MemberData> memberDataSorter = new Comparator<MemberData>() {
                 @Override
                 public int compare(MemberData o1, MemberData o2) {
-                    if(o1.getLevel() > o2.getLevel())
+                    if (o1.getLevel() > o2.getLevel())
                         return -1;
-                    if(o1.getLevel() == o2.getLevel()) {
+                    if (o1.getLevel() == o2.getLevel()) {
                         if (o2.getExp() > o1.getExp())
                             return 1;
                         return -1;
@@ -209,13 +211,85 @@ public class SQLUserDataManager implements IDataManager {
 
             memberData.sort(memberDataSorter);
             List<Member> memberList = new ArrayList<>();
-            for(MemberData md: memberData) {
+            for (MemberData md : memberData) {
                 memberList.add(md.getMember());
             }
             return memberList;
 
 
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
+    }
+
+    private static void checkConn() {
+        if (conn == null)
+            try {
+                getConnection();
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * Adds a list of tracks to the database
+     *
+     * @param lname     The name of the playlist
+     * @param trackList The list of tracks to add
+     * @throws PlaylistException
+     */
+    public void addPlaylist(String lname, List<AudioTrack> trackList) throws PlaylistException {
+        checkConn(); // Mandatory before every call to the database
+
+        try {
+            // Create the playlist
+            PreparedStatement pslist = conn.prepareStatement("INSERT INTO playlist VALUES(?, ?, ?);");
+
+            pslist.setString(2, lname);
+            pslist.setString(3, this.member.getUser().getId());
+
+            pslist.execute();
+
+            Statement statement = conn.createStatement();
+
+            int listId = -1;
+            ResultSet rs = statement.getGeneratedKeys();
+
+            if (rs.next())
+                listId = rs.getInt(1);
+            else
+                throw new PlaylistException("A playlist with that name already exists!");
+
+            PreparedStatement pslistuser = conn.prepareStatement("INSERT INTO listuser VALUES(?, ?)");
+            pslistuser.setInt(1, listId);
+            pslistuser.setString(2, this.member.getUser().getId());
+            System.out.println(listId);
+            // Adding the tracks
+            for (AudioTrack track : trackList) {
+
+                String trackURI = track.getInfo().uri.replace(":", ";");
+
+                PreparedStatement pstrack = conn.prepareStatement("INSERT INTO track VALUES(?);");
+                pstrack.setString(1, trackURI);
+                try {
+                    pstrack.execute();
+                } catch(SQLException e) {
+                    System.out.println("Duplicate track detected... continuing");
+                }
+
+
+                PreparedStatement pslisttrack = conn.prepareStatement("INSERT INTO listtrack VALUES(?, ?)");
+                pslisttrack.setInt(1, listId);
+                pslisttrack.setString(2, trackURI);
+
+                pslisttrack.execute();
+            }
+
+            pslistuser.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

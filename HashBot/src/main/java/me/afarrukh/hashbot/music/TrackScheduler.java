@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -95,7 +96,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * Replaces the current queue with a new one
      * @param list The list to replace the current queue with
      */
-    private void replaceQueue(ArrayList<AudioTrack> list) {
+    private void replaceQueue(List<AudioTrack> list) {
         queue = new LinkedBlockingQueue<>(list);
     }
 
@@ -103,9 +104,9 @@ public class TrackScheduler extends AudioEventAdapter {
      * Converts a BlockingQueue<> into an Arraylist<>
      * @return The current track list in an arraylist format
      */
-    public ArrayList<AudioTrack> getArrayList() {
+    public List<AudioTrack> getArrayList() {
         //Convert the queue to arraylist
-        return new ArrayList<>(queue);
+        return Collections.unmodifiableList(new ArrayList<>(this.queue));
     }
 
     /**
@@ -170,7 +171,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param idx2 The desired index
      */
     public void move(int idx1, int idx2) {
-        ArrayList<AudioTrack> trackList = getArrayList();
+        List<AudioTrack> trackList = getArrayList();
         try {
             if(idx1 == idx2)
                 return;
@@ -196,7 +197,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public String getTotalTimeTil(AudioTrack at) {
         int idx = getSongIndex(at)-1;
         long totalTime = 0;
-        ArrayList<AudioTrack> trackList = getArrayList();
+        List<AudioTrack> trackList = getArrayList();
         for(int i = 0; i<idx; i++) {
             totalTime += trackList.get(i).getDuration();
         }
@@ -210,7 +211,7 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     public void shuffle() {
         //Convert the queue to arraylist
-        ArrayList<AudioTrack> trackList = getArrayList();
+        List<AudioTrack> trackList = getArrayList();
 
         Collections.shuffle(trackList);
 
@@ -231,7 +232,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @see FairShuffleCommand#FairShuffleCommand()
      */
     public void interleave(boolean shuffle) {
-        ArrayList<AudioTrack> trackArrayList = getArrayList();
+        List<AudioTrack> trackArrayList = getArrayList();
         ArrayList<String> userNameList = new ArrayList<>();
         HashMap<String, BlockingQueue<AudioTrack>> trackMap = new HashMap<>(); //Maps a username to their tracks
 
