@@ -22,6 +22,7 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
     public SavePlaylistCommand() {
         super("savelist");
         addAlias("saveplaylist");
+        addAlias("save");
         addAlias("spl");
 
         description = "Save the current playlist, given a name";
@@ -40,6 +41,8 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
 
         try {
             new SQLUserDataManager(evt.getMember()).addPlaylist(params, trackList);
+
+            evt.getTextChannel().sendMessage("You have successfully created the playlist " + params + " with " + trackList.size() + " tracks.").queue();
         } catch (PlaylistException e) {
             evt.getTextChannel().sendMessage("The name you have selected for this playlist is already in use. " +
                     "Please choose another").queue();

@@ -1,15 +1,24 @@
 package me.afarrukh.hashbot.data;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
+import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.cache.configuration.CompleteConfiguration;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 /**
  * Created by Abdullah on 01/05/2019 00:03
@@ -19,7 +28,7 @@ public class SQLUserDataManager implements IDataManager {
     private static Connection conn;
     private static boolean hasData = false;
 
-    private Member member;
+    private final Member member;
 
     public SQLUserDataManager(Member member) {
         this.member = member;
@@ -264,18 +273,18 @@ public class SQLUserDataManager implements IDataManager {
             PreparedStatement pslistuser = conn.prepareStatement("INSERT INTO listuser VALUES(?, ?)");
             pslistuser.setInt(1, listId);
             pslistuser.setString(2, this.member.getUser().getId());
-            System.out.println(listId);
             // Adding the tracks
             for (AudioTrack track : trackList) {
 
                 String trackURI = track.getInfo().uri.replace(":", ";");
 
-                PreparedStatement pstrack = conn.prepareStatement("INSERT INTO track VALUES(?);");
+                PreparedStatement pstrack = conn.prepareStatement("INSERT INTO track VALUES(?, ?);");
                 pstrack.setString(1, trackURI);
+                pstrack.setString(2, track.getInfo().title);
                 try {
                     pstrack.execute();
                 } catch(SQLException e) {
-                    System.out.println("Duplicate track detected... continuing");
+                    System.out.println("Duplicate track detected... continuing. [" + track.getInfo().title + "]");
                 }
 
 
@@ -291,5 +300,47 @@ public class SQLUserDataManager implements IDataManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized List<AudioTrack> getPlaylistByName(String name) {
+        checkConn();
+
+        final List<AudioTrack> trackList = new ArrayList<>();
+
+        try {
+            final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
+                    "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id";
+            System.out.println(query);
+            ResultSet rs = conn.createStatement().executeQuery(query);
+
+            int tracks = 0;
+
+            while (rs.next()) {
+                String uri = rs.getString(1).replace(";", ":");
+                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new AudioLoadResultHandler() {
+                    @Override
+                    public void trackLoaded(AudioTrack audioTrack) {
+                        audioTrack.setUserData(member.getUser().getName());
+                        Bot.musicManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(audioTrack);
+                    }
+
+                    @Override
+                    public void playlistLoaded(AudioPlaylist audioPlaylist) {
+                    }
+
+                    @Override
+                    public void noMatches() {
+                    }
+
+                    @Override
+                    public void loadFailed(FriendlyException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

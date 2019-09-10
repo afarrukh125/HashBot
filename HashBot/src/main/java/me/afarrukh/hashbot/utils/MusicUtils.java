@@ -24,7 +24,7 @@ public class MusicUtils {
      */
     public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
 
-        connectToChannel(evt);
+        connectToChannel(evt.getMember());
         Invoker invoker = new Invoker(evt.getMember());
         if(playTop) {
             invoker.addCredit(-Constants.PLAY_TOP_COST);
@@ -43,14 +43,13 @@ public class MusicUtils {
 
     /**
      * Connects to a voice channel
-     * @param evt The event object used to retrieve the VoiceChannel to connect to through the Member object in the event
+     * @param caller The user who called the command that caused the bot to connect
      */
-    private static void connectToChannel(MessageReceivedEvent evt) {
-        if(!evt.getGuild().getAudioManager().isConnected()) {
-            Member m = evt.getMember();
-            if(m.getVoiceState().inVoiceChannel()) {
-                AudioManager audioManager = evt.getGuild().getAudioManager();
-                audioManager.openAudioConnection(m.getVoiceState().getChannel());
+    private static void connectToChannel(Member caller) {
+        if(!caller.getGuild().getAudioManager().isConnected()) {
+            if(caller.getVoiceState().inVoiceChannel()) {
+                AudioManager audioManager = caller.getGuild().getAudioManager();
+                audioManager.openAudioConnection(caller.getVoiceState().getChannel());
             }
         }
     }
