@@ -305,7 +305,10 @@ public class SQLUserDataManager implements IDataManager {
 
         try {
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
-                    "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id";
+                    "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id " +
+                    "AND listtrack.listid=playlist.listid";
+
+            System.out.println(query);
 
             ResultSet rs = conn.createStatement().executeQuery(query);
 
