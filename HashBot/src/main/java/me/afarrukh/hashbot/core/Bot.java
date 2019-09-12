@@ -88,6 +88,7 @@ public class Bot {
                 .addCommand(new QueueCommand())
                 .addCommand(new SavePlaylistCommand())
                 .addCommand(new LoadListCommand())
+                .addCommand(new ViewListCommand())
                 .addCommand(new RemoveCommand())
                 .addCommand(new ClearQueueCommand())
                 .addCommand(new PruneQueueCommand())

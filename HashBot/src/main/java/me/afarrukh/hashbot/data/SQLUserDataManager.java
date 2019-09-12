@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
+import me.afarrukh.hashbot.music.Playlist;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -257,7 +258,7 @@ public class SQLUserDataManager implements IDataManager {
 
             Statement statement = conn.createStatement();
 
-            int listId = -1;
+            int listId;
             ResultSet rs = statement.getGeneratedKeys();
 
             if (rs.next())
@@ -268,11 +269,13 @@ public class SQLUserDataManager implements IDataManager {
             PreparedStatement pslistuser = conn.prepareStatement("INSERT INTO listuser VALUES(?, ?)");
             pslistuser.setInt(1, listId);
             pslistuser.setString(2, this.member.getUser().getId());
+            int pos = 1; // Assigning a position to each of the tracks as well
             // Adding the tracks
             for (AudioTrack track : trackList) {
 
                 String trackURI = track.getInfo().uri.replace(":", ";");
 
+                // Put the track into the database, with the name
                 PreparedStatement pstrack = conn.prepareStatement("INSERT INTO track VALUES(?, ?);");
                 pstrack.setString(1, trackURI);
                 pstrack.setString(2, track.getInfo().title);
@@ -283,9 +286,13 @@ public class SQLUserDataManager implements IDataManager {
                 }
 
 
-                PreparedStatement pslisttrack = conn.prepareStatement("INSERT INTO listtrack VALUES(?, ?)");
+                // Add to the table that maps the playlist ID to the track URL. Assign the position too.
+                PreparedStatement pslisttrack = conn.prepareStatement("INSERT INTO listtrack VALUES(?, ?, ?)");
                 pslisttrack.setInt(1, listId);
                 pslisttrack.setString(2, trackURI);
+                pslisttrack.setInt(3, pos);
+
+                pos++;
 
                 pslisttrack.execute();
             }
@@ -306,9 +313,7 @@ public class SQLUserDataManager implements IDataManager {
         try {
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
                     "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id " +
-                    "AND listtrack.listid=playlist.listid";
-
-            System.out.println(query);
+                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
 
@@ -341,5 +346,21 @@ public class SQLUserDataManager implements IDataManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Playlist> viewAllPlaylists() {
+        checkConn();
+
+        final String query = "SELECT name, COUNT(*) " +
+                "FROM playlist, listuser, track, user, listtrack " +
+                "WHERE user.id=listuser.userid " +
+                    "AND listtrack.trackurl=track.url " +
+                    "AND listtrack.listid=playlist.listid " +
+                    "AND listuser.userid='" +member.getUser().getId()+"' " +
+                    "GROUP BY playlist.listid ";
+
+        System.out.println(query);
+        return null;
+        //ResultSet rs = conn.createStatement().executeQuery(query);
     }
 }

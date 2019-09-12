@@ -24,7 +24,7 @@ public class LoadListCommand extends Command implements MusicCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         new SQLUserDataManager(evt.getMember()).getPlaylistByName(params);
-        MusicUtils.connectToChannel(evt.getMember());
+        //MusicUtils.connectToChannel(evt.getMember());
         evt.getTextChannel().sendMessage("Queued playlist " + params).queue();
     }
 
