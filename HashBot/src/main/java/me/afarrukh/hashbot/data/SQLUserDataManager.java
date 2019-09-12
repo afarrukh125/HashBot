@@ -351,16 +351,29 @@ public class SQLUserDataManager implements IDataManager {
     public List<Playlist> viewAllPlaylists() {
         checkConn();
 
-        final String query = "SELECT name, COUNT(*) " +
+        final String query = "SELECT COUNT(DISTINCT (url)) AS trackCount, name AS listName " +
                 "FROM playlist, listuser, track, user, listtrack " +
                 "WHERE user.id=listuser.userid " +
                     "AND listtrack.trackurl=track.url " +
                     "AND listtrack.listid=playlist.listid " +
-                    "AND listuser.userid='" +member.getUser().getId()+"' " +
-                    "GROUP BY playlist.listid ";
+                    "AND listuser.userid="+ member.getUser().getId() +
+                " GROUP BY playlist.listid ORDER BY playlist.listid";
 
         System.out.println(query);
+
+        try {
+            List<Playlist> plist = new ArrayList<>();
+            ResultSet rs = conn.createStatement().executeQuery(query);
+            while (rs.next()) {
+                String name = rs.getString(2);
+                int size = rs.getInt(1);
+                plist.add(new Playlist(name, size));
+                System.out.println(name + ", " + size);
+            }
+            return plist;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
-        //ResultSet rs = conn.createStatement().executeQuery(query);
     }
 }

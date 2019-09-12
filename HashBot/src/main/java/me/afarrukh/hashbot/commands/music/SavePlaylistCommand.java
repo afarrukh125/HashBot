@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -38,10 +39,12 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.add(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
+        Message message = evt.getTextChannel().sendMessage("Creating playlist " + params + " with " + trackList.size() + " tracks.").complete();
+
         try {
             new SQLUserDataManager(evt.getMember()).addPlaylist(params, trackList);
 
-            evt.getTextChannel().sendMessage("You have successfully created the playlist " + params + " with " + trackList.size() + " tracks.").queue();
+            message.editMessage("You have successfully created the playlist " + params + " with " + trackList.size() + " tracks.").queue();
         } catch (PlaylistException e) {
             evt.getTextChannel().sendMessage("The name you have selected for this playlist is already in use. " +
                     "Please choose another").queue();

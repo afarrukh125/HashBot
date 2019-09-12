@@ -18,6 +18,8 @@ public class Playlist {
 
     public Playlist(String name, int size) {
         tracks = new ArrayList<>();
+        this.name = name;
+        this.size = size;
     }
 
     public String getName() {

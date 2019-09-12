@@ -1,9 +1,14 @@
 package me.afarrukh.hashbot.commands.music;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
+import me.afarrukh.hashbot.music.Playlist;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.util.List;
 
 /**
  * @author Abdullah
@@ -18,7 +23,21 @@ public class ViewListCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        new SQLUserDataManager(evt.getMember()).viewAllPlaylists();
+        List<Playlist> playlistList = new SQLUserDataManager(evt.getMember()).viewAllPlaylists();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("You currently have ").append(playlistList.size()).append(" playlists: \n\n");
+        for(Playlist p: playlistList) {
+            stringBuilder.append("**").append(p.getName()).append(": **").append(p.getSize()).append(" tracks").append("\n\n");
+        }
+
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle("Viewing playlists for " + evt.getMember().getEffectiveName());
+        eb.setDescription(stringBuilder);
+        eb.setColor(Constants.EMB_COL);
+        eb.setThumbnail(evt.getMember().getUser().getAvatarUrl());
+        evt.getTextChannel().sendMessage(eb.build()).queue();
 
     }
 
