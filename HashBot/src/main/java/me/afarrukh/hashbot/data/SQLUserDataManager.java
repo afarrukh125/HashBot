@@ -356,7 +356,8 @@ public class SQLUserDataManager implements IDataManager {
                 "WHERE user.id=listuser.userid " +
                     "AND listtrack.trackurl=track.url " +
                     "AND listtrack.listid=playlist.listid " +
-                    "AND listuser.userid="+ member.getUser().getId() +
+                    "AND listuser.userid="+ member.getUser().getId() + " " +
+                    "AND playlist.listid=listuser.listid" +
                 " GROUP BY playlist.listid ORDER BY playlist.listid";
 
         System.out.println(query);
