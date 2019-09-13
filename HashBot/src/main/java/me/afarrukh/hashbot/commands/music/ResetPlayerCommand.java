@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.commands.music;
 
-import me.afarrukh.hashbot.commands.AdminCommand;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;

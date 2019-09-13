@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.commands.management.user;
 
-import me.afarrukh.hashbot.commands.AdminCommand;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;

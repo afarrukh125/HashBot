@@ -21,9 +21,9 @@ public class ViewCategoriesCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         List<String> stringList = new ArrayList<>();
 
-        for(Command c: Bot.commandManager.getCommandList()) {
-            if(c instanceof CategorisedCommand) {
-                if(!stringList.contains(((CategorisedCommand) c).getType())) {
+        for (Command c : Bot.commandManager.getCommandList()) {
+            if (c instanceof CategorisedCommand) {
+                if (!stringList.contains(((CategorisedCommand) c).getType())) {
                     stringList.add(((CategorisedCommand) c).getType());
                 }
             }

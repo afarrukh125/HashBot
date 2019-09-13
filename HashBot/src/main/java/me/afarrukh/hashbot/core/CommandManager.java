@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.core;
 
-import me.afarrukh.hashbot.commands.AdminCommand;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.utils.UserUtils;
