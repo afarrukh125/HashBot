@@ -24,6 +24,10 @@ public class SQLUserDataManager implements IDataManager {
     private static Connection conn;
     private static boolean hasData = false;
 
+    /**
+     * The <code>Member</code> object associated with this data manager.
+     * From this object, we obtain the user ID, and the guild that we will use in executing SQL queries.
+     */
     private final Member member;
 
     public SQLUserDataManager(Member member) {
