@@ -46,7 +46,7 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
 
             message.editMessage("You have successfully created the playlist " + params + " with " + trackList.size() + " tracks.").queue();
         } catch (PlaylistException e) {
-            evt.getTextChannel().sendMessage("The name you have selected for this playlist is already in use. " +
+            message.editMessage("The name you have selected for this playlist is already in use. " +
                     "Please choose another").queue();
         }
     }

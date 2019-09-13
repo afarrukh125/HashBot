@@ -248,24 +248,41 @@ public class SQLUserDataManager implements IDataManager {
         checkConn(); // Mandatory before every call to the database
 
         try {
+
             // Create the playlist
             PreparedStatement pslist = conn.prepareStatement("INSERT INTO playlist VALUES(?, ?, ?);");
-
+            // Field at parameterIndex = 1 increments automatically
             pslist.setString(2, lname);
             pslist.setString(3, this.member.getUser().getId());
-
             pslist.execute();
 
+            // We need to check if a playlist with the same name, by the same user already exists
+            // If this is the case, we throw a checked exception, to be handled by the class calling this method.
             Statement statement = conn.createStatement();
 
+            final String getPlaylistsWithNameQuery = "SELECT DISTINCT(url), name FROM track, listuser, playlist, user, listtrack " +
+                    "WHERE track.url=listtrack.trackurl AND playlist.name='" +lname + "' AND listuser.userid=user.id " +
+                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
+
+            ResultSet rs = statement.executeQuery(getPlaylistsWithNameQuery);
+
             int listId;
-            ResultSet rs = statement.getGeneratedKeys();
-
-            if (rs.next())
-                listId = rs.getInt(1);
-            else
+            if (!rs.next())
+                listId = conn.createStatement().getGeneratedKeys().getInt(1);
+            else {
+                /* We need to undo the creation of the playlist from earlier.
+                 For some reason, the JDBC Statement class has a method that allows you to obtain generated keys, as
+                 exhibited above, that obtains the latest auto incrementing key based on 'context'.
+                 I am currently aware of how to circumvent such behaviour, other than to delete the entry we created
+                 just to obtain the context */
+                conn.prepareStatement("DELETE FROM playlist WHERE userid="+this.member.getUser().getId()+" " +
+                        "AND listid=(SELECT MAX(listid) FROM playlist WHERE userid = " + this.member.getUser().getId() + ");").execute();
                 throw new PlaylistException("A playlist with that name already exists!");
+            }
 
+            System.out.println(listId);
+
+            // Create an entry in the table that maps users to their playlists.
             PreparedStatement pslistuser = conn.prepareStatement("INSERT INTO listuser VALUES(?, ?)");
             pslistuser.setInt(1, listId);
             pslistuser.setString(2, this.member.getUser().getId());
@@ -304,11 +321,10 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
-    public synchronized List<AudioTrack> getPlaylistByName(String name) {
+    public synchronized void loadPlaylistByName(String name) {
         checkConn();
 
         // TODO Fix the asynchronous behaviour of the playlist loading
-        final List<AudioTrack> trackList = new ArrayList<>();
 
         try {
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
@@ -316,8 +332,6 @@ public class SQLUserDataManager implements IDataManager {
                     "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
-
-            int tracks = 0;
 
             while (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
@@ -345,7 +359,6 @@ public class SQLUserDataManager implements IDataManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public List<Playlist> viewAllPlaylists() {
