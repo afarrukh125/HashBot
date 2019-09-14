@@ -9,6 +9,7 @@ import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.LatentTrack;
 import me.afarrukh.hashbot.music.Playlist;
 import me.afarrukh.hashbot.music.PlaylistLoader;
+import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -342,6 +343,36 @@ public class SQLUserDataManager implements IDataManager {
                 throw new PlaylistException("No playlist with that name was found");
 
             rs = conn.createStatement().executeQuery(query);
+
+            // Load the first track in the meantime, while the others load
+            if(rs.next()) {
+                String uri = rs.getString(1).replace(";", ":");
+                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()),
+                        uri,
+                        new AudioLoadResultHandler() {
+                            @Override
+                            public void trackLoaded(AudioTrack audioTrack) {
+                                audioTrack.setUserData(member.getUser().getName());
+                                Bot.musicManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(audioTrack);
+                                MusicUtils.connectToChannel(member);
+                            }
+
+                            @Override
+                            public void playlistLoaded(AudioPlaylist audioPlaylist) {
+
+                            }
+
+                            @Override
+                            public void noMatches() {
+
+                            }
+
+                            @Override
+                            public void loadFailed(FriendlyException e) {
+
+                            }
+                        });
+            }
 
             int idx = 0; // Position, for tracking between threads
 

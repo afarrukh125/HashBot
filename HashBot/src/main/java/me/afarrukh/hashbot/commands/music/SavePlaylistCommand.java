@@ -39,6 +39,11 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.add(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
+        if(trackList.size() > 100) {
+            evt.getTextChannel().sendMessage("You can only save playlists that have 100 tracks or less.").queue();
+            return;
+        }
+
         Message message = evt.getTextChannel().sendMessage("Creating playlist " + params + " with " + trackList.size() + " tracks.").complete();
 
         try {
