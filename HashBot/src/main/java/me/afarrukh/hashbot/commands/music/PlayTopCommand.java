@@ -21,12 +21,12 @@ public class PlayTopCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(params == null) {
+        if (params == null) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
 
-        if(evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
+        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
             if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
                 // If the bot is not in the same channel as the user (assuming already connected) then return
                 evt.getTextChannel().sendMessage("You must be in the same channel as the bot to queue songs to it.").queue();
@@ -34,16 +34,15 @@ public class PlayTopCommand extends Command implements MusicCommand {
             }
         }
 
-        if(new Invoker(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
-            evt.getTextChannel().sendMessage("You need at least " +Constants.PLAY_TOP_COST+ " credit to queue songs to the top of the list.").queue();
+        if (new Invoker(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
+            evt.getTextChannel().sendMessage("You need at least " + Constants.PLAY_TOP_COST + " credit to queue songs to the top of the list.").queue();
             return;
         }
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
-        if(params.split(" ").length == 1 && params.contains("http")) {
+        if (params.split(" ").length == 1 && params.contains("http")) {
             Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
             evt.getMessage().delete().queue();
-        }
-        else
+        } else
             Bot.musicManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
     }
 

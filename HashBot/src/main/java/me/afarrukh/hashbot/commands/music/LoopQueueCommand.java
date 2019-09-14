@@ -18,9 +18,9 @@ public class LoopQueueCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
-            TrackScheduler ts  = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
-            if(ts.isFairPlay()) {
+        if (MusicUtils.canInteract(evt)) {
+            TrackScheduler ts = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+            if (ts.isFairPlay()) {
                 evt.getTextChannel().sendMessage("Cannot use this feature unless fairplay is disabled.").queue();
                 return;
             }

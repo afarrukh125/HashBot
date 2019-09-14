@@ -28,35 +28,35 @@ public class RoleStatsCommand extends Command implements RoleCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         List<Role> roleList = new ArrayList<>(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRolesAsRoles());
 
-        if(roleList.isEmpty()) {
+        if (roleList.isEmpty()) {
             evt.getTextChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("No GameRoles on this server.")
-            .setThumbnail(evt.getGuild().getIconUrl()).appendDescription("Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "createrole"
-                    + " to create one.").build()).queue();
+                    .setThumbnail(evt.getGuild().getIconUrl()).appendDescription("Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "createrole"
+                            + " to create one.").build()).queue();
             return;
         }
 
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(evt.getGuild().getIconUrl());
-        eb.setTitle("GameRole statistics for " + evt.getGuild().getName() + " [Total " +filterBots(evt).size()+ " members]");
+        eb.setTitle("GameRole statistics for " + evt.getGuild().getName() + " [Total " + filterBots(evt).size() + " members]");
 
         Map<Role, Integer> roleMap = new HashMap<>();
 
-        for(Role r: roleList) {
+        for (Role r : roleList) {
             roleMap.put(r, evt.getGuild().getMembersWithRoles(r).size());
         }
 
         roleList.sort((o1, o2) -> {
-            if(roleMap.get(o1) < roleMap.get(o2))
+            if (roleMap.get(o1) < roleMap.get(o2))
                 return 1;
-            else if(roleMap.get(o1).equals(roleMap.get(o2)))
+            else if (roleMap.get(o1).equals(roleMap.get(o2)))
                 return 0;
             return -1;
         });
 
         int count = 1;
-        for(Role r: roleList) {
-            eb.appendDescription("`"+count + ".` **" + r.getName() + "**: " +roleMap.get(r)+ " members\n\n");
+        for (Role r : roleList) {
+            eb.appendDescription("`" + count + ".` **" + r.getName() + "**: " + roleMap.get(r) + " members\n\n");
             count++;
         }
 

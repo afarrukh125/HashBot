@@ -24,12 +24,12 @@ public class FlipCommand extends Command implements EconCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         // Checking parameter validity
-        if(params == null) {
+        if (params == null) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
 
-        if(params.split(" ").length != 2) {
+        if (params.split(" ").length != 2) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
@@ -44,7 +44,7 @@ public class FlipCommand extends Command implements EconCommand {
         try {
             amount = Long.parseLong(tokens[0]);
         } catch (NumberFormatException e) {
-            if(tokens[0].equalsIgnoreCase("all"))
+            if (tokens[0].equalsIgnoreCase("all"))
                 amount = invoker.getCredit();
             else {
                 evt.getTextChannel().sendMessage("Please enter a valid amount.").queue();
@@ -54,16 +54,20 @@ public class FlipCommand extends Command implements EconCommand {
 
         // Mapping user input to number rolls.
         final Map<String, Integer> userInputMap = new HashMap<>();
-        userInputMap.put("heads", 1); userInputMap.put("h", 1); userInputMap.put("head", 1);
-        userInputMap.put("tails", 2); userInputMap.put("t", 2); userInputMap.put("tail", 2);
+        userInputMap.put("heads", 1);
+        userInputMap.put("h", 1);
+        userInputMap.put("head", 1);
+        userInputMap.put("tails", 2);
+        userInputMap.put("t", 2);
+        userInputMap.put("tail", 2);
 
         // Checking if the user choice entered is valid
-        if(userInputMap.get(tokens[1]) == null) {
+        if (userInputMap.get(tokens[1]) == null) {
             evt.getTextChannel().sendMessage("You must flip on either heads or tails.").queue();
             return;
         }
 
-        if(invoker.getCredit() < amount || invoker.getCredit() <= 0) {
+        if (invoker.getCredit() < amount || invoker.getCredit() <= 0) {
             evt.getTextChannel().sendMessage("You do not have enough credits.").queue();
             return;
         }
@@ -83,7 +87,7 @@ public class FlipCommand extends Command implements EconCommand {
         String thumbnailPath = rolledValue == 1 ? Constants.FLIP_HEAD : Constants.FLIP_TAIL;
         eb.setThumbnail(thumbnailPath);
 
-        if(rolledValue == userInputMap.get(choice)) {
+        if (rolledValue == userInputMap.get(choice)) {
             // If they flipped on the right choice then reward them
             sb.append("You won ").append(amount).append(" credits!");
             eb.setColor(Color.GREEN);
@@ -92,7 +96,7 @@ public class FlipCommand extends Command implements EconCommand {
             // Otherwise take away credits
             sb.append("You lost ").append(amount).append(" credits!");
             eb.setColor(Color.RED);
-            if(invoker.getCredit() - amount < 0)
+            if (invoker.getCredit() - amount < 0)
                 invoker.addCredit(-invoker.getCredit());
             else
                 invoker.addCredit(-amount);

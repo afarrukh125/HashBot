@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
-import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -24,13 +24,13 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
             int newValue = Integer.parseInt(params);
-            if(newValue <= 0) {
+            if (newValue <= 0) {
                 evt.getTextChannel().sendMessage("The minimum pin threshold value is 1").queue();
                 return;
             }
             Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);
             evt.getTextChannel().sendMessage("The pinned threshold is now " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()).queue();
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             evt.getTextChannel().sendMessage("Please enter a numerical value for threshold. The threshold is the number of reactions needed for a message to be pinned.")
                     .queue();
         }

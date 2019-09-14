@@ -1,17 +1,12 @@
 package me.afarrukh.hashbot.data;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
-import me.afarrukh.hashbot.music.LatentTrack;
 import me.afarrukh.hashbot.music.Playlist;
 import me.afarrukh.hashbot.music.PlaylistLoader;
 import me.afarrukh.hashbot.music.results.YTFirstLatentTrackHandler;
 import me.afarrukh.hashbot.music.results.YTLatentTrackHandler;
-import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -129,56 +124,6 @@ public class SQLUserDataManager implements IDataManager {
         ps2.execute();
     }
 
-    @Override
-    public void load() {
-    }
-
-    @Override
-    public void writePresets() {
-
-    }
-
-    @Override
-    public Object getValue(Object key) {
-        if (conn == null)
-            try {
-                getConnection();
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
-            if (!rs.next()) {
-                rs.close();
-                addMember(member);
-                rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
-            }
-            return rs.getObject(key.toString());
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public void updateValue(Object key, Object value) {
-        if (conn == null)
-            try {
-                getConnection();
-            } catch (SQLException | ClassNotFoundException ignored) {
-            }
-
-        try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE USER SET " + key + "=? WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
-            ps.setObject(1, value);
-            ps.execute();
-        } catch (SQLException e) {
-
-        }
-    }
-
     public static List<Member> getMemberData(Guild guild) {
         if (conn == null)
             try {
@@ -246,6 +191,56 @@ public class SQLUserDataManager implements IDataManager {
             }
     }
 
+    @Override
+    public void load() {
+    }
+
+    @Override
+    public void writePresets() {
+
+    }
+
+    @Override
+    public Object getValue(Object key) {
+        if (conn == null)
+            try {
+                getConnection();
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
+            if (!rs.next()) {
+                rs.close();
+                addMember(member);
+                rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
+            }
+            return rs.getObject(key.toString());
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void updateValue(Object key, Object value) {
+        if (conn == null)
+            try {
+                getConnection();
+            } catch (SQLException | ClassNotFoundException ignored) {
+            }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE USER SET " + key + "=? WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
+            ps.setObject(1, value);
+            ps.execute();
+        } catch (SQLException e) {
+
+        }
+    }
+
     /**
      * Adds a list of tracks to the database
      *
@@ -270,7 +265,7 @@ public class SQLUserDataManager implements IDataManager {
             Statement statement = conn.createStatement();
 
             final String getPlaylistsWithNameQuery = "SELECT DISTINCT(url), name FROM track, listuser, playlist, user, listtrack " +
-                    "WHERE track.url=listtrack.trackurl AND playlist.name='" +lname + "' AND listuser.userid=user.id " +
+                    "WHERE track.url=listtrack.trackurl AND playlist.name='" + lname + "' AND listuser.userid=user.id " +
                     "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
 
             ResultSet rs = statement.executeQuery(getPlaylistsWithNameQuery);
@@ -284,7 +279,7 @@ public class SQLUserDataManager implements IDataManager {
                  exhibited above, that obtains the latest auto incrementing key based on 'context'.
                  I am currently aware of how to circumvent such behaviour, other than to delete the entry we created
                  just to obtain the context */
-                conn.prepareStatement("DELETE FROM playlist WHERE userid="+this.member.getUser().getId()+" " +
+                conn.prepareStatement("DELETE FROM playlist WHERE userid=" + this.member.getUser().getId() + " " +
                         "AND listid=(SELECT MAX(listid) FROM playlist WHERE userid = " + this.member.getUser().getId() + ");").execute();
                 throw new PlaylistException("A playlist with that name already exists!");
             }
@@ -305,7 +300,7 @@ public class SQLUserDataManager implements IDataManager {
                 pstrack.setString(2, track.getInfo().title);
                 try {
                     pstrack.execute();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     // Duplicate track detected, ignore
                 }
 
@@ -329,7 +324,7 @@ public class SQLUserDataManager implements IDataManager {
     }
 
     /**
-     * @param name The name of the playlist
+     * @param name   The name of the playlist
      * @param loader The associated <code>PlaylistLoader</code> for this playlist
      * @throws PlaylistException To be handled when the playlist is not found, for example
      */
@@ -339,18 +334,18 @@ public class SQLUserDataManager implements IDataManager {
         try {
             // We need to check if the playlist exists first of all
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
-                    "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id " +
+                    "WHERE track.url=listtrack.trackurl AND playlist.name='" + name + "' AND listuser.userid=user.id " +
                     "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
 
-            if(!rs.next())
+            if (!rs.next())
                 throw new PlaylistException("No playlist with that name was found");
 
             rs = conn.createStatement().executeQuery(query);
 
             // Load the first track in the meantime, while the others load
-            if(rs.next()) {
+            if (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
                 Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()),
                         uri,
@@ -372,6 +367,7 @@ public class SQLUserDataManager implements IDataManager {
 
     /**
      * Returns a list of <code>Playlist</code> containing all playlists by the associated member object.
+     *
      * @return A list of playlists for the associated member
      */
     public List<Playlist> viewAllPlaylists() {
@@ -380,10 +376,10 @@ public class SQLUserDataManager implements IDataManager {
         final String query = "SELECT COUNT(DISTINCT (url)) AS trackCount, name AS listName " +
                 "FROM playlist, listuser, track, user, listtrack " +
                 "WHERE user.id=listuser.userid " +
-                    "AND listtrack.trackurl=track.url " +
-                    "AND listtrack.listid=playlist.listid " +
-                    "AND listuser.userid="+ member.getUser().getId() + " " +
-                    "AND playlist.listid=listuser.listid" +
+                "AND listtrack.trackurl=track.url " +
+                "AND listtrack.listid=playlist.listid " +
+                "AND listuser.userid=" + member.getUser().getId() + " " +
+                "AND playlist.listid=listuser.listid" +
                 " GROUP BY playlist.listid ORDER BY playlist.listid";
 
         try {
@@ -403,6 +399,7 @@ public class SQLUserDataManager implements IDataManager {
 
     /**
      * Returns the size of a given playlist from this member's playlists
+     *
      * @param listName The name of the list to be searched for
      * @return An integer corresponding to the size of the playlist that has been searched for
      */

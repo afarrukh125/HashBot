@@ -18,12 +18,11 @@ public class LeaderboardCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        if(params != null) {
-            if(params.equalsIgnoreCase("credits")) {
+        if (params != null) {
+            if (params.equalsIgnoreCase("credits")) {
                 evt.getTextChannel().sendMessage(EmbedUtils.getCreditsLeaderboardEmbed(LevelUtils.getCreditsLeaderboard(evt.getGuild()), evt)).queue();
             }
-        }
-        else {
+        } else {
             Member[] userList = LevelUtils.getLeaderboard(evt.getGuild());
             evt.getChannel().sendMessage(EmbedUtils.getLeaderboard(userList, evt)).queue();
         }

@@ -17,37 +17,36 @@ import java.util.concurrent.BlockingQueue;
 public class MusicUtils {
 
     /**
-     * @param evt The message event used to retrieve data such as the channel the message is being sent to
+     * @param evt          The message event used to retrieve data such as the channel the message is being sent to
      * @param musicManager The music manager to be queried
-     * @param track The track being queued
-     * @param playTop Whether or not the song is to be queued to the top of the list
+     * @param track        The track being queued
+     * @param playTop      Whether or not the song is to be queued to the top of the list
      */
     public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
 
         connectToChannel(evt.getMember());
         Invoker invoker = new Invoker(evt.getMember());
-        if(playTop) {
+        if (playTop) {
             invoker.addCredit(-Constants.PLAY_TOP_COST);
             musicManager.getScheduler().queueTop(track);
-        }
-        else {
+        } else {
             musicManager.getScheduler().queue(track);
         }
 
-        if(playTop) {
+        if (playTop) {
             evt.getChannel().sendMessage(EmbedUtils.getQueuedTopEmbed(musicManager, track, evt)).queue();
-        }
-        else
+        } else
             evt.getChannel().sendMessage(EmbedUtils.getQueuedEmbed(musicManager, track, evt)).queue();
     }
 
     /**
      * Connects to a voice channel
+     *
      * @param caller The user who called the command that caused the bot to connect
      */
     public static void connectToChannel(Member caller) {
-        if(!caller.getGuild().getAudioManager().isConnected()) {
-            if(caller.getVoiceState().inVoiceChannel()) {
+        if (!caller.getGuild().getAudioManager().isConnected()) {
+            if (caller.getVoiceState().inVoiceChannel()) {
                 AudioManager audioManager = caller.getGuild().getAudioManager();
                 audioManager.openAudioConnection(caller.getVoiceState().getChannel());
             }
@@ -56,11 +55,12 @@ public class MusicUtils {
 
     /**
      * Disconnects the bot from the channel provided in the provided message event
+     *
      * @param guild The guild to disconnect the bot from
      */
     public static void disconnect(Guild guild) {
         GuildMusicManager gm = Bot.musicManager.getGuildAudioPlayer(guild);
-        if(gm.getPlayer().getPlayingTrack() != null)
+        if (gm.getPlayer().getPlayingTrack() != null)
             gm.getPlayer().getPlayingTrack().stop();
         gm.getScheduler().getQueue().clear();
         gm.getScheduler().setLoopingQueue(false);
@@ -74,12 +74,13 @@ public class MusicUtils {
 
     /**
      * Returns the duration of a playlist
+     *
      * @param pl The playlist to be queried
      * @return A string with the duration of the playlist in HHMMSS format
      */
     public static String getPlaylistDuration(AudioPlaylist pl) {
         long duration = 0;
-        for(AudioTrack t: pl.getTracks())
+        for (AudioTrack t : pl.getTracks())
             duration += t.getDuration();
 
         return CmdUtils.longToHHMMSS(duration);
@@ -94,7 +95,6 @@ public class MusicUtils {
     }
 
     /**
-     *
      * @param evt The event associated with the call
      * @return True or false depending on whether music commands can be called
      */
@@ -111,14 +111,15 @@ public class MusicUtils {
 
     /**
      * Gets the URL for the thumbnail for the provided track
+     *
      * @param at The audio track for which the thumbnail URl is to be found
      * @return A string with the URL to the given audio track
      */
     public static String getThumbnailURL(AudioTrack at) {
         String vidURL = at.getInfo().uri;
         int idx = vidURL.indexOf("?v=");
-        String imgURL = vidURL.substring(idx+3);
-        return "https://img.youtube.com/vi/" +imgURL+ "/0.jpg";
+        String imgURL = vidURL.substring(idx + 3);
+        return "https://img.youtube.com/vi/" + imgURL + "/0.jpg";
     }
 
     /**
@@ -129,10 +130,10 @@ public class MusicUtils {
         long totalDuration = track.getDuration();
         long currentPosition = track.getPosition();
 
-        int remainder = (int) Math.round((double) currentPosition/totalDuration*Constants.MUSICBAR_SCALE);
+        int remainder = (int) Math.round((double) currentPosition / totalDuration * Constants.MUSICBAR_SCALE);
         StringBuilder val = new StringBuilder();
-        for(int i = 0; i<Constants.MUSICBAR_SCALE; i++) {
-            if(i == remainder)
+        for (int i = 0; i < Constants.MUSICBAR_SCALE; i++) {
+            if (i == remainder)
                 val.append(":" + Constants.SELECTEDPOS + ":");
             else
                 val.append(Constants.UNSELECTEDPOS);
@@ -142,11 +143,12 @@ public class MusicUtils {
 
     /**
      * Changes the volume to a desired value
+     *
      * @param evt The event being queried for information such as the channel
      * @param vol The volume to be changed to
      */
     public static void setVolume(MessageReceivedEvent evt, int vol) {
-        if(vol < 0 || vol > Constants.MAX_VOL) {
+        if (vol < 0 || vol > Constants.MAX_VOL) {
             evt.getChannel().sendMessage("You cannot set the volume to that value").queue();
             return;
         }
@@ -156,6 +158,7 @@ public class MusicUtils {
 
     /**
      * Pauses the bot's audio player
+     *
      * @param evt The message received event associated with the pause request being sent
      */
     public static void pause(MessageReceivedEvent evt) {
@@ -165,6 +168,7 @@ public class MusicUtils {
 
     /**
      * Resumes the bot
+     *
      * @param evt The message receieved event relating to the resume request
      */
     public static void resume(MessageReceivedEvent evt) {
@@ -174,28 +178,30 @@ public class MusicUtils {
 
     /**
      * Looks for a particular time in the song
-     * @param evt The message received event containing information regarding the song which is to be seeked through
+     *
+     * @param evt     The message received event containing information regarding the song which is to be seeked through
      * @param seconds The time in seconds to be searched for in the currently playing song
      */
     public static void seek(MessageReceivedEvent evt, int seconds) {
         try {
             AudioTrack track = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
 
-            if(seconds > track.getDuration()/1000 || seconds < 0)
+            if (seconds > track.getDuration() / 1000 || seconds < 0)
                 evt.getChannel().sendMessage("Please enter a valid time for this song to seek. " +
-                        "Maximum time in seconds for this song is " +((track.getDuration()/1000)-1)+ " seconds.").queue();
+                        "Maximum time in seconds for this song is " + ((track.getDuration() / 1000) - 1) + " seconds.").queue();
             else {
                 int toMilliSeconds = seconds * 1000;
                 track.setPosition(toMilliSeconds);
-                evt.getChannel().sendMessage("Set position of current song to " +seconds).queue();
+                evt.getChannel().sendMessage("Set position of current song to " + seconds).queue();
             }
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             evt.getChannel().sendMessage("Nothing is playing right now.").queue();
         }
     }
 
     /**
      * The song to be removed from the queue at the given index
+     *
      * @param evt The message received event associated with the song to be removed
      * @param idx The current index of the song to be removed
      */
@@ -203,10 +209,10 @@ public class MusicUtils {
         BlockingQueue<AudioTrack> tracks = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
 
         int count = 1;
-        for(AudioTrack track : tracks) {
-            if(count == idx) {
+        for (AudioTrack track : tracks) {
+            if (count == idx) {
                 tracks.remove(track);
-                evt.getTextChannel().sendMessage("Removed `" +track.getInfo().title+ "` from queue").queue();
+                evt.getTextChannel().sendMessage("Removed `" + track.getInfo().title + "` from queue").queue();
                 return;
             }
             count++;

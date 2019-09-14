@@ -21,8 +21,8 @@ abstract class YTGenericResultHandler implements AudioLoadResultHandler {
         String[] params = evt.getMessage().getContentRaw().split(" ", 2);
         this.query = params[1];
 
-        if(!query.contains("list")) {
-            evt.getChannel().sendMessage(":mag: **Searching**: `" +query+"`").queue();
+        if (!query.contains("list")) {
+            evt.getChannel().sendMessage(":mag: **Searching**: `" + query + "`").queue();
         }
 
     }
@@ -38,6 +38,6 @@ abstract class YTGenericResultHandler implements AudioLoadResultHandler {
 
     @Override
     public void loadFailed(FriendlyException e) {
-        evt.getChannel().sendMessage("Nothing found by `" +query+"`").queue();
+        evt.getChannel().sendMessage("Nothing found by `" + query + "`").queue();
     }
 }

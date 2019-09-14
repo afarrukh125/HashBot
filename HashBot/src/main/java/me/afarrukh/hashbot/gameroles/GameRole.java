@@ -16,5 +16,7 @@ public class GameRole {
         return name;
     }
 
-    public String getCreator() { return creatorId; }
+    public String getCreator() {
+        return creatorId;
+    }
 }

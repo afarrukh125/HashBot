@@ -13,7 +13,7 @@ class ReactionManager {
 
     void sendToModifier(GuildMessageReactionAddEvent evt) {
         RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getUser());
-        if(rb == null)
+        if (rb == null)
             return;
         rb.handleEvent(evt);
     }

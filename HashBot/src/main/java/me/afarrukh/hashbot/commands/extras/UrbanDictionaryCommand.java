@@ -29,12 +29,12 @@ public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
         String example;
         try {
             eb.addField(new MessageEmbed.Field(params, definition, false));
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             eb.appendDescription("**" + params + "**\n");
             eb.appendDescription(definition);
         }
 
-        if(definitionAndExample.length == 2) {
+        if (definitionAndExample.length == 2) {
             example = definitionAndExample[1];
             eb.addField(new MessageEmbed.Field("Example", example, false));
         }

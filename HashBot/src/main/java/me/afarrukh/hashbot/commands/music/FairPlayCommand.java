@@ -18,7 +18,7 @@ public class FairPlayCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!MusicUtils.canInteract(evt))
+        if (!MusicUtils.canInteract(evt))
             return;
 
         TrackScheduler ts = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();

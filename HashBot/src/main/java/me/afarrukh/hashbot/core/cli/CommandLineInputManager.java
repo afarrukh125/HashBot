@@ -36,7 +36,7 @@ public class CommandLineInputManager {
 
     private void addCommand(CLICommand command) {
         commandMap.put(command.getName(), command);
-        for(String alias: command.getAliases())
+        for (String alias : command.getAliases())
             commandMap.put(alias, command);
     }
 }

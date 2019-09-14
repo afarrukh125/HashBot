@@ -26,35 +26,35 @@ public class PruneCommand extends Command {
         MessagePaginationAction messageHistory = evt.getTextChannel().getIterableHistory();
         List<Message> messageBin = new LinkedList<>();
         GuildDataManager gdm = new GuildDataManager(evt.getGuild());
-        for(Message m: messageHistory) {
-            if(gdm.isBotPinMessage(m.getId())) // Do not want to clear any bot pinned message
+        for (Message m : messageHistory) {
+            if (gdm.isBotPinMessage(m.getId())) // Do not want to clear any bot pinned message
                 continue;
-            if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+            if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
                 messageBin.add(m);
             }
-            if(messageBin.size() == 100)
+            if (messageBin.size() == 100)
                 break;
         }
         try {
             evt.getTextChannel().deleteMessages(messageBin).queue();
-            evt.getChannel().sendMessage("Cleaned " +messageBin.size() + " bot-related messages.").queue();
+            evt.getChannel().sendMessage("Cleaned " + messageBin.size() + " bot-related messages.").queue();
             BotUtils.deleteLastMsg(evt);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             String[] msgData = e.getMessage().split(" ");
-            String msgId = msgData[msgData.length -1];
+            String msgId = msgData[msgData.length - 1];
             Iterator<Message> iter = messageBin.iterator();
             //Removing messages from message bin with id less than the message id that caused the exception
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 Message delMsg = iter.next();
-                if(delMsg.getIdLong() <= Long.parseLong(msgId))
+                if (delMsg.getIdLong() <= Long.parseLong(msgId))
                     iter.remove();
             }
             int delCount = messageBin.size();
-            if(delCount < 2 || delCount > 100)
+            if (delCount < 2 || delCount > 100)
                 delCount = 0;
             else
                 evt.getTextChannel().deleteMessages(messageBin).queue();
-            Message m = evt.getChannel().sendMessage("Cleaned " +delCount + " bot-related messages.").complete();
+            Message m = evt.getChannel().sendMessage("Cleaned " + delCount + " bot-related messages.").complete();
             m.delete().queue();
         }
     }

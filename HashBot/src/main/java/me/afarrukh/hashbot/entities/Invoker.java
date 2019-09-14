@@ -16,7 +16,7 @@ import java.util.Random;
 /**
  * Views the invoker as a member who has initiated commands from this bot that would lead to a change in their user
  * properties (e.g. colour change, name change)
- * */
+ */
 
 public class Invoker {
 
@@ -30,9 +30,56 @@ public class Invoker {
         credit = Long.parseLong((String) userFileManager.getValue("credit"));
     }
 
+    /**
+     * * The formula for the level to exp calculation
+     *
+     * @param level The level to calculate experience for
+     * @return
+     */
+    public static int getExperienceForNextLevel(int level) {
+        return 10 * (level + 1) * (level + 2);
+    }
+
+    /**
+     * Returns the level given from the exp and the remaining exp spare.
+     *
+     * @param exp The experience to calculate from.
+     * @return An integer array where the value at index 0 is the level and index 1 is the spare experience.
+     */
+    public static int[] parseLevelFromTotalExperience(int exp) {
+        int level = 1;
+        int[] data = new int[2];
+        while (exp > getExperienceForNextLevel(level)) {
+            exp -= getExperienceForNextLevel(level);
+            level += 1;
+        }
+        data[0] = level;
+        data[1] = exp;
+        return data;
+    }
+
+    /**
+     * Gets the total experience for a given level
+     *
+     * @param lvl The level to calculate from
+     * @return The total experience for the given level
+     */
+    public static int parseTotalExperienceFromLevel(int lvl) {
+        int exp = 0;
+        for (int i = 1; i < lvl; i++) {
+            exp += getExperienceForNextLevel(i);
+        }
+        return exp;
+    }
+
+    public static int getPercentageExp(int exp, int level) {
+        int expToProgress = getExperienceForNextLevel(level);
+        return (int) Math.round((double) exp / expToProgress * 100);
+    }
+
     public Role getRole(String name) {
-        for(Role r: member.getRoles()) {
-            if(r.getName().equalsIgnoreCase(name))
+        for (Role r : member.getRoles()) {
+            if (r.getName().equalsIgnoreCase(name))
                 return r;
         }
         return null;
@@ -41,11 +88,12 @@ public class Invoker {
     /**
      * Checks if the current UNIX time stamp exceeds 60000 (a minute) of that in the user file of the associated User object.
      * <br/>If enough time has passed then the timestamp is set to the current time.
+     *
      * @return true if enough time has passed, false otherwise
      */
     public boolean hasTimePassed() {
         long time = Long.parseLong((String) userFileManager.getValue("time"));
-        if((System.currentTimeMillis() - time) < Constants.minToMillis)
+        if ((System.currentTimeMillis() - time) < Constants.minToMillis)
             return false;
 
         userFileManager.updateValue("time", System.currentTimeMillis());
@@ -53,7 +101,7 @@ public class Invoker {
     }
 
     public void addCredit(long amt) {
-        if(this.credit >= Integer.MAX_VALUE) {
+        if (this.credit >= Integer.MAX_VALUE) {
             userFileManager.updateValue("credit", Integer.MAX_VALUE);
             credit = Integer.MAX_VALUE;
             return;
@@ -80,7 +128,6 @@ public class Invoker {
     }
 
     /**
-
      * @return An integer representing how much experience the user will need for their next level
      */
     public int getExpForNextLevel() {
@@ -88,62 +135,10 @@ public class Invoker {
         return getExperienceForNextLevel(currentLevel);
     }
 
-    /**
-     * * The formula for the level to exp calculation
-     * @param level The level to calculate experience for
-     * @return
-     */
-    public static int getExperienceForNextLevel(int level) {
-        return 10 * (level+1) * (level+2);
-    }
-
-    /**
-     * Returns the level given from the exp and the remaining exp spare.
-     * @param exp The experience to calculate from.
-     * @return An integer array where the value at index 0 is the level and index 1 is the spare experience.
-     */
-    public static int[] parseLevelFromTotalExperience(int exp) {
-        int level = 1;
-        int[] data = new int[2];
-        while(exp > getExperienceForNextLevel(level)) {
-            exp -= getExperienceForNextLevel(level);
-            level += 1;
-        }
-        data[0] = level;
-        data[1] = exp;
-        return data;
-    }
-
-    /**
-     * Gets the total experience for a given level
-     * @param lvl The level to calculate from
-     * @return The total experience for the given level
-     */
-    public static int parseTotalExperienceFromLevel(int lvl) {
-        int exp = 0;
-        for(int i = 1; i<lvl; i++) {
-            exp += getExperienceForNextLevel(i);
-        }
-        return exp;
-    }
-
     public int getPercentageExp() {
         int exp = (int) getExp();
         int expToProgress = getExpForNextLevel();
-        return (int) Math.round((double) exp/expToProgress*100);
-    }
-
-    public static int getPercentageExp(int exp, int level) {
-        int expToProgress = getExperienceForNextLevel(level);
-        return (int) Math.round((double) exp/expToProgress*100);
-    }
-
-    private void setLevel(int lvl) {
-        userFileManager.updateValue("level", (long) lvl);
-    }
-
-    private void setExp(int exp) {
-        userFileManager.updateValue("exp", (long) exp);
+        return (int) Math.round((double) exp / expToProgress * 100);
     }
 
     public long getCredit() {
@@ -154,19 +149,27 @@ public class Invoker {
         return (Integer) userFileManager.getValue("level");
     }
 
+    private void setLevel(int lvl) {
+        userFileManager.updateValue("level", (long) lvl);
+    }
+
     public long getExp() {
         try {
             return Long.parseLong((String) userFileManager.getValue("exp"));
         } catch (NumberFormatException e) {
-            return Long.parseLong( ((String) userFileManager.getValue("exp")).split("\\.")[0]);
+            return Long.parseLong(((String) userFileManager.getValue("exp")).split("\\.")[0]);
         }
+    }
+
+    private void setExp(int exp) {
+        userFileManager.updateValue("exp", (long) exp);
     }
 
     public ArrayList<Role> getGameRolesAsRoles() {
         ArrayList<Role> roleList = new ArrayList<>();
 
-        for(Role r: member.getRoles()) {
-            if(BotUtils.isGameRole(r, member.getGuild()))
+        for (Role r : member.getRoles()) {
+            if (BotUtils.isGameRole(r, member.getGuild()))
                 roleList.add(r);
         }
 
@@ -176,9 +179,9 @@ public class Invoker {
     public ArrayList<GameRole> getGameRoles() {
         ArrayList<GameRole> roleList = new ArrayList<>();
 
-        for(GameRole gr: Bot.gameRoleManager.getGuildRoleManager(member.getGuild()).getGameRoles()) {
-            for(Role r: member.getRoles()) {
-                if(r.getName().equalsIgnoreCase(gr.getName()))
+        for (GameRole gr : Bot.gameRoleManager.getGuildRoleManager(member.getGuild()).getGameRoles()) {
+            for (Role r : member.getRoles()) {
+                if (r.getName().equalsIgnoreCase(gr.getName()))
                     roleList.add(gr);
             }
         }
@@ -204,15 +207,15 @@ public class Invoker {
 
         int expForNextLevel = getExpForNextLevel();
 
-        if(newExp >= expForNextLevel) {
+        if (newExp >= expForNextLevel) {
             int currentLevel = (int) getLevel();
 
             setExp(newExp - expForNextLevel);
-            setLevel(currentLevel+1);
+            setLevel(currentLevel + 1);
 
             System.out.println("<"
-                    + member.getGuild().getName()+ "> " +
-                    member.getUser().getName() + " has levelled up. (Now level " +(currentLevel+1)+")");
+                    + member.getGuild().getName() + "> " +
+                    member.getUser().getName() + " has levelled up. (Now level " + (currentLevel + 1) + ")");
         }
     }
 

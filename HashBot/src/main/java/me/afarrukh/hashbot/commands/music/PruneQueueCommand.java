@@ -23,7 +23,7 @@ public class PruneQueueCommand extends Command implements MusicCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        if(evt.getGuild().getAudioManager().getConnectedChannel() == null) {
+        if (evt.getGuild().getAudioManager().getConnectedChannel() == null) {
             evt.getTextChannel().sendMessage("The bot is not connected to voice.").queue();
             return;
         }
@@ -35,26 +35,26 @@ public class PruneQueueCommand extends Command implements MusicCommand {
 
         int removedCount = 0;
 
-        for(AudioTrack track: trackQueue) {
+        for (AudioTrack track : trackQueue) {
             String trackOwner = (String) track.getUserData();
             boolean remove = false;
 
-            for(int i = 0; i<memberList.size(); i++) {
+            for (int i = 0; i < memberList.size(); i++) {
                 Member m = memberList.get(i);
-                if(m.getUser().getName().equals(trackOwner))
+                if (m.getUser().getName().equals(trackOwner))
                     break;
-                if(i == memberList.size()-1 && !m.getUser().getName().equalsIgnoreCase(trackOwner)) {
+                if (i == memberList.size() - 1 && !m.getUser().getName().equalsIgnoreCase(trackOwner)) {
                     trackQueue.remove(track);
                     removedCount++;
 
-                    if(!prunedUsers.contains(trackOwner))
+                    if (!prunedUsers.contains(trackOwner))
                         prunedUsers.add(trackOwner);
                 }
             }
         }
         StringBuilder sb = new StringBuilder();
         sb.append("Removed ").append(removedCount).append(" songs from the queue.\n");
-        if(!prunedUsers.isEmpty()) {
+        if (!prunedUsers.isEmpty()) {
             sb.append("From user(s): \n");
             for (String s : prunedUsers)
                 sb.append(s).append("\n");

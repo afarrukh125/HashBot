@@ -15,6 +15,7 @@ public class LevelUtils {
 
     /**
      * Given the message that the user has entered, gives them experience and a random value between 1 and 5 bonus
+     *
      * @param tokens The message provided for which experience is to be calculated
      * @return The experience to add to the user given their message
      */
@@ -23,7 +24,7 @@ public class LevelUtils {
         int rng = random.nextInt(level) + 1;
         int sum = Constants.BASE_EXP + tokens.length + rng + level;
 
-        if(sum > Constants.MAX_EXP_FROM_MSG)
+        if (sum > Constants.MAX_EXP_FROM_MSG)
             return Constants.MAX_EXP_FROM_MSG;
 
         return sum;
@@ -31,13 +32,14 @@ public class LevelUtils {
 
     /**
      * Gets a string with 10 characters used mainly to represent the experience progress of a user
+     *
      * @param num The number up to which the bar will appear "filled"
      * @return A string for this bar
      */
     public static String getBar(int num) {
         StringBuilder val = new StringBuilder();
-        for(int i = 0; i<10; i++) {
-            if(i < num)
+        for (int i = 0; i < 10; i++) {
+            if (i < num)
 
                 val.append(":" + Constants.LEFTBAR + ":");
             else
@@ -49,6 +51,7 @@ public class LevelUtils {
     /**
      * Sorts the members of a guild in order of their level and experience points (score)
      * Uses TimSort
+     *
      * @param g The guild to get the member list from
      * @return An array of type User which returns a sorted array of User objects
      */
@@ -64,8 +67,8 @@ public class LevelUtils {
     public static Member[] getCreditsLeaderboard(Guild g) {
 
         ArrayList<Member> memberList = new ArrayList<>();
-        for(Member m: g.getMembers()) {
-            if((!m.getUser().isBot() || m.getUser().getId().equals(g.getJDA().getSelfUser().getId())))
+        for (Member m : g.getMembers()) {
+            if ((!m.getUser().isBot() || m.getUser().getId().equals(g.getJDA().getSelfUser().getId())))
                 memberList.add(m);
         }
 
@@ -74,7 +77,7 @@ public class LevelUtils {
             public int compare(Member m1, Member m2) {
                 Invoker in1 = new Invoker(m1);
                 Invoker in2 = new Invoker(m2);
-                if(in2.getCredit() > in1.getCredit())
+                if (in2.getCredit() > in1.getCredit())
                     return 1;
                 return -1;
             }

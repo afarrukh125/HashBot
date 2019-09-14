@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
-import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -24,20 +24,20 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(params == null) {
+        if (params == null) {
             evt.getTextChannel().sendMessage("You need to provide the channel name or ID that you wish to add to the list of autopin channels.").queue();
             return;
         }
 
         TextChannel tc = evt.getGuild().getTextChannelById(params);
-        if(tc == null) {
+        if (tc == null) {
             List<TextChannel> channelList = evt.getGuild().getTextChannelsByName(params, true);
 
-            if(channelList.isEmpty()) {
+            if (channelList.isEmpty()) {
                 evt.getTextChannel().sendMessage("There is no channel with this name.").queue();
                 return;
             }
-            if(channelList.size() > 1) {
+            if (channelList.size() > 1) {
                 evt.getTextChannel().sendMessage("There is more than one channel with this name. Either provide the ID of this channel through developer mode " +
                         "or change channel names. For more on enabling and using developer mode visit https://discordia.me/developer-mode then right click the channel and click copy ID")
                         .queue();
@@ -46,14 +46,14 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
             tc = channelList.get(0);
         }
 
-        if(tc == null) {
+        if (tc == null) {
             evt.getTextChannel().sendMessage("There is no channel with this name.").queue();
             return;
         }
         String channelId = tc.getId();
 
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
-        if(gdm.getAutoPinChannels().contains(channelId)) {
+        if (gdm.getAutoPinChannels().contains(channelId)) {
             evt.getTextChannel().sendMessage("The provided channel is already an autopin channel.").queue();
             return;
         }

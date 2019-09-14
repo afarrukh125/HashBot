@@ -15,29 +15,30 @@ public class RewardCommand extends Command implements OwnerCommand {
         super("reward");
         description = "Rewards credit to a user";
     }
+
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!UserUtils.isBotAdmin(evt.getAuthor())) {
+        if (!UserUtils.isBotAdmin(evt.getAuthor())) {
             evt.getChannel().sendMessage("Insufficient permission").queue();
             return;
         }
         String[] tokens = params.split(" ");
-        String targetUser = CmdUtils.getParamsAsString(tokens, 0, tokens.length-2);
+        String targetUser = CmdUtils.getParamsAsString(tokens, 0, tokens.length - 2);
         long amt;
 
         try {
-            amt = Long.parseLong(tokens[tokens.length-1]);
-        } catch(NumberFormatException e) {
-            evt.getTextChannel().sendMessage("Could not add this amount of credit, exceeds " +Long.MAX_VALUE+ ".")
+            amt = Long.parseLong(tokens[tokens.length - 1]);
+        } catch (NumberFormatException e) {
+            evt.getTextChannel().sendMessage("Could not add this amount of credit, exceeds " + Long.MAX_VALUE + ".")
                     .queue();
             return;
         }
 
-        for(Member m: evt.getGuild().getMembers()) {
-            if(m.getUser().getName().equalsIgnoreCase(targetUser)) {
+        for (Member m : evt.getGuild().getMembers()) {
+            if (m.getUser().getName().equalsIgnoreCase(targetUser)) {
                 Invoker inv = new Invoker(m);
                 inv.addCredit(amt);
-                evt.getTextChannel().sendMessage("Rewarded " +m.getUser().getName()+ " with " +amt+ " credit.").queue();
+                evt.getTextChannel().sendMessage("Rewarded " + m.getUser().getName() + " with " + amt + " credit.").queue();
                 return;
             }
         }

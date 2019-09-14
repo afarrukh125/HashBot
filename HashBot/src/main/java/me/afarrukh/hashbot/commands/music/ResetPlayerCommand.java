@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.commands.music;
 
-import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
@@ -19,7 +19,7 @@ public class ResetPlayerCommand extends Command implements MusicCommand, AdminCo
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+        if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
 
         MusicUtils.disconnect(evt.getGuild());

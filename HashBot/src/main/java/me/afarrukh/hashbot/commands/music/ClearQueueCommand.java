@@ -17,10 +17,10 @@ public class ClearQueueCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!MusicUtils.canInteract(evt))
+        if (!MusicUtils.canInteract(evt))
             return;
 
-        if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().isEmpty()) {
+        if (Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().isEmpty()) {
             evt.getChannel().sendMessage("Nothing is in the queue to be cleared.").queue();
             return;
         }

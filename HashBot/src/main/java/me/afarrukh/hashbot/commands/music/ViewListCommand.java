@@ -29,7 +29,7 @@ public class ViewListCommand extends Command {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("You currently have ").append(playlistList.size()).append(" playlists: \n\n");
-        for(Playlist p: playlistList) {
+        for (Playlist p : playlistList) {
             stringBuilder.append("**").append(p.getName()).append(": **").append(p.getSize()).append(" tracks").append("\n\n");
         }
 

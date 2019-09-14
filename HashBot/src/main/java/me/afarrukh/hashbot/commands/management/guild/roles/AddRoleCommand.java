@@ -25,14 +25,14 @@ public class AddRoleCommand extends Command implements RoleCommand {
 
         evt.getMessage().delete().queue();
 
-        if(params != null) {
+        if (params != null) {
             List<Role> roleList = evt.getGuild().getRolesByName(params, true);
 
             GameRole gr = roleList.size() == 0 ? null : Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRoleFromRole(roleList.get(0));
 
-            if(gr != null) {
+            if (gr != null) {
                 Role r = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(gr);
-                if(evt.getMember().getRoles().contains(r)) {
+                if (evt.getMember().getRoles().contains(r)) {
                     evt.getTextChannel().sendMessage(EmbedUtils.alreadyHasRoleEmbed(r))
                             .queue();
                 } else {

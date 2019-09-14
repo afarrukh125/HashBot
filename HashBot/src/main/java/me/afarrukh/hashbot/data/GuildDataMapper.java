@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Created by Abdullah on 15/04/2019 17:08
- *
+ * <p>
  * This class aims to help get rid of the file IO involved when dealing with the guild data managers
  */
 public class GuildDataMapper {
@@ -20,7 +20,7 @@ public class GuildDataMapper {
     }
 
     public static GuildDataMapper getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new GuildDataMapper();
         return instance;
     }
@@ -28,7 +28,7 @@ public class GuildDataMapper {
     public synchronized GuildDataManager getDataManager(Guild guild) {
         String guildId = guild.getId();
 
-        if(dataManagerMap.get(guildId) == null)
+        if (dataManagerMap.get(guildId) == null)
             dataManagerMap.put(guildId, new GuildDataManager(guild));
 
         return dataManagerMap.get(guildId);

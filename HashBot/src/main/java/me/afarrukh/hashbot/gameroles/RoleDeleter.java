@@ -23,23 +23,18 @@ public class RoleDeleter implements RoleGUI {
     private final Guild guild;
     private final User user;
     private final Message message;
-
-    private GameRole roleToBeDeleted = null;
-
-    private int stage = 0;
-    private int page = 1;
-
-    private Timer timeoutTimer;
     private final int maxPageNumber;
-
     private final ArrayList<GameRole> createdRoles;
-
     private final String back = "↩";
     private final String cancel = "\u26D4";
     private final String[] numberEmojis;
     private final String e_left = "\u25C0";
     private final String e_right = "\u25B6";
     private final String confirm = "\u2705";
+    private GameRole roleToBeDeleted = null;
+    private int stage = 0;
+    private int page = 1;
+    private Timer timeoutTimer;
 
     public RoleDeleter(MessageReceivedEvent evt) {
         this.guild = evt.getGuild();
@@ -47,12 +42,12 @@ public class RoleDeleter implements RoleGUI {
         this.numberEmojis = BotUtils.createNumberEmojiArray();
 
         timeoutTimer = new Timer();
-        timeoutTimer.schedule(new RoleDeleter.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
+        timeoutTimer.schedule(new RoleDeleter.InactiveTimer(this, evt.getGuild()), 30 * 1000); //30 second timer before builder stops
 
         this.createdRoles = new ArrayList<>();
 
-        for(GameRole gr: Bot.gameRoleManager.getGuildRoleManager(getGuild()).getGameRoles()) {
-            if(gr.getCreator().equals(getUser().getId()))
+        for (GameRole gr : Bot.gameRoleManager.getGuildRoleManager(getGuild()).getGameRoles()) {
+            if (gr.getCreator().equals(getUser().getId()))
                 createdRoles.add(gr);
         }
 
@@ -62,17 +57,17 @@ public class RoleDeleter implements RoleGUI {
         message.addReaction(back).queue();
         message.addReaction(e_left).queue();
         message.addReaction(cancel).queue();
-        for(int i = 0; i<BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
+        for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
             message.addReaction(numberEmojis[i]).queue();
         }
         message.addReaction(e_right).queue();
 
         List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles();
 
-        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
-        if(roleList.size()%10 == 0)
+        if (roleList.size() % 10 == 0)
             maxPageNumber--;
 
         this.maxPageNumber = maxPageNumber;
@@ -85,7 +80,7 @@ public class RoleDeleter implements RoleGUI {
     public void handleEvent(GuildMessageReactionAddEvent evt) {
         timeoutTimer.cancel();
         timeoutTimer = new Timer();
-        timeoutTimer.schedule(new RoleDeleter.InactiveTimer(this, guild),30*1000);
+        timeoutTimer.schedule(new RoleDeleter.InactiveTimer(this, guild), 30 * 1000);
 
         switch (stage) {
             case 0:
@@ -102,14 +97,14 @@ public class RoleDeleter implements RoleGUI {
 
     private void chooseRole(GuildMessageReactionAddEvent evt) {
         String reactionString = evt.getReaction().getReactionEmote().getName();
-        switch(reactionString) {
+        switch (reactionString) {
             case cancel:
                 endSession();
                 return;
             case back:
                 return;
             case e_left:
-                if(page <= 1)
+                if (page <= 1)
                     return;
                 page--;
                 message.editMessage(EmbedUtils.getCreatedRolesEmbed(this, page, createdRoles)).queue();
@@ -117,13 +112,13 @@ public class RoleDeleter implements RoleGUI {
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
                 return;
             case e_right:
-                if(page >= maxPageNumber)
+                if (page >= maxPageNumber)
                     return;
                 page++;
                 message.editMessage(EmbedUtils.getCreatedRolesEmbed(this, page, createdRoles)).queue();
@@ -131,7 +126,7 @@ public class RoleDeleter implements RoleGUI {
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
@@ -139,13 +134,13 @@ public class RoleDeleter implements RoleGUI {
             case confirm:
                 return;
             case "\uD83D\uDD1F":
-                roleToBeDeleted = createdRoles.get((10*page)-1);
+                roleToBeDeleted = createdRoles.get((10 * page) - 1);
                 break;
             default:
                 try {
                     int index = Integer.parseInt(Character.toString(reactionString.charAt(0)));
                     roleToBeDeleted = createdRoles
-                            .get(((page-1)*10)+(index-1));
+                            .get(((page - 1) * 10) + (index - 1));
                     break;
                 } catch (NumberFormatException e) {
                     return;
@@ -161,7 +156,7 @@ public class RoleDeleter implements RoleGUI {
 
     private void confirmDeletion(GuildMessageReactionAddEvent evt) {
         String reactionName = evt.getReaction().getReactionEmote().getName();
-        switch(reactionName) {
+        switch (reactionName) {
             case cancel:
                 endSession();
                 return;
@@ -171,7 +166,7 @@ public class RoleDeleter implements RoleGUI {
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
@@ -180,7 +175,7 @@ public class RoleDeleter implements RoleGUI {
             case confirm:
                 message.clearReactions().complete();
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
-                if(roleToBeDeleted == null) {
+                if (roleToBeDeleted == null) {
                     message.editMessage(new EmbedBuilder().setColor(Constants.EMB_COL)
                             .appendDescription("Please select a role to delete.").build()).queue();
                     return;
@@ -189,7 +184,7 @@ public class RoleDeleter implements RoleGUI {
                     message.editMessage(EmbedUtils.deleteRoleCompleteEmbed(this)).queue();
                     BotUtils.deleteRole(this);
                     Bot.gameRoleManager.getGuildRoleManager(guild).removeRole(roleToBeDeleted.getName());
-                } catch(IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
                     GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
                     jgm.removeRole(roleToBeDeleted.getName());

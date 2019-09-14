@@ -17,16 +17,16 @@ public class LoopCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
+        if (MusicUtils.canInteract(evt)) {
             TrackScheduler trackScheduler = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
             trackScheduler.setLooping(!trackScheduler.isLooping());
             String status;
-            if(trackScheduler.isLooping())
+            if (trackScheduler.isLooping())
                 status = "Now";
             else
                 status = "No longer";
-            evt.getChannel().sendMessage(status+ " looping: `"
-                    +Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack().getInfo().title+"`").queue();
+            evt.getChannel().sendMessage(status + " looping: `"
+                    + Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack().getInfo().title + "`").queue();
         }
     }
 

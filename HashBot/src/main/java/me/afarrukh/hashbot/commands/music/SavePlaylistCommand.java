@@ -31,9 +31,9 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!MusicUtils.canInteract(evt))
+        if (!MusicUtils.canInteract(evt))
             return;
-        if(params == null) {
+        if (params == null) {
             evt.getTextChannel().sendMessage("You must provide a name for the playlist").queue();
             return;
         }
@@ -42,11 +42,11 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.add(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
-        if(trackList.size() < 2) {
+        if (trackList.size() < 2) {
             evt.getTextChannel().sendMessage("You must have at least 1 track playing, and 1 track in the queue (so 2 total) to create a playlist").queue();
             return;
         }
-        if(trackList.size() > 100) {
+        if (trackList.size() > 100) {
             evt.getTextChannel().sendMessage("You can only save playlists that have 100 tracks or less.").queue();
             return;
         }

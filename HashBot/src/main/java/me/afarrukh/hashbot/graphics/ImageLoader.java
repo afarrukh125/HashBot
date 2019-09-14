@@ -41,7 +41,9 @@ public class ImageLoader {
             }
             response.close();
         } catch (MalformedURLException ignore) {
-        } catch (IOException e) { e.getMessage(); }
+        } catch (IOException e) {
+            e.getMessage();
+        }
         return null;
     }
 

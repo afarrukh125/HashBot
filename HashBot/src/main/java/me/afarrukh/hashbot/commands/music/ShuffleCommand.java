@@ -16,7 +16,7 @@ public class ShuffleCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
+        if (MusicUtils.canInteract(evt)) {
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().shuffle();
             evt.getChannel().sendMessage("Shuffled the playlist :ok_hand:").queue();
         }

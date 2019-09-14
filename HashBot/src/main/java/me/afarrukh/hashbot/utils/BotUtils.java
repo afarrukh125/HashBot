@@ -23,11 +23,12 @@ public class BotUtils {
 
     /**
      * Deletes the last message from a bot in the channel (Hopes that it is the current JDA Bot user)
+     *
      * @param evt The event object containing the text channel so we can retrieve the text message
      */
     public static void deleteLastMsg(MessageReceivedEvent evt) {
-        for(Message m: evt.getTextChannel().getIterableHistory()) {
-            if(m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId())) {
+        for (Message m : evt.getTextChannel().getIterableHistory()) {
+            if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId())) {
                 m.delete().queueAfter(1500, TimeUnit.MILLISECONDS);
                 break;
             }
@@ -40,10 +41,10 @@ public class BotUtils {
     }
 
     public static boolean isGameRole(Role r, Guild guild) {
-        for(Object role: (JSONArray) GuildDataMapper.getInstance().getDataManager(guild).getValue("gameroles")) {
+        for (Object role : (JSONArray) GuildDataMapper.getInstance().getDataManager(guild).getValue("gameroles")) {
             JSONObject roleObj = (JSONObject) role;
             String roleName = (String) roleObj.get("name");
-            if(roleName.equalsIgnoreCase(r.getName()))
+            if (roleName.equalsIgnoreCase(r.getName()))
                 return true;
         }
         return false;
@@ -51,29 +52,29 @@ public class BotUtils {
 
     public static void createRole(Guild guild, RoleBuilder rb) {
         //Validating if the role is already existing in the guild
-        if(rb.getColor().getBlue() == 0 && rb.getColor().getGreen() == 0 && rb.getColor().getRed() == 0) {
+        if (rb.getColor().getBlue() == 0 && rb.getColor().getGreen() == 0 && rb.getColor().getRed() == 0) {
             rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
             return;
         }
 
-        if(rb.roleName.equals("")) {
+        if (rb.roleName.equals("")) {
             rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
             return;
         }
 
-        if(rb.getColor().getBlue() > 255 || rb.getColor().getGreen() > 255 || rb.getColor().getRed() > 255) {
+        if (rb.getColor().getBlue() > 255 || rb.getColor().getGreen() > 255 || rb.getColor().getRed() > 255) {
             rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
             return;
         }
 
-        for(Role r: guild.getRoles()) {
+        for (Role r : guild.getRoles()) {
             if (r.getName().equalsIgnoreCase(rb.roleName)) {
                 rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
                 return;
             }
         }
         Member m = guild.getMemberById(rb.getUser().getId());
-        for(Role r: m.getRoles())
+        for (Role r : m.getRoles())
             if (r.getName().equalsIgnoreCase(rb.roleName)) {
                 rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
                 return;
@@ -86,7 +87,7 @@ public class BotUtils {
         try {
             newRole.getManager().setName(cap).setMentionable(true).setHoisted(false).setColor(rb.getColor())
                     .queue();
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
             newRole.delete().queue();
             return;
@@ -101,8 +102,8 @@ public class BotUtils {
 
     public static String[] createNumberEmojiArray() {
         String[] arr = new String[10];
-        for(int i = 0; i<9; i++) {
-            arr[i] = (i+1)+"⃣";
+        for (int i = 0; i < 9; i++) {
+            arr[i] = (i + 1) + "⃣";
         }
         arr[9] = "\uD83D\uDD1F";
 
@@ -117,33 +118,33 @@ public class BotUtils {
 
     public static String[] createStandardNumberEmojiArray() {
 
-        return new String[] {
-          ":one:",
-          ":two:",
-          ":three:",
-          ":four:",
-          ":five:",
-          ":six:",
-          ":seven:",
-          ":eight:",
-          ":nine:",
-          ":keycap_ten:"
+        return new String[]{
+                ":one:",
+                ":two:",
+                ":three:",
+                ":four:",
+                ":five:",
+                ":six:",
+                ":seven:",
+                ":eight:",
+                ":nine:",
+                ":keycap_ten:"
         };
     }
 
     public static int getMaxEntriesOnPage(List<GameRole> roleList, int page) {
         Iterator<GameRole> iter = roleList.iterator();
 
-        int startIdx = 1 + ((page-1)*10); //The start role on that page eg page 2 would give 11
+        int startIdx = 1 + ((page - 1) * 10); //The start role on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last role on that page, eg page 2 would give 20
         int count = 1;
         int emojiCount = 0;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if(count >= startIdx && count<=targetIdx) {
+            if (count >= startIdx && count <= targetIdx) {
                 emojiCount++;
             }
-            if(count==targetIdx)
+            if (count == targetIdx)
                 break;
 
             count++;
@@ -159,16 +160,16 @@ public class BotUtils {
     public static int getMaxUserRolesOnPage(RoleRemover rr, int page) {
         Iterator<GameRole> iter = new Invoker(rr.getGuild().getMember(rr.getUser())).getGameRoles().iterator();
 
-        int startIdx = 1 + ((page-1)*10); //The start role on that page eg page 2 would give 11
+        int startIdx = 1 + ((page - 1) * 10); //The start role on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last role on that page, eg page 2 would give 20
         int count = 1;
         int emojiCount = 0;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             iter.next();
-            if(count >= startIdx && count<=targetIdx) {
+            if (count >= startIdx && count <= targetIdx) {
                 emojiCount++;
             }
-            if(count==targetIdx)
+            if (count == targetIdx)
                 break;
 
             count++;
@@ -190,29 +191,31 @@ public class BotUtils {
 
     /**
      * Returns a role object for a given guild and role name
-     * @param g The guild to check
+     *
+     * @param g    The guild to check
      * @param name The role name to check for
      * @return The role object if found, null if not found
      */
     public static Role getRoleByName(Guild g, String name) {
         //Checks if the game role exists in the guild
-        for(Role r: g.getRoles()) {
-            if(r.getName().equalsIgnoreCase(name))
-                    return r;
+        for (Role r : g.getRoles()) {
+            if (r.getName().equalsIgnoreCase(name))
+                return r;
         }
         return null;
     }
 
     /**
      * Calculates the approximate memory usage of the bot
+     *
      * @return The approximate memory usage in megabytes
      * @see me.afarrukh.hashbot.core.cli.commands.CheckMemoryCLI
      * @see me.afarrukh.hashbot.commands.management.bot.CheckMemoryCommand
      */
     public static long getMemoryUsage() {
-        long memoryNow = Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+        long memoryNow = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long memoryDiff = memoryNow - Constants.INITIAL_MEMORY;
-        memoryDiff /= (1024*1024); //Converting from bytes to kb to mb by dividing by 1024 twice
+        memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
 
         return memoryDiff;
     }

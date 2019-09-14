@@ -17,12 +17,11 @@ public class ResumeCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
-            if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
+        if (MusicUtils.canInteract(evt)) {
+            if (Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
                 MusicUtils.resume(evt);
                 evt.getChannel().sendMessage("Resumed.").queue();
-            }
-            else
+            } else
                 evt.getTextChannel().sendMessage("The bot is already playing.").queue();
         }
     }

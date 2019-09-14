@@ -22,11 +22,11 @@ import java.util.concurrent.TimeUnit;
 public class TrackScheduler extends AudioEventAdapter {
 
     private final AudioPlayer player;
+    private final Guild guild;
     private BlockingQueue<AudioTrack> queue;
     private boolean looping;
     private boolean loopingQueue;
     private boolean fairPlay;
-    private final Guild guild;
 
     public TrackScheduler(AudioPlayer player, Guild guild) {
         this.guild = guild;
@@ -38,18 +38,19 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Queues the song onto the track and informs if it was immediately played or queued
+     *
      * @param track The AudioTrack to play
      */
     public void queue(AudioTrack track) {
-        if(!player.startTrack(track, true)) {
+        if (!player.startTrack(track, true)) {
             queue.offer(track);
         }
-        if(fairPlay)
+        if (fairPlay)
             interleave(false);
     }
 
     public void queue(Collection<LatentTrack> tracks) {
-        for(LatentTrack t: tracks) {
+        for (LatentTrack t : tracks) {
             queue(t.getTrack());
         }
     }
@@ -60,8 +61,9 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Decides what happens when the song ends
+     *
      * @param player The AudioPlayer associated with this trackscheduler
-     * @param track The track that has been started
+     * @param track  The track that has been started
      */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
@@ -75,8 +77,8 @@ public class TrackScheduler extends AudioEventAdapter {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
         Bot.musicManager.getGuildAudioPlayer(guild).getDisconnectTimer()
-                .schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY*1000);
-        if(isLooping()) {
+                .schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
+        if (isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();
             cloneTrack.setUserData(track.getUserData());
@@ -84,19 +86,20 @@ public class TrackScheduler extends AudioEventAdapter {
             return;
         }
 
-        if(isLoopingQueue() && !isLooping()) {
+        if (isLoopingQueue() && !isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();
             cloneTrack.setUserData(track.getUserData());
             queue(cloneTrack);
         }
 
-        if(endReason.mayStartNext)
+        if (endReason.mayStartNext)
             nextTrack();
     }
 
     /**
      * Replaces the current queue with a new one
+     *
      * @param list The list to replace the current queue with
      */
     private void replaceQueue(List<AudioTrack> list) {
@@ -105,6 +108,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Converts a BlockingQueue<> into an Arraylist<>
+     *
      * @return The current track list in an arraylist format
      */
     public List<AudioTrack> getArrayList() {
@@ -114,13 +118,14 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Gets the duration of the queue's AudioTracks and the remaining time of the current song
+     *
      * @return Returns a string in format h:m:s of the total queue time
      */
     public String getTotalQueueTime() {
         long count = 0;
 
         //Add the queue time of all songs currently in the queue
-        for(AudioTrack t: queue)
+        for (AudioTrack t : queue)
             count += t.getDuration();
 
         count += (player.getPlayingTrack().getDuration() - player.getPlayingTrack().getPosition());
@@ -131,10 +136,11 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Skips to desired index
+     *
      * @param idx The index to skip to in the queue
      */
     public void skip(int idx) {
-        for(int i = 0; i<idx-1; i++) {
+        for (int i = 0; i < idx - 1; i++) {
             queue.poll();
         }
         player.getPlayingTrack().stop();
@@ -142,7 +148,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void queueTop(AudioTrack track) {
-        if(!player.startTrack(track, true)) {
+        if (!player.startTrack(track, true)) {
             ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
 
             trackList.add(0, track);
@@ -155,13 +161,14 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Gets the index of a given song (starts at 1 for user purposes)
+     *
      * @param at The AudioTrack for which the index is to be found
      * @return The index of the provided song
      */
     public int getSongIndex(AudioTrack at) {
         int count = 1;
-        for(AudioTrack track: queue) {
-            if(track.equals(at))
+        for (AudioTrack track : queue) {
+            if (track.equals(at))
                 break;
             count++;
         }
@@ -170,38 +177,40 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Moves a song from one index to another
+     *
      * @param idx1 The song's current index
      * @param idx2 The desired index
      */
     public void move(int idx1, int idx2) {
         List<AudioTrack> trackList = getArrayList();
         try {
-            if(idx1 == idx2)
+            if (idx1 == idx2)
                 return;
 
             AudioTrack subjectTrack = trackList.get(idx1);
-            if(idx1 > idx2) {
+            if (idx1 > idx2) {
                 trackList.remove(idx1); //Remove the track from index (remember the number the user knows is 1 more than real index)
                 trackList.add(idx2, subjectTrack); //Add that track again but at the new index
-            }
-            else {
-                trackList.add(idx2+1, subjectTrack); //Add that track again but at the new index
+            } else {
+                trackList.add(idx2 + 1, subjectTrack); //Add that track again but at the new index
                 trackList.remove(idx1); //Remove the track from index (remember the number the user knows is 1 more than real index)
             }
             replaceQueue(trackList);
-        } catch(NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     /**
      * Gets the total time until an audio track that has been added to the end of the queue
+     *
      * @param at The audio track for which the time is to be calculated
      * @return Returns a string in HHMMSS format corresponding to how long until the song is playing
      */
     public String getTotalTimeTil(AudioTrack at) {
-        int idx = getSongIndex(at)-1;
+        int idx = getSongIndex(at) - 1;
         long totalTime = 0;
         List<AudioTrack> trackList = getArrayList();
-        for(int i = 0; i<idx; i++) {
+        for (int i = 0; i < idx; i++) {
             totalTime += trackList.get(i).getDuration();
         }
         totalTime += (player.getPlayingTrack().getDuration() - player.getPlayingTrack().getPosition());
@@ -230,6 +239,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * no m tracks in a row are queued by the same user. It essentially ensures that, for as long as possible, each
      * subsequent track in the queue is by a different user. If one user has queued significantly more tracks than the
      * other users, then all excess tracks are appended to the end of the list.
+     *
      * @param shuffle Whether or not to shuffle the tracks before performing the algorithm.
      *                See <code>FairShuffleCommand</code> for an example use of this.
      * @see FairShuffleCommand#FairShuffleCommand()
@@ -239,39 +249,39 @@ public class TrackScheduler extends AudioEventAdapter {
         ArrayList<String> userNameList = new ArrayList<>();
         HashMap<String, BlockingQueue<AudioTrack>> trackMap = new HashMap<>(); //Maps a username to their tracks
 
-        for(AudioTrack track: trackArrayList) {
+        for (AudioTrack track : trackArrayList) {
             String userName = track.getUserData().toString();
-            if(!userNameList.contains(userName))
+            if (!userNameList.contains(userName))
                 userNameList.add(userName);
-            if(trackMap.get(userName) == null)
+            if (trackMap.get(userName) == null)
                 trackMap.put(userName, new LinkedBlockingQueue<>());
             trackMap.get(userName).add(track);
         }
 
-        if(userNameList.size() == 0)
+        if (userNameList.size() == 0)
             return;
 
-        if(userNameList.size() == 1 && shuffle) {
+        if (userNameList.size() == 1 && shuffle) {
             shuffle();
             return;
         }
 
-        if(player.getPlayingTrack() != null) {
+        if (player.getPlayingTrack() != null) {
             AudioTrack currentTrack = player.getPlayingTrack();
-            if(userNameList.get(0).equals(currentTrack.getUserData().toString())) {
+            if (userNameList.get(0).equals(currentTrack.getUserData().toString())) {
                 userNameList.remove(0);
                 userNameList.add(player.getPlayingTrack().getUserData().toString());
             }
         }
 
-        if(shuffle)
+        if (shuffle)
             Collections.shuffle(userNameList); //Shuffling the list of users to decide who goes first
 
         ArrayList<AudioTrack> newTrackList = new ArrayList<>();
 
-        for(int i = 0; i<trackArrayList.size()/userNameList.size(); i++) {
-            for(String s: userNameList) {
-                if(trackMap.get(s).isEmpty())
+        for (int i = 0; i < trackArrayList.size() / userNameList.size(); i++) {
+            for (String s : userNameList) {
+                if (trackMap.get(s).isEmpty())
                     continue;
                 newTrackList.add(trackMap.get(s).poll());
             }
@@ -279,14 +289,14 @@ public class TrackScheduler extends AudioEventAdapter {
 
         ArrayList<AudioTrack> shuffledTracks = new ArrayList<>();
 
-        if(newTrackList.size() < trackArrayList.size()) {
-            for(BlockingQueue<AudioTrack> queue: trackMap.values()) {
-                if(!queue.isEmpty())
+        if (newTrackList.size() < trackArrayList.size()) {
+            for (BlockingQueue<AudioTrack> queue : trackMap.values()) {
+                if (!queue.isEmpty())
                     shuffledTracks.addAll(queue);
             }
         }
 
-        if(shuffle)
+        if (shuffle)
             Collections.shuffle(shuffledTracks);
 
         newTrackList.addAll(shuffledTracks);
@@ -304,6 +314,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Returns the looping status of the track scheduler
+     *
      * @return a boolean corresponding as to whether or not the song is looping
      */
     public boolean isLooping() {
@@ -312,6 +323,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     /**
      * Changes the looping status of the track scheduler
+     *
      * @param loop The boolean status to which the looping is set to
      */
     public void setLooping(boolean loop) {

@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.core;
 
-import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
@@ -18,6 +18,7 @@ public class CommandManager {
     /**
      * Each time a message is sent with the bot prefix is sent, this method is called to check if a command exists
      * with that command name
+     *
      * @param evt The message received event associated with the possible command invocation
      */
     public void processEvent(MessageReceivedEvent evt) {
@@ -27,13 +28,13 @@ public class CommandManager {
 
         Command command = commandFromName(commandName);
 
-        if(command instanceof OwnerCommand && !UserUtils.isBotAdmin(evt.getAuthor()))
+        if (command instanceof OwnerCommand && !UserUtils.isBotAdmin(evt.getAuthor()))
             return;
 
-        if(command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+        if (command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
 
-        if(command != null)  {
+        if (command != null) {
             this.commandCount += 1;
             command.onInvocation(evt, params); //Only does the command onInvocation method if class is valid
         }
@@ -41,6 +42,7 @@ public class CommandManager {
 
     /**
      * Adds a command to the command manager
+     *
      * @param c The command to be added to the command map
      * @return The command manager itself (Allows for chained addCommand calls
      */
@@ -49,8 +51,8 @@ public class CommandManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(!c.getAliases().isEmpty()) {
-                    for(String alias: c.getAliases()) {
+                if (!c.getAliases().isEmpty()) {
+                    for (String alias : c.getAliases()) {
                         commandMap.put(alias, c);
                     }
                 }
@@ -65,6 +67,7 @@ public class CommandManager {
 
     /**
      * Queries the command manager with a string and returns a command associated with that string
+     *
      * @param name The name of the command or one of the aliases to get a command from
      * @return The command with that associated name in the command map, null otherwise
      */
@@ -74,21 +77,22 @@ public class CommandManager {
 
     /**
      * Returns a new ArrayList with all the commands list, with duplicates omitted
+     *
      * @return A new ArrayList with all commands, derived from the commandsMap
      */
     public List<Command> getCommandList() {
         List<Command> commandList = new ArrayList<>();
-        for(Command c: commandMap.values()) {
-            if(commandList.contains(c))
+        for (Command c : commandMap.values()) {
+            if (commandList.contains(c))
                 continue;
             commandList.add(c);
         }
         commandList.sort(new Comparator<Command>() {
             @Override
             public int compare(Command o1, Command o2) {
-                if(o1.getName().compareTo(o2.getName()) < 0)
+                if (o1.getName().compareTo(o2.getName()) < 0)
                     return -1;
-                else if(o1.getName().compareTo(o2.getName()) > 0)
+                else if (o1.getName().compareTo(o2.getName()) > 0)
                     return 1;
                 return 0;
             }
@@ -98,7 +102,7 @@ public class CommandManager {
 
     public void removeCommand(Command c) {
         this.commandMap.remove(c.getName());
-        for(String s: c.getAliases()) {
+        for (String s : c.getAliases()) {
             this.commandMap.remove(s);
         }
     }
@@ -106,7 +110,7 @@ public class CommandManager {
     public List<Command> getNonAdminCommands() {
         List<Command> commandList = new LinkedList<>();
 
-        for(Command c: getCommandList()) {
+        for (Command c : getCommandList()) {
             if (!(c instanceof AdminCommand))
                 commandList.add(c);
         }

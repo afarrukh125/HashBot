@@ -32,7 +32,7 @@ public class UrbanDictionary {
 
         builder.append(definition);
 
-        if(highestThumbs.get("example") != null) {
+        if (highestThumbs.get("example") != null) {
             String example = (String) highestThumbs.get("example");
             example = example.replace("[", "").replace("]", "");
             builder.append("\n<>").append(example);
@@ -44,10 +44,10 @@ public class UrbanDictionary {
     private static JSONObject resolveHighest(JSONArray listOfDefinitions) {
         JSONObject highestThumbs = (JSONObject) listOfDefinitions.get(0);
 
-        for(Object o: listOfDefinitions) {
+        for (Object o : listOfDefinitions) {
             JSONObject result = (JSONObject) o;
 
-            if(computeThumbsRatio(result) > computeThumbsRatio(highestThumbs)) {
+            if (computeThumbsRatio(result) > computeThumbsRatio(highestThumbs)) {
                 highestThumbs = result;
             }
         }
@@ -58,9 +58,9 @@ public class UrbanDictionary {
         Long thumbsUp = (Long) result.get("thumbs_up");
         Long thumbsDown = (Long) result.get("thumbs_down");
 
-        if(thumbsDown == 0)
+        if (thumbsDown == 0)
             thumbsDown++;
 
-        return thumbsUp/thumbsDown;
+        return thumbsUp / thumbsDown;
     }
 }

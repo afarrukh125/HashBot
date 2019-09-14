@@ -31,15 +31,13 @@ import java.util.Scanner;
 import java.util.Timer;
 
 public class Bot {
-    private final String token;
-
     public static CommandManager commandManager;
-    static ReactionManager reactionManager;
     public static GameRoleManager gameRoleManager;
     public static MusicManager musicManager;
-    private CommandLineInputManager ownerInputManager;
-
     public static JDA botUser;
+    static ReactionManager reactionManager;
+    private final String token;
+    private CommandLineInputManager ownerInputManager;
 
     /**
      * Creates our JDA user

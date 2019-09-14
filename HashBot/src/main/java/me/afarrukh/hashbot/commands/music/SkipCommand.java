@@ -21,32 +21,35 @@ public class SkipCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
+        if (MusicUtils.canInteract(evt)) {
             GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
-            if(gmm.getScheduler().getQueue().isEmpty() && (gmm.getPlayer().getPlayingTrack() == null))
+            if (gmm.getScheduler().getQueue().isEmpty() && (gmm.getPlayer().getPlayingTrack() == null))
                 return;
             gmm.getScheduler().setLooping(false);
-            if(params == null) {
+            if (params == null) {
                 evt.getChannel().sendMessage(EmbedUtils.getSkippedEmbed(gmm.getPlayer().getPlayingTrack())).queue();
 
                 gmm.getPlayer().getPlayingTrack().stop();
                 gmm.getScheduler().nextTrack();
 
-                if(gmm.getPlayer().getPlayingTrack() != null)
+                if (gmm.getPlayer().getPlayingTrack() != null)
                     evt.getChannel().sendMessage(EmbedUtils.getSkippedToEmbed(gmm.getPlayer().getPlayingTrack(), evt)).queue();
             } else {
                 try {
                     String[] tokens = params.split(" ");
                     int idx = Integer.parseInt(tokens[0]);
-                    if(idx > gmm.getScheduler().getQueue().size() || idx <= 0) {
+                    if (idx > gmm.getScheduler().getQueue().size() || idx <= 0) {
                         evt.getChannel().sendMessage("Cannot skip to that index, out of bounds.").queue();
                         return;
                     }
                     evt.getChannel().sendMessage(EmbedUtils.getSkippedEmbed(gmm.getPlayer().getPlayingTrack())).queue();
                     gmm.getScheduler().skip(idx);
                     evt.getChannel().sendMessage(EmbedUtils.getSkippedToEmbed(gmm.getPlayer().getPlayingTrack(), evt)).queue();
-                } catch(NumberFormatException e) {evt.getChannel().sendMessage("Please enter numbers only.").queue(); }
-                catch(NullPointerException e) {evt.getChannel().sendMessage("Please enter only at most two parameters.").queue(); }
+                } catch (NumberFormatException e) {
+                    evt.getChannel().sendMessage("Please enter numbers only.").queue();
+                } catch (NullPointerException e) {
+                    evt.getChannel().sendMessage("Please enter only at most two parameters.").queue();
+                }
             }
         }
     }

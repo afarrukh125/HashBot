@@ -10,8 +10,8 @@ public class UserUtils {
     public static int getHighestRolePosition(Member m) {
         int highest = 0;
 
-        for(Role r: m.getRoles()) {
-            if(r.getPosition() > highest) {
+        for (Role r : m.getRoles()) {
+            if (r.getPosition() > highest) {
                 highest = r.getPosition();
             }
         }
@@ -19,8 +19,8 @@ public class UserUtils {
     }
 
     public static boolean isBotAdmin(User u) {
-        for(String s: Constants.ownerIds) {
-            if(u.getId().equals(s))
+        for (String s : Constants.ownerIds) {
+            if (u.getId().equals(s))
                 return true;
         }
         return false;

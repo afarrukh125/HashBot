@@ -22,7 +22,7 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
     public void playlistLoaded(AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
-        if(firstTrack == null) {
+        if (firstTrack == null) {
             firstTrack = playlist.getTracks().get(0);
         }
 

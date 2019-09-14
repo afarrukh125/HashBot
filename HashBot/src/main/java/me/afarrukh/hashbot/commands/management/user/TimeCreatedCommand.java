@@ -19,19 +19,18 @@ public class TimeCreatedCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         Member targetMember = null;
-        if(params == null)
-            if(!evt.getMessage().getMentionedMembers().isEmpty()) {
+        if (params == null)
+            if (!evt.getMessage().getMentionedMembers().isEmpty()) {
                 targetMember = evt.getMessage().getMentionedMembers().get(0);
-            }
-            else
+            } else
                 targetMember = evt.getMember();
         else {
-            if(evt.getGuild().getMembersByEffectiveName(params, true) != null)
+            if (evt.getGuild().getMembersByEffectiveName(params, true) != null)
                 targetMember = evt.getGuild().getMembersByEffectiveName(params, true).get(0);
         }
 
-        if(targetMember == null) {
-            evt.getTextChannel().sendMessage("The user " +params+ " does not exist.").queue();
+        if (targetMember == null) {
+            evt.getTextChannel().sendMessage("The user " + params + " does not exist.").queue();
             return;
         }
 
@@ -40,7 +39,7 @@ public class TimeCreatedCommand extends Command {
         long epochMilli = targetMember.getUser().getCreationTime().toInstant().toEpochMilli();
         Date date = new Date(epochMilli);
 
-        eb.appendDescription("Created on " +date.toString()+ ".");
+        eb.appendDescription("Created on " + date.toString() + ".");
 //         eb.appendDescription("The last time the user joined this server was " +
 //                        new Date(targetMember.getJoinDate().toInstant().toEpochMilli()) + ".");
 

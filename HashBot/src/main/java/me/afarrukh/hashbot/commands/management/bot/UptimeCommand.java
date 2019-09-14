@@ -20,10 +20,10 @@ public class UptimeCommand extends Command implements SystemCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         long now = System.currentTimeMillis();
         long upTimeUnix = now - Constants.timeStarted;
-        long seconds =  (int) (upTimeUnix / 1000) % 60;
-        int minutes =   (int) (upTimeUnix / 1000 / 60) % 60;
-        int hours =     (int) (upTimeUnix / 1000 / 60 / 60) % 24;
-        int days =      (int) (upTimeUnix / 1000 / 60 / 60) / 24;
+        long seconds = (int) (upTimeUnix / 1000) % 60;
+        int minutes = (int) (upTimeUnix / 1000 / 60) % 60;
+        int hours = (int) (upTimeUnix / 1000 / 60 / 60) % 24;
+        int days = (int) (upTimeUnix / 1000 / 60 / 60) / 24;
 
         evt.getTextChannel().sendMessage(new EmbedBuilder()
                 .setColor(Constants.EMB_COL)

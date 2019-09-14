@@ -15,34 +15,29 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RoleAdder implements RoleGUI{
+public class RoleAdder implements RoleGUI {
     private final User user;
-
-    private GameRole desiredRole = null;
-
     private final Message message;
     private final Guild guild;
-    private Timer timeoutTimer;
-
-    private int stage = 0;
-    private int page = 1;
     private final int maxPageNumber;
-
     private final List<GameRole> roleList;
-
     private final String back = "↩";
     private final String cancel = "\u26D4";
     private final String[] numberEmojis = BotUtils.createNumberEmojiArray();
     private final String e_left = "\u25C0";
     private final String e_right = "\u25B6";
     private final String confirm = "\u2705";
+    private GameRole desiredRole = null;
+    private Timer timeoutTimer;
+    private int stage = 0;
+    private int page = 1;
 
     public RoleAdder(MessageReceivedEvent evt) {
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
 
         timeoutTimer = new Timer();
-        timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()),30*1000); //30 second timer before builder stops
+        timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()), 30 * 1000); //30 second timer before builder stops
 
         message = evt.getChannel().sendMessage(EmbedUtils.getGameRoleListEmbed(this, page)).complete();
         message.editMessage("Please wait for all emojis to appear before selecting an option.").queue();
@@ -52,15 +47,15 @@ public class RoleAdder implements RoleGUI{
         message.addReaction(back).queue();
         message.addReaction(e_left).queue();
         message.addReaction(cancel).queue();
-        for(int i = 0; i<BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
+        for (int i = 0; i < BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
             message.addReaction(numberEmojis[i]).queue();
         }
         message.addReaction(e_right).queue();
 
-        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
-        if(roleList.size()%10 == 0)
+        if (roleList.size() % 10 == 0)
             maxPageNumber--;
 
         this.maxPageNumber = maxPageNumber;
@@ -72,7 +67,7 @@ public class RoleAdder implements RoleGUI{
     public void handleEvent(GuildMessageReactionAddEvent evt) {
         timeoutTimer.cancel();
         timeoutTimer = new Timer();
-        timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, guild),30*1000);
+        timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, guild), 30 * 1000);
 
         switch (stage) {
             case 0:
@@ -89,14 +84,14 @@ public class RoleAdder implements RoleGUI{
 
     private void chooseRole(GuildMessageReactionAddEvent evt) {
         String reactionName = evt.getReaction().getReactionEmote().getName();
-        switch(reactionName) {
+        switch (reactionName) {
             case cancel:
                 endSession();
                 return;
             case back:
                 return;
             case e_left:
-                if(page <= 1)
+                if (page <= 1)
                     return;
                 page--;
                 message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
@@ -104,13 +99,13 @@ public class RoleAdder implements RoleGUI{
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
                 return;
             case e_right:
-                if(page >= maxPageNumber)
+                if (page >= maxPageNumber)
                     return;
                 page++;
                 message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
@@ -118,7 +113,7 @@ public class RoleAdder implements RoleGUI{
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
@@ -126,13 +121,13 @@ public class RoleAdder implements RoleGUI{
             case confirm:
                 return;
             case "\uD83D\uDD1F":
-                desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().get((10*page)-1);
+                desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().get((10 * page) - 1);
                 break;
             default:
                 try {
                     int index = Integer.parseInt(Character.toString(reactionName.charAt(0)));
                     desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles()
-                            .get(((page-1)*10)+(index-1));
+                            .get(((page - 1) * 10) + (index - 1));
                     break;
                 } catch (NumberFormatException e) {
                     return;
@@ -148,7 +143,7 @@ public class RoleAdder implements RoleGUI{
 
     private void confirmRole(GuildMessageReactionAddEvent evt) {
         String reactionName = evt.getReaction().getReactionEmote().getName();
-        switch(reactionName) {
+        switch (reactionName) {
             case cancel:
                 endSession();
                 return;
@@ -158,7 +153,7 @@ public class RoleAdder implements RoleGUI{
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for(int i = 0; i<BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(roleList, page); i++) {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
@@ -167,11 +162,11 @@ public class RoleAdder implements RoleGUI{
             case confirm:
                 message.clearReactions().complete();
                 Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
-                if(desiredRole == null) {
+                if (desiredRole == null) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
                     return;
                 }
-                if(guild.getMemberById(user.getId()).getRoles()
+                if (guild.getMemberById(user.getId()).getRoles()
                         .contains(Bot.gameRoleManager.getGuildRoleManager(guild).getRoleFromGameRole(desiredRole))) {
                     message.editMessage(EmbedUtils.alreadyHasRoleEmbed(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(this.desiredRole))).queue();
                     return;
@@ -179,7 +174,7 @@ public class RoleAdder implements RoleGUI{
                 try {
                     message.editMessage(EmbedUtils.addRoleCompleteEmbed(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(this.desiredRole))).queue();
                     BotUtils.addRoleToMember(this);
-                } catch(IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     message.editMessage(EmbedUtils.getNullRoleEmbed(this.guild)).queue();
                     GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
                     jgm.removeRole(desiredRole.getName());
@@ -218,10 +213,12 @@ public class RoleAdder implements RoleGUI{
     private class InactiveTimer extends TimerTask {
         private final RoleAdder adder;
         private final Guild guild;
+
         private InactiveTimer(RoleAdder adder, Guild guild) {
             this.adder = adder;
             this.guild = guild;
         }
+
         @Override
         public void run() {
             Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(adder);

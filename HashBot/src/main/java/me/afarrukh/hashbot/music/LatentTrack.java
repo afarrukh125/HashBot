@@ -5,10 +5,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 /**
  * @author Abdullah
  * Created on 14/09/2019 at 14:28
- *
+ * <p>
  * A wrapper class that stores the track, as well as its position in the associated
  * <code>PlaylistLoader</code>.
- *
  * @see PlaylistLoader
  */
 public class LatentTrack implements Runnable {
@@ -31,8 +30,9 @@ public class LatentTrack implements Runnable {
 
     /**
      * Instantiates this object
-     * @param track The track to be wrapped
-     * @param pos The position of this track
+     *
+     * @param track  The track to be wrapped
+     * @param pos    The position of this track
      * @param loader The associated <code>PlaylistLoader</code>
      */
     public LatentTrack(AudioTrack track, int pos, PlaylistLoader loader) {
@@ -43,6 +43,7 @@ public class LatentTrack implements Runnable {
 
     /**
      * Return the wrapped track
+     *
      * @return The internal AudioTrack object
      */
     public AudioTrack getTrack() {
@@ -50,7 +51,6 @@ public class LatentTrack implements Runnable {
     }
 
     /**
-     *
      * @return The position of this track in the <code>PlaylistLoader</code>
      */
     public int getPos() {

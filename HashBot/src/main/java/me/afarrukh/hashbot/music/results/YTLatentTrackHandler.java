@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.Member;
 /**
  * @author Abdullah
  * Created on 14/09/2019 at 15:57
- *
+ * <p>
  * This was done to clean up the code in the <code>SQLUserDataManager</code> class
  * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
  */

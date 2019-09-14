@@ -28,9 +28,8 @@ import java.util.concurrent.BlockingQueue;
 public class EmbedUtils {
 
     /**
-     *
-     * @param gmm The guild music manager
-     * @param evt The message received event associated with the queue message request
+     * @param gmm  The guild music manager
+     * @param evt  The message received event associated with the queue message request
      * @param page The page of the message queue to be displayed
      * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single song embed.
      */
@@ -38,61 +37,62 @@ public class EmbedUtils {
         try {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(Constants.EMB_COL);
-            eb.setTitle("Queue for "+evt.getGuild().getName()+"\n");
+            eb.setTitle("Queue for " + evt.getGuild().getName() + "\n");
             AudioTrack currentTrack = gmm.getPlayer().getPlayingTrack();
 
             BlockingQueue<AudioTrack> queue = gmm.getScheduler().getQueue();
-            int maxPageNumber = queue.size()/10+1; //We need to know how many songs are displayed per page
+            int maxPageNumber = queue.size() / 10 + 1; //We need to know how many songs are displayed per page
 
             //If there are no songs in the queue then it will just give an embedded message for a single song.
-            if(queue.size() == 0) {
+            if (queue.size() == 0) {
                 return getSingleSongEmbed(gmm.getPlayer().getPlayingTrack(), evt);
             }
 
             //This block of code is to prevent the list from displaying a blank page as the last one
-            if(queue.size()%10 == 0)
+            if (queue.size() % 10 == 0)
                 maxPageNumber--;
 
-            if(page > maxPageNumber) {
-                return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+            if (page > maxPageNumber) {
+                return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
             }
 
             Iterator<AudioTrack> iter = gmm.getScheduler().getQueue().iterator();
-            int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+            int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
             int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
             int count = 1;
-            eb.appendDescription("__Now Playing:__\n[" +currentTrack.getInfo().title+ "](" +currentTrack.getInfo().uri
-                    + ") | (`"+ CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration())+"`) `queued by: "
-                    +currentTrack.getUserData().toString()+ "`\n\n\n__Upcoming__\n\n");
-            while(iter.hasNext()) {
+            eb.appendDescription("__Now Playing:__\n[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri
+                    + ") | (`" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`) `queued by: "
+                    + currentTrack.getUserData().toString() + "`\n\n\n__Upcoming__\n\n");
+            while (iter.hasNext()) {
                 AudioTrack at = iter.next();
-                if(count >= startIdx && count<=targetIdx) {
-                    eb.appendDescription("`"+count+ ".` ["+at.getInfo().title+ "](" +at.getInfo().uri
-                            + ") | (`"+CmdUtils.longToMMSS(at.getDuration())+"`) `queued by: "
-                            +at.getUserData().toString()+ "`\n\n");
+                if (count >= startIdx && count <= targetIdx) {
+                    eb.appendDescription("`" + count + ".` [" + at.getInfo().title + "](" + at.getInfo().uri
+                            + ") | (`" + CmdUtils.longToMMSS(at.getDuration()) + "`) `queued by: "
+                            + at.getUserData().toString() + "`\n\n");
                 }
-                if(count==targetIdx)
+                if (count == targetIdx)
                     break;
 
                 count++;
             }
-            eb.appendDescription("\n**"+queue.size()+ " songs queued, 1 playing** | Total duration**: `"+gmm.getScheduler().getTotalQueueTime()+ "` | **");
+            eb.appendDescription("\n**" + queue.size() + " songs queued, 1 playing** | Total duration**: `" + gmm.getScheduler().getTotalQueueTime() + "` | **");
             StringBuilder sb = new StringBuilder();
             sb.append("[Page ").append(page).append("/").append(maxPageNumber).append("] ");
-            if(gmm.getScheduler().isFairPlay())
+            if (gmm.getScheduler().isFairPlay())
                 sb.append("Fairplay mode is on. Playtop command will not work as expected. Songs are queued fairly. ");
-            if(gmm.getScheduler().isLoopingQueue())
+            if (gmm.getScheduler().isLoopingQueue())
                 sb.append("The queue is looping. Songs will be added to the back of the queue once they finish");
             eb.setFooter(sb.toString(), evt.getAuthor().getAvatarUrl());
             eb.setThumbnail(MusicUtils.getThumbnailURL(currentTrack));
             return eb.build();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             return getNothingPlayingEmbed();
         }
     }
 
     /**
      * Returns an embed with the only song currently in the queue
+     *
      * @param evt The event to get the channel to send it to
      * @return A message embed with information on a single provided audio track
      */
@@ -100,13 +100,13 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
-        if(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping())
+        if (Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping())
             sb.append(" [Looping]");
         eb.setTitle(sb.toString());
-        eb.appendDescription("["+currentTrack.getInfo().title+"]("+currentTrack.getInfo().uri+")\n\n");
-        eb.appendDescription("**Channel**: `" +currentTrack.getInfo().author + "`\n");
-        eb.appendDescription("**Queued by**: `"+currentTrack.getUserData().toString()+ "`\n");
-        eb.appendDescription("**Duration**: `"+CmdUtils.longToMMSS(currentTrack.getPosition())+"/"+CmdUtils.longToMMSS(currentTrack.getDuration())+ "`\n\n");
+        eb.appendDescription("[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri + ")\n\n");
+        eb.appendDescription("**Channel**: `" + currentTrack.getInfo().author + "`\n");
+        eb.appendDescription("**Queued by**: `" + currentTrack.getUserData().toString() + "`\n");
+        eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`\n\n");
         String musicBar = MusicUtils.getMusicBar(currentTrack);
         eb.appendDescription(musicBar);
         eb.setColor(Constants.EMB_COL);
@@ -115,9 +115,8 @@ public class EmbedUtils {
     }
 
     /**
-     *
      * @param gmm The guild music manager associated with the embed being requested
-     * @param at The audio track which has been queued
+     * @param at  The audio track which has been queued
      * @param evt The message received event containing information such as which channel to send to
      * @return an embed referring to a song which has been queued to an audioplayer already playing a song
      */
@@ -126,16 +125,16 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Now playing");
         eb.setColor(Constants.EMB_COL);
-        eb.appendDescription("["+at.getInfo().title+"]("+at.getInfo().uri+")\n\n");
-        eb.appendDescription("**Channel**: `" +at.getInfo().author + "`\n");
-        eb.appendDescription("**Queued by**: `"+at.getUserData().toString()+ "`\n");
-        eb.appendDescription("**Duration**: `"+CmdUtils.longToMMSS(at.getDuration())+ "`\n");
-        if(!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack()!=null) {
+        eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
+        eb.appendDescription("**Channel**: `" + at.getInfo().author + "`\n");
+        eb.appendDescription("**Queued by**: `" + at.getUserData().toString() + "`\n");
+        eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(at.getDuration()) + "`\n");
+        if (!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack() != null) {
             eb.setTitle("Queued song");
             eb.appendDescription("**Position in queue**: `" + ts.getSongIndex(at) + "`\n");
             eb.appendDescription("**Playing in approximately**: `" + ts.getTotalTimeTil(at) + "`\n");
-            if(ts.isFairPlay())
-                eb.setFooter("Fairplay mode is currently on. Use " +Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
+            if (ts.isFairPlay())
+                eb.setFooter("Fairplay mode is currently on. Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
         }
         eb.setThumbnail(MusicUtils.getThumbnailURL(at));
 
@@ -143,8 +142,7 @@ public class EmbedUtils {
     }
 
     /**
-     *
-     * @param at The audio track which has been skipped to
+     * @param at  The audio track which has been skipped to
      * @param evt The message received event associated with the skip embed request
      * @return Returns an embed referring to the song which has been skipped to
      */
@@ -152,10 +150,10 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Skipped to");
         eb.setColor(Constants.EMB_COL);
-        eb.appendDescription("["+at.getInfo().title+"]("+at.getInfo().uri+")\n\n");
-        eb.appendDescription("**Channel**: `" +at.getInfo().author + "`\n");
-        eb.appendDescription("**Queued by**: `"+at.getUserData().toString()+ "`\n");
-        eb.appendDescription("**Duration**: `"+CmdUtils.longToMMSS(at.getDuration())+"`\n");
+        eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
+        eb.appendDescription("**Channel**: `" + at.getInfo().author + "`\n");
+        eb.appendDescription("**Queued by**: `" + at.getUserData().toString() + "`\n");
+        eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(at.getDuration()) + "`\n");
         eb.setThumbnail(MusicUtils.getThumbnailURL(at));
         return eb.build();
     }
@@ -167,7 +165,7 @@ public class EmbedUtils {
     public static MessageEmbed getSkippedEmbed(AudioTrack at) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Skipped song");
-        eb.appendDescription("["+at.getInfo().title+"]("+at.getInfo().uri+")\n\n");
+        eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
         eb.setColor(Constants.EMB_COL);
 
         eb.setThumbnail(MusicUtils.getThumbnailURL(at));
@@ -176,9 +174,8 @@ public class EmbedUtils {
     }
 
     /**
-     *
      * @param gmm The music manager to query
-     * @param at The audiotrack which is being added
+     * @param at  The audiotrack which is being added
      * @param evt The event (contains information about the channel which queued it, the guild etc.
      * @return A message embed with the appropriate information for a song that has been queued to the top
      */
@@ -187,14 +184,14 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Queued song to top");
         eb.setColor(Constants.EMB_COL);
-        eb.appendDescription("["+at.getInfo().title+"]("+at.getInfo().uri+")\n\n");
-        eb.appendDescription("**Channel**: `" +at.getInfo().author + "`\n");
-        eb.appendDescription("**Queued by**: `"+at.getUserData().toString()+ "`\n");
-        eb.appendDescription("**Duration**: `"+CmdUtils.longToMMSS(at.getDuration())+ "`\n");
-        if(!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack()!=null) {
+        eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
+        eb.appendDescription("**Channel**: `" + at.getInfo().author + "`\n");
+        eb.appendDescription("**Queued by**: `" + at.getUserData().toString() + "`\n");
+        eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(at.getDuration()) + "`\n");
+        if (!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack() != null) {
             eb.appendDescription("**Position in queue**: `1`\n");
             String totalTime = CmdUtils.longToHHMMSS(gmm.getPlayer().getPlayingTrack().getDuration() - gmm.getPlayer().getPlayingTrack().getPosition());
-            eb.appendDescription("**Playing in approximately**: `" +totalTime+"`\n");
+            eb.appendDescription("**Playing in approximately**: `" + totalTime + "`\n");
         }
         eb.setThumbnail(MusicUtils.getThumbnailURL(at));
 
@@ -203,23 +200,24 @@ public class EmbedUtils {
 
     /**
      * Gets an embed that returns a playlist that has been queued
-     * @param gmm The guild music manager which has an audioplayer which will have this playlist added to
+     *
+     * @param gmm      The guild music manager which has an audioplayer which will have this playlist added to
      * @param playlist The playlist to be added
      * @return the MessageEmbed object to represent this playlist that has been queued
      */
     public static MessageEmbed getPlaylistEmbed(GuildMusicManager gmm, AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
-        if(firstTrack == null) {
+        if (firstTrack == null) {
             firstTrack = playlist.getTracks().get(0);
         }
 
         EmbedBuilder eb = new EmbedBuilder();
 
-        eb.setTitle("Playlist added: "+playlist.getName());
-        eb.appendDescription("**Queued by**: `"+firstTrack.getUserData().toString()+ "`\n");
-        eb.appendDescription("**Number of songs**: `"+playlist.getTracks().size()+"`\n");
-        eb.appendDescription("**Total duration**: `"+MusicUtils.getPlaylistDuration(playlist)+ "`\n");
+        eb.setTitle("Playlist added: " + playlist.getName());
+        eb.appendDescription("**Queued by**: `" + firstTrack.getUserData().toString() + "`\n");
+        eb.appendDescription("**Number of songs**: `" + playlist.getTracks().size() + "`\n");
+        eb.appendDescription("**Total duration**: `" + MusicUtils.getPlaylistDuration(playlist) + "`\n");
 
 
         eb.setThumbnail(MusicUtils.getThumbnailURL(firstTrack));
@@ -227,25 +225,24 @@ public class EmbedUtils {
     }
 
     /**
-     *
      * @param memberList An array of members which are sorted by order of experience
-     * @param evt The message received event associated with the leaderboard request
+     * @param evt        The message received event associated with the leaderboard request
      * @return An embed that refers to the leaderboard of the users sorted by their credit
      */
     public static MessageEmbed getLeaderboard(Member[] memberList, MessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setTitle("The leaderboard for " +evt.getGuild().getName() +":");
+        eb.setTitle("The leaderboard for " + evt.getGuild().getName() + ":");
 
         int VALUE = Constants.LEADERBOARD_MAX;
 
-        if(memberList.length < VALUE) //If the server does not have enough players to have a leaderboard of 5
+        if (memberList.length < VALUE) //If the server does not have enough players to have a leaderboard of 5
             VALUE = memberList.length;
 
-        for(int i = 0; i<VALUE; i++) {
+        for (int i = 0; i < VALUE; i++) {
             Invoker inv = new Invoker(memberList[i]);
-            eb.appendDescription((i+1)+ ". **" +memberList[i].getUser().getName()+ "** " + "| `Level: " + inv.getLevel() + "` | `Experience: "
-                    +inv.getExp()+"/"+inv.getExpForNextLevel() +"`\n\n");
+            eb.appendDescription((i + 1) + ". **" + memberList[i].getUser().getName() + "** " + "| `Level: " + inv.getLevel() + "` | `Experience: "
+                    + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
         }
         eb.setThumbnail(evt.getGuild().getIconUrl());
         return eb.build();
@@ -262,7 +259,7 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("Choose your new role name");
-        eb.setDescription("Current name is: " +name);
+        eb.setDescription("Current name is: " + name);
         return eb.build();
     }
 
@@ -270,12 +267,12 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         try {
             eb.setColor(new Color(number, 0, 0));
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             eb.setDescription("That is an invalid colour. Please select a number between 0-255");
         }
 
         eb.setTitle("Choose your new role red colour");
-        eb.setDescription("The colour to the left is the current intensity of red: "+ number);
+        eb.setDescription("The colour to the left is the current intensity of red: " + number);
         return eb.build();
     }
 
@@ -283,12 +280,12 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         try {
             eb.setColor(new Color(0, number, 0));
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             eb.setDescription("That is an invalid colour. Please select a number between 0-255");
         }
 
         eb.setTitle("Choose your new role green colour");
-        eb.setDescription("The colour to the left is the current intensity of green: " +number);
+        eb.setDescription("The colour to the left is the current intensity of green: " + number);
         return eb.build();
     }
 
@@ -296,7 +293,7 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         try {
             eb.setColor(new Color(0, 0, number));
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             eb.setDescription("That is an invalid colour. Please select a number between 0-255");
         }
 
@@ -356,41 +353,41 @@ public class EmbedUtils {
         eb.setTitle("List of game roles for " + ra.getGuild().getName());
 
         //If there are no songs in the queue then it will just give an embedded message for a single song.
-        if(roleList.size() == 0) {
+        if (roleList.size() == 0) {
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
                     .appendDescription("Use **createrole** to add roles.")
                     .build();
         }
 
-        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
-        if(roleList.size()%10 == 0)
+        if (roleList.size() % 10 == 0)
             maxPageNumber--;
 
-        if(page > maxPageNumber) {
-            return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+        if (page > maxPageNumber) {
+            return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
         }
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().iterator();
-        int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+        int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
         int count = 1;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if(count >= startIdx && count<=targetIdx) {
-                eb.appendDescription(emojiNumArr[(count-1)%10]+ " " +gameRole.getName()+"\n\n");
+            if (count >= startIdx && count <= targetIdx) {
+                eb.appendDescription(emojiNumArr[(count - 1) % 10] + " " + gameRole.getName() + "\n\n");
             }
-            if(count==targetIdx)
+            if (count == targetIdx)
                 break;
 
             count++;
         }
-        eb.setTitle("Roles for "+ra.getGuild().getName()+ " (Page " +page+"/"+maxPageNumber+")");
+        eb.setTitle("Roles for " + ra.getGuild().getName() + " (Page " + page + "/" + maxPageNumber + ")");
         eb.setThumbnail(ra.getGuild().getIconUrl());
-        if(Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().size() > 10)
+        if (Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().size() > 10)
             eb.setFooter("Use the arrow reaction to move to the next page of roles", null);
         return eb.build();
     }
@@ -400,7 +397,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(ra.getGuild().getIconUrl());
         eb.setTitle("Confirm role");
-        eb.appendDescription("Please confirm that you would like the following role: " +ra.getDesiredRole().getName());
+        eb.appendDescription("Please confirm that you would like the following role: " + ra.getDesiredRole().getName());
         return eb.build();
     }
 
@@ -410,7 +407,7 @@ public class EmbedUtils {
 
         eb.setThumbnail(rd.getUser().getAvatarUrl());
         eb.setTitle("Confirm role deletion");
-        eb.appendDescription("Please confirm that you would like to delete the following role " +rd.getRoleToBeDeleted().getName());
+        eb.appendDescription("Please confirm that you would like to delete the following role " + rd.getRoleToBeDeleted().getName());
         return eb.build();
     }
 
@@ -437,7 +434,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(r.getGuild().getIconUrl());
         eb.setTitle("Role added");
-        eb.appendDescription("You now have the role " +r.getName() + ". Remember you can use " +
+        eb.appendDescription("You now have the role " + r.getName() + ". Remember you can use " +
                 Bot.gameRoleManager.getGuildRoleManager(r.getGuild()).getPrefix() + "removerole to remove this role.");
         return eb.build();
     }
@@ -455,7 +452,7 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
 
-        if(createdRoles.size() == 0) {
+        if (createdRoles.size() == 0) {
             Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleModifiers().remove(rd);
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
@@ -463,31 +460,31 @@ public class EmbedUtils {
                     .build();
         }
 
-        int maxPageNumber = createdRoles.size()/10+1;
+        int maxPageNumber = createdRoles.size() / 10 + 1;
 
-        if(createdRoles.size()%10 == 0)
+        if (createdRoles.size() % 10 == 0)
             maxPageNumber--;
 
-        if(page > maxPageNumber)
-            return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+        if (page > maxPageNumber)
+            return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = createdRoles.iterator();
-        int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+        int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
         int count = 1;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if(count >= startIdx && count<=targetIdx) {
-                eb.appendDescription(emojiNumArr[(count-1)%10]+ " " +gameRole.getName()+"\n\n");
+            if (count >= startIdx && count <= targetIdx) {
+                eb.appendDescription(emojiNumArr[(count - 1) % 10] + " " + gameRole.getName() + "\n\n");
             }
-            if(count==targetIdx)
+            if (count == targetIdx)
                 break;
 
             count++;
         }
 
-        eb.setTitle("Roles created by "+rd.getUser().getName()+ " (Page " +page+"/"+maxPageNumber+")");
+        eb.setTitle("Roles created by " + rd.getUser().getName() + " (Page " + page + "/" + maxPageNumber + ")");
         eb.setThumbnail(rd.getUser().getAvatarUrl());
 
         return eb.build();
@@ -501,39 +498,39 @@ public class EmbedUtils {
         eb.setTitle("List of game roles for " + rr.getUser().getName());
 
         //If there are no roles in the server...
-        if(roleList.size() == 0) {
+        if (roleList.size() == 0) {
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
                     .appendDescription("Use **addrole** to add roles.")
                     .build();
         }
 
-        int maxPageNumber = roleList.size()/10+1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
-        if(roleList.size()%10 == 0)
+        if (roleList.size() % 10 == 0)
             maxPageNumber--;
 
-        if(page > maxPageNumber) {
-            return new EmbedBuilder().setDescription("Page "+page+ " out of bounds.").setColor(Constants.EMB_COL).build();
+        if (page > maxPageNumber) {
+            return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
         }
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = roleList.iterator();
-        int startIdx = 1 + ((page-1)*10); //The start song on that page eg page 2 would give 11
+        int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
         int count = 1;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if(count >= startIdx && count<=targetIdx) {
-                eb.appendDescription(emojiNumArr[(count-1)%10]+ " " +gameRole.getName()+"\n\n");
+            if (count >= startIdx && count <= targetIdx) {
+                eb.appendDescription(emojiNumArr[(count - 1) % 10] + " " + gameRole.getName() + "\n\n");
             }
-            if(count==targetIdx)
+            if (count == targetIdx)
                 break;
 
             count++;
         }
-        eb.setTitle("Roles for "+rr.getUser().getName()+ " (Page " +page+"/"+maxPageNumber+")");
+        eb.setTitle("Roles for " + rr.getUser().getName() + " (Page " + page + "/" + maxPageNumber + ")");
         eb.setThumbnail(rr.getUser().getAvatarUrl());
         return eb.build();
     }
@@ -543,7 +540,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(rr.getUser().getAvatarUrl());
         eb.setTitle("Confirm role removal");
-        eb.appendDescription("Please confirm that you would like to remove the following role: " +gameRole.getName());
+        eb.appendDescription("Please confirm that you would like to remove the following role: " + gameRole.getName());
 
         return eb.build();
     }
@@ -571,7 +568,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(rr.getUser().getAvatarUrl());
         eb.setTitle("Role removed");
-        eb.appendDescription("You no longer have the role " +gr.getName());
+        eb.appendDescription("You no longer have the role " + gr.getName());
         return eb.build();
     }
 
@@ -587,37 +584,37 @@ public class EmbedUtils {
 
         StringBuilder sb = new StringBuilder();
 
-        for(Command c: commandList) {
-            if(c instanceof OwnerCommand || c instanceof HelpCommand)
+        for (Command c : commandList) {
+            if (c instanceof OwnerCommand || c instanceof HelpCommand)
                 continue;
 
             int descLength = 0;
-            if(c.getDescription() != null)
+            if (c.getDescription() != null)
                 descLength = c.getDescription().length();
-            if(sb.toString().length() + descLength >= 1600) {
+            if (sb.toString().length() + descLength >= 1600) {
                 eb.appendDescription(sb.toString());
                 eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
                 sb = new StringBuilder();
                 embedArrayList.add(eb.build());
-                eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Commands List (Page " +pageCount+ ")");
+                eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Commands List (Page " + pageCount + ")");
                 eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
                 pageCount++;
             }
 
             sb.append("**").append(prefix).append(c.getName()).append("**");
 
-            if(!c.getAliases().isEmpty()) {
+            if (!c.getAliases().isEmpty()) {
                 java.util.List<String> aliases = new ArrayList<>(c.getAliases());
                 sb.append(" (");
-                for(int i = 0; i<aliases.size()-1; i++)
-                    if(!aliases.get(i).equalsIgnoreCase(c.getName()))
+                for (int i = 0; i < aliases.size() - 1; i++)
+                    if (!aliases.get(i).equalsIgnoreCase(c.getName()))
                         sb.append(aliases.get(i)).append("/");
 
-                if(!aliases.get(aliases.size()-1).equalsIgnoreCase(c.getName()))
-                    sb.append(aliases.get(aliases.size()-1));
+                if (!aliases.get(aliases.size() - 1).equalsIgnoreCase(c.getName()))
+                    sb.append(aliases.get(aliases.size() - 1));
                 sb.append(")");
             }
-            if(c.getDescription() != null)
+            if (c.getDescription() != null)
                 sb.append(" - ").append(c.getDescription());
             sb.append("\n\n");
         }
@@ -626,7 +623,7 @@ public class EmbedUtils {
         eb.appendDescription(sb.toString());
 
         eb.setFooter("If you need help with a particular category, add the commands category, e.g. " +
-                                prefix+ "help music", evt.getJDA().getSelfUser().getAvatarUrl());
+                prefix + "help music", evt.getJDA().getSelfUser().getAvatarUrl());
         embedArrayList.add(eb.build());
         return embedArrayList;
     }
@@ -634,16 +631,16 @@ public class EmbedUtils {
     public static MessageEmbed getCreditsLeaderboardEmbed(Member[] memberList, MessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setTitle("Credits leaderboard for " +evt.getGuild().getName());
+        eb.setTitle("Credits leaderboard for " + evt.getGuild().getName());
 
         int maxIndex = memberList.length;
 
-        if(maxIndex > 10)
+        if (maxIndex > 10)
             maxIndex = 10;
 
-        for(int i = 0; i<maxIndex; i++) {
+        for (int i = 0; i < maxIndex; i++) {
             Invoker invoker = new Invoker(memberList[i]);
-            eb.appendDescription((i+1) + ". | **"+invoker.getMember().getEffectiveName()+"** | `Credits: " +invoker.getCredit()+"`\n\n");
+            eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: " + invoker.getCredit() + "`\n\n");
         }
 
         eb.setThumbnail(evt.getGuild().getIconUrl());
@@ -653,11 +650,11 @@ public class EmbedUtils {
     public static MessageEmbed createCategoryEmbed(java.util.List<String> stringList, String prefix) {
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Command categories");
 
-        for(String s: stringList) {
-            eb.appendDescription(s+"\n");
+        for (String s : stringList) {
+            eb.appendDescription(s + "\n");
         }
 
-        eb.setFooter("Use " +prefix+ "help <category name> to view all the commands in the category", null);
+        eb.setFooter("Use " + prefix + "help <category name> to view all the commands in the category", null);
 
         return eb.build();
     }

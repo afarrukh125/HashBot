@@ -19,7 +19,7 @@ public class PlayCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(params == null) {
+        if (params == null) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
@@ -27,7 +27,7 @@ public class PlayCommand extends Command implements MusicCommand {
         if (evt.getMember().getVoiceState().getChannel() == null)
             return;
 
-        if(evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
+        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
             if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
                 // If the bot is not in the same channel as the user (assuming already connected) then return
                 evt.getTextChannel().sendMessage("You must be in the same channel as the bot to queue songs to it.").queue();
@@ -37,14 +37,13 @@ public class PlayCommand extends Command implements MusicCommand {
 
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
         // To account for shuffling the list, we have the first branch
-        if(params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
+        if (params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
             Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
-        } else if(params.split(" ").length == 1 && params.contains("http")) {
+        } else if (params.split(" ").length == 1 && params.contains("http")) {
             Bot.musicManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
-        }
-        else
+        } else
             Bot.musicManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
     }
 

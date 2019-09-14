@@ -28,7 +28,7 @@ public class MusicManager {
         long guildId = Long.parseLong(guild.getId());
         GuildMusicManager musicManager = musicManagers.get(guildId); //Gets the current music manager for this guild
 
-        if(musicManager == null) { // If the guild doesn't already have a music manager then create one
+        if (musicManager == null) { // If the guild doesn't already have a music manager then create one
             musicManager = new GuildMusicManager(playerManager, guild);
             musicManagers.put(guildId, musicManager);
         }
@@ -38,7 +38,7 @@ public class MusicManager {
     }
 
     public synchronized void resetGuildAudioPlayer(Guild guild) {
-        if(musicManagers.get(guild.getIdLong()) == null)
+        if (musicManagers.get(guild.getIdLong()) == null)
             return;
         musicManagers.remove(guild.getIdLong());
         musicManagers.put(guild.getIdLong(), new GuildMusicManager(playerManager, guild));

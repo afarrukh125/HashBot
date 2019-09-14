@@ -17,32 +17,34 @@ public class SeekCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(MusicUtils.canInteract(evt)) {
+        if (MusicUtils.canInteract(evt)) {
             try {
-                if(params.split("\\.").length == 2) {
+                if (params.split("\\.").length == 2) {
                     String[] tokens = params.split("\\.");
                     int minute = Integer.parseInt(tokens[0]);
                     int seconds = Integer.parseInt(tokens[1]);
 
-                    int desiredMinute = minute*60;
-                    int desiredSeconds = seconds%60;
+                    int desiredMinute = minute * 60;
+                    int desiredSeconds = seconds % 60;
 
-                    if((tokens[1]).length() == 1) {
+                    if ((tokens[1]).length() == 1) {
                         desiredSeconds *= 6;
                     }
 
                     int desiredTime = desiredMinute + desiredSeconds;
                     MusicUtils.seek(evt, desiredTime);
-                }
-                else {
+                } else {
                     String[] tokens = params.split(" ");
                     int seconds = Integer.parseInt(tokens[0]);
                     MusicUtils.seek(evt, seconds);
                 }
-            } catch(NumberFormatException e) {
-                    evt.getChannel().sendMessage("Need to specify a valid number of seconds to seek.").queue();
-            } catch(NullPointerException e) {evt.getChannel().sendMessage("Usage: seek/skim <number of seconds into current song>").queue();}
-              catch(ArrayIndexOutOfBoundsException e) { evt.getTextChannel().sendMessage("Please enter a valid number of seconds to skip.").queue();}
+            } catch (NumberFormatException e) {
+                evt.getChannel().sendMessage("Need to specify a valid number of seconds to seek.").queue();
+            } catch (NullPointerException e) {
+                evt.getChannel().sendMessage("Usage: seek/skim <number of seconds into current song>").queue();
+            } catch (ArrayIndexOutOfBoundsException e) {
+                evt.getTextChannel().sendMessage("Please enter a valid number of seconds to skip.").queue();
+            }
         }
     }
 

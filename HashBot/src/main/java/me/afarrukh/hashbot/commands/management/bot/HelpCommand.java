@@ -25,23 +25,22 @@ public class HelpCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR) ? Bot.commandManager.getCommandList() : Bot.commandManager.getNonAdminCommands();
 
-        if(params == null) {
+        if (params == null) {
             for (MessageEmbed embed : EmbedUtils.getHelpMsg(evt, commandList))
                 evt.getTextChannel().sendMessage(embed).queue();
 
-        }
-        else {
+        } else {
             List<Command> categoryList = new ArrayList<>();
-            for(Command c: commandList) {
-                if(c instanceof CategorisedCommand) {
-                    if(((CategorisedCommand) c).getType().equalsIgnoreCase(params)) {
+            for (Command c : commandList) {
+                if (c instanceof CategorisedCommand) {
+                    if (((CategorisedCommand) c).getType().equalsIgnoreCase(params)) {
                         categoryList.add(c);
                     }
                 }
             }
-            if(categoryList.isEmpty())
+            if (categoryList.isEmpty())
                 categoryList = Bot.commandManager.getCommandList();
-            for(MessageEmbed embed: EmbedUtils.getHelpMsg(evt, categoryList)) {
+            for (MessageEmbed embed : EmbedUtils.getHelpMsg(evt, categoryList)) {
                 evt.getTextChannel().sendMessage(embed).queue();
             }
         }

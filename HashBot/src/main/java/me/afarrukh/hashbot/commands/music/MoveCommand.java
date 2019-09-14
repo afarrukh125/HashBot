@@ -19,25 +19,25 @@ public class MoveCommand extends Command implements MusicCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
             String[] tokens = params.split(" ");
-            if(MusicUtils.canInteract(evt)) {
-                int oldPos = Integer.parseInt(tokens[0]) -1;
-                int newPos = Integer.parseInt(tokens[1]) -1;
+            if (MusicUtils.canInteract(evt)) {
+                int oldPos = Integer.parseInt(tokens[0]) - 1;
+                int newPos = Integer.parseInt(tokens[1]) - 1;
 
-                if(oldPos < 0 || newPos+1 > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().size()) {
+                if (oldPos < 0 || newPos + 1 > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().size()) {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }
-                if(newPos < 0 || oldPos+1 > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().size()) {
+                if (newPos < 0 || oldPos + 1 > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().size()) {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }
                 AudioTrack track = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().get(oldPos);
                 Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().move(oldPos, newPos);
-                evt.getChannel().sendMessage("Moved `"+track.getInfo().title+ "` to position " + tokens[1]).queue();
+                evt.getChannel().sendMessage("Moved `" + track.getInfo().title + "` to position " + tokens[1]).queue();
             }
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             onIncorrectParams(evt.getTextChannel());
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             evt.getChannel().sendMessage("Please enter numerical indices only.").queue();
         }
     }

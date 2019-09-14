@@ -21,7 +21,7 @@ public class NowPlayingCommand extends Command implements MusicCommand {
         try {
             AudioTrack currentTrack = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
             evt.getChannel().sendMessage(EmbedUtils.getSingleSongEmbed(currentTrack, evt)).queue();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             evt.getChannel().sendMessage(EmbedUtils.getNothingPlayingEmbed()).queue();
         }
     }

@@ -24,7 +24,9 @@ public class APIUtils {
                 res = (response.code() == 200) ? response.body().string() : null;
             }
             return res;
-        } catch(IOException e) { return null; }
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -35,7 +37,7 @@ public class APIUtils {
             Request.Builder requestBuilder = new Request.Builder()
                     .url(url);
 
-            for(String s: headers.keySet()) {
+            for (String s : headers.keySet()) {
                 requestBuilder.addHeader(s, headers.get(s));
             }
 
@@ -46,6 +48,8 @@ public class APIUtils {
                 res = (response.code() == 200) ? response.body().string() : null;
             }
             return res;
-        } catch(IOException e) { return null; }
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

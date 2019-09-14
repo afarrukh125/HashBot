@@ -53,12 +53,12 @@ public class StatsCommand extends Command {
 
         boolean global = false;
 
-        if(params != null && params.equalsIgnoreCase("global")) {
+        if (params != null && params.equalsIgnoreCase("global")) {
             global = true;
             exp = 0;
-            for(Guild guild: evt.getJDA().getGuilds()) {
+            for (Guild guild : evt.getJDA().getGuilds()) {
                 Member m = guild.getMemberById(evt.getAuthor().getId());
-                if(m == null)
+                if (m == null)
                     continue;
                 Invoker tmpInvoker = new Invoker(m);
                 exp += Invoker.parseTotalExperienceFromLevel((int) tmpInvoker.getLevel());
@@ -75,7 +75,7 @@ public class StatsCommand extends Command {
             g.drawImage(profPic, 460, 10, null);
 
         String nameString = evt.getAuthor().getName();
-        if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length()+ evt.getAuthor().getName().length()) < 24)
+        if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length() + evt.getAuthor().getName().length()) < 24)
             nameString += "(" + evt.getMember().getNickname() + ")";
 
         Text.drawString(g, Integer.toString(level), 399, 78, true, Color.BLACK, Constants.bigNumFont);
@@ -89,17 +89,17 @@ public class StatsCommand extends Command {
         int offset = 3;
 
         g.setColor(new Color(91, 91, 91));
-        g.fillRect(originX-offset, originY + 80 -offset, (100*3)+(2*offset), 20+(2*offset));
+        g.fillRect(originX - offset, originY + 80 - offset, (100 * 3) + (2 * offset), 20 + (2 * offset));
         g.setColor(Color.GRAY);
         g.fillRect(originX, originY + 80, 100 * 3, 20);
         g.setColor(Color.WHITE);
-        if(global)
+        if (global)
             g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp, level) * 3, 20);
         else
             g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
 
 
-        if(!global) {
+        if (!global) {
             Role r = null;
             if (!evt.getMember().getRoles().isEmpty())
                 r = evt.getMember().getRoles().get(0);
@@ -167,11 +167,11 @@ public class StatsCommand extends Command {
 
         for (double current = 0.0; current < nPoints; current++) {
             int i = (int) current;
-            double x = -Math.cos(current*((2*Math.PI)/nPoints))*radius[i % 4];
-            double y = -Math.sin(current*((2*Math.PI)/nPoints))*radius[i % 4];
+            double x = -Math.cos(current * ((2 * Math.PI) / nPoints)) * radius[i % 4];
+            double y = -Math.sin(current * ((2 * Math.PI) / nPoints)) * radius[i % 4];
 
-            X[i] = (int) y+midX;
-            Y[i] = (int) x+midY;
+            X[i] = (int) y + midX;
+            Y[i] = (int) x + midY;
         }
 
         g.setColor(Constants.STATSIMG_COL);
@@ -180,16 +180,21 @@ public class StatsCommand extends Command {
 
     private File saveImage(String fileName, BufferedImage bufferedImage) {
         File outputFile = new File(fileName);
-        try { ImageIO.write(bufferedImage, "png", outputFile); }
-        catch (IOException e) { e.printStackTrace(); }
+        try {
+            ImageIO.write(bufferedImage, "png", outputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return outputFile;
     }
 
     private class DeletionTimer extends TimerTask {
         private final File file;
+
         private DeletionTimer(File file) {
             this.file = file;
         }
+
         @Override
         public void run() {
             file.delete();

@@ -18,9 +18,9 @@ public class RemoveCommand extends Command implements MusicCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
-        if(MusicUtils.canInteract(evt))
-            MusicUtils.remove(evt, Integer.parseInt(params));
-        } catch(NullPointerException | NumberFormatException e) {
+            if (MusicUtils.canInteract(evt))
+                MusicUtils.remove(evt, Integer.parseInt(params));
+        } catch (NullPointerException | NumberFormatException e) {
             onIncorrectParams(evt.getTextChannel());
         }
     }

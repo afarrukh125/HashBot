@@ -12,10 +12,9 @@ import net.dv8tion.jda.core.entities.Member;
 /**
  * @author Abdullah
  * Created on 14/09/2019 at 16:02
- *
+ * <p>
  * Used to load the first track in the <code>PlaylistLoader</code> only
  * This class was only made to clean up the code in <code>SQLUserDataManager</code>
- *
  * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
  */
 public class YTFirstLatentTrackHandler implements AudioLoadResultHandler {

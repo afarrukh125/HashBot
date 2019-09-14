@@ -17,15 +17,15 @@ public class CheckMemoryCommand extends Command implements SystemCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        long memoryNow = Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+        long memoryNow = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
         long memoryDiff = memoryNow - Constants.INITIAL_MEMORY;
-        memoryDiff /= (1024*1024); //Converting from bytes to kb to mb by dividing by 1024 twice
+        memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
 
         evt.getTextChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL)
                 .appendDescription("Memory usage since startup is " + memoryDiff + "MB").build()).queue();
 
-        if(memoryDiff > 30)
+        if (memoryDiff > 30)
             System.gc();
     }
 

@@ -21,18 +21,17 @@ public class UserDataManager extends DataManager {
         String guildId = m.getGuild().getId();
         String userId = m.getUser().getId();
 
-        String filePath = "res/guilds/" +guildId+ "/users/" +userId+".txt";
+        String filePath = "res/guilds/" + guildId + "/users/" + userId + ".txt";
 
         member = m;
         file = new File(filePath);
 
-        if(file.exists())
+        if (file.exists())
             load();
         else {
-            if(new File("res/guilds/" +guildId+ "/users").mkdirs()) {
+            if (new File("res/guilds/" + guildId + "/users").mkdirs()) {
                 load();
-            }
-            else {
+            } else {
                 load();
             }
         }
@@ -53,7 +52,7 @@ public class UserDataManager extends DataManager {
     public Object getValue(Object key) {
         try {
             return jsonObject.get(key);
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
             return null;
         }
@@ -79,7 +78,7 @@ public class UserDataManager extends DataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("<" +member.getGuild().getName()+ "> " + "Created file for user " +member.getUser().getName());
+        System.out.println("<" + member.getGuild().getName() + "> " + "Created file for user " + member.getUser().getName());
         System.out.println(obj);
     }
 }

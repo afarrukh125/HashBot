@@ -14,7 +14,7 @@ import java.util.Map;
  * CreateRoleCommand, and set up the colour and role name. After that, other members can add this role using
  * AddRoleCommand and now the role is set up. If the users wish to notify all users with that role they would
  * simply mention the Overwatch GameRole. This could be useful in the context of finding other users to play with.
- *
+ * <p>
  * In the event that this notification gets annoying, users can remove this role using RemoveRoleCommand.
  * The reason why I have chosen to represent a GameRole as a separate object from standard roles is because
  * they are all not hoisted roles (shown separately in discord), and we don't want to have any of the
@@ -30,13 +30,14 @@ public class GameRoleManager {
     public GameRoleManager() {
         this.gameRoleManagers = new HashMap<>();
 
-        for(Guild guild: Bot.botUser.getGuilds()) {
+        for (Guild guild : Bot.botUser.getGuilds()) {
             getGuildRoleManager(guild);
         }
     }
 
     /**
      * Returns the guild game role manager for the guild. Creates one and adds to the map if none exists.
+     *
      * @param guild The guild for which the game role manager is to be retrieved
      * @return The guild game role manager for the guild
      */
@@ -44,7 +45,7 @@ public class GameRoleManager {
         long guildId = Long.parseLong(guild.getId());
         GuildGameRoleManager roleManager = gameRoleManagers.get(guildId); //Gets the current role manager for this guild
 
-        if(roleManager == null) { // If the guild doesn't already have a role manager then create one
+        if (roleManager == null) { // If the guild doesn't already have a role manager then create one
             roleManager = new GuildGameRoleManager(guild);
             gameRoleManagers.put(guildId, roleManager);
         }

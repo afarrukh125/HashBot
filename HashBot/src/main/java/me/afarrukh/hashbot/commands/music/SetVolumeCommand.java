@@ -16,7 +16,7 @@ public class SetVolumeCommand extends Command implements OwnerCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(params == null) {
+        if (params == null) {
             evt.getTextChannel().sendMessage("Need to provide volume to change to.").queue();
             return;
         }

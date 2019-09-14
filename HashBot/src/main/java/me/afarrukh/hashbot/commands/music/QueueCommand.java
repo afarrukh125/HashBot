@@ -22,7 +22,7 @@ public class QueueCommand extends Command implements MusicCommand {
             evt.getChannel().sendMessage(EmbedUtils.getQueueMsg(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()), evt, 1)).queue();
         else {
             try {
-                if(Integer.parseInt(params) == 0) {
+                if (Integer.parseInt(params) == 0) {
                     onIncorrectParams(evt.getTextChannel());
                     return;
                 }

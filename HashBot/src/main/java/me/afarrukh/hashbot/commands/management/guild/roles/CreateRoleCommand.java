@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.commands.management.guild.roles;
 
-import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.utils.BotUtils;
@@ -20,9 +20,9 @@ public class CreateRoleCommand extends Command implements RoleCommand, AdminComm
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         evt.getMessage().delete().queue();
-        if(!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+        if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
-        if(evt.getGuild().getRoles().size() > 50) {
+        if (evt.getGuild().getRoles().size() > 50) {
             evt.getChannel().sendMessage("Could not add role because there are too many roles.").queue();
             BotUtils.deleteLastMsg(evt);
             return;

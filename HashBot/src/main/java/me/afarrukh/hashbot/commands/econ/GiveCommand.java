@@ -20,37 +20,36 @@ public class GiveCommand extends Command implements EconCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         Member m = null;
-        if(params == null) {
+        if (params == null) {
             onIncorrectParams(evt.getTextChannel());
             return;
         }
-        if(evt.getMessage().getMentionedMembers().isEmpty()) {
+        if (evt.getMessage().getMentionedMembers().isEmpty()) {
             String[] userName = params.split(" ");
-            String memberByName = CmdUtils.getParamsAsString(userName, 0, userName.length-2);
-            for(Member member: evt.getGuild().getMembers()) {
-                if(member.getEffectiveName().equalsIgnoreCase(memberByName) || member.getUser().getName().equalsIgnoreCase(memberByName))
+            String memberByName = CmdUtils.getParamsAsString(userName, 0, userName.length - 2);
+            for (Member member : evt.getGuild().getMembers()) {
+                if (member.getEffectiveName().equalsIgnoreCase(memberByName) || member.getUser().getName().equalsIgnoreCase(memberByName))
                     m = member;
             }
 
-            if(m == null) {
+            if (m == null) {
                 evt.getTextChannel().sendMessage("Invalid user provided.").queue();
                 return;
             }
-        }
-        else
+        } else
             m = evt.getMessage().getMentionedMembers().get(0);
 
         long amount;
         String[] tokens = params.split(" ");
 
         try {
-            amount = Long.parseLong(tokens[tokens.length-1]);
+            amount = Long.parseLong(tokens[tokens.length - 1]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException | NullPointerException e) {
             evt.getTextChannel().sendMessage("You must provide a numerical amount to give to the mentioned user.").queue();
             return;
         }
 
-        if(amount <= 0) {
+        if (amount <= 0) {
             evt.getTextChannel().sendMessage("You must provide an amount to transfer.").queue();
             return;
         }
@@ -58,7 +57,7 @@ public class GiveCommand extends Command implements EconCommand {
         Invoker invoker = new Invoker(evt.getMember());
         Invoker receiver = new Invoker(m);
 
-        if(amount > invoker.getCredit()) {
+        if (amount > invoker.getCredit()) {
             evt.getTextChannel().sendMessage("Insufficient credits.").queue();
             return;
         }
@@ -66,7 +65,7 @@ public class GiveCommand extends Command implements EconCommand {
         invoker.addCredit(-amount);
         receiver.addCredit(amount);
 
-        evt.getTextChannel().sendMessage("Successfully transferred " +amount+ " credit to " +m.getEffectiveName() + ".").queue();
+        evt.getTextChannel().sendMessage("Successfully transferred " + amount + " credit to " + m.getEffectiveName() + ".").queue();
 
     }
 
