@@ -27,15 +27,17 @@ public class LoadListCommand extends Command implements MusicCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
 
+        Message message = null;
         try {
             final int listSize = dataManager.getPlaylistSize(params);
-            Message message = evt.getTextChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
+            message = evt.getTextChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
                     " It might take a while for all tracks to be added to the queue.").complete();
             PlaylistLoader loader = new PlaylistLoader(evt.getMember(), listSize, message, params);
             dataManager.loadPlaylistByName(params, loader);
 
         } catch (PlaylistException e) {
-            evt.getTextChannel().sendMessage("Could not find a playlist with that name").queue();
+            if(message != null)
+                message.editMessage("Could not find a playlist with that name").queue();
         }
     }
 
