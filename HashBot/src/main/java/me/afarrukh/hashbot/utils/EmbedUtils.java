@@ -76,7 +76,7 @@ public class EmbedUtils {
 
                 count++;
             }
-            eb.appendDescription("\n**"+queue.size()+ " songs queued** | Total duration**: `"+gmm.getScheduler().getTotalQueueTime()+ "` | **");
+            eb.appendDescription("\n**"+queue.size()+ " songs queued, 1 playing** | Total duration**: `"+gmm.getScheduler().getTotalQueueTime()+ "` | **");
             StringBuilder sb = new StringBuilder();
             sb.append("[Page ").append(page).append("/").append(maxPageNumber).append("] ");
             if(gmm.getScheduler().isFairPlay())
