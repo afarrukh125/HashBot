@@ -326,11 +326,13 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
+    /**
+     * @param name The name of the playlist
+     * @param loader The associated <code>PlaylistLoader</code> for this playlist
+     * @throws PlaylistException
+     */
     public synchronized void loadPlaylistByName(String name, PlaylistLoader loader) throws PlaylistException {
         checkConn();
-
-        // TODO Fix the asynchronous behaviour of the playlist loading
-        // TODO Fix the huge memory usage of this command
 
         try {
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +

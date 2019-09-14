@@ -131,5 +131,6 @@ public class PlaylistLoader {
         }
 
         Bot.musicManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(tracks);
+        System.gc();
     }
 }
