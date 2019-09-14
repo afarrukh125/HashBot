@@ -394,4 +394,29 @@ public class SQLUserDataManager implements IDataManager {
         }
         return null;
     }
+
+    /**
+     * Returns the size of a given playlist from this member's playlists
+     * @param listName The name of the list to be searched for
+     * @return An integer corresponding to the size of the playlist that has been searched for
+     */
+    public int getPlaylistSize(String listName) throws PlaylistException {
+        checkConn();
+
+        final String getPlaylistsWithNameQuery = "SELECT DISTINCT(url), MAX(position) AS maxPosition " +
+                "FROM track, listuser, playlist, user, listtrack " +
+                "WHERE track.url=listtrack.trackurl " +
+                "AND playlist.name='" + listName + "' " +
+                "AND listuser.userid=user.id " +
+                "AND listtrack.listid=playlist.listid " +
+                "ORDER BY listtrack.position ASC";
+
+        try {
+
+            return conn.createStatement().executeQuery(getPlaylistsWithNameQuery).getInt("maxPosition");
+
+        } catch (SQLException e) {
+            throw new PlaylistException("No playlist was found with that name");
+        }
+    }
 }
