@@ -20,7 +20,7 @@ public class MusicUtils {
      * @param evt          The message event used to retrieve data such as the channel the message is being sent to
      * @param musicManager The music manager to be queried
      * @param track        The track being queued
-     * @param playTop      Whether or not the song is to be queued to the top of the list
+     * @param playTop      Whether or not the track is to be queued to the top of the list
      */
     public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
 
@@ -177,22 +177,22 @@ public class MusicUtils {
     }
 
     /**
-     * Looks for a particular time in the song
+     * Looks for a particular time in the track
      *
-     * @param evt     The message received event containing information regarding the song which is to be seeked through
-     * @param seconds The time in seconds to be searched for in the currently playing song
+     * @param evt     The message received event containing information regarding the track which is to be seeked through
+     * @param seconds The time in seconds to be searched for in the currently playing track
      */
     public static void seek(MessageReceivedEvent evt, int seconds) {
         try {
             AudioTrack track = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
 
             if (seconds > track.getDuration() / 1000 || seconds < 0)
-                evt.getChannel().sendMessage("Please enter a valid time for this song to seek. " +
-                        "Maximum time in seconds for this song is " + ((track.getDuration() / 1000) - 1) + " seconds.").queue();
+                evt.getChannel().sendMessage("Please enter a valid time for this track to seek. " +
+                        "Maximum time in seconds for this track is " + ((track.getDuration() / 1000) - 1) + " seconds.").queue();
             else {
                 int toMilliSeconds = seconds * 1000;
                 track.setPosition(toMilliSeconds);
-                evt.getChannel().sendMessage("Set position of current song to " + seconds).queue();
+                evt.getChannel().sendMessage("Set position of current track to " + seconds).queue();
             }
         } catch (NullPointerException e) {
             evt.getChannel().sendMessage("Nothing is playing right now.").queue();
@@ -200,10 +200,10 @@ public class MusicUtils {
     }
 
     /**
-     * The song to be removed from the queue at the given index
+     * The track to be removed from the queue at the given index
      *
-     * @param evt The message received event associated with the song to be removed
-     * @param idx The current index of the song to be removed
+     * @param evt The message received event associated with the track to be removed
+     * @param idx The current index of the track to be removed
      */
     public static void remove(MessageReceivedEvent evt, int idx) {
         BlockingQueue<AudioTrack> tracks = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
@@ -217,7 +217,7 @@ public class MusicUtils {
             }
             count++;
         }
-        evt.getTextChannel().sendMessage("Could not find a song at that index.").queue();
+        evt.getTextChannel().sendMessage("Could not find a track at that index.").queue();
     }
 
 }

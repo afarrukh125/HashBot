@@ -12,7 +12,7 @@ public class MoveCommand extends Command implements MusicCommand {
     public MoveCommand() {
         super("move");
         addAlias("m");
-        description = "Moves a song from one index on the list to another";
+        description = "Moves a track from one index on the list to another";
     }
 
     @Override

@@ -13,7 +13,7 @@ public class FairPlayCommand extends Command implements MusicCommand {
     public FairPlayCommand() {
         super("fairplay");
         addAlias("fp");
-        description = "If this is turned on, songs are automatically queued and sorted so everyone gets an equal chance to queue.";
+        description = "If this is turned on, tracks are automatically queued and sorted so everyone gets an equal chance to queue.";
     }
 
     @Override

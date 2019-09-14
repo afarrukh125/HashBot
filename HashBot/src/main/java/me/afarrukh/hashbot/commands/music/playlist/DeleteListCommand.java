@@ -8,8 +8,6 @@ import me.afarrukh.hashbot.exceptions.PlaylistException;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.sql.SQLException;
-
 /**
  * @author Abdullah
  * Created on 14/09/2019 at 16:27
@@ -25,10 +23,10 @@ public class DeleteListCommand extends Command implements MusicCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        if(params == null) {
+        if (params == null) {
             evt.getTextChannel().sendMessage("You need to provide the name of the playlist you would like to delete." +
                     "Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + new ViewListCommand().getName()
-            + " to view your playlists.").queue();
+                    + " to view your playlists.").queue();
             return;
         }
 

@@ -64,7 +64,7 @@ public class RoleDeleter implements RoleGUI {
 
         List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles();
 
-        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many tracks are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
         if (roleList.size() % 10 == 0)

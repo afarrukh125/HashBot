@@ -17,7 +17,7 @@ public class PruneQueueCommand extends Command implements MusicCommand {
     public PruneQueueCommand() {
         super("prunequeue");
         addAlias("pq");
-        description = "Removes songs from any users that are no longer in voice.";
+        description = "Removes tracks from any users that are no longer in voice.";
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PruneQueueCommand extends Command implements MusicCommand {
             }
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("Removed ").append(removedCount).append(" songs from the queue.\n");
+        sb.append("Removed ").append(removedCount).append(" tracks from the queue.\n");
         if (!prunedUsers.isEmpty()) {
             sb.append("From user(s): \n");
             for (String s : prunedUsers)

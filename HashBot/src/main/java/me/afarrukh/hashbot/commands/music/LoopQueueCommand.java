@@ -13,7 +13,7 @@ public class LoopQueueCommand extends Command implements MusicCommand {
     public LoopQueueCommand() {
         super("loopqueue");
         addAlias("lq");
-        description = "Adds songs to the end of the queue once they are complete.";
+        description = "Adds tracks to the end of the queue once they are complete.";
     }
 
     @Override
@@ -25,7 +25,7 @@ public class LoopQueueCommand extends Command implements MusicCommand {
                 return;
             }
             ts.setLoopingQueue(!ts.isLoopingQueue());
-            String string = (ts.isLoopingQueue() ? "Now looping the queue. Songs will be added" +
+            String string = (ts.isLoopingQueue() ? "Now looping the queue. Tracks will be added" +
                     " to the back of the queue." : "No longer looping the queue.");
             evt.getTextChannel().sendMessage(string).queue();
         }

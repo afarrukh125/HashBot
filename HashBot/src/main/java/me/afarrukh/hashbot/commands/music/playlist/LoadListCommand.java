@@ -30,7 +30,7 @@ public class LoadListCommand extends Command implements MusicCommand {
         try {
             final int listSize = dataManager.getPlaylistSize(params);
             Message message = evt.getTextChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
-                    " It might take a while for all songs to be added to the queue.").complete();
+                    " It might take a while for all tracks to be added to the queue.").complete();
             PlaylistLoader loader = new PlaylistLoader(evt.getMember(), listSize, message, params);
             dataManager.loadPlaylistByName(params, loader);
 

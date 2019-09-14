@@ -37,7 +37,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Queues the song onto the track and informs if it was immediately played or queued
+     * Queues the track onto the track and informs if it was immediately played or queued
      *
      * @param track The AudioTrack to play
      */
@@ -60,7 +60,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Decides what happens when the song ends
+     * Decides what happens when the track ends
      *
      * @param player The AudioPlayer associated with this trackscheduler
      * @param track  The track that has been started
@@ -71,7 +71,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Decides what happens when a song ends
+     * Decides what happens when a track ends
      */
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
@@ -117,14 +117,14 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Gets the duration of the queue's AudioTracks and the remaining time of the current song
+     * Gets the duration of the queue's AudioTracks and the remaining time of the current track
      *
      * @return Returns a string in format h:m:s of the total queue time
      */
     public String getTotalQueueTime() {
         long count = 0;
 
-        //Add the queue time of all songs currently in the queue
+        //Add the queue time of all tracks currently in the queue
         for (AudioTrack t : queue)
             count += t.getDuration();
 
@@ -160,12 +160,12 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Gets the index of a given song (starts at 1 for user purposes)
+     * Gets the index of a given track (starts at 1 for user purposes)
      *
      * @param at The AudioTrack for which the index is to be found
-     * @return The index of the provided song
+     * @return The index of the provided track
      */
-    public int getSongIndex(AudioTrack at) {
+    public int getTrackIndex(AudioTrack at) {
         int count = 1;
         for (AudioTrack track : queue) {
             if (track.equals(at))
@@ -176,9 +176,9 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Moves a song from one index to another
+     * Moves a track from one index to another
      *
-     * @param idx1 The song's current index
+     * @param idx1 The track's current index
      * @param idx2 The desired index
      */
     public void move(int idx1, int idx2) {
@@ -204,10 +204,10 @@ public class TrackScheduler extends AudioEventAdapter {
      * Gets the total time until an audio track that has been added to the end of the queue
      *
      * @param at The audio track for which the time is to be calculated
-     * @return Returns a string in HHMMSS format corresponding to how long until the song is playing
+     * @return Returns a string in HHMMSS format corresponding to how long until the track is playing
      */
     public String getTotalTimeTil(AudioTrack at) {
-        int idx = getSongIndex(at) - 1;
+        int idx = getTrackIndex(at) - 1;
         long totalTime = 0;
         List<AudioTrack> trackList = getArrayList();
         for (int i = 0; i < idx; i++) {
@@ -315,7 +315,7 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Returns the looping status of the track scheduler
      *
-     * @return a boolean corresponding as to whether or not the song is looping
+     * @return a boolean corresponding as to whether or not the track is looping
      */
     public boolean isLooping() {
         return looping;

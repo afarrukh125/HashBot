@@ -13,14 +13,14 @@ public class NowPlayingCommand extends Command implements MusicCommand {
         super("nowplaying");
         addAlias("current");
         addAlias("np");
-        description = "Shows the currently playing song";
+        description = "Shows the currently playing track";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
             AudioTrack currentTrack = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
-            evt.getChannel().sendMessage(EmbedUtils.getSingleSongEmbed(currentTrack, evt)).queue();
+            evt.getChannel().sendMessage(EmbedUtils.getSingleTrackEmbed(currentTrack, evt)).queue();
         } catch (NullPointerException e) {
             evt.getChannel().sendMessage(EmbedUtils.getNothingPlayingEmbed()).queue();
         }

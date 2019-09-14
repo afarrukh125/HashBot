@@ -12,7 +12,7 @@ public class SeekCommand extends Command implements MusicCommand {
         super("seek");
         addAlias("skim");
         addAlias("ff");
-        description = "Seeks to the particular time (in seconds) of the currently playing song.";
+        description = "Seeks to the particular time (in seconds) of the currently playing track.";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SeekCommand extends Command implements MusicCommand {
             } catch (NumberFormatException e) {
                 evt.getChannel().sendMessage("Need to specify a valid number of seconds to seek.").queue();
             } catch (NullPointerException e) {
-                evt.getChannel().sendMessage("Usage: seek/skim <number of seconds into current song>").queue();
+                evt.getChannel().sendMessage("Usage: seek/skim <number of seconds into current track>").queue();
             } catch (ArrayIndexOutOfBoundsException e) {
                 evt.getTextChannel().sendMessage("Please enter a valid number of seconds to skip.").queue();
             }

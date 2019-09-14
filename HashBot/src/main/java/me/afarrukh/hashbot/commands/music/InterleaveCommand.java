@@ -12,7 +12,7 @@ public class InterleaveCommand extends Command implements MusicCommand {
     public InterleaveCommand() {
         super("interleave");
         addAlias("il");
-        description = "Interleaves the songs in the queue so that all users get fair playback.";
+        description = "Interleaves the tracks in the queue so that all users get fair playback.";
     }
 
     @Override

@@ -16,7 +16,7 @@ public class SkipCommand extends Command implements MusicCommand {
         addAlias("n");
         addAlias("next");
         addAlias("s");
-        description = "Skips to the next song or desired position if position is provided";
+        description = "Skips to the next track or desired position if position is provided";
     }
 
     @Override

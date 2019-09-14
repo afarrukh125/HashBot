@@ -107,7 +107,7 @@ public class PlaylistLoader {
         notifyAll();
 
 
-        if (currentIndex == maxSize - 1) { // We take away 1 because it is likely we queued one song pre-emptively
+        if (currentIndex == maxSize - 1) { // We take away 1 because it is likely we queued one track pre-emptively
             try {
                 queueTracks();
                 MusicUtils.connectToChannel(member);

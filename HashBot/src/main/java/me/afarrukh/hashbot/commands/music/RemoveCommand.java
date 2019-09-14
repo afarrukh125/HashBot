@@ -12,7 +12,7 @@ public class RemoveCommand extends Command implements MusicCommand {
         super("remove");
         addAlias("rm");
         addAlias("r");
-        description = "Removes a song at the specified position on the queue";
+        description = "Removes a track at the specified position on the queue";
     }
 
     @Override
@@ -27,6 +27,6 @@ public class RemoveCommand extends Command implements MusicCommand {
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        channel.sendMessage("Usage: remove/rm/r <song index>").queue();
+        channel.sendMessage("Usage: remove/rm/r <track index>").queue();
     }
 }

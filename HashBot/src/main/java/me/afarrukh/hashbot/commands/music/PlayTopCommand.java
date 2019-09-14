@@ -16,7 +16,7 @@ public class PlayTopCommand extends Command implements MusicCommand {
     public PlayTopCommand() {
         super("playtop");
         addAlias("ptop");
-        description = "Adds a song to the top of the music queue";
+        description = "Adds a track to the top of the music queue";
     }
 
     @Override
@@ -29,13 +29,13 @@ public class PlayTopCommand extends Command implements MusicCommand {
         if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
             if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
                 // If the bot is not in the same channel as the user (assuming already connected) then return
-                evt.getTextChannel().sendMessage("You must be in the same channel as the bot to queue songs to it.").queue();
+                evt.getTextChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
                 return;
             }
         }
 
         if (new Invoker(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
-            evt.getTextChannel().sendMessage("You need at least " + Constants.PLAY_TOP_COST + " credit to queue songs to the top of the list.").queue();
+            evt.getTextChannel().sendMessage("You need at least " + Constants.PLAY_TOP_COST + " credit to queue tracks to the top of the list.").queue();
             return;
         }
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());

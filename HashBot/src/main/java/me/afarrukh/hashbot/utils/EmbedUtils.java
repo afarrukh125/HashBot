@@ -31,7 +31,7 @@ public class EmbedUtils {
      * @param gmm  The guild music manager
      * @param evt  The message received event associated with the queue message request
      * @param page The page of the message queue to be displayed
-     * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single song embed.
+     * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single track embed.
      */
     public static MessageEmbed getQueueMsg(GuildMusicManager gmm, MessageReceivedEvent evt, int page) {
         try {
@@ -41,11 +41,11 @@ public class EmbedUtils {
             AudioTrack currentTrack = gmm.getPlayer().getPlayingTrack();
 
             BlockingQueue<AudioTrack> queue = gmm.getScheduler().getQueue();
-            int maxPageNumber = queue.size() / 10 + 1; //We need to know how many songs are displayed per page
+            int maxPageNumber = queue.size() / 10 + 1; //We need to know how many tracks are displayed per page
 
-            //If there are no songs in the queue then it will just give an embedded message for a single song.
+            //If there are no tracks in the queue then it will just give an embedded message for a single track.
             if (queue.size() == 0) {
-                return getSingleSongEmbed(gmm.getPlayer().getPlayingTrack(), evt);
+                return getSingleTrackEmbed(gmm.getPlayer().getPlayingTrack(), evt);
             }
 
             //This block of code is to prevent the list from displaying a blank page as the last one
@@ -57,8 +57,8 @@ public class EmbedUtils {
             }
 
             Iterator<AudioTrack> iter = gmm.getScheduler().getQueue().iterator();
-            int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
-            int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+            int startIdx = 1 + ((page - 1) * 10); //The start track on that page eg page 2 would give 11
+            int targetIdx = page * 10; //The last track on that page, eg page 2 would give 20
             int count = 1;
             eb.appendDescription("__Now Playing:__\n[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri
                     + ") | (`" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`) `queued by: "
@@ -75,13 +75,13 @@ public class EmbedUtils {
 
                 count++;
             }
-            eb.appendDescription("\n**" + queue.size() + " songs queued, 1 playing** | Total duration**: `" + gmm.getScheduler().getTotalQueueTime() + "` | **");
+            eb.appendDescription("\n**" + queue.size() + " tracks queued, 1 playing** | Total duration**: `" + gmm.getScheduler().getTotalQueueTime() + "` | **");
             StringBuilder sb = new StringBuilder();
             sb.append("[Page ").append(page).append("/").append(maxPageNumber).append("] ");
             if (gmm.getScheduler().isFairPlay())
-                sb.append("Fairplay mode is on. Playtop command will not work as expected. Songs are queued fairly. ");
+                sb.append("Fairplay mode is on. Playtop command will not work as expected. Tracks are queued fairly. ");
             if (gmm.getScheduler().isLoopingQueue())
-                sb.append("The queue is looping. Songs will be added to the back of the queue once they finish");
+                sb.append("The queue is looping. Tracks will be added to the back of the queue once they finish");
             eb.setFooter(sb.toString(), evt.getAuthor().getAvatarUrl());
             eb.setThumbnail(MusicUtils.getThumbnailURL(currentTrack));
             return eb.build();
@@ -91,12 +91,12 @@ public class EmbedUtils {
     }
 
     /**
-     * Returns an embed with the only song currently in the queue
+     * Returns an embed with the only track currently in the queue
      *
      * @param evt The event to get the channel to send it to
      * @return A message embed with information on a single provided audio track
      */
-    public static MessageEmbed getSingleSongEmbed(AudioTrack currentTrack, MessageReceivedEvent evt) {
+    public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, MessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
@@ -118,7 +118,7 @@ public class EmbedUtils {
      * @param gmm The guild music manager associated with the embed being requested
      * @param at  The audio track which has been queued
      * @param evt The message received event containing information such as which channel to send to
-     * @return an embed referring to a song which has been queued to an audioplayer already playing a song
+     * @return an embed referring to a track which has been queued to an audioplayer already playing a track
      */
     public static MessageEmbed getQueuedEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
@@ -130,8 +130,8 @@ public class EmbedUtils {
         eb.appendDescription("**Queued by**: `" + at.getUserData().toString() + "`\n");
         eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(at.getDuration()) + "`\n");
         if (!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack() != null) {
-            eb.setTitle("Queued song");
-            eb.appendDescription("**Position in queue**: `" + ts.getSongIndex(at) + "`\n");
+            eb.setTitle("Queued track");
+            eb.appendDescription("**Position in queue**: `" + ts.getTrackIndex(at) + "`\n");
             eb.appendDescription("**Playing in approximately**: `" + ts.getTotalTimeTil(at) + "`\n");
             if (ts.isFairPlay())
                 eb.setFooter("Fairplay mode is currently on. Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
@@ -144,7 +144,7 @@ public class EmbedUtils {
     /**
      * @param at  The audio track which has been skipped to
      * @param evt The message received event associated with the skip embed request
-     * @return Returns an embed referring to the song which has been skipped to
+     * @return Returns an embed referring to the track which has been skipped to
      */
     public static MessageEmbed getSkippedToEmbed(AudioTrack at, MessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
@@ -160,11 +160,11 @@ public class EmbedUtils {
 
     /**
      * @param at The audio track which has been skipped
-     * @return an embed referring to the song which has been skipped, not to be confused with getSkippedToEmbed
+     * @return an embed referring to the track which has been skipped, not to be confused with getSkippedToEmbed
      */
     public static MessageEmbed getSkippedEmbed(AudioTrack at) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Skipped song");
+        eb.setTitle("Skipped track");
         eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
         eb.setColor(Constants.EMB_COL);
 
@@ -177,12 +177,12 @@ public class EmbedUtils {
      * @param gmm The music manager to query
      * @param at  The audiotrack which is being added
      * @param evt The event (contains information about the channel which queued it, the guild etc.
-     * @return A message embed with the appropriate information for a song that has been queued to the top
+     * @return A message embed with the appropriate information for a track that has been queued to the top
      */
     public static MessageEmbed getQueuedTopEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Queued song to top");
+        eb.setTitle("Queued track to top");
         eb.setColor(Constants.EMB_COL);
         eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
         eb.appendDescription("**Channel**: `" + at.getInfo().author + "`\n");
@@ -216,7 +216,7 @@ public class EmbedUtils {
 
         eb.setTitle("Playlist added: " + playlist.getName());
         eb.appendDescription("**Queued by**: `" + firstTrack.getUserData().toString() + "`\n");
-        eb.appendDescription("**Number of songs**: `" + playlist.getTracks().size() + "`\n");
+        eb.appendDescription("**Number of tracks**: `" + playlist.getTracks().size() + "`\n");
         eb.appendDescription("**Total duration**: `" + MusicUtils.getPlaylistDuration(playlist) + "`\n");
 
 
@@ -352,7 +352,7 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("List of game roles for " + ra.getGuild().getName());
 
-        //If there are no songs in the queue then it will just give an embedded message for a single song.
+        //If there are no tracks in the queue then it will just give an embedded message for a single track.
         if (roleList.size() == 0) {
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
@@ -360,7 +360,7 @@ public class EmbedUtils {
                     .build();
         }
 
-        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many tracks are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
         if (roleList.size() % 10 == 0)
@@ -372,8 +372,8 @@ public class EmbedUtils {
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().iterator();
-        int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
-        int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+        int startIdx = 1 + ((page - 1) * 10); //The start track on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last track on that page, eg page 2 would give 20
         int count = 1;
         while (iter.hasNext()) {
             GameRole gameRole = iter.next();
@@ -470,8 +470,8 @@ public class EmbedUtils {
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = createdRoles.iterator();
-        int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
-        int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+        int startIdx = 1 + ((page - 1) * 10); //The start track on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last track on that page, eg page 2 would give 20
         int count = 1;
         while (iter.hasNext()) {
             GameRole gameRole = iter.next();
@@ -505,7 +505,7 @@ public class EmbedUtils {
                     .build();
         }
 
-        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many songs are displayed per page
+        int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many tracks are displayed per page
 
         //This block of code is to prevent the list from displaying a blank page as the last one
         if (roleList.size() % 10 == 0)
@@ -517,8 +517,8 @@ public class EmbedUtils {
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = roleList.iterator();
-        int startIdx = 1 + ((page - 1) * 10); //The start song on that page eg page 2 would give 11
-        int targetIdx = page * 10; //The last song on that page, eg page 2 would give 20
+        int startIdx = 1 + ((page - 1) * 10); //The start track on that page eg page 2 would give 11
+        int targetIdx = page * 10; //The last track on that page, eg page 2 would give 20
         int count = 1;
         while (iter.hasNext()) {
             GameRole gameRole = iter.next();

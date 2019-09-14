@@ -12,7 +12,7 @@ public class LoopCommand extends Command implements MusicCommand {
 
     public LoopCommand() {
         super("loop");
-        description = "Loops the currently playing song. Will no longer loop if next song is skipped to";
+        description = "Loops the currently playing track. Will no longer loop if next track is skipped to";
     }
 
     @Override

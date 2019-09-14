@@ -13,7 +13,7 @@ public class QueueCommand extends Command implements MusicCommand {
         super("queue");
         addAlias("q");
         addAlias("page");
-        description = "Shows the current queue of songs";
+        description = "Shows the current queue of tracks";
     }
 
     @Override
