@@ -343,6 +343,7 @@ public class SQLUserDataManager implements IDataManager {
 
             rs = conn.createStatement().executeQuery(query);
 
+
             while (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
                 Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new AudioLoadResultHandler() {
