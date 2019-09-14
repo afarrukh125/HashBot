@@ -1,4 +1,4 @@
-package me.afarrukh.hashbot.commands.music;
+package me.afarrukh.hashbot.commands.music.playlist;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;

@@ -422,4 +422,26 @@ public class SQLUserDataManager implements IDataManager {
             throw new PlaylistException("No playlist was found with that name");
         }
     }
+
+    public void deletePlaylist(String name) throws PlaylistException {
+        checkConn(); // Mandatory before every call to the database
+
+
+        try {
+            final int listId = conn.createStatement().executeQuery(
+                    "SELECT playlist.listid FROM playlist, listuser WHERE name='" + name + "' AND listuser.userid='"
+                            + member.getUser().getId() + "'"
+            ).getInt(1);
+            final String sList = "DELETE FROM playlist WHERE playlist.name= '" + name + "';";
+            final String sUserList = "DELETE FROM listuser WHERE listid=" + listId + ";";
+            final String sListTrack = "DELETE FROM listtrack WHERE listid=" + listId + ";";
+
+            conn.prepareStatement(sList).execute();
+            conn.prepareStatement(sUserList).execute();
+            conn.prepareStatement(sListTrack).execute();
+
+        } catch (SQLException e) {
+            throw new PlaylistException(); // Wrap a playlist exception
+        }
+    }
 }

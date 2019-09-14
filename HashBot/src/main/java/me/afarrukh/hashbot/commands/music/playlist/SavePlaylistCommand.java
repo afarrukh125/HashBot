@@ -1,4 +1,4 @@
-package me.afarrukh.hashbot.commands.music;
+package me.afarrukh.hashbot.commands.music.playlist;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;

@@ -10,6 +10,10 @@ import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.guild.roles.*;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
+import me.afarrukh.hashbot.commands.music.playlist.DeleteListCommand;
+import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
+import me.afarrukh.hashbot.commands.music.playlist.SavePlaylistCommand;
+import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
@@ -87,6 +91,7 @@ public class Bot {
                 .addCommand(new SavePlaylistCommand())
                 .addCommand(new LoadListCommand())
                 .addCommand(new ViewListCommand())
+                .addCommand(new DeleteListCommand())
                 .addCommand(new RemoveCommand())
                 .addCommand(new ClearQueueCommand())
                 .addCommand(new PruneQueueCommand())

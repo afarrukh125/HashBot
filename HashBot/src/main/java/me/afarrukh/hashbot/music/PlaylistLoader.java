@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.music;
 
+import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.MusicUtils;
@@ -31,7 +32,7 @@ import java.util.List;
  * this behaviour
  * @see LatentTrack
  * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
- * @see me.afarrukh.hashbot.commands.music.LoadListCommand
+ * @see LoadListCommand
  */
 public class PlaylistLoader {
 
