@@ -9,6 +9,8 @@ import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.LatentTrack;
 import me.afarrukh.hashbot.music.Playlist;
 import me.afarrukh.hashbot.music.PlaylistLoader;
+import me.afarrukh.hashbot.music.results.YTFirstLatentTrackHandler;
+import me.afarrukh.hashbot.music.results.YTLatentTrackHandler;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -329,12 +331,13 @@ public class SQLUserDataManager implements IDataManager {
     /**
      * @param name The name of the playlist
      * @param loader The associated <code>PlaylistLoader</code> for this playlist
-     * @throws PlaylistException
+     * @throws PlaylistException To be handled when the playlist is not found, for example
      */
     public synchronized void loadPlaylistByName(String name, PlaylistLoader loader) throws PlaylistException {
         checkConn();
 
         try {
+            // We need to check if the playlist exists first of all
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
                     "WHERE track.url=listtrack.trackurl AND playlist.name='" +name + "' AND listuser.userid=user.id " +
                     "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
@@ -351,57 +354,15 @@ public class SQLUserDataManager implements IDataManager {
                 String uri = rs.getString(1).replace(";", ":");
                 Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()),
                         uri,
-                        new AudioLoadResultHandler() {
-                            @Override
-                            public void trackLoaded(AudioTrack audioTrack) {
-                                audioTrack.setUserData(member.getUser().getName());
-                                Bot.musicManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(audioTrack);
-                                MusicUtils.connectToChannel(member);
-                            }
-
-                            @Override
-                            public void playlistLoaded(AudioPlaylist audioPlaylist) {
-
-                            }
-
-                            @Override
-                            public void noMatches() {
-
-                            }
-
-                            @Override
-                            public void loadFailed(FriendlyException e) {
-
-                            }
-                        });
+                        new YTFirstLatentTrackHandler(member));
             }
 
             int idx = 0; // Position, for tracking between threads
 
+            // Load all remaining tracks, incrementing the index, idx,  by one each time
             while (rs.next()) {
-                final int idxFinal = idx;
                 String uri = rs.getString(1).replace(";", ":");
-                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new AudioLoadResultHandler() {
-                    @Override
-                    public void trackLoaded(AudioTrack audioTrack) {
-                        audioTrack.setUserData(member.getUser().getName());
-                        LatentTrack track = new LatentTrack(audioTrack, idxFinal, loader);
-                        new Thread(track).start();
-                    }
-
-                    @Override
-                    public void playlistLoaded(AudioPlaylist audioPlaylist) {
-                    }
-
-                    @Override
-                    public void noMatches() {
-                    }
-
-                    @Override
-                    public void loadFailed(FriendlyException e) {
-                        e.printStackTrace();
-                    }
-                });
+                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new YTLatentTrackHandler(member, idx, loader));
                 idx++;
             }
         } catch (SQLException e) {
@@ -409,6 +370,10 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
+    /**
+     * Returns a list of <code>Playlist</code> containing all playlists by the associated member object.
+     * @return A list of playlists for the associated member
+     */
     public List<Playlist> viewAllPlaylists() {
         checkConn();
 

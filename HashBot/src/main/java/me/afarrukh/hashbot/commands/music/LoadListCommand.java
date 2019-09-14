@@ -26,8 +26,6 @@ public class LoadListCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if(!MusicUtils.canInteract(evt))
-            return;
         SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
 
         try {
