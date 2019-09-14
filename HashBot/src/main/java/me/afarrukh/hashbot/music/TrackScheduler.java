@@ -11,10 +11,7 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.core.entities.Guild;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +46,12 @@ public class TrackScheduler extends AudioEventAdapter {
         }
         if(fairPlay)
             interleave(false);
+    }
+
+    public void queue(Collection<LatentTrack> tracks) {
+        for(LatentTrack t: tracks) {
+            queue(t.getTrack());
+        }
     }
 
     public void nextTrack() {

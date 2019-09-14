@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
+import me.afarrukh.hashbot.music.PlaylistLoader;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -26,11 +27,14 @@ public class LoadListCommand extends Command implements MusicCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
+
         try {
-            dataManager.loadPlaylistByName(params);
-            evt.getTextChannel().sendMessage("Queueing playlist " + params + " with " + dataManager.getPlaylistSize(params) + " tracks." +
-                    " It might take a while for all songs to be added to the queue.").queue();
-            MusicUtils.connectToChannel(evt.getMember());
+            final int listSize = dataManager.getPlaylistSize(params);
+            Message message = evt.getTextChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
+                    " It might take a while for all songs to be added to the queue.").complete();
+            PlaylistLoader loader = new PlaylistLoader(evt.getMember(), listSize, message, params);
+            dataManager.loadPlaylistByName(params, loader);
+
         } catch (PlaylistException e) {
             evt.getTextChannel().sendMessage("Could not find a playlist with that name").queue();
         }

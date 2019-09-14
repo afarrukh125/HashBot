@@ -6,7 +6,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
+import me.afarrukh.hashbot.music.LatentTrack;
 import me.afarrukh.hashbot.music.Playlist;
+import me.afarrukh.hashbot.music.PlaylistLoader;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -284,8 +286,6 @@ public class SQLUserDataManager implements IDataManager {
                 throw new PlaylistException("A playlist with that name already exists!");
             }
 
-            System.out.println(listId);
-
             // Create an entry in the table that maps users to their playlists.
             PreparedStatement pslistuser = conn.prepareStatement("INSERT INTO listuser VALUES(?, ?)");
             pslistuser.setInt(1, listId);
@@ -325,7 +325,7 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
-    public synchronized void loadPlaylistByName(String name) throws PlaylistException {
+    public synchronized void loadPlaylistByName(String name, PlaylistLoader loader) throws PlaylistException {
         checkConn();
 
         // TODO Fix the asynchronous behaviour of the playlist loading
@@ -343,14 +343,17 @@ public class SQLUserDataManager implements IDataManager {
 
             rs = conn.createStatement().executeQuery(query);
 
+            int idx = 0; // Position, for tracking between threads
 
             while (rs.next()) {
+                final int idxFinal = idx;
                 String uri = rs.getString(1).replace(";", ":");
                 Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new AudioLoadResultHandler() {
                     @Override
                     public void trackLoaded(AudioTrack audioTrack) {
                         audioTrack.setUserData(member.getUser().getName());
-                        Bot.musicManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(audioTrack);
+                        LatentTrack track = new LatentTrack(audioTrack, idxFinal, loader);
+                        new Thread(track).start();
                     }
 
                     @Override
@@ -366,6 +369,7 @@ public class SQLUserDataManager implements IDataManager {
                         e.printStackTrace();
                     }
                 });
+                idx++;
             }
         } catch (SQLException e) {
             e.printStackTrace();

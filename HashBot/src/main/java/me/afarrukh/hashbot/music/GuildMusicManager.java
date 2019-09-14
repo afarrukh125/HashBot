@@ -3,7 +3,10 @@ package me.afarrukh.hashbot.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 
 /**
