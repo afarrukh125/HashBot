@@ -325,10 +325,11 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
-    public synchronized void loadPlaylistByName(String name) {
+    public synchronized void loadPlaylistByName(String name) throws PlaylistException {
         checkConn();
 
         // TODO Fix the asynchronous behaviour of the playlist loading
+        // TODO Fix the huge memory usage of this command
 
         try {
             final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
@@ -336,6 +337,11 @@ public class SQLUserDataManager implements IDataManager {
                     "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
+
+            if(!rs.next())
+                throw new PlaylistException("No playlist with that name was found");
+
+            rs = conn.createStatement().executeQuery(query);
 
             while (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
@@ -377,8 +383,6 @@ public class SQLUserDataManager implements IDataManager {
                     "AND playlist.listid=listuser.listid" +
                 " GROUP BY playlist.listid ORDER BY playlist.listid";
 
-        System.out.println(query);
-
         try {
             List<Playlist> plist = new ArrayList<>();
             ResultSet rs = conn.createStatement().executeQuery(query);
@@ -386,7 +390,6 @@ public class SQLUserDataManager implements IDataManager {
                 String name = rs.getString(2);
                 int size = rs.getInt(1);
                 plist.add(new Playlist(name, size));
-                System.out.println(name + ", " + size);
             }
             return plist;
         } catch (SQLException e) {
