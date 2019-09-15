@@ -11,8 +11,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Abdullah
@@ -42,21 +41,28 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.add(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
-        if (trackList.size() < 2) {
+        // Ensuring all tracks in the list are unique
+        Map<String, String> uriNameMap = new HashMap<>();
+
+        for(AudioTrack track: trackList) {
+            uriNameMap.put(track.getInfo().uri, track.getInfo().title);
+        }
+
+        if (uriNameMap.keySet().size() < 2) {
             evt.getTextChannel().sendMessage("You must have at least 1 track playing, and 1 track in the queue (so 2 total) to create a playlist").queue();
             return;
         }
-        if (trackList.size() > 100) {
+        if (uriNameMap.keySet().size() > 100) {
             evt.getTextChannel().sendMessage("You can only save playlists that have 100 tracks or less.").queue();
             return;
         }
 
-        Message message = evt.getTextChannel().sendMessage("Creating playlist " + params + " with " + trackList.size() + " tracks.").complete();
+        Message message = evt.getTextChannel().sendMessage("Creating playlist " + params + " with " + uriNameMap.keySet().size() + " tracks.").complete();
 
         try {
-            new SQLUserDataManager(evt.getMember()).addPlaylist(params, trackList);
+            new SQLUserDataManager(evt.getMember()).addPlaylist(params, uriNameMap);
 
-            message.editMessage("You have successfully created the playlist " + params + " with " + trackList.size() + " tracks.").queue();
+            message.editMessage("You have successfully created the playlist " + params + " with " + uriNameMap.keySet().size() + " tracks.").queue();
         } catch (PlaylistException e) {
             message.editMessage("The name you have selected for this playlist is already in use. " +
                     "Please choose another").queue();

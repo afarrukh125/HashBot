@@ -15,6 +15,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Abdullah on 01/05/2019 00:03
@@ -248,7 +249,7 @@ public class SQLUserDataManager implements IDataManager {
      * @param trackList The list of tracks to add
      * @throws PlaylistException
      */
-    public void addPlaylist(String lname, List<AudioTrack> trackList) throws PlaylistException {
+    public void addPlaylist(String lname, Map<String, String> uriNameMap) throws PlaylistException {
         checkConn(); // Mandatory before every call to the database
 
         try {
@@ -290,14 +291,14 @@ public class SQLUserDataManager implements IDataManager {
             pslistuser.setString(2, this.member.getUser().getId());
             int pos = 1; // Assigning a position to each of the tracks as well
             // Adding the tracks
-            for (AudioTrack track : trackList) {
+            for (String uri: uriNameMap.keySet()) {
 
-                String trackURI = track.getInfo().uri.replace(":", ";");
+                String trackURI = uri.replace(":", ";");
 
                 // Put the track into the database, with the name
                 PreparedStatement pstrack = conn.prepareStatement("INSERT INTO track VALUES(?, ?);");
                 pstrack.setString(1, trackURI);
-                pstrack.setString(2, track.getInfo().title);
+                pstrack.setString(2, uriNameMap.get(trackURI));
                 try {
                     pstrack.execute();
                 } catch (SQLException e) {
