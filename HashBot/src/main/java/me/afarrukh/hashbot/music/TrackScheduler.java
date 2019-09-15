@@ -112,8 +112,8 @@ public class TrackScheduler extends AudioEventAdapter {
      * @return The current track list in an arraylist format
      */
     public List<AudioTrack> getArrayList() {
-        //Convert the queue to arraylist
-        return Collections.unmodifiableList(new ArrayList<>(this.queue));
+        //Convert the queue into an arraylist
+        return new ArrayList<>(this.queue);
     }
 
     /**
