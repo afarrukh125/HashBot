@@ -14,6 +14,9 @@ public class QueueCommand extends Command implements MusicCommand {
         addAlias("q");
         addAlias("page");
         description = "Shows the current queue of tracks";
+        addParameter("page number", "If there are not enough tracks to fit on first page of the queue, " +
+                "the page number can be provided to see the next page(s)");
+        setExampleUsage("queue 4");
     }
 
     @Override

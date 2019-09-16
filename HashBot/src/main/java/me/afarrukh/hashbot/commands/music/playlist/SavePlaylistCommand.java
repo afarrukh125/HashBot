@@ -26,6 +26,9 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         addAlias("spl");
 
         description = "Save the current playlist, given a name";
+
+        addParameter("list name", "The name of the new playlist to be created");
+        setExampleUsage("savelist list");
     }
 
     @Override

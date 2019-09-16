@@ -12,6 +12,8 @@ public class SetVolumeCommand extends Command implements OwnerCommand {
         super("setvolume");
         addAlias("sv");
         description = "Sets the volume to the desired value.";
+        addParameter("volume", "The volume to set to");
+        setExampleUsage("setvolume 77");
     }
 
     @Override

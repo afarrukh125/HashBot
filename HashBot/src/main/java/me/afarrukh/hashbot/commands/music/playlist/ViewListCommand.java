@@ -19,6 +19,7 @@ public class ViewListCommand extends Command {
     public ViewListCommand() {
         super("viewlists");
         addAlias("vl");
+        addAlias("playlists");
         description = "View all your playlists by name, and how many tracks are in each of them";
     }
 

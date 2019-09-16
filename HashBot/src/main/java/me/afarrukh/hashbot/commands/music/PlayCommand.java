@@ -14,7 +14,10 @@ public class PlayCommand extends Command implements MusicCommand {
     public PlayCommand() {
         super("play");
         addAlias("p");
-        description = "Adds a track to the music queue";
+        description = "Adds a track to the music queue. If you are queuing a playlist, you can provide 'shuffle' as an additional parameter " +
+                "to shuffle the list before adding it";
+        addParameter("track name, track link, or youtube playlist link", "The name/link of the youtube track, or playlist to be queued");
+        setExampleUsage("p name");
     }
 
     @Override

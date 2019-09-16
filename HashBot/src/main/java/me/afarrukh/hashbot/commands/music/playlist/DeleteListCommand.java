@@ -18,6 +18,8 @@ public class DeleteListCommand extends Command implements MusicCommand {
         super("deletelist");
         addAlias("dl");
         description = "Delete one of your playlists by name";
+        addParameter("name", "The name of the playlist to be deleted");
+        setExampleUsage("deletelist list");
     }
 
     @Override

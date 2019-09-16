@@ -13,6 +13,9 @@ public class SeekCommand extends Command implements MusicCommand {
         addAlias("skim");
         addAlias("ff");
         description = "Seeks to the particular time (in seconds) of the currently playing track.";
+        addParameter("position", "The position, in either seconds or MM:SS format to seek to in the currently " +
+                "playing track");
+        setExampleUsage("seek 1:20");
     }
 
     @Override
@@ -21,6 +24,20 @@ public class SeekCommand extends Command implements MusicCommand {
             try {
                 if (params.split("\\.").length == 2) {
                     String[] tokens = params.split("\\.");
+                    int minute = Integer.parseInt(tokens[0]);
+                    int seconds = Integer.parseInt(tokens[1]);
+
+                    int desiredMinute = minute * 60;
+                    int desiredSeconds = seconds % 60;
+
+                    if ((tokens[1]).length() == 1) {
+                        desiredSeconds *= 6;
+                    }
+
+                    int desiredTime = desiredMinute + desiredSeconds;
+                    MusicUtils.seek(evt, desiredTime);
+                }   else if (params.split(":").length == 2) {
+                    String[] tokens = params.split(":");
                     int minute = Integer.parseInt(tokens[0]);
                     int seconds = Integer.parseInt(tokens[1]);
 

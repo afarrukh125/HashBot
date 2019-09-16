@@ -21,6 +21,9 @@ public class LoadListCommand extends Command implements MusicCommand {
         addAlias("dlist");
 
         description = "Load a playlist by name from your selection";
+
+        addParameter("list name", "The name of the playlist to be loaded");
+        setExampleUsage("loadlist list");
     }
 
     @Override
