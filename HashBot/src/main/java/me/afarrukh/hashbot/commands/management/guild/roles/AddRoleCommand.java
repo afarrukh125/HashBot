@@ -48,9 +48,4 @@ public class AddRoleCommand extends Command implements RoleCommand {
             RoleAdder ra = new RoleAdder(evt);
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

@@ -71,7 +71,7 @@ public class CommandManager {
      * @param name The name of the command or one of the aliases to get a command from
      * @return The command with that associated name in the command map, null otherwise
      */
-    private Command commandFromName(String name) {
+    public Command commandFromName(String name) {
         return commandMap.get(name);
     }
 

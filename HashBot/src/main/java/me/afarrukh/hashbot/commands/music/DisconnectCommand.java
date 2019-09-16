@@ -24,9 +24,4 @@ public class DisconnectCommand extends Command implements MusicCommand {
         if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel()))
             MusicUtils.disconnect(evt.getGuild());
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

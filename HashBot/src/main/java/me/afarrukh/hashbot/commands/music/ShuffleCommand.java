@@ -21,9 +21,4 @@ public class ShuffleCommand extends Command implements MusicCommand {
             evt.getChannel().sendMessage("Shuffled the playlist :ok_hand:").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

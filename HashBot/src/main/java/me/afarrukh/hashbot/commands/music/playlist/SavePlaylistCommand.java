@@ -71,9 +71,4 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
                     "Please choose another").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

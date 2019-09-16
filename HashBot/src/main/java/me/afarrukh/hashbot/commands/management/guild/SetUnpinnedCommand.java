@@ -25,9 +25,4 @@ public class SetUnpinnedCommand extends Command implements AdminCommand {
         Message message = evt.getTextChannel().sendMessage("There is no longer a pinned channel for this server.").complete();
         message.delete().queueAfter(2, TimeUnit.SECONDS);
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

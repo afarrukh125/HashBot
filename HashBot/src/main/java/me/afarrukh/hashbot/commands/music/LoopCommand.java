@@ -29,9 +29,4 @@ public class LoopCommand extends Command implements MusicCommand {
                     + Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack().getInfo().title + "`").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

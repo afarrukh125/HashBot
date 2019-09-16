@@ -28,9 +28,4 @@ public class SetVolumeCommand extends Command implements OwnerCommand {
             evt.getTextChannel().sendMessage("Need to provide an integer as the volume to set to").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

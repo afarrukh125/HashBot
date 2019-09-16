@@ -69,9 +69,4 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
                 .queue();
 
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

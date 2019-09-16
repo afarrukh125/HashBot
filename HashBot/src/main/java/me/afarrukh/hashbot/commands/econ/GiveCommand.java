@@ -73,9 +73,4 @@ public class GiveCommand extends Command implements EconCommand {
         evt.getTextChannel().sendMessage("Successfully transferred " + amount + " credit to " + m.getEffectiveName() + ".").queue();
 
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

@@ -25,9 +25,4 @@ public class ResumeCommand extends Command implements MusicCommand {
                 evt.getTextChannel().sendMessage("The bot is already playing.").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

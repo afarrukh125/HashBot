@@ -61,9 +61,4 @@ public class PruneQueueCommand extends Command implements MusicCommand {
         }
         evt.getTextChannel().sendMessage(sb.toString().trim()).queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

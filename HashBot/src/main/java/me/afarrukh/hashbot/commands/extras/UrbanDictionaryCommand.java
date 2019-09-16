@@ -43,9 +43,4 @@ public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
 
         evt.getTextChannel().sendMessage(eb.build()).queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

@@ -31,9 +31,4 @@ public class CreateRoleCommand extends Command implements RoleCommand, AdminComm
 
         new RoleBuilder(evt, params);
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

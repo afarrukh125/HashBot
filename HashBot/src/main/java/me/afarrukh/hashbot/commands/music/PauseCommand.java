@@ -27,9 +27,4 @@ public class PauseCommand extends Command implements MusicCommand {
                         + resumeCommand.getName() + " to resume.").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

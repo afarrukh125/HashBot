@@ -22,9 +22,4 @@ public class InterleaveCommand extends Command implements MusicCommand {
             evt.getChannel().sendMessage("Interleaved the playlist :ok_hand:").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

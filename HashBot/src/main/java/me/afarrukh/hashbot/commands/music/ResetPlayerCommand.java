@@ -26,9 +26,4 @@ public class ResetPlayerCommand extends Command implements MusicCommand, AdminCo
         Bot.musicManager.resetGuildAudioPlayer(evt.getGuild());
         evt.getTextChannel().sendMessage("Reset the audio player for this guild successfully.").queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

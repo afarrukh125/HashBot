@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
+import me.afarrukh.hashbot.commands.management.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
@@ -106,6 +107,7 @@ public class Bot {
                 .addCommand(new ResumeCommand())
                 .addCommand(new ResetPlayerCommand())
                 .addCommand(new SetVolumeCommand())
+                .addCommand(new HelpCommand())
                 .addCommand(new SetPinThresholdCommand())
                 .addCommand(new PlayTopCommand())
                 .addCommand(new SeekCommand())

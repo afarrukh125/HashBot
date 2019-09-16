@@ -64,9 +64,4 @@ public class SeekCommand extends Command implements MusicCommand {
             }
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

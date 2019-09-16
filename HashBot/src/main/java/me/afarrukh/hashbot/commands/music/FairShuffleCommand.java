@@ -23,9 +23,4 @@ public class FairShuffleCommand extends Command implements MusicCommand {
         Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().fairShuffle();
         evt.getChannel().sendMessage("Shuffled the playlist fairly :ok_hand:").queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

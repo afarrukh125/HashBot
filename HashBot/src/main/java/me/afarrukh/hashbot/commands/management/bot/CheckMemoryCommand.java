@@ -28,9 +28,4 @@ public class CheckMemoryCommand extends Command implements SystemCommand {
         if (memoryDiff > 30)
             System.gc();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

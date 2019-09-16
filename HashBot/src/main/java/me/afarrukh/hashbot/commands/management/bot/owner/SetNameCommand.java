@@ -18,9 +18,4 @@ public class SetNameCommand extends Command implements OwnerCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         evt.getJDA().getSelfUser().getManager().setName(params).queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

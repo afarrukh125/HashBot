@@ -26,9 +26,4 @@ public class SetPinnedChannel extends Command implements AdminCommand {
         channel.sendMessage("The new pinned channel for this server is " + channel.getName()).queue();
         BotUtils.deleteLastMsg(evt);
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

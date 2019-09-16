@@ -46,9 +46,4 @@ public class CommandListCommand extends Command {
             }
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

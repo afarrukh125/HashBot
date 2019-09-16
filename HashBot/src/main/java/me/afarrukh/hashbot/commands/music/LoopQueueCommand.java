@@ -30,9 +30,4 @@ public class LoopQueueCommand extends Command implements MusicCommand {
             evt.getTextChannel().sendMessage(string).queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

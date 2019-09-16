@@ -64,11 +64,6 @@ public class RoleStatsCommand extends Command implements RoleCommand {
         evt.getTextChannel().sendMessage(eb.build()).queue();
     }
 
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
-
     private List<Member> filterBots(MessageReceivedEvent evt) {
         List<Member> memberList = new ArrayList<>(evt.getGuild().getMembers());
 

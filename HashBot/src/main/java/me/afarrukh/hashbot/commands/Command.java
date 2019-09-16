@@ -1,5 +1,9 @@
 package me.afarrukh.hashbot.commands;
 
+import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.utils.EmbedUtils;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -105,27 +109,21 @@ public abstract class Command {
      * @see #parameters
      */
      protected final void addParameter(String parameter, String description) {
-        parameters.put(parameter, description);
+         String param = processParameter(parameter);
+        parameters.put(param, description);
     }
 
     /**
-     * Return an unmodifiable list of parameters for this command
-     *
-     * @return An unmodifiable list of parameters for this command
+     * Capitalise the first name of the parameter
+     * @param parameter The name of the parameter
+     * @return A string that has the parameter formatted correctly
      */
-    public final List<String> getParameters() {
-        return Collections.unmodifiableList(new ArrayList<>(this.parameters.keySet()));
-    }
-
-    /**
-     * Return the corresponding description for a given command
-     * @param parameterName The name of the parameter to get the description for
-     * @return The parameter description for the name of the parameter
-     */
-    public String getCommandDescription(String parameterName) {
-        if(parameters.get(parameterName) == null)
-            throw new IllegalArgumentException("Invalid parameter " + parameterName + " for " + this.getClass().getSimpleName());
-        return parameters.get(parameterName);
+    private String processParameter(String parameter) {
+        StringBuilder sb = new StringBuilder();
+        for(String param: parameter.split(" ")) {
+            sb.append(param.substring(0, 1).toUpperCase()).append(param.length() > 1 ? param.substring(1) : "").append(" ");
+        }
+         return sb.toString().trim();
     }
 
     /**
@@ -141,7 +139,37 @@ public abstract class Command {
      *
      * @param channel The TextChannel to send the message to with the correct usage message
      */
-    public abstract void onIncorrectParams(TextChannel channel);
+    public void onIncorrectParams(TextChannel channel) {
+        channel.sendMessage(getCommandHelpMessage(channel)).queue();
+    }
+
+    public final MessageEmbed getCommandHelpMessage(TextChannel channel) {
+        String prefix = Bot.gameRoleManager.getGuildRoleManager(channel.getGuild()).getPrefix();
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle("Viewing help for " + this.name);
+        StringBuilder sb = new StringBuilder();
+        sb.append("**Description:** ").append(this.description).append("\n\n");
+
+        if(!aliases.isEmpty()) {
+            sb.append("**Aliases:**\n");
+            for(String alias: aliases) {
+                sb.append("- ").append(alias).append("\n");
+            }
+            sb.append("\n");
+        }
+        if(!parameters.keySet().isEmpty()) {
+            sb.append("**Parameters:** \n");
+            for (String parameter : parameters.keySet())
+                sb.append("**").append("- ").append(parameter).append(":** ").append(parameters.get(parameter)).append("\n\n");
+            sb.append("**Template usage:** ").append(prefix).append(name).append(" ");
+            for(String param: parameters.keySet())
+                sb.append("<").append(param).append("> ");
+            sb.append("\n\n");
+            if(exampleUsage != null)
+                sb.append("**Example usage:** ").append(prefix).append(this.exampleUsage);
+        }
+        return eb.setDescription(sb).build();
+    }
 
     /**
      * Obtain the name of this command

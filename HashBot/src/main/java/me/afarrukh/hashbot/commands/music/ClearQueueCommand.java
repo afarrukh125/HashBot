@@ -27,9 +27,4 @@ public class ClearQueueCommand extends Command implements MusicCommand {
         Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().clear();
         evt.getChannel().sendMessage("Queue cleared :ok_hand:").queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

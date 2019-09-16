@@ -25,9 +25,4 @@ public class NowPlayingCommand extends Command implements MusicCommand {
             evt.getChannel().sendMessage(EmbedUtils.getNothingPlayingEmbed()).queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

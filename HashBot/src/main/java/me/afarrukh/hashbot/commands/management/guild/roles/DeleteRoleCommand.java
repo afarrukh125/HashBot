@@ -24,9 +24,4 @@ public class DeleteRoleCommand extends Command implements RoleCommand, AdminComm
 
         RoleDeleter rd = new RoleDeleter(evt);
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

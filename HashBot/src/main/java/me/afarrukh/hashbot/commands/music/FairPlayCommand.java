@@ -36,9 +36,4 @@ public class FairPlayCommand extends Command implements MusicCommand {
         sb.append(onOrOff).append(".");
         evt.getTextChannel().sendMessage(sb.toString()).queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

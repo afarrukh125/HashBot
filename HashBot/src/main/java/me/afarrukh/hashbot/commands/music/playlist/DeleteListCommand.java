@@ -42,9 +42,4 @@ public class DeleteListCommand extends Command implements MusicCommand {
             evt.getTextChannel().sendMessage("There is no playlist with the name " + params + ".").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

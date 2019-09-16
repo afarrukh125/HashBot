@@ -55,9 +55,4 @@ public class SkipCommand extends Command implements MusicCommand {
             }
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

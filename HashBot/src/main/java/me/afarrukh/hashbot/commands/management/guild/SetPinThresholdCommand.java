@@ -39,11 +39,6 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
                     .queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }
 
 

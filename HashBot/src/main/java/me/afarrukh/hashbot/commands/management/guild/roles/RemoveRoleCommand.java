@@ -19,9 +19,4 @@ public class RemoveRoleCommand extends Command implements RoleCommand {
         evt.getMessage().delete().queue();
         RoleRemover rr = new RoleRemover(evt);
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

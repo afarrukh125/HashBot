@@ -43,9 +43,4 @@ public class LoadListCommand extends Command implements MusicCommand {
                 message.editMessage("Could not find a playlist with that name").queue();
         }
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

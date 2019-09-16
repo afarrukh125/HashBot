@@ -32,9 +32,4 @@ public class UptimeCommand extends Command implements SystemCommand {
                 .appendDescription("There have been " + Bot.commandManager.getCommandCount() + " commands executed this session.")
                 .build()).queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

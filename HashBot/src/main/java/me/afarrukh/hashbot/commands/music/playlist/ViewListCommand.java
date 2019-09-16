@@ -42,9 +42,4 @@ public class ViewListCommand extends Command {
         evt.getTextChannel().sendMessage(eb.build()).queue();
 
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }

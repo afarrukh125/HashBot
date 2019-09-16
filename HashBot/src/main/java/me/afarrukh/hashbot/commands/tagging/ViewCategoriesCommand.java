@@ -32,9 +32,4 @@ public class ViewCategoriesCommand extends Command {
         evt.getTextChannel().sendMessage(EmbedUtils.createCategoryEmbed(stringList, Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()))
                 .queue();
     }
-
-    @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
 }
