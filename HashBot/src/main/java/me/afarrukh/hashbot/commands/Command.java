@@ -75,7 +75,6 @@ public abstract class Command {
      * @param name The name of the command to be called.
      * @see #addAlias(String)
      */
-    // TODO Add some mechanism that ensures that no two commands have the same name
     public Command(String name) {
         aliases = new HashSet<>();
         parameters = new LinkedHashMap<>(); // We need to preserve the order of insertion of the arguments
@@ -89,6 +88,8 @@ public abstract class Command {
      * @see #Command(String)
      */
     protected void addAlias(String alias) {
+        if(alias.equals(name))
+            throw new IllegalArgumentException("You cannot have a command alias that is the same as the original command name");
         aliases.add(alias);
     }
 
