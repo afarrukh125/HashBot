@@ -28,7 +28,6 @@ public abstract class Command {
      * The set constraint prevents a command from having duplicate aliases, although, at the moment,
      * there is no way to prevent a command from having an alias the same as its original name
      */
-    // TODO Add mechanism that prevents command from having an alias that is identical to the command name
     private final Set<String> aliases;
 
     /**
@@ -87,7 +86,7 @@ public abstract class Command {
      * @param alias An alternative name for this command
      * @see #Command(String)
      */
-    protected void addAlias(String alias) {
+    protected final void addAlias(String alias) {
         if(alias.equals(name))
             throw new IllegalArgumentException("You cannot have a command alias that is the same as the original command name");
         aliases.add(alias);
@@ -100,7 +99,7 @@ public abstract class Command {
      * @param description A meaningful description for the parameter
      * @see #parameters
      */
-    protected void addParameter(String parameter, String description) {
+     protected final void addParameter(String parameter, String description) {
         parameters.put(parameter, description);
     }
 
@@ -109,19 +108,19 @@ public abstract class Command {
      *
      * @return An unmodifiable list of parameters for this command
      */
-    public List<String> getParameters() {
+    public final List<String> getParameters() {
         return Collections.unmodifiableList(new ArrayList<>(this.parameters.keySet()));
     }
 
     /**
-     * Obtain the help string, for use in commands that aim to seek the correct usage of this command
-     * This makes use of the parameters and their descriptions, as well as the overall command description
-     *
-     * @return A string with a usage, and each parameter description, as well as an overall description of this command
+     * Return the corresponding description for a given command
+     * @param parameterName The name of the parameter to get the description for
+     * @return The parameter description for the name of the parameter
      */
-    public String getHelpString() {
-        // TODO Complete this method
-        throw new UnsupportedOperationException();
+    public String getCommandDescription(String parameterName) {
+        if(parameters.get(parameterName) == null)
+            throw new IllegalArgumentException("Invalid parameter " + parameterName + " for " + this.getClass().getSimpleName());
+        return parameters.get(parameterName);
     }
 
     /**
@@ -144,7 +143,7 @@ public abstract class Command {
      *
      * @return The name of this command
      */
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
@@ -153,7 +152,7 @@ public abstract class Command {
      *
      * @return The set of aliases for this command
      */
-    public Set<String> getAliases() {
+    public final Set<String> getAliases() {
         return Collections.unmodifiableSet(aliases);
     }
 
@@ -162,7 +161,7 @@ public abstract class Command {
      *
      * @return The string that contains a description of this command
      */
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 }
