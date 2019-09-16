@@ -14,6 +14,7 @@ public class CreateRoleCommand extends Command implements RoleCommand, AdminComm
     public CreateRoleCommand() {
         super("createrole");
         description = "Allows you to add to this server's current list of (game) roles";
+        addParameter("role name", "**Optional**: The name of the new role to be created");
     }
 
     @Override
@@ -28,7 +29,7 @@ public class CreateRoleCommand extends Command implements RoleCommand, AdminComm
             return;
         }
 
-        RoleBuilder rb = new RoleBuilder(evt, params);
+        new RoleBuilder(evt, params);
     }
 
     @Override

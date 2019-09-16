@@ -14,7 +14,7 @@ public class SetUnpinnedCommand extends Command implements AdminCommand {
 
     public SetUnpinnedCommand() {
         super("setunpinned");
-        description = "Unsets the pinned channel for this server";
+        description = "Unsets the pinned channel for this server. This can be typed in any channel";
     }
 
     @Override

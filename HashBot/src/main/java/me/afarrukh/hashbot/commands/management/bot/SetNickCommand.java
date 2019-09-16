@@ -13,6 +13,7 @@ public class SetNickCommand extends Command implements AdminCommand {
     public SetNickCommand() {
         super("setnick");
         description = "Sets the bot's nickname for this server/guild";
+        addParameter("name", "The name to set for the local server/guild");
     }
 
     @Override

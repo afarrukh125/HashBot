@@ -69,7 +69,7 @@ public class Bot {
                 .build().awaitReady();
 
         commandManager = new CommandManager()
-                .addCommand(new HelpCommand())
+                .addCommand(new CommandListCommand())
                 .addCommand(new UptimeCommand())
                 .addCommand(new AddRoleCommand())
                 .addCommand(new CreateRoleCommand())
@@ -159,7 +159,7 @@ public class Bot {
     private void setMusicOnly() {
         for (Command c : commandManager.getCommandList()) {
             if (!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
-                    && !(c instanceof SetNickCommand) && !(c instanceof SetPrefixCommand) && !(c instanceof HelpCommand) && !(c instanceof ViewCategoriesCommand))
+                    && !(c instanceof SetNickCommand) && !(c instanceof SetPrefixCommand) && !(c instanceof CommandListCommand) && !(c instanceof ViewCategoriesCommand))
                 commandManager.removeCommand(c);
         }
     }

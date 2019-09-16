@@ -19,6 +19,12 @@ public class FlipCommand extends Command implements EconCommand {
         super("flip");
         addAlias("f");
         description = "Flips a coin on head or tails. You can choose an amount.";
+        addParameter("amount", "The amount of credit to use on this coin flip. " +
+                "You can use 'all' here if you wish to use all the credits.");
+        addParameter("heads or tails", "The coin result you are expecting to win on, either heads or tails" +
+                ". Can be written as 'h' or 't'");
+
+        setExampleUsage("flip all t");
     }
 
     @Override

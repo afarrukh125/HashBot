@@ -49,6 +49,11 @@ public abstract class Command {
     private final Map<String, String> parameters;
 
     /**
+     * A command may have an example usage to show, when querying the details for it
+     */
+    private String exampleUsage;
+
+    /**
      * A helpful description to describe the purpose of this command.
      *
      * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(MessageReceivedEvent, List)
@@ -163,5 +168,17 @@ public abstract class Command {
      */
     public final String getDescription() {
         return description;
+    }
+
+    /**
+     * Returns the example string for this command
+     * @param exampleUsage A string that represents an example usage for this command
+     */
+    protected final void setExampleUsage(String exampleUsage) {
+        this.exampleUsage = exampleUsage;
+    }
+
+    public final String getExampleUsage() {
+        return exampleUsage;
     }
 }

@@ -13,6 +13,7 @@ public class DeleteRoleCommand extends Command implements RoleCommand, AdminComm
     public DeleteRoleCommand() {
         super("deleterole");
         description = "Lets you delete a role from the server. Unless you are admin you can only delete ones you have created through this bot.";
+
     }
 
     @Override

@@ -11,6 +11,8 @@ public class SetPrefixCommand extends Command implements AdminCommand {
     public SetPrefixCommand() {
         super("setprefix");
         description = "Sets the bot prefix";
+        addParameter("prefix", "The new prefix for the bot");
+        setExampleUsage("setprefix ,");
     }
 
     @Override

@@ -18,6 +18,7 @@ public class AddRoleCommand extends Command implements RoleCommand {
         super("addrole");
         addAlias("addroles");
         description = "Gives you a list of all the game roles you can join on this server. You can also specify the role by providing the role name as a parameter.";
+        addParameter("role name", "**Optional**: The name of the role you would like to join");
     }
 
     @Override

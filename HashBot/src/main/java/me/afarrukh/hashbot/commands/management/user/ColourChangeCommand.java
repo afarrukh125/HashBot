@@ -16,7 +16,12 @@ public class ColourChangeCommand extends Command {
 
     public ColourChangeCommand() {
         super("rolecol");
-        description = "Allows you to change the colour for one of your roles";
+        description = "Allows you to change the colour for one of your roles. You can use hex code if you wish";
+        addParameter("red", "The amount of red to be set");
+        addParameter("green", "The amount of green to be set");
+        addParameter("blue", "The amount of blue to be set");
+        addParameter("hex code", "**Alternative**: Instead of individual RGB, you can just set a hex code");
+        setExampleUsage("rolecol mainRole 95 82 168");
     }
 
     @Override

@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.utils;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.commands.management.bot.HelpCommand;
+import me.afarrukh.hashbot.commands.management.bot.CommandListCommand;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
@@ -585,7 +585,7 @@ public class EmbedUtils {
         StringBuilder sb = new StringBuilder();
 
         for (Command c : commandList) {
-            if (c instanceof OwnerCommand || c instanceof HelpCommand)
+            if (c instanceof OwnerCommand || c instanceof CommandListCommand)
                 continue;
 
             int descLength = 0;

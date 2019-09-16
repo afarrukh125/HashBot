@@ -12,13 +12,14 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelpCommand extends Command {
+public class CommandListCommand extends Command {
 
-    public HelpCommand() {
-        super("help");
+    public CommandListCommand() {
+        super("commands");
         addAlias("cmds");
-        addAlias("cmd");
         description = "Displays all commands provide a parameter e.g. music to see commands only of that category";
+        addParameter("category", "**Optional**: The category to filter commands for.");
+        setExampleUsage("help roles");
     }
 
     @Override

@@ -16,8 +16,12 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
         addAlias("threshold");
         addAlias("pt");
         addAlias("setthreshold");
+        addAlias("setpinthreshold");
 
-        description = "Set how many reactions are required on a message to pin it.";
+        description = "Set how many reactions are required on a message to pin it. The threshold is the number of reactions needed for a message to be pinned.";
+        addParameter("threshold", "The number of reactions that are required for a message to be added to the pinned channel");
+
+
     }
 
     @Override

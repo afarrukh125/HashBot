@@ -20,6 +20,9 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
         addAlias("sap");
 
         description = "Sets whether a given channel should automatically pin messages to the pinned channel instead of the normal discord pinning method";
+        addParameter("channel name/ID", "The name or ID of the channel you would like to set as the 'pinned' messages " +
+                "channel for this guild/server");
+        setExampleUsage("setautopin #bot");
     }
 
     @Override
@@ -28,6 +31,8 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
             evt.getTextChannel().sendMessage("You need to provide the channel name or ID that you wish to add to the list of autopin channels.").queue();
             return;
         }
+
+        params = params.replace("#", ""); // In case the user added a hashtag to the beginning
 
         TextChannel tc = evt.getGuild().getTextChannelById(params);
         if (tc == null) {

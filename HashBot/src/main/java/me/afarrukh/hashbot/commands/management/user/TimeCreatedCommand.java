@@ -14,6 +14,8 @@ public class TimeCreatedCommand extends Command {
     public TimeCreatedCommand() {
         super("timecreated");
         description = "Allows you to check the account creation date of any member on the server";
+        addParameter("name", "**Optional**: The user name of the user you would like to search for. " +
+                "Omitting this simply returns *your* creation date instead");
     }
 
     @Override

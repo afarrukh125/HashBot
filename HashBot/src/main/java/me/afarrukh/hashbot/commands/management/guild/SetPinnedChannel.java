@@ -13,13 +13,12 @@ public class SetPinnedChannel extends Command implements AdminCommand {
 
     public SetPinnedChannel() {
         super("setpinned");
-        description = "Sets the pin channel for this server. This channel will only allow images to be sent";
+        description = "Sets the pin channel for this server. This channel will only allow images to be sent. This should be typed" +
+                " in the channel that is to be set as the pinned channel.";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
-            return;
 
         TextChannel channel = evt.getTextChannel();
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());

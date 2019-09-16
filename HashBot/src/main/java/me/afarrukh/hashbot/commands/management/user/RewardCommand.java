@@ -14,6 +14,8 @@ public class RewardCommand extends Command implements OwnerCommand {
     public RewardCommand() {
         super("reward");
         description = "Rewards credit to a user";
+        addParameter("user name", "The user name of the user to give credit to");
+        addParameter("amount", "The amount of credit to give to the user");
     }
 
     @Override

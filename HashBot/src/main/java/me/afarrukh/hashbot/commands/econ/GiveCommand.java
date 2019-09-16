@@ -14,6 +14,11 @@ public class GiveCommand extends Command implements EconCommand {
         super("give");
         addAlias("transfer");
         description = "Transfers credit to the mentioned user";
+        addParameter("username", "The user who you would like to give credit to. This can be " +
+                "their name, or you can simply mention them.");
+        addParameter("amount", "The amount you would like to give to the user");
+
+        setExampleUsage("give HashBot 5000");
     }
 
     @Override

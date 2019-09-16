@@ -10,6 +10,8 @@ public class SetNameCommand extends Command implements OwnerCommand {
     public SetNameCommand() {
         super("setname");
         description = "Sets the global discord username for the JDA instance";
+        addParameter("name", "The global name to set for the bot, or more technically, the JDA instance");
+        setExampleUsage("setname HashB0t");
     }
 
     @Override

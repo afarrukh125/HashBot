@@ -33,7 +33,7 @@ public class StatsCommand extends Command {
         addAlias("bal");
         width = Constants.WIDTH;
         height = Constants.HEIGHT;
-        description = "Displays your statistics.";
+        description = "Displays your statistics. Optionally, you can provide 'global' as a parameter to view your global stats";
     }
 
     @Override
