@@ -72,7 +72,7 @@ public class RoleDeleter implements RoleGUI {
 
         this.maxPageNumber = maxPageNumber;
 
-        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().add(this);
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().put(user.getIdLong(), this);
 
     }
 

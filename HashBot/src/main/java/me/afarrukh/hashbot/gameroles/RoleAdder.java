@@ -60,7 +60,7 @@ public class RoleAdder implements RoleGUI {
 
         this.maxPageNumber = maxPageNumber;
 
-        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().add(this);
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().put(user.getIdLong(), this);
     }
 
     @SuppressWarnings("Duplicates")

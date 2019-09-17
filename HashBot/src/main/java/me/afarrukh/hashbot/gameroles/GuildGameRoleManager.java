@@ -21,14 +21,14 @@ public class GuildGameRoleManager {
     private static final String pinnedKey = "pThreshold";
 
     private final Map<GameRole, Role> roleMap;
-    private final List<RoleGUI> roleModifiers;
+    private final Map<Long, RoleGUI> roleModifiers;
     private final Guild guild;
     private String prefix = Constants.invokerChar;
     private int pinThreshold = Constants.PIN_THRESHOLD;
 
     public GuildGameRoleManager(Guild guild) {
         this.guild = guild;
-        roleModifiers = new ArrayList<>();
+        roleModifiers = new HashMap<>();
 
         roleMap = new HashMap<>();
         init();
@@ -66,11 +66,7 @@ public class GuildGameRoleManager {
     }
 
     public RoleGUI modifierForUser(User user) {
-        for (RoleGUI gui : roleModifiers) {
-            if (gui.getUser().equals(user))
-                return gui;
-        }
-        return null;
+        return roleModifiers.get(user.getIdLong());
     }
 
     public void removeRole(String name) {
@@ -108,7 +104,7 @@ public class GuildGameRoleManager {
         return null;
     }
 
-    public List<RoleGUI> getRoleModifiers() {
+    public Map<Long, RoleGUI> getRoleModifiers() {
         return roleModifiers;
     }
 

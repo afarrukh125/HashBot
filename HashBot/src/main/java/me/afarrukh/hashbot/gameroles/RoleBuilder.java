@@ -77,7 +77,7 @@ public class RoleBuilder implements RoleGUI {
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleBuilder.InactiveTimer(this, evt.getGuild()), 30 * 1000); //30 second timer before builder stops
 
-        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().add(this);
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().put(user.getIdLong(), this);
     }
 
     public static Color hexToRGB(String colorString) {

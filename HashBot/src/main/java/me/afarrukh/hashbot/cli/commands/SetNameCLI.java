@@ -6,6 +6,8 @@ import me.afarrukh.hashbot.core.Bot;
 /**
  * @author Abdullah
  * Created on 16/09/2019 at 16:08
+ *
+ * Sets the name of the global JDA instance
  */
 public class SetNameCLI extends CLICommand {
 
@@ -25,8 +27,7 @@ public class SetNameCLI extends CLICommand {
             Bot.botUser.getSelfUser().getManager().setName(params).queue(
                     aVoid -> System.out.println("Global name changed to " + params),
                     throwable -> {
-                System.out.println("Name change to " + params + " failed");
-                System.out.println(throwable.getLocalizedMessage());
+                System.out.println("Name change to " + params + " failed: " + throwable.getMessage());
             });
         } catch (Exception e) {
             System.out.println("Exception occurred " + e.getLocalizedMessage());
