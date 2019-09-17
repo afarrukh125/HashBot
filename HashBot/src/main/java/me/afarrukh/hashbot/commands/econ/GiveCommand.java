@@ -17,7 +17,7 @@ public class GiveCommand extends Command implements EconCommand {
                 "their name, or you can simply mention them.");
         addParameter("amount", "The amount you would like to give to the user");
 
-        setExampleUsage("give HashBot 5000");
+        addExampleUsage("give HashBot 5000");
     }
 
     @Override

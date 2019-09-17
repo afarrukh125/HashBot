@@ -22,7 +22,7 @@ public class ClearCommand extends Command implements AdminCommand {
         super("clear");
         description = "Removes the provided number of messages from the channel it is called in. Use with care.";
         addParameter("number of messages", "The number of messages to be deleted");
-        setExampleUsage("clear 50");
+        addExampleUsage("clear 50");
     }
 
     @Override

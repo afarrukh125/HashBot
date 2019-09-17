@@ -22,7 +22,7 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
         description = "Sets whether a given channel should automatically pin messages to the pinned channel instead of the normal discord pinning method";
         addParameter("channel name/ID", "The name or ID of the channel you would like to set as the 'pinned' messages " +
                 "channel for this guild/server");
-        setExampleUsage("setautopin #bot");
+        addExampleUsage("setautopin #bot");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class LoadListCommand extends Command implements MusicCommand {
         description = "Load a playlist by name from your selection";
 
         addParameter("list name", "The name of the playlist to be loaded");
-        setExampleUsage("loadlist list");
+        addExampleUsage("loadlist list");
     }
 
     @Override

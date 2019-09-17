@@ -24,7 +24,7 @@ public class FlipCommand extends Command implements EconCommand {
         addParameter("heads or tails", "The coin result you are expecting to win on, either heads or tails" +
                 ". Can be written as 'h' or 't'");
 
-        setExampleUsage("flip all t");
+        addExampleUsage("flip all t");
     }
 
     @Override

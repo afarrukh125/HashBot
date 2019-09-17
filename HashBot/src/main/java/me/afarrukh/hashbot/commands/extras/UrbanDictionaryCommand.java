@@ -15,7 +15,7 @@ public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
         addAlias("ud");
         description = "Performs an urban dictionary search";
         addParameter("search query", "The word to search for on urban dictionary");
-        setExampleUsage("ud java");
+        addExampleUsage("ud java");
     }
 
     @Override

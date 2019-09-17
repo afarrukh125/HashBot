@@ -18,7 +18,7 @@ public class CommandListCommand extends Command {
         addAlias("cmds");
         description = "Displays all commands provide a parameter e.g. music to see commands only of that category";
         addParameter("category", "**Optional**: The category to filter commands for.");
-        setExampleUsage("help roles");
+        addExampleUsage("help roles");
     }
 
     @Override

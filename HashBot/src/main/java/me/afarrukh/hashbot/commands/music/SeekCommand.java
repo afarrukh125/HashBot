@@ -14,7 +14,7 @@ public class SeekCommand extends Command implements MusicCommand {
         description = "Seeks to the particular time (in seconds) of the currently playing track.";
         addParameter("position", "The position, in either seconds or MM:SS format to seek to in the currently " +
                 "playing track");
-        setExampleUsage("seek 1:20");
+        addExampleUsage("seek 1:20");
     }
 
     @Override

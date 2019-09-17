@@ -21,7 +21,7 @@ public class ColourChangeCommand extends Command {
         addParameter("green", "The amount of green to be set");
         addParameter("blue", "The amount of blue to be set");
         addParameter("hex code", "**Alternative**: Instead of individual RGB, you can just set a hex code");
-        setExampleUsage("rolecol mainRole 95 82 168");
+        addExampleUsage("rolecol mainRole 95 82 168");
     }
 
     @Override

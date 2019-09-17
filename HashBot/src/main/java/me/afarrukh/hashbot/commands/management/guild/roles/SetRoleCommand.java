@@ -20,7 +20,7 @@ public class SetRoleCommand extends Command implements AdminCommand, RoleCommand
         addAlias("sr");
         description = "Allows you to add an existing role to the list of the servers gameroles. This role must not have administrator permissions.";
         addParameter("role name", "The role that you would like to add to the list of server gameroles");
-        setExampleUsage("setrole role");
+        addExampleUsage("setrole role");
     }
 
     @Override

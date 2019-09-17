@@ -14,7 +14,7 @@ import java.util.*;
  * unexpectedly, for example, during normal conversation in a discord text channel.
  * <p>
  * The default prefix for calling commands is !
- * Assuming this is the prefix, to call a command, for example, to check the latency (which returns the latency in ms between the server
+ * Assuming this is the prefix, then to call a command, for example to check the latency (which returns the latency in ms between the server
  * that hosts this bot, and the discord servers), the "ping" command, can be called with
  *
  * <code>!ping</code>
@@ -54,7 +54,7 @@ public abstract class Command {
     /**
      * A command may have an example usage to show, when querying the details for it
      */
-    private String exampleUsage;
+    private Set<String> exampleUsages;
 
     /**
      * A helpful description to describe the purpose of this command.
@@ -86,6 +86,7 @@ public abstract class Command {
         aliases = new HashSet<>();
         parameters = new LinkedHashMap<>(); // We need to preserve the order of insertion of the arguments
         this.name = name;
+        exampleUsages = new LinkedHashSet<>();
     }
 
     /**
@@ -164,8 +165,13 @@ public abstract class Command {
             for(String param: parameters.keySet())
                 sb.append("<").append(param).append("> ");
             sb.append("\n\n");
-            if(exampleUsage != null)
-                sb.append("**Example usage:** ").append(prefix).append(this.exampleUsage);
+            if(!exampleUsages.isEmpty()) {
+                sb.append("**Example usages:** \n");
+                for(String example: exampleUsages) {
+                    sb.append("- ").append(prefix).append(example).append("\n");
+                }
+            }
+
         }
         return eb.setDescription(sb).build();
     }
@@ -198,14 +204,18 @@ public abstract class Command {
     }
 
     /**
-     * Returns the example string for this command
+     * Returns the set of example strings for this command
      * @param exampleUsage A string that represents an example usage for this command
      */
-    protected final void setExampleUsage(String exampleUsage) {
-        this.exampleUsage = exampleUsage;
+    protected final void addExampleUsage(String exampleUsage) {
+        exampleUsages.add(exampleUsage);
     }
 
-    public final String getExampleUsage() {
-        return exampleUsage;
+    /**
+     * Obtain the set of example usages
+     * @return The set of all example usages for this command
+     */
+    public final Set<String> getExampleUsages() {
+        return Collections.unmodifiableSet(exampleUsages);
     }
 }

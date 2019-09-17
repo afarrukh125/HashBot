@@ -23,7 +23,7 @@ public class ListMembersCommand extends Command implements AdminCommand {
 
         description = "Shows the names of members with the provided role";
         addParameter("role name", "The name of the role for which you would like to view members for");
-        setExampleUsage("listmembers role");
+        addExampleUsage("listmembers role");
 
     }
 

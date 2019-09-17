@@ -14,7 +14,7 @@ public class RemoveCommand extends Command implements MusicCommand {
         addAlias("r");
         description = "Removes a track at the specified position on the queue";
         addParameter("position", "The position at which the track to be removed is");
-        setExampleUsage("remove 10");
+        addExampleUsage("remove 10");
     }
 
     @Override

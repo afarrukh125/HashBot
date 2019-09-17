@@ -12,7 +12,7 @@ public class SetVolumeCommand extends Command implements OwnerCommand {
         addAlias("sv");
         description = "Sets the volume to the desired value.";
         addParameter("volume", "The volume to set to");
-        setExampleUsage("setvolume 77");
+        addExampleUsage("setvolume 77");
     }
 
     @Override
