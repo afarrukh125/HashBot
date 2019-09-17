@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,14 +21,14 @@ public class CommandManager {
      *
      * @param evt The message received event associated with the possible command invocation
      */
-    public void processEvent(MessageReceivedEvent evt) {
+    public void processEvent(GuildMessageReceivedEvent evt) {
         String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
-        final String params = (tokens.length > 1) ? tokens[1] : null;
+        final String params = (tokens.length > 1) ? tokens[1].trim() : null;
         final String commandName = tokens[0].toLowerCase();
 
         Command command = commandFromName(commandName);
 
-        if (command instanceof OwnerCommand && !UserUtils.isBotAdmin(evt.getAuthor()))
+        if (command instanceof OwnerCommand && UserUtils.isBotAdmin(evt.getAuthor()))
             return;
 
         if (command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
@@ -48,13 +48,10 @@ public class CommandManager {
      */
     public CommandManager addCommand(Command c) {
         commandMap.put(c.getName(), c);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (!c.getAliases().isEmpty()) {
-                    for (String alias : c.getAliases()) {
-                        commandMap.put(alias, c);
-                    }
+        new Thread(() -> {
+            if (!c.getAliases().isEmpty()) {
+                for (String alias : c.getAliases()) {
+                    commandMap.put(alias, c);
                 }
             }
         }).start();
@@ -87,15 +84,12 @@ public class CommandManager {
                 continue;
             commandList.add(c);
         }
-        commandList.sort(new Comparator<Command>() {
-            @Override
-            public int compare(Command o1, Command o2) {
-                if (o1.getName().compareTo(o2.getName()) < 0)
-                    return -1;
-                else if (o1.getName().compareTo(o2.getName()) > 0)
-                    return 1;
-                return 0;
-            }
+        commandList.sort((o1, o2) -> {
+            if (o1.getName().compareTo(o2.getName()) < 0)
+                return -1;
+            else if (o1.getName().compareTo(o2.getName()) > 0)
+                return 1;
+            return 0;
         });
         return commandList;
     }

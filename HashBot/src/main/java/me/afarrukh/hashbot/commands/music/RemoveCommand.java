@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * @author Abdullah
@@ -24,12 +24,12 @@ public class RemoveCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         try {
             if (MusicUtils.canInteract(evt))
                 MusicUtils.remove(evt, Integer.parseInt(params));
         } catch (NullPointerException | NumberFormatException e) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
         }
     }
 

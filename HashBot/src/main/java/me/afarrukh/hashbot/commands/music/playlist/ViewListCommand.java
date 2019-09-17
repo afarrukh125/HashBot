@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.music.Playlist;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ViewListCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         List<Playlist> playlistList = new SQLUserDataManager(evt.getMember()).viewAllPlaylists();
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -38,7 +38,7 @@ public class ViewListCommand extends Command {
         eb.setDescription(stringBuilder);
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(evt.getMember().getUser().getAvatarUrl());
-        evt.getTextChannel().sendMessage(eb.build()).queue();
+        evt.getChannel().sendMessage(eb.build()).queue();
 
     }
 }

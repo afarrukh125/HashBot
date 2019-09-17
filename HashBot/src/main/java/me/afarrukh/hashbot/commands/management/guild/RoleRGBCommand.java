@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.management.guild;
 import me.afarrukh.hashbot.commands.Command;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class RoleRGBCommand extends Command {
 
@@ -14,9 +14,9 @@ public class RoleRGBCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
             return;
         }
         for (Role r : evt.getGuild().getRoles()) {
@@ -24,11 +24,11 @@ public class RoleRGBCommand extends Command {
                 int red = r.getColor().getRed();
                 int green = r.getColor().getGreen();
                 int blue = r.getColor().getBlue();
-                evt.getTextChannel().sendMessage("Role RGB for role " + r.getName() + ": " + red + " " + green + " " + blue).queue();
+                evt.getChannel().sendMessage("Role RGB for role " + r.getName() + ": " + red + " " + green + " " + blue).queue();
                 return;
             }
         }
-        evt.getTextChannel().sendMessage("The role " + params + " does not exist.").queue();
+        evt.getChannel().sendMessage("The role " + params + " does not exist.").queue();
     }
 
     @Override

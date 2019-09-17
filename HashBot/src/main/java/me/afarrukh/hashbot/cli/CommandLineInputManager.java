@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class CommandLineInputManager {
 
-    private Map<String, CLICommand> commandMap;
+    private final Map<String, CLICommand> commandMap;
 
     public CommandLineInputManager() {
         commandMap = new HashMap<>();

@@ -77,7 +77,7 @@ public class SQLUserDataManager implements IDataManager {
         }
     }
 
-    public static ResultSet getUserNameData(User u) throws SQLException, ClassNotFoundException {
+    private static ResultSet getUserNameData(User u) throws SQLException, ClassNotFoundException {
         if (conn == null)
             getConnection();
 
@@ -154,18 +154,15 @@ public class SQLUserDataManager implements IDataManager {
                 memberData.add(new MemberData(member, lvl, exp));
             }
 
-            Comparator<MemberData> memberDataSorter = new Comparator<MemberData>() {
-                @Override
-                public int compare(MemberData o1, MemberData o2) {
-                    if (o1.getLevel() > o2.getLevel())
-                        return -1;
-                    if (o1.getLevel() == o2.getLevel()) {
-                        if (o2.getExp() > o1.getExp())
-                            return 1;
-                        return -1;
-                    }
-                    return 1;
+            Comparator<MemberData> memberDataSorter = (o1, o2) -> {
+                if (o1.getLevel() > o2.getLevel())
+                    return -1;
+                if (o1.getLevel() == o2.getLevel()) {
+                    if (o2.getExp() > o1.getExp())
+                        return 1;
+                    return -1;
                 }
+                return 1;
             };
 
             memberData.sort(memberDataSorter);
@@ -237,7 +234,7 @@ public class SQLUserDataManager implements IDataManager {
             ps.setObject(1, value);
             ps.execute();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -245,8 +242,8 @@ public class SQLUserDataManager implements IDataManager {
      * Adds a list of tracks to the database
      *
      * @param lname     The name of the playlist
-     * @param trackList The list of tracks to add
-     * @throws PlaylistException
+     * @param uriNameMap The map of tracks to add
+     * @throws PlaylistException A generic playlist exception to be handled by any client that uses this method
      */
     public void addPlaylist(String lname, Map<String, String> uriNameMap) throws PlaylistException {
         checkConn(); // Mandatory before every call to the database

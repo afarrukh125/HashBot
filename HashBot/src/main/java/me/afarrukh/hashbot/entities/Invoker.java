@@ -34,7 +34,7 @@ public class Invoker {
      * * The formula for the level to exp calculation
      *
      * @param level The level to calculate experience for
-     * @return
+     * @return An integer corresponding to how much is required for the next level given the current level
      */
     public static int getExperienceForNextLevel(int level) {
         return 10 * (level + 1) * (level + 2);
@@ -119,7 +119,7 @@ public class Invoker {
 
     public void updateExperience(String msg) {
         String[] tokens = msg.split(" ");
-        int amt = LevelUtils.getPointsFromMessage(tokens, (int) getLevel());
+        int amt = LevelUtils.getPointsFromMessage(tokens, getLevel());
         int currentExp = (int) getExp();
 
         this.setExp(currentExp + amt);
@@ -131,7 +131,7 @@ public class Invoker {
      * @return An integer representing how much experience the user will need for their next level
      */
     public int getExpForNextLevel() {
-        int currentLevel = (int) getLevel();
+        int currentLevel = getLevel();
         return getExperienceForNextLevel(currentLevel);
     }
 
@@ -189,7 +189,7 @@ public class Invoker {
         return roleList;
     }
 
-    public void addExperience(int amount) {
+    private void addExperience(int amount) {
         setExp((int) getExp() + amount);
     }
 
@@ -208,7 +208,7 @@ public class Invoker {
         int expForNextLevel = getExpForNextLevel();
 
         if (newExp >= expForNextLevel) {
-            int currentLevel = (int) getLevel();
+            int currentLevel = getLevel();
 
             setExp(newExp - expForNextLevel);
             setLevel(currentLevel + 1);

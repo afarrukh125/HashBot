@@ -8,9 +8,12 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Abdullah
@@ -31,11 +34,11 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (!MusicUtils.canInteract(evt))
             return;
         if (params == null) {
-            evt.getTextChannel().sendMessage("You must provide a name for the playlist").queue();
+            evt.getChannel().sendMessage("You must provide a name for the playlist").queue();
             return;
         }
 
@@ -50,15 +53,15 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         }
 
         if (uriNameMap.keySet().size() < 2) {
-            evt.getTextChannel().sendMessage("You must have at least 1 track playing, and 1 track in the queue (so 2 total) to create a playlist").queue();
+            evt.getChannel().sendMessage("You must have at least 1 track playing, and 1 track in the queue (so 2 total) to create a playlist").queue();
             return;
         }
         if (uriNameMap.keySet().size() > 100) {
-            evt.getTextChannel().sendMessage("You can only save playlists that have 100 tracks or less.").queue();
+            evt.getChannel().sendMessage("You can only save playlists that have 100 tracks or less.").queue();
             return;
         }
 
-        Message message = evt.getTextChannel().sendMessage("Creating playlist " + params + " with " + uriNameMap.keySet().size() + " tracks.").complete();
+        Message message = evt.getChannel().sendMessage("Creating playlist " + params + " with " + uriNameMap.keySet().size() + " tracks.").complete();
 
         try {
             new SQLUserDataManager(evt.getMember()).addPlaylist(params, uriNameMap);

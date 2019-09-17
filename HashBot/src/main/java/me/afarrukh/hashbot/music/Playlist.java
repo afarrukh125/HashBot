@@ -12,9 +12,9 @@ import java.util.List;
  */
 public class Playlist {
 
-    private String name;
-    private int size;
-    private List<AudioTrack> tracks;
+    private final String name;
+    private final int size;
+    private final List<AudioTrack> tracks;
 
     public Playlist(String name, int size) {
         tracks = new ArrayList<>();

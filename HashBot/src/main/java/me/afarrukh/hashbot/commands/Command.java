@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.*;
 
@@ -54,12 +54,12 @@ public abstract class Command {
     /**
      * A command may have an example usage to show, when querying the details for it
      */
-    private Set<String> exampleUsages;
+    private final Set<String> exampleUsages;
 
     /**
      * A helpful description to describe the purpose of this command.
      *
-     * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(MessageReceivedEvent, List)
+     * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(GuildMessageReceivedEvent, List)
      */
     protected String description = null;
 
@@ -82,7 +82,7 @@ public abstract class Command {
      * @param name The name of the command to be called.
      * @see #addAlias(String)
      */
-    public Command(String name) {
+    protected Command(String name) {
         aliases = new HashSet<>();
         parameters = new LinkedHashMap<>(); // We need to preserve the order of insertion of the arguments
         this.name = name;
@@ -132,14 +132,14 @@ public abstract class Command {
      * @param evt    The event containing information about the command's invoker/channel
      * @param params The parameters for the command
      */
-    public abstract void onInvocation(MessageReceivedEvent evt, String params);
+    public abstract void onInvocation(GuildMessageReceivedEvent evt, String params);
 
     /**
      * Fired when the user enters an incorrect number of parameters and gives a message directing correct usage
      *
      * @param channel The TextChannel to send the message to with the correct usage message
      */
-    public void onIncorrectParams(TextChannel channel) {
+    protected void onIncorrectParams(TextChannel channel) {
         channel.sendMessage(getCommandHelpMessage(channel)).queue();
     }
 

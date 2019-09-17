@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -28,15 +28,15 @@ public class FlipCommand extends Command implements EconCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         // Checking parameter validity
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
             return;
         }
 
         if (params.split(" ").length != 2) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
             return;
         }
 
@@ -53,7 +53,7 @@ public class FlipCommand extends Command implements EconCommand {
             if (tokens[0].equalsIgnoreCase("all"))
                 amount = invoker.getCredit();
             else {
-                evt.getTextChannel().sendMessage("Please enter a valid amount.").queue();
+                evt.getChannel().sendMessage("Please enter a valid amount.").queue();
                 return;
             }
         }
@@ -69,12 +69,12 @@ public class FlipCommand extends Command implements EconCommand {
 
         // Checking if the user choice entered is valid
         if (userInputMap.get(tokens[1]) == null) {
-            evt.getTextChannel().sendMessage("You must flip on either heads or tails.").queue();
+            evt.getChannel().sendMessage("You must flip on either heads or tails.").queue();
             return;
         }
 
         if (invoker.getCredit() < amount || invoker.getCredit() <= 0) {
-            evt.getTextChannel().sendMessage("You do not have enough credits.").queue();
+            evt.getChannel().sendMessage("You do not have enough credits.").queue();
             return;
         }
 
@@ -112,7 +112,7 @@ public class FlipCommand extends Command implements EconCommand {
 
         eb.setDescription(sb.toString());
 
-        evt.getTextChannel().sendMessage(eb.build()).queue();
+        evt.getChannel().sendMessage(eb.build()).queue();
 
     }
 

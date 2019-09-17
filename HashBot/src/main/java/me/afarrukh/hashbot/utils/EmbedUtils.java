@@ -16,7 +16,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class EmbedUtils {
      * @param page The page of the message queue to be displayed
      * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single track embed.
      */
-    public static MessageEmbed getQueueMsg(GuildMusicManager gmm, MessageReceivedEvent evt, int page) {
+    public static MessageEmbed getQueueMsg(GuildMusicManager gmm, GuildMessageReceivedEvent evt, int page) {
         try {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(Constants.EMB_COL);
@@ -96,7 +96,7 @@ public class EmbedUtils {
      * @param evt The event to get the channel to send it to
      * @return A message embed with information on a single provided audio track
      */
-    public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, MessageReceivedEvent evt) {
+    public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, GuildMessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
@@ -120,7 +120,7 @@ public class EmbedUtils {
      * @param evt The message received event containing information such as which channel to send to
      * @return an embed referring to a track which has been queued to an audioplayer already playing a track
      */
-    public static MessageEmbed getQueuedEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedEmbed(GuildMusicManager gmm, AudioTrack at, GuildMessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Now playing");
@@ -146,7 +146,7 @@ public class EmbedUtils {
      * @param evt The message received event associated with the skip embed request
      * @return Returns an embed referring to the track which has been skipped to
      */
-    public static MessageEmbed getSkippedToEmbed(AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getSkippedToEmbed(AudioTrack at, GuildMessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Skipped to");
         eb.setColor(Constants.EMB_COL);
@@ -179,7 +179,7 @@ public class EmbedUtils {
      * @param evt The event (contains information about the channel which queued it, the guild etc.
      * @return A message embed with the appropriate information for a track that has been queued to the top
      */
-    public static MessageEmbed getQueuedTopEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedTopEmbed(GuildMusicManager gmm, AudioTrack at, GuildMessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Queued track to top");
@@ -229,7 +229,7 @@ public class EmbedUtils {
      * @param evt        The message received event associated with the leaderboard request
      * @return An embed that refers to the leaderboard of the users sorted by their credit
      */
-    public static MessageEmbed getLeaderboard(Member[] memberList, MessageReceivedEvent evt) {
+    public static MessageEmbed getLeaderboard(Member[] memberList, GuildMessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("The leaderboard for " + evt.getGuild().getName() + ":");
@@ -572,7 +572,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static ArrayList<MessageEmbed> getHelpMsg(MessageReceivedEvent evt, java.util.List<Command> commandList) {
+    public static ArrayList<MessageEmbed> getHelpMsg(GuildMessageReceivedEvent evt, java.util.List<Command> commandList) {
         ArrayList<MessageEmbed> embedArrayList = new ArrayList<>();
 
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
@@ -628,7 +628,7 @@ public class EmbedUtils {
         return embedArrayList;
     }
 
-    public static MessageEmbed getCreditsLeaderboardEmbed(Member[] memberList, MessageReceivedEvent evt) {
+    public static MessageEmbed getCreditsLeaderboardEmbed(Member[] memberList, GuildMessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("Credits leaderboard for " + evt.getGuild().getName());

@@ -22,8 +22,8 @@ public class GuildDataManager extends DataManager {
     private static final String pinnedMessages = "pinnedmessages";
     private static final String autoPinKey = "autopinchannels";
     private final Guild guild;
-    private Map<String, String> pinnedMessageMap;
-    private List<String> autoPinChannels;
+    private final Map<String, String> pinnedMessageMap;
+    private final List<String> autoPinChannels;
 
     public GuildDataManager(Guild guild) {
         super();

@@ -15,18 +15,18 @@ public class LatentTrack implements Runnable {
     /**
      * The associated audio track with this object
      */
-    private AudioTrack track;
+    private final AudioTrack track;
 
     /**
      * The position of this audio track in the loader
      */
-    private int pos;
+    private final int pos;
 
     /**
      * The playlist loader that serves as the "barrier" for this track, and tracks
      * that are part of the same playlist
      */
-    private PlaylistLoader loader;
+    private final PlaylistLoader loader;
 
     /**
      * Instantiates this object

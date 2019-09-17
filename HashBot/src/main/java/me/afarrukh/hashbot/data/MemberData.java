@@ -8,9 +8,9 @@ import net.dv8tion.jda.core.entities.Member;
  * Used as a temporary class to map a member to their level and experience value
  */
 class MemberData {
-    private Member member;
-    private int level;
-    private long exp;
+    private final Member member;
+    private final int level;
+    private final long exp;
 
     public MemberData(Member member, int level, long exp) {
         this.member = member;

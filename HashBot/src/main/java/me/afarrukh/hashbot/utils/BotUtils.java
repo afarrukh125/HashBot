@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -26,8 +26,8 @@ public class BotUtils {
      *
      * @param evt The event object containing the text channel so we can retrieve the text message
      */
-    public static void deleteLastMsg(MessageReceivedEvent evt) {
-        for (Message m : evt.getTextChannel().getIterableHistory()) {
+    public static void deleteLastMsg(GuildMessageReceivedEvent evt) {
+        for (Message m : evt.getChannel().getIterableHistory()) {
             if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId())) {
                 m.delete().queueAfter(1500, TimeUnit.MILLISECONDS);
                 break;
@@ -35,9 +35,9 @@ public class BotUtils {
         }
     }
 
-    public static boolean isPinnedChannel(MessageReceivedEvent evt) {
+    public static boolean isPinnedChannel(GuildMessageReceivedEvent evt) {
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
-        return evt.getTextChannel().getId().equals(jgm.getValue("pinnedchannel"));
+        return evt.getChannel().getId().equals(jgm.getValue("pinnedchannel"));
     }
 
     public static boolean isGameRole(Role r, Guild guild) {

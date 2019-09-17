@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.entities.Member;
  * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
  */
 public class YTFirstLatentTrackHandler implements AudioLoadResultHandler {
-    private Member member;
+    private final Member member;
 
     public YTFirstLatentTrackHandler(Member member) {
         this.member = member;

@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class RoleDeleter implements RoleGUI {
     private int page = 1;
     private Timer timeoutTimer;
 
-    public RoleDeleter(MessageReceivedEvent evt) {
+    public RoleDeleter(GuildMessageReceivedEvent evt) {
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
         this.numberEmojis = BotUtils.createNumberEmojiArray();

@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class CreateRoleCommand extends Command implements RoleCommand, AdminCommand {
 
@@ -17,7 +17,7 @@ public class CreateRoleCommand extends Command implements RoleCommand, AdminComm
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         evt.getMessage().delete().queue();
         if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR))

@@ -186,20 +186,17 @@ public class Bot {
     }
 
     private void setupNames() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SQLUserDataManager userDataManager = new SQLUserDataManager(botUser.getGuilds().get(0).getMemberById(botUser.getSelfUser().getId()));
-                for (Guild g : botUser.getGuilds()) {
-                    try {
-                        SQLUserDataManager.updateUsernames(g);
-                        for (Member m : g.getMembers()) {
-                            if (!SQLUserDataManager.getUserData(m).next())
-                                SQLUserDataManager.addMember(m);
-                        }
-                    } catch (ClassNotFoundException | SQLException e) {
-                        e.printStackTrace();
+        new Thread(() -> {
+            SQLUserDataManager userDataManager = new SQLUserDataManager(botUser.getGuilds().get(0).getMemberById(botUser.getSelfUser().getId()));
+            for (Guild g : botUser.getGuilds()) {
+                try {
+                    SQLUserDataManager.updateUsernames(g);
+                    for (Member m : g.getMembers()) {
+                        if (!SQLUserDataManager.getUserData(m).next())
+                            SQLUserDataManager.addMember(m);
                     }
+                } catch (ClassNotFoundException | SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

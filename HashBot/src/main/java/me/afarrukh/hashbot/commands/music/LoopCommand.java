@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class LoopCommand extends Command implements MusicCommand {
 
@@ -15,7 +15,7 @@ public class LoopCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (MusicUtils.canInteract(evt)) {
             TrackScheduler trackScheduler = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
             trackScheduler.setLooping(!trackScheduler.isLooping());

@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -37,7 +37,7 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = initialiseGraphics(bufferedImage);
@@ -48,7 +48,7 @@ public class StatsCommand extends Command {
         Invoker invoker = new Invoker(evt.getMember());
 
         int exp = (int) invoker.getExp();
-        int level = (int) invoker.getLevel();
+        int level = invoker.getLevel();
         int nextLevelExp = invoker.getExpForNextLevel();
 
         boolean global = false;
@@ -61,7 +61,7 @@ public class StatsCommand extends Command {
                 if (m == null)
                     continue;
                 Invoker tmpInvoker = new Invoker(m);
-                exp += Invoker.parseTotalExperienceFromLevel((int) tmpInvoker.getLevel());
+                exp += Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel());
                 exp += tmpInvoker.getExp();
             }
             int[] data = Invoker.parseLevelFromTotalExperience(exp);
@@ -114,7 +114,7 @@ public class StatsCommand extends Command {
         g.dispose();
 
         File outputFile = saveImage(fileName, bufferedImage);
-        evt.getTextChannel().sendFile(outputFile).queue();
+        evt.getChannel().sendFile(outputFile).queue();
 
         Timer timer = new Timer();
         timer.schedule(new DeletionTimer(outputFile), 5 * 1000);

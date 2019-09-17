@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.requests.restaction.pagination.MessagePaginationAction;
 
 import java.util.Iterator;
@@ -22,8 +22,8 @@ public class PruneCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
-        MessagePaginationAction messageHistory = evt.getTextChannel().getIterableHistory();
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
+        MessagePaginationAction messageHistory = evt.getChannel().getIterableHistory();
         List<Message> messageBin = new LinkedList<>();
         GuildDataManager gdm = new GuildDataManager(evt.getGuild());
         for (Message m : messageHistory) {
@@ -36,7 +36,7 @@ public class PruneCommand extends Command {
                 break;
         }
         try {
-            evt.getTextChannel().deleteMessages(messageBin).queue();
+            evt.getChannel().deleteMessages(messageBin).queue();
             evt.getChannel().sendMessage("Cleaned " + messageBin.size() + " bot-related messages.").queue();
             BotUtils.deleteLastMsg(evt);
         } catch (IllegalArgumentException e) {
@@ -53,7 +53,7 @@ public class PruneCommand extends Command {
             if (delCount < 2 || delCount > 100)
                 delCount = 0;
             else
-                evt.getTextChannel().deleteMessages(messageBin).queue();
+                evt.getChannel().deleteMessages(messageBin).queue();
             Message m = evt.getChannel().sendMessage("Cleaned " + delCount + " bot-related messages.").complete();
             m.delete().queue();
         }

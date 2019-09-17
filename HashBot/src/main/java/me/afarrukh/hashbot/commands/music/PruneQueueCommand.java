@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ public class PruneQueueCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         if (evt.getGuild().getAudioManager().getConnectedChannel() == null) {
-            evt.getTextChannel().sendMessage("The bot is not connected to voice.").queue();
+            evt.getChannel().sendMessage("The bot is not connected to voice.").queue();
             return;
         }
 
@@ -58,6 +58,6 @@ public class PruneQueueCommand extends Command implements MusicCommand {
             for (String s : prunedUsers)
                 sb.append(s).append("\n");
         }
-        evt.getTextChannel().sendMessage(sb.toString().trim()).queue();
+        evt.getChannel().sendMessage(sb.toString().trim()).queue();
     }
 }

@@ -7,7 +7,7 @@ import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class PlayCommand extends Command implements MusicCommand {
 
@@ -21,9 +21,9 @@ public class PlayCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
             return;
         }
 
@@ -33,7 +33,7 @@ public class PlayCommand extends Command implements MusicCommand {
         if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
             if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
                 // If the bot is not in the same channel as the user (assuming already connected) then return
-                evt.getTextChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
+                evt.getChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
                 return;
             }
         }

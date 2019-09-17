@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.management.bot;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class PingCommand extends Command implements SystemCommand {
 
@@ -12,7 +12,7 @@ public class PingCommand extends Command implements SystemCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
-        evt.getTextChannel().sendMessage("Current ping is " + evt.getJDA().getPing()).queue();
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
+        evt.getChannel().sendMessage("Current ping is " + evt.getJDA().getPing()).queue();
     }
 }

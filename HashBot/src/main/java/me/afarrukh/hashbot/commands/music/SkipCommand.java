@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class SkipCommand extends Command implements MusicCommand {
 
@@ -21,7 +21,7 @@ public class SkipCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (MusicUtils.canInteract(evt)) {
             GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
             if (gmm.getScheduler().getQueue().isEmpty() && (gmm.getPlayer().getPlayingTrack() == null))

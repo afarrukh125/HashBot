@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * @author Abdullah
@@ -22,10 +22,10 @@ public class DeleteListCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         if (params == null) {
-            evt.getTextChannel().sendMessage("You need to provide the name of the playlist you would like to delete." +
+            evt.getChannel().sendMessage("You need to provide the name of the playlist you would like to delete." +
                     "Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + new ViewListCommand().getName()
                     + " to view your playlists.").queue();
             return;
@@ -36,9 +36,9 @@ public class DeleteListCommand extends Command implements MusicCommand {
         try {
             int listSize = dataManager.getPlaylistSize(params);
             dataManager.deletePlaylist(params);
-            evt.getTextChannel().sendMessage("Successfully deleted the playlist " + params + " with " + listSize + " tracks").queue();
+            evt.getChannel().sendMessage("Successfully deleted the playlist " + params + " with " + listSize + " tracks").queue();
         } catch (PlaylistException e) {
-            evt.getTextChannel().sendMessage("There is no playlist with the name " + params + ".").queue();
+            evt.getChannel().sendMessage("There is no playlist with the name " + params + ".").queue();
         }
     }
 }

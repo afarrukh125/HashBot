@@ -9,7 +9,7 @@ import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class RoleRemover implements RoleGUI {
     private int page = 1;
     private int stage = 0;
 
-    public RoleRemover(MessageReceivedEvent evt) {
+    public RoleRemover(GuildMessageReceivedEvent evt) {
         this.user = evt.getAuthor();
         this.guild = evt.getGuild();
         numberEmojis = BotUtils.createNumberEmojiArray();

@@ -72,15 +72,12 @@ public class LevelUtils {
                 memberList.add(m);
         }
 
-        Comparator<Member> memberSorter = new Comparator<Member>() {
-
-            public int compare(Member m1, Member m2) {
-                Invoker in1 = new Invoker(m1);
-                Invoker in2 = new Invoker(m2);
-                if (in2.getCredit() > in1.getCredit())
-                    return 1;
-                return -1;
-            }
+        Comparator<Member> memberSorter = (m1, m2) -> {
+            Invoker in1 = new Invoker(m1);
+            Invoker in2 = new Invoker(m2);
+            if (in2.getCredit() > in1.getCredit())
+                return 1;
+            return -1;
         };
 
         memberList.sort(memberSorter);

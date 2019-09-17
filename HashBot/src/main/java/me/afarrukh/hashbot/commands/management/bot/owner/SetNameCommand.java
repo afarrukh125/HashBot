@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.management.bot.owner;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetNameCommand extends Command implements OwnerCommand {
 
@@ -14,7 +14,7 @@ public class SetNameCommand extends Command implements OwnerCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         evt.getJDA().getSelfUser().getManager().setName(params).queue();
     }
 }

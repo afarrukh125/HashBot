@@ -7,7 +7,7 @@ import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class RewardCommand extends Command implements OwnerCommand {
 
@@ -19,8 +19,8 @@ public class RewardCommand extends Command implements OwnerCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!UserUtils.isBotAdmin(evt.getAuthor())) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
+        if (UserUtils.isBotAdmin(evt.getAuthor())) {
             evt.getChannel().sendMessage("Insufficient permission").queue();
             return;
         }
@@ -31,7 +31,7 @@ public class RewardCommand extends Command implements OwnerCommand {
         try {
             amt = Long.parseLong(tokens[tokens.length - 1]);
         } catch (NumberFormatException e) {
-            evt.getTextChannel().sendMessage("Could not add this amount of credit, exceeds " + Long.MAX_VALUE + ".")
+            evt.getChannel().sendMessage("Could not add this amount of credit, exceeds " + Long.MAX_VALUE + ".")
                     .queue();
             return;
         }
@@ -40,11 +40,11 @@ public class RewardCommand extends Command implements OwnerCommand {
             if (m.getUser().getName().equalsIgnoreCase(targetUser)) {
                 Invoker inv = new Invoker(m);
                 inv.addCredit(amt);
-                evt.getTextChannel().sendMessage("Rewarded " + m.getUser().getName() + " with " + amt + " credit.").queue();
+                evt.getChannel().sendMessage("Rewarded " + m.getUser().getName() + " with " + amt + " credit.").queue();
                 return;
             }
         }
-        evt.getTextChannel().sendMessage("User not found.").queue();
+        evt.getChannel().sendMessage("User not found.").queue();
     }
 
     @Override

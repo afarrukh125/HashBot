@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.tagging;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ViewCategoriesCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         List<String> stringList = new ArrayList<>();
 
         for (Command c : Bot.commandManager.getCommandList()) {
@@ -28,7 +28,7 @@ public class ViewCategoriesCommand extends Command {
             }
         }
 
-        evt.getTextChannel().sendMessage(EmbedUtils.createCategoryEmbed(stringList, Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()))
+        evt.getChannel().sendMessage(EmbedUtils.createCategoryEmbed(stringList, Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()))
                 .queue();
     }
 }

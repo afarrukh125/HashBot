@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetPrefixCommand extends Command implements AdminCommand {
 
@@ -16,14 +16,14 @@ public class SetPrefixCommand extends Command implements AdminCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         if (params != null && params.length() < 2) {
             Bot.gameRoleManager.getGuildRoleManager(evt.getGuild())
                     .setPrefix(params);
-            evt.getTextChannel().sendMessage("Bot prefix is now " + params).queue();
+            evt.getChannel().sendMessage("Bot prefix is now " + params).queue();
         } else {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
         }
     }
 

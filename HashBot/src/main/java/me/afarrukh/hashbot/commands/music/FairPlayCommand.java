@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.TrackScheduler;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class FairPlayCommand extends Command implements MusicCommand {
 
@@ -16,14 +16,14 @@ public class FairPlayCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (!MusicUtils.canInteract(evt))
             return;
 
         TrackScheduler ts = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
 
         if (ts.isLoopingQueue()) {
-            evt.getTextChannel().sendMessage("Cannot use this feature unless looping queue is disabled.").queue();
+            evt.getChannel().sendMessage("Cannot use this feature unless looping queue is disabled.").queue();
             return;
         }
 
@@ -33,6 +33,6 @@ public class FairPlayCommand extends Command implements MusicCommand {
         sb.append("Fairplay mode is now ");
         final String onOrOff = ts.isFairPlay() ? "on" : "off";
         sb.append(onOrOff).append(".");
-        evt.getTextChannel().sendMessage(sb.toString()).queue();
+        evt.getChannel().sendMessage(sb.toString()).queue();
     }
 }

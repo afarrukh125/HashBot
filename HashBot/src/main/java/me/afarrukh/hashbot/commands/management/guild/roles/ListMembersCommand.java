@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -28,16 +28,16 @@ public class ListMembersCommand extends Command implements AdminCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
             return;
         }
 
         List<Role> roleList = evt.getGuild().getRolesByName(params, true);
 
         if (roleList.isEmpty()) { // If the role does not exist...
-            evt.getTextChannel().sendMessage("The role you have provided does not exist.").queue();
+            evt.getChannel().sendMessage("The role you have provided does not exist.").queue();
             return;
         }
 
@@ -45,17 +45,14 @@ public class ListMembersCommand extends Command implements AdminCommand {
 
         List<Member> memberList = evt.getGuild().getMembersWithRoles(r);
 
-        memberList.sort(new Comparator<Member>() {
-            @Override
-            public int compare(Member o1, Member o2) {
-                if (o1.getRoles().get(0).getPosition() < o2.getRoles().get(0).getPosition())
-                    return 1;
-                if (o1.getRoles().get(0).getPosition() == o2.getRoles().get(0).getPosition()) {
-                    return Integer.compare(o1.getEffectiveName().toLowerCase().compareTo(o2.getEffectiveName().toLowerCase()), 0);
-                }
-                return -1;
-
+        memberList.sort((o1, o2) -> {
+            if (o1.getRoles().get(0).getPosition() < o2.getRoles().get(0).getPosition())
+                return 1;
+            if (o1.getRoles().get(0).getPosition() == o2.getRoles().get(0).getPosition()) {
+                return Integer.compare(o1.getEffectiveName().toLowerCase().compareTo(o2.getEffectiveName().toLowerCase()), 0);
             }
+            return -1;
+
         });
 
         EmbedBuilder eb = new EmbedBuilder();
@@ -65,14 +62,14 @@ public class ListMembersCommand extends Command implements AdminCommand {
 
         if (memberList.isEmpty()) { // If we find there are no members with the role
             eb.setDescription("There are no members with this role.");
-            evt.getTextChannel().sendMessage(eb.build()).queue();
+            evt.getChannel().sendMessage(eb.build()).queue();
             return;
         }
 
         for (int i = 0; i < memberList.size(); i++)
             eb.appendDescription("`" + (i + 1) + ".`  " + memberList.get(i).getEffectiveName() + "\n");
 
-        evt.getTextChannel().sendMessage(eb.build()).queue();
+        evt.getChannel().sendMessage(eb.build()).queue();
     }
 
     @Override

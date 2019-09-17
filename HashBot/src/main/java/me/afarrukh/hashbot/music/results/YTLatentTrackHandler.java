@@ -17,9 +17,9 @@ import net.dv8tion.jda.core.entities.Member;
  */
 public class YTLatentTrackHandler implements AudioLoadResultHandler {
 
-    private Member member;
-    private int idx;
-    private PlaylistLoader loader;
+    private final Member member;
+    private final int idx;
+    private final PlaylistLoader loader;
 
     public YTLatentTrackHandler(Member member, int idx, PlaylistLoader loader) {
         this.member = member;

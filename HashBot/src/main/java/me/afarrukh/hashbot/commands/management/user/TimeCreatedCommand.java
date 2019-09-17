@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class TimeCreatedCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         Member targetMember = null;
         if (params == null)
             if (!evt.getMessage().getMentionedMembers().isEmpty()) {
@@ -32,7 +32,7 @@ public class TimeCreatedCommand extends Command {
         }
 
         if (targetMember == null) {
-            evt.getTextChannel().sendMessage("The user " + params + " does not exist.").queue();
+            evt.getChannel().sendMessage("The user " + params + " does not exist.").queue();
             return;
         }
 
@@ -45,7 +45,7 @@ public class TimeCreatedCommand extends Command {
 //         eb.appendDescription("The last time the user joined this server was " +
 //                        new Date(targetMember.getJoinDate().toInstant().toEpochMilli()) + ".");
 
-        evt.getTextChannel().sendMessage(eb.build()).queue();
+        evt.getChannel().sendMessage(eb.build()).queue();
 
     }
 

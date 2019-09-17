@@ -5,11 +5,11 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class YTSearchResultHandler extends YTGenericResultHandler {
 
-    public YTSearchResultHandler(GuildMusicManager gmm, MessageReceivedEvent evt, boolean playTop) {
+    public YTSearchResultHandler(GuildMusicManager gmm, GuildMessageReceivedEvent evt, boolean playTop) {
         super(gmm, evt, playTop);
     }
 

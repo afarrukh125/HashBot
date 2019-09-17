@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class ResetPlayerCommand extends Command implements MusicCommand, AdminCommand {
 
@@ -17,12 +17,12 @@ public class ResetPlayerCommand extends Command implements MusicCommand, AdminCo
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
             return;
 
         MusicUtils.disconnect(evt.getGuild());
         Bot.musicManager.resetGuildAudioPlayer(evt.getGuild());
-        evt.getTextChannel().sendMessage("Reset the audio player for this guild successfully.").queue();
+        evt.getChannel().sendMessage("Reset the audio player for this guild successfully.").queue();
     }
 }

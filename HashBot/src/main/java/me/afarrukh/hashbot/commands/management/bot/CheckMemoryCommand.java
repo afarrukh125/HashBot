@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class CheckMemoryCommand extends Command implements SystemCommand {
 
@@ -15,13 +15,13 @@ public class CheckMemoryCommand extends Command implements SystemCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         long memoryNow = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
         long memoryDiff = memoryNow - Constants.INITIAL_MEMORY;
         memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
 
-        evt.getTextChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL)
+        evt.getChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL)
                 .appendDescription("Memory usage since startup is " + memoryDiff + "MB").build()).queue();
 
         if (memoryDiff > 30)

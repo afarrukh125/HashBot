@@ -7,7 +7,7 @@ import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class AddRoleCommand extends Command implements RoleCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         evt.getMessage().delete().queue();
 
@@ -33,15 +33,15 @@ public class AddRoleCommand extends Command implements RoleCommand {
             if (gr != null) {
                 Role r = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(gr);
                 if (evt.getMember().getRoles().contains(r)) {
-                    evt.getTextChannel().sendMessage(EmbedUtils.alreadyHasRoleEmbed(r))
+                    evt.getChannel().sendMessage(EmbedUtils.alreadyHasRoleEmbed(r))
                             .queue();
                 } else {
                     evt.getGuild().getController().addSingleRoleToMember(evt.getMember(),
                             Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(gr)).queue();
-                    evt.getTextChannel().sendMessage(EmbedUtils.addRoleCompleteEmbed(r)).queue();
+                    evt.getChannel().sendMessage(EmbedUtils.addRoleCompleteEmbed(r)).queue();
                 }
             } else {
-                evt.getTextChannel().sendMessage(EmbedUtils.getNullRoleEmbed(evt.getGuild())).queue();
+                evt.getChannel().sendMessage(EmbedUtils.getNullRoleEmbed(evt.getGuild())).queue();
             }
         } else {
             RoleAdder ra = new RoleAdder(evt);

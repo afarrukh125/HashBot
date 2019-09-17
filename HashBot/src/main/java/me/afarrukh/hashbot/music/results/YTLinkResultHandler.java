@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class YTLinkResultHandler extends YTGenericResultHandler {
 
-    public YTLinkResultHandler(GuildMusicManager gmm, MessageReceivedEvent evt, boolean playTop) {
+    public YTLinkResultHandler(GuildMusicManager gmm, GuildMessageReceivedEvent evt, boolean playTop) {
         super(gmm, evt, playTop);
     }
 

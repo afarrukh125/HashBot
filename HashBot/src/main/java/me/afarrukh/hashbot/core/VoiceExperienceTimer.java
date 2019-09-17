@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.TimerTask;
 
-public class VoiceExperienceTimer extends TimerTask {
+class VoiceExperienceTimer extends TimerTask {
 
     @Override
     public void run() {

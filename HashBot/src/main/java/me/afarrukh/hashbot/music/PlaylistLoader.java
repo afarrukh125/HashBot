@@ -39,24 +39,24 @@ public class PlaylistLoader {
     /**
      * The list of <code>AudioTrack</code> objects to be queued.
      */
-    private List<LatentTrack> tracks;
+    private final List<LatentTrack> tracks;
 
     /**
      * The original size of the playlist
      * We aim to count upwards towards this as we add tracks to this "barrier"
      */
-    private int maxSize;
+    private final int maxSize;
 
     /**
      * The associated member object, for use in deciding which guild to send messages to,
      * and which member to join
      */
-    private Member member;
+    private final Member member;
 
     /**
      * The message object to update once the playlist has completed loading
      */
-    private Message message;
+    private final Message message;
 
     /**
      * The current index of the playlist, as mentioned, this is counting up towards maxSize (well technically maxSize-1)
@@ -67,7 +67,7 @@ public class PlaylistLoader {
      * The name of the playlist. For use in printing the final message to be sent to the user once the playlist
      * has finished loading
      */
-    private String listName;
+    private final String listName;
 
     /**
      * Create a new playlist loader object
@@ -126,7 +126,7 @@ public class PlaylistLoader {
      * @throws PlaylistException This is thrown if this method is called before we have finished counting up from
      *                           0 to the size of the playlist.
      */
-    public void queueTracks() throws PlaylistException {
+    private void queueTracks() throws PlaylistException {
         if (tracks.size() != maxSize - 1) {
             throw new PlaylistException("You cannot obtain the tracks until the list has finished loading");
         }

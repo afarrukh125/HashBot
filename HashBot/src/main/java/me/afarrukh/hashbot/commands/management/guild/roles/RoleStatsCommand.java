@@ -7,7 +7,7 @@ import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +24,11 @@ public class RoleStatsCommand extends Command implements RoleCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         List<Role> roleList = new ArrayList<>(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getGameRolesAsRoles());
 
         if (roleList.isEmpty()) {
-            evt.getTextChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("No GameRoles on this server.")
+            evt.getChannel().sendMessage(new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("No GameRoles on this server.")
                     .setThumbnail(evt.getGuild().getIconUrl()).appendDescription("Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "createrole"
                             + " to create one.").build()).queue();
             return;
@@ -60,10 +60,10 @@ public class RoleStatsCommand extends Command implements RoleCommand {
         }
 
         eb.setFooter("You can check which members have this role using " + new ListMembersCommand().getName() + " command.", evt.getMember().getUser().getAvatarUrl());
-        evt.getTextChannel().sendMessage(eb.build()).queue();
+        evt.getChannel().sendMessage(eb.build()).queue();
     }
 
-    private List<Member> filterBots(MessageReceivedEvent evt) {
+    private List<Member> filterBots(GuildMessageReceivedEvent evt) {
         List<Member> memberList = new ArrayList<>(evt.getGuild().getMembers());
 
         memberList.removeIf(m -> m.getUser().isBot());

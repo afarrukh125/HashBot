@@ -13,7 +13,7 @@ import java.util.Map;
 public class GuildDataMapper {
 
     private static GuildDataMapper instance;
-    private Map<String, GuildDataManager> dataManagerMap;
+    private final Map<String, GuildDataManager> dataManagerMap;
 
     private GuildDataMapper() {
         this.dataManagerMap = new HashMap<>();

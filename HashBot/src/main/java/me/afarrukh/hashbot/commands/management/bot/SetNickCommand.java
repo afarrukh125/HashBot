@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetNickCommand extends Command implements AdminCommand {
 
@@ -17,7 +17,7 @@ public class SetNickCommand extends Command implements AdminCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (!evt.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) {
             evt.getChannel().sendMessage("Insufficient permission.").queue();
             BotUtils.deleteLastMsg(evt);
@@ -26,7 +26,7 @@ public class SetNickCommand extends Command implements AdminCommand {
         }
 
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
             return;
         }
 

@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class LeaderboardCommand extends Command {
 
@@ -16,11 +16,11 @@ public class LeaderboardCommand extends Command {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
         if (params != null) {
             if (params.equalsIgnoreCase("credits")) {
-                evt.getTextChannel().sendMessage(EmbedUtils.getCreditsLeaderboardEmbed(LevelUtils.getCreditsLeaderboard(evt.getGuild()), evt)).queue();
+                evt.getChannel().sendMessage(EmbedUtils.getCreditsLeaderboardEmbed(LevelUtils.getCreditsLeaderboard(evt.getGuild()), evt)).queue();
             }
         } else {
             Member[] userList = LevelUtils.getLeaderboard(evt.getGuild());

@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.PlaylistLoader;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * @author Abdullah
@@ -26,13 +26,13 @@ public class LoadListCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
 
         Message message = null;
         try {
             final int listSize = dataManager.getPlaylistSize(params);
-            message = evt.getTextChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
+            message = evt.getChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
                     " It might take a while for all tracks to be added to the queue.").complete();
             PlaylistLoader loader = new PlaylistLoader(evt.getMember(), listSize, message, params);
             dataManager.loadPlaylistByName(params, loader);

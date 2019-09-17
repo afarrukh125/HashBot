@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class UptimeCommand extends Command implements SystemCommand {
 
@@ -16,7 +16,7 @@ public class UptimeCommand extends Command implements SystemCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         long now = System.currentTimeMillis();
         long upTimeUnix = now - Constants.timeStarted;
         long seconds = (int) (upTimeUnix / 1000) % 60;
@@ -24,7 +24,7 @@ public class UptimeCommand extends Command implements SystemCommand {
         int hours = (int) (upTimeUnix / 1000 / 60 / 60) % 24;
         int days = (int) (upTimeUnix / 1000 / 60 / 60) / 24;
 
-        evt.getTextChannel().sendMessage(new EmbedBuilder()
+        evt.getChannel().sendMessage(new EmbedBuilder()
                 .setColor(Constants.EMB_COL)
                 .appendDescription("Bot uptime: " + days + " days, "
                         + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.\n\n")

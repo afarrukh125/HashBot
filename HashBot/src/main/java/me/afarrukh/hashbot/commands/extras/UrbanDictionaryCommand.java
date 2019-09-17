@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.extras.urbandict.UrbanDictionary;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
 
@@ -19,7 +19,7 @@ public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         String result = UrbanDictionary.getDefinition(params);
 
         EmbedBuilder eb = new EmbedBuilder()
@@ -40,6 +40,6 @@ public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
             eb.addField(new MessageEmbed.Field("Example", example, false));
         }
 
-        evt.getTextChannel().sendMessage(eb.build()).queue();
+        evt.getChannel().sendMessage(eb.build()).queue();
     }
 }

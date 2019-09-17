@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class MoveCommand extends Command implements MusicCommand {
     public MoveCommand() {
@@ -19,7 +19,7 @@ public class MoveCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         try {
             String[] tokens = params.split(" ");
             if (MusicUtils.canInteract(evt)) {
@@ -39,7 +39,7 @@ public class MoveCommand extends Command implements MusicCommand {
                 evt.getChannel().sendMessage("Moved `" + track.getInfo().title + "` to position " + tokens[1]).queue();
             }
         } catch (NullPointerException e) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
         } catch (NumberFormatException e) {
             evt.getChannel().sendMessage("Please enter numerical indices only.").queue();
         }

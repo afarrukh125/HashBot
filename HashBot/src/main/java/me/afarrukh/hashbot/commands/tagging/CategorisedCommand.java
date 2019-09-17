@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.commands.tagging;
 
 import me.afarrukh.hashbot.commands.management.bot.CommandListCommand;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * @see ExtrasCommand
  * @see RoleCommand
  * @see SystemCommand
- * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(MessageReceivedEvent, List)
+ * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(GuildMessageReceivedEvent, List)
  * @see CommandListCommand
  * @see me.afarrukh.hashbot.core.CommandManager
  */

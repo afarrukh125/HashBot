@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,9 +32,9 @@ public class RemoveRangeCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if(params == null)
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel());
         else {
             StringBuilder errorMessageBuilder = new StringBuilder();
             // Get all the track ranges provided
@@ -87,26 +87,24 @@ public class RemoveRangeCommand extends Command implements MusicCommand {
                 }
             }
             int ct = 0;
-            Iterator<List<AudioTrack>> iter = trackRanges.iterator();
-            while (iter.hasNext()) {
-                List<AudioTrack> tracks= iter.next();
-                ct+=tracks.size();
+            for (List<AudioTrack> tracks : trackRanges) {
+                ct += tracks.size();
                 trackList.removeAll(tracks);
             }
             // Replace the queue
             Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(trackList);
 
             if(ct == 0)
-                evt.getTextChannel().sendMessage("Could not remove any tracks from the queues. Check the errors below to see what went wrong")
+                evt.getChannel().sendMessage("Could not remove any tracks from the queues. Check the errors below to see what went wrong")
                         .queue();
             else
                 // Inform them of how many tracks were removed
-                evt.getTextChannel().sendMessage("Removed " + ct + " tracks from the queue").queue();
+                evt.getChannel().sendMessage("Removed " + ct + " tracks from the queue").queue();
 
 
             // If there are error messages for any of the ranges then inform the invoking user
             if(!errorMessageBuilder.toString().isEmpty())
-                evt.getTextChannel().sendMessage(new StringBuilder("```Errors: ").append("\n").append(errorMessageBuilder).append("```"))
+                evt.getChannel().sendMessage(new StringBuilder("```Errors: ").append("\n").append(errorMessageBuilder).append("```"))
                         .queue();
 
         }

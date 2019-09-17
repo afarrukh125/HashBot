@@ -9,10 +9,10 @@ import java.util.List;
  */
 public abstract class CLICommand {
 
-    protected String name;
-    protected List<String> aliases;
+    private final String name;
+    private final List<String> aliases;
 
-    public CLICommand(String name) {
+    protected CLICommand(String name) {
         this.name = name;
         aliases = new ArrayList<>();
     }

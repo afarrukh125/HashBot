@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 
 import java.awt.*;
@@ -33,10 +33,10 @@ public class RoleBuilder implements RoleGUI {
     private Color color;
     private Timer timeoutTimer;
 
-    public RoleBuilder(MessageReceivedEvent evt, String name) {
+    public RoleBuilder(GuildMessageReceivedEvent evt, String name) {
         this.guild = evt.getGuild();
         this.user = evt.getAuthor();
-        TextChannel channel = evt.getTextChannel();
+        TextChannel channel = evt.getChannel();
 
         if (name == null)
             name = " ";
@@ -80,7 +80,7 @@ public class RoleBuilder implements RoleGUI {
         Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().put(user.getIdLong(), this);
     }
 
-    public static Color hexToRGB(String colorString) {
+    private static Color hexToRGB(String colorString) {
         return new Color(
                 Integer.valueOf(colorString.substring(0, 2), 16),
                 Integer.valueOf(colorString.substring(2, 4), 16),
@@ -213,7 +213,7 @@ public class RoleBuilder implements RoleGUI {
      *
      * @param evt The event associated with the message received
      */
-    public void handleEvent(MessageReceivedEvent evt) {
+    public void handleEvent(GuildMessageReceivedEvent evt) {
 
         switch (stage) {
             case 0:
@@ -236,7 +236,7 @@ public class RoleBuilder implements RoleGUI {
         evt.getMessage().delete().queue();
     }
 
-    private void chooseRed(MessageReceivedEvent evt) {
+    private void chooseRed(GuildMessageReceivedEvent evt) {
         try {
             red = Integer.parseInt(evt.getMessage().getContentRaw());
             message.editMessage(EmbedUtils.getRoleRed(red)).queue();
@@ -245,7 +245,7 @@ public class RoleBuilder implements RoleGUI {
         }
     }
 
-    private void chooseGreen(MessageReceivedEvent evt) {
+    private void chooseGreen(GuildMessageReceivedEvent evt) {
         try {
             green = Integer.parseInt(evt.getMessage().getContentRaw());
             message.editMessage(EmbedUtils.getRoleGreen(green)).queue();
@@ -254,7 +254,7 @@ public class RoleBuilder implements RoleGUI {
         }
     }
 
-    private void chooseBlue(MessageReceivedEvent evt) {
+    private void chooseBlue(GuildMessageReceivedEvent evt) {
         try {
             blue = Integer.parseInt(evt.getMessage().getContentRaw());
             message.editMessage(EmbedUtils.getRoleBlue(blue)).queue();

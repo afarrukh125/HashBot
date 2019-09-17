@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.music;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetVolumeCommand extends Command implements OwnerCommand {
 
@@ -16,15 +16,15 @@ public class SetVolumeCommand extends Command implements OwnerCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (params == null) {
-            evt.getTextChannel().sendMessage("Need to provide volume to change to.").queue();
+            evt.getChannel().sendMessage("Need to provide volume to change to.").queue();
             return;
         }
         try {
             MusicUtils.setVolume(evt, Integer.parseInt(params));
         } catch (NumberFormatException e) {
-            evt.getTextChannel().sendMessage("Need to provide an integer as the volume to set to").queue();
+            evt.getChannel().sendMessage("Need to provide an integer as the volume to set to").queue();
         }
     }
 }

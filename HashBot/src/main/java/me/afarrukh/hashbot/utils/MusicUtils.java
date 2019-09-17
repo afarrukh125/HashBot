@@ -9,7 +9,7 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.concurrent.BlockingQueue;
@@ -22,7 +22,7 @@ public class MusicUtils {
      * @param track        The track being queued
      * @param playTop      Whether or not the track is to be queued to the top of the list
      */
-    public static void play(MessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
+    public static void play(GuildMessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
 
         connectToChannel(evt.getMember());
         Invoker invoker = new Invoker(evt.getMember());
@@ -89,7 +89,7 @@ public class MusicUtils {
     /**
      * Deletes the last bot message and message event message for 'play' commands mainly
      */
-    public static void cleanPlayMessage(MessageReceivedEvent evt) {
+    public static void cleanPlayMessage(GuildMessageReceivedEvent evt) {
         BotUtils.deleteLastMsg(evt);
         evt.getMessage().delete().queue();
     }
@@ -98,15 +98,12 @@ public class MusicUtils {
      * @param evt The event associated with the call
      * @return True or false depending on whether music commands can be called
      */
-    public static boolean canInteract(MessageReceivedEvent evt) {
+    public static boolean canInteract(GuildMessageReceivedEvent evt) {
         if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() == null || evt.getMember().getVoiceState().getChannel() == null)
             return false;
 
-        if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel()
-                .equals(evt.getMember().getVoiceState().getChannel()))
-            return false;
-
-        return true;
+        return evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel()
+                .equals(evt.getMember().getVoiceState().getChannel());
     }
 
     /**
@@ -147,7 +144,7 @@ public class MusicUtils {
      * @param evt The event being queried for information such as the channel
      * @param vol The volume to be changed to
      */
-    public static void setVolume(MessageReceivedEvent evt, int vol) {
+    public static void setVolume(GuildMessageReceivedEvent evt, int vol) {
         if (vol < 0 || vol > Constants.MAX_VOL) {
             evt.getChannel().sendMessage("You cannot set the volume to that value").queue();
             return;
@@ -161,7 +158,7 @@ public class MusicUtils {
      *
      * @param evt The message received event associated with the pause request being sent
      */
-    public static void pause(MessageReceivedEvent evt) {
+    public static void pause(GuildMessageReceivedEvent evt) {
         AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(true);
     }
@@ -171,7 +168,7 @@ public class MusicUtils {
      *
      * @param evt The message receieved event relating to the resume request
      */
-    public static void resume(MessageReceivedEvent evt) {
+    public static void resume(GuildMessageReceivedEvent evt) {
         AudioPlayer ap = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(false);
     }
@@ -182,7 +179,7 @@ public class MusicUtils {
      * @param evt     The message received event containing information regarding the track which is to be seeked through
      * @param seconds The time in seconds to be searched for in the currently playing track
      */
-    public static void seek(MessageReceivedEvent evt, int seconds) {
+    public static void seek(GuildMessageReceivedEvent evt, int seconds) {
         try {
             AudioTrack track = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
 
@@ -205,19 +202,19 @@ public class MusicUtils {
      * @param evt The message received event associated with the track to be removed
      * @param idx The current index of the track to be removed
      */
-    public static void remove(MessageReceivedEvent evt, int idx) {
+    public static void remove(GuildMessageReceivedEvent evt, int idx) {
         BlockingQueue<AudioTrack> tracks = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
 
         int count = 1;
         for (AudioTrack track : tracks) {
             if (count == idx) {
                 tracks.remove(track);
-                evt.getTextChannel().sendMessage("Removed `" + track.getInfo().title + "` from queue").queue();
+                evt.getChannel().sendMessage("Removed `" + track.getInfo().title + "` from queue").queue();
                 return;
             }
             count++;
         }
-        evt.getTextChannel().sendMessage("Could not find a track at that index.").queue();
+        evt.getChannel().sendMessage("Could not find a track at that index.").queue();
     }
 
 }

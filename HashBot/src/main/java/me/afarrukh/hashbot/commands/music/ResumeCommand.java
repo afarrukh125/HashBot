@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class ResumeCommand extends Command implements MusicCommand {
 
@@ -15,13 +15,13 @@ public class ResumeCommand extends Command implements MusicCommand {
     }
 
     @Override
-    public void onInvocation(MessageReceivedEvent evt, String params) {
+    public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (MusicUtils.canInteract(evt)) {
             if (Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
                 MusicUtils.resume(evt);
                 evt.getChannel().sendMessage("Resumed.").queue();
             } else
-                evt.getTextChannel().sendMessage("The bot is already playing.").queue();
+                evt.getChannel().sendMessage("The bot is already playing.").queue();
         }
     }
 }
