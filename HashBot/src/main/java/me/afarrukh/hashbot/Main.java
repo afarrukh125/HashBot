@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.core.Bot;
 
 class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String tok;
         Constants.init();
         if (args.length == 0) {

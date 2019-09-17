@@ -266,6 +266,8 @@ public class TrackScheduler extends AudioEventAdapter {
             return;
         }
 
+        // The user who has their track currently playing should be put to the back of the queue,
+        // in case the first track after interleaving belongs to them as well.
         if (player.getPlayingTrack() != null) {
             AudioTrack currentTrack = player.getPlayingTrack();
             if (userNameList.get(0).equals(currentTrack.getUserData().toString())) {

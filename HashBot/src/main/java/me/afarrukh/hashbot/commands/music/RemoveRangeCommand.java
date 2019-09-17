@@ -23,7 +23,7 @@ public class RemoveRangeCommand extends Command implements MusicCommand {
         super("removerange");
         addAlias("rmrange");
         addAlias("rr");
-        description = "Removes all tracks between the start and end (inclusive) ranges from the track queue";
+        description = "Removes all tracks between the start and end (both inclusive) ranges from the track queue";
         addParameter("ranges", "Comma separated ranges to remove from the track queue, or individual indexes. " +
                 "Ranges should be specified with dashes. You can also provide a single number to remove all tracks from that index onwards.");
 
@@ -54,7 +54,15 @@ public class RemoveRangeCommand extends Command implements MusicCommand {
                                 .append(" was invalid, as it is outside of the track queue size").append("\n");
                         break;
                     }
-                    trackRanges.add(new ArrayList<>(trackList.subList(Integer.parseInt(rangeEndPoints[0])-1, trackList.size())));
+                    try {
+                        trackRanges.add(new ArrayList<>(trackList.subList(Integer.parseInt(rangeEndPoints[0]) - 1, trackList.size())));
+                    } catch (NumberFormatException e) {
+                        errorMessageBuilder.append("- Range ").append(range).append(" was invalid. Please enter numeric ranges only\n");
+                        break;
+                    } catch (IndexOutOfBoundsException e) {
+                        errorMessageBuilder.append("- Range ").append(range).append(" was invalid. Please enter numbers in a valid range\n");
+                        break;
+                    }
                 } else {
                     // If it is not a range
                     if(range.split("-").length==1) {

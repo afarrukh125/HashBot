@@ -34,6 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Bot {
     public static CommandManager commandManager;
@@ -49,98 +52,117 @@ public class Bot {
      *
      * @param token The unique token used to login to the discord servers
      */
-    public Bot(String token) {
+    public Bot(String token) throws InterruptedException {
         this.token = token;
-        try {
-            init();
-        } catch (LoginException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        init();
     }
 
     /**
      * Adds the commands and initialises all the managers
      *
-     * @throws LoginException The login servers failed
      */
-    private void init() throws LoginException, InterruptedException {
-        botUser = new JDABuilder(AccountType.BOT)
-                .setToken(token)
-                .addEventListener(new MessageListener())
-                .build().awaitReady();
+    private void init() throws InterruptedException {
+        ExecutorService service = Executors.newFixedThreadPool(2);
 
-        commandManager = new CommandManager()
-                .addCommand(new CommandListCommand())
-                .addCommand(new UptimeCommand())
-                .addCommand(new AddRoleCommand())
-                .addCommand(new CreateRoleCommand())
-                .addCommand(new RemoveRoleCommand())
-                .addCommand(new SetPrefixCommand())
-                .addCommand(new ColourChangeCommand())
-                .addCommand(new SetNickCommand())
-                .addCommand(new RoleRGBCommand())
-                .addCommand(new ListMembersCommand())
-                .addCommand(new DeleteRoleCommand())
-                .addCommand(new SetNameCommand())
-                .addCommand(new PingCommand())
-                .addCommand(new RewardCommand())
-                .addCommand(new StatsCommand())
-                .addCommand(new PruneCommand())
-                .addCommand(new LeaderboardCommand())
-                .addCommand(new PlayCommand())
-                .addCommand(new QueueCommand())
-                .addCommand(new SavePlaylistCommand())
-                .addCommand(new LoadListCommand())
-                .addCommand(new ViewListCommand())
-                .addCommand(new DeleteListCommand())
-                .addCommand(new RemoveCommand())
-                .addCommand(new ClearQueueCommand())
-                .addCommand(new PruneQueueCommand())
-                .addCommand(new DisconnectCommand())
-                .addCommand(new ClearCommand())
-                .addCommand(new LoopCommand())
-                .addCommand(new LoopQueueCommand())
-                .addCommand(new GiveCommand())
-                .addCommand(new FlipCommand())
-                .addCommand(new NowPlayingCommand())
-                .addCommand(new RemoveRangeCommand())
-                .addCommand(new PauseCommand())
-                .addCommand(new ResumeCommand())
-                .addCommand(new ResetPlayerCommand())
-                .addCommand(new SetVolumeCommand())
-                .addCommand(new HelpCommand())
-                .addCommand(new SetPinThresholdCommand())
-                .addCommand(new PlayTopCommand())
-                .addCommand(new SeekCommand())
-                .addCommand(new SetPinnedChannel())
-                .addCommand(new SetUnpinnedCommand())
-                .addCommand(new MoveCommand())
-                .addCommand(new TimeCreatedCommand())
-                .addCommand(new ShuffleCommand())
-                .addCommand(new FairShuffleCommand())
-                .addCommand(new InterleaveCommand())
-                .addCommand(new SetRoleCommand())
-                .addCommand(new FairPlayCommand())
-                .addCommand(new ViewCategoriesCommand())
-                .addCommand(new UrbanDictionaryCommand())
-                .addCommand(new CheckMemoryCommand())
-                .addCommand(new RoleStatsCommand())
-                .addCommand(new SkipCommand());
+        Future<?> botFuture = service.submit(() -> {
+            try {
+                botUser = new JDABuilder(AccountType.BOT)
+                        .setToken(token)
+                        .build().awaitReady();
+            } catch (LoginException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
-        //setMusicOnly();
 
-        musicManager = new MusicManager();
+        Future<?> commandFuture = service.submit(
+                () -> {
+                    commandManager = new CommandManager()
+                            .addCommand(new CommandListCommand())
+                            .addCommand(new UptimeCommand())
+                            .addCommand(new AddRoleCommand())
+                            .addCommand(new CreateRoleCommand())
+                            .addCommand(new RemoveRoleCommand())
+                            .addCommand(new SetPrefixCommand())
+                            .addCommand(new ColourChangeCommand())
+                            .addCommand(new SetNickCommand())
+                            .addCommand(new RoleRGBCommand())
+                            .addCommand(new ListMembersCommand())
+                            .addCommand(new DeleteRoleCommand())
+                            .addCommand(new SetNameCommand())
+                            .addCommand(new PingCommand())
+                            .addCommand(new RewardCommand())
+                            .addCommand(new StatsCommand())
+                            .addCommand(new PruneCommand())
+                            .addCommand(new LeaderboardCommand())
+                            .addCommand(new PlayCommand())
+                            .addCommand(new QueueCommand())
+                            .addCommand(new SavePlaylistCommand())
+                            .addCommand(new LoadListCommand())
+                            .addCommand(new ViewListCommand())
+                            .addCommand(new DeleteListCommand())
+                            .addCommand(new RemoveCommand())
+                            .addCommand(new ClearQueueCommand())
+                            .addCommand(new PruneQueueCommand())
+                            .addCommand(new DisconnectCommand())
+                            .addCommand(new ClearCommand())
+                            .addCommand(new LoopCommand())
+                            .addCommand(new LoopQueueCommand())
+                            .addCommand(new GiveCommand())
+                            .addCommand(new FlipCommand())
+                            .addCommand(new NowPlayingCommand())
+                            .addCommand(new RemoveRangeCommand())
+                            .addCommand(new PauseCommand())
+                            .addCommand(new ResumeCommand())
+                            .addCommand(new ResetPlayerCommand())
+                            .addCommand(new SetVolumeCommand())
+                            .addCommand(new HelpCommand())
+                            .addCommand(new SetPinThresholdCommand())
+                            .addCommand(new PlayTopCommand())
+                            .addCommand(new SeekCommand())
+                            .addCommand(new SetPinnedChannel())
+                            .addCommand(new SetUnpinnedCommand())
+                            .addCommand(new MoveCommand())
+                            .addCommand(new TimeCreatedCommand())
+                            .addCommand(new ShuffleCommand())
+                            .addCommand(new FairShuffleCommand())
+                            .addCommand(new InterleaveCommand())
+                            .addCommand(new SetRoleCommand())
+                            .addCommand(new FairPlayCommand())
+                            .addCommand(new ViewCategoriesCommand())
+                            .addCommand(new UrbanDictionaryCommand())
+                            .addCommand(new CheckMemoryCommand())
+                            .addCommand(new RoleStatsCommand())
+                            .addCommand(new SkipCommand());
 
-        gameRoleManager = new GameRoleManager();
-        reactionManager = new ReactionManager();
+                    //setMusicOnly();
+
+                }
+        );
+
+        while (!(botFuture.isDone() || commandFuture.isDone())) {
+            Thread.sleep(300);
+            // Waiting for one of the tasks to finish
+        }
 
         Timer experienceTimer = new Timer();
         experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER * 1000, Constants.EXPERIENCE_TIMER * 1000);
 
         startUpMessages();
 
+        while (!botFuture.isDone()) {
+            Thread.sleep(300);
+            // Waiting on the bot to finish setting up
+        }
+
+        botUser.addEventListener(new MessageListener());
         botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
         System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
+
+        musicManager = new MusicManager();
+
+        gameRoleManager = new GameRoleManager();
+        reactionManager = new ReactionManager();
 
         setupNames();
 
