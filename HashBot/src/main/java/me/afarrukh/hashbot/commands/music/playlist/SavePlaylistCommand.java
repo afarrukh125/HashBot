@@ -10,10 +10,7 @@ import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Abdullah
@@ -47,8 +44,7 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
         // Ensuring all tracks in the list are unique
-        Map<String, String> uriNameMap = new HashMap<>();
-
+        Map<String, String> uriNameMap = new LinkedHashMap<>();
         for(AudioTrack track: trackList) {
             uriNameMap.put(track.getInfo().uri, track.getInfo().title);
         }
