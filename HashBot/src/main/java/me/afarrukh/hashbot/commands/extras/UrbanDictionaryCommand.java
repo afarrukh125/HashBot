@@ -6,7 +6,6 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.extras.urbandict.UrbanDictionary;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class UrbanDictionaryCommand extends Command implements ExtrasCommand {

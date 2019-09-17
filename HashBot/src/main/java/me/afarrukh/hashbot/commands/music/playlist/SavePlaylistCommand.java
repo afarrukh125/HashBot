@@ -8,10 +8,12 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Abdullah

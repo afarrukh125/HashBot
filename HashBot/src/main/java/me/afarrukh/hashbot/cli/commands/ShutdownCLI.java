@@ -1,7 +1,7 @@
-package me.afarrukh.hashbot.core.cli.commands;
+package me.afarrukh.hashbot.cli.commands;
 
+import me.afarrukh.hashbot.cli.CLICommand;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.cli.CLICommand;
 
 /**
  * @author Abdullah

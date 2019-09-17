@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.commands;
 
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;

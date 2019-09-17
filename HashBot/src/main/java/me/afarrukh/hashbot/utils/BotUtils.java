@@ -209,7 +209,7 @@ public class BotUtils {
      * Calculates the approximate memory usage of the bot
      *
      * @return The approximate memory usage in megabytes
-     * @see me.afarrukh.hashbot.core.cli.commands.CheckMemoryCLI
+     * @see me.afarrukh.hashbot.cli.commands.CheckMemoryCLI
      * @see me.afarrukh.hashbot.commands.management.bot.CheckMemoryCommand
      */
     public static long getMemoryUsage() {

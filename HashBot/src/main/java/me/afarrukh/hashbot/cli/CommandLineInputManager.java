@@ -1,8 +1,9 @@
-package me.afarrukh.hashbot.core.cli;
+package me.afarrukh.hashbot.cli;
 
-import me.afarrukh.hashbot.core.cli.commands.CheckMemoryCLI;
-import me.afarrukh.hashbot.core.cli.commands.GarbageCleanCLI;
-import me.afarrukh.hashbot.core.cli.commands.ShutdownCLI;
+import me.afarrukh.hashbot.cli.commands.CheckMemoryCLI;
+import me.afarrukh.hashbot.cli.commands.GarbageCleanCLI;
+import me.afarrukh.hashbot.cli.commands.SetNameCLI;
+import me.afarrukh.hashbot.cli.commands.ShutdownCLI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +22,16 @@ public class CommandLineInputManager {
         addCommand(new CheckMemoryCLI());
         addCommand(new GarbageCleanCLI());
         addCommand(new ShutdownCLI());
+        addCommand(new SetNameCLI());
     }
 
     public void processInput(String input) {
-        CLICommand commandToExecute = commandMap.get(input);
+        String commandFromString = input.split(" ")[0];
+        CLICommand commandToExecute = commandMap.get(commandFromString);
 
         String[] tokens = input.split(" ", 2);
         final String params = (tokens.length > 1) ? tokens[1] : null;
+        System.out.println(params);
         if (commandToExecute == null)
             System.out.println("Invalid command: " + input);
         else

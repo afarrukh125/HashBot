@@ -5,7 +5,6 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.music.Playlist;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;

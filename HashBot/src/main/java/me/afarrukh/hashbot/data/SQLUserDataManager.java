@@ -1,6 +1,5 @@
 package me.afarrukh.hashbot.data;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.Playlist;

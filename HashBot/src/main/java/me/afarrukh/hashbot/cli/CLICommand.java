@@ -1,4 +1,4 @@
-package me.afarrukh.hashbot.core.cli;
+package me.afarrukh.hashbot.cli;
 
 import java.util.ArrayList;
 import java.util.List;

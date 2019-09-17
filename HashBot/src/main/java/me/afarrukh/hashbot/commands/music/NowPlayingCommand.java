@@ -5,7 +5,6 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class NowPlayingCommand extends Command implements MusicCommand {

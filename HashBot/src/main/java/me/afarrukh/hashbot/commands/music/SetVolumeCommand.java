@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.commands.music;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class SetVolumeCommand extends Command implements OwnerCommand {

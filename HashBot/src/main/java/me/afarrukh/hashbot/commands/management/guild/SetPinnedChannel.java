@@ -5,7 +5,6 @@ import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.utils.BotUtils;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

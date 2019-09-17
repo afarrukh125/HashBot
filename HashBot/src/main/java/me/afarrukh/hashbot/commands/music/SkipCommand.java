@@ -6,7 +6,6 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class SkipCommand extends Command implements MusicCommand {

@@ -6,7 +6,6 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.PlaylistLoader;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 /**

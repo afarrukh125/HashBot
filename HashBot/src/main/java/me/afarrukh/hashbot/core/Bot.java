@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import me.afarrukh.hashbot.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
@@ -19,7 +20,6 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -148,7 +148,7 @@ public class Bot {
         new Thread(() -> {
             while (true) {
                 Scanner scanner = new Scanner(System.in);
-                String input = scanner.next();
+                String input = scanner.nextLine();
                 ownerInputManager.processInput(input);
             }
         }

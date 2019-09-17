@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.commands.management.bot;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class PingCommand extends Command implements SystemCommand {
