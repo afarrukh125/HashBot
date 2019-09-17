@@ -103,6 +103,7 @@ public class Bot {
                 .addCommand(new GiveCommand())
                 .addCommand(new FlipCommand())
                 .addCommand(new NowPlayingCommand())
+                .addCommand(new RemoveRangeCommand())
                 .addCommand(new PauseCommand())
                 .addCommand(new ResumeCommand())
                 .addCommand(new ResetPlayerCommand())

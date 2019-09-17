@@ -100,10 +100,10 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Replaces the current queue with a new one
      *
-     * @param list The list to replace the current queue with
+     * @param collection The collection to replace the current queue with
      */
-    private void replaceQueue(List<AudioTrack> list) {
-        queue = new LinkedBlockingQueue<>(list);
+    public void replaceQueue(Collection<AudioTrack> collection) {
+        queue = new LinkedBlockingQueue<>(collection);
     }
 
     /**

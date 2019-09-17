@@ -6,6 +6,12 @@ import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+/**
+ * @author Abdullah
+ *
+ * Removes a track at the given index from the track queue from the <code>TrackScheduler</code>
+ * @see me.afarrukh.hashbot.music.TrackScheduler
+ */
 public class RemoveCommand extends Command implements MusicCommand {
 
     public RemoveCommand() {
