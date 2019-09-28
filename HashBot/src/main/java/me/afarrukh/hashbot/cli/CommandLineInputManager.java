@@ -33,7 +33,6 @@ public class CommandLineInputManager {
 
         String[] tokens = input.split(" ", 2);
         final String params = (tokens.length > 1) ? tokens[1] : null;
-        System.out.println(params);
         if (commandToExecute == null)
             System.out.println("Invalid command: " + input);
         else
