@@ -39,7 +39,7 @@ public class RoleAdder implements RoleGUI {
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()), 30 * 1000); //30 second timer before builder stops
 
-        message = evt.getChannel().sendMessage(EmbedUtils.getGameRoleListEmbed(this, page)).complete();
+        message = evt.getChannel().sendMessage(EmbedUtils.getUserGameRoleListEmbed(this, page)).complete();
         message.editMessage("Please wait for all emojis to appear before selecting an option.").queue();
 
         this.roleList = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles();
@@ -94,7 +94,7 @@ public class RoleAdder implements RoleGUI {
                 if (page <= 1)
                     return;
                 page--;
-                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
+                message.editMessage(EmbedUtils.getUserGameRoleListEmbed(this, page)).queue();
                 message.clearReactions().complete();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
@@ -108,7 +108,7 @@ public class RoleAdder implements RoleGUI {
                 if (page >= maxPageNumber)
                     return;
                 page++;
-                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
+                message.editMessage(EmbedUtils.getUserGameRoleListEmbed(this, page)).queue();
                 message.clearReactions().complete();
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
@@ -157,7 +157,7 @@ public class RoleAdder implements RoleGUI {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
-                message.editMessage(EmbedUtils.getGameRoleListEmbed(this, page)).queue();
+                message.editMessage(EmbedUtils.getUserGameRoleListEmbed(this, page)).queue();
                 return;
             case confirm:
                 message.clearReactions().complete();

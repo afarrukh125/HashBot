@@ -53,30 +53,30 @@ public class BotUtils {
     public static void createRole(Guild guild, RoleBuilder rb) {
         //Validating if the role is already existing in the guild
         if (rb.getColor().getBlue() == 0 && rb.getColor().getGreen() == 0 && rb.getColor().getRed() == 0) {
-            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed()).queue();
             return;
         }
 
         if (rb.roleName.equals("")) {
-            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed()).queue();
             return;
         }
 
         if (rb.getColor().getBlue() > 255 || rb.getColor().getGreen() > 255 || rb.getColor().getRed() > 255) {
-            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed()).queue();
             return;
         }
 
         for (Role r : guild.getRoles()) {
             if (r.getName().equalsIgnoreCase(rb.roleName)) {
-                rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
+                rb.message.editMessage(EmbedUtils.getRoleExistsEmbed()).queue();
                 return;
             }
         }
         Member m = guild.getMemberById(rb.getUser().getId());
         for (Role r : m.getRoles())
             if (r.getName().equalsIgnoreCase(rb.roleName)) {
-                rb.message.editMessage(EmbedUtils.getRoleExistsEmbed(rb)).queue();
+                rb.message.editMessage(EmbedUtils.getRoleExistsEmbed()).queue();
                 return;
             }
 
@@ -88,7 +88,7 @@ public class BotUtils {
             newRole.getManager().setName(cap).setMentionable(true).setHoisted(false).setColor(rb.getColor())
                     .queue();
         } catch (IllegalArgumentException e) {
-            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed(rb)).queue();
+            rb.message.editMessage(EmbedUtils.getInvalidRoleEmbed()).queue();
             newRole.delete().queue();
             return;
         }

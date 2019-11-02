@@ -329,7 +329,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getInvalidRoleEmbed(RoleBuilder rb) {
+    public static MessageEmbed getInvalidRoleEmbed() {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setDescription("The new role could not be created because the colour or name is invalid. Please try again.");
@@ -337,7 +337,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getRoleExistsEmbed(RoleBuilder rb) {
+    public static MessageEmbed getRoleExistsEmbed() {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setDescription("The new role could not be created because this role already exists or you already have it.");
@@ -345,12 +345,12 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getGameRoleListEmbed(RoleAdder ra, int page) {
+    public static <T extends RoleGUI> MessageEmbed getGameRoleListEmbed(T roleGUI, int page) {
         EmbedBuilder eb = new EmbedBuilder();
-        java.util.List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles();
+        java.util.List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
-        eb.setTitle("List of game roles for " + ra.getGuild().getName());
+        eb.setTitle("List of game roles for " + roleGUI.getGuild().getName());
 
         //If there are no tracks in the queue then it will just give an embedded message for a single track.
         if (roleList.size() == 0) {
@@ -371,7 +371,7 @@ public class EmbedUtils {
         }
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
-        Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().iterator();
+        Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getGameRoles().iterator();
         int startIdx = 1 + ((page - 1) * 10); //The start track on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last track on that page, eg page 2 would give 20
         int count = 1;
@@ -385,9 +385,9 @@ public class EmbedUtils {
 
             count++;
         }
-        eb.setTitle("Roles for " + ra.getGuild().getName() + " (Page " + page + "/" + maxPageNumber + ")");
-        eb.setThumbnail(ra.getGuild().getIconUrl());
-        if (Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getGameRoles().size() > 10)
+        eb.setTitle("Roles for " + roleGUI.getGuild().getName() + " (Page " + page + "/" + maxPageNumber + ")");
+        eb.setThumbnail(roleGUI.getGuild().getIconUrl());
+        if (Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getGameRoles().size() > 10)
             eb.setFooter("Use the arrow reaction to move to the next page of roles", null);
         return eb.build();
     }
@@ -411,7 +411,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed deleteRoleCompleteEmbed(RoleGUI roleGUI) {
+    public static <T extends RoleGUI> MessageEmbed deleteRoleCompleteEmbed(T roleGUI) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
@@ -448,12 +448,12 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed getCreatedRolesEmbed(RoleDeleter rd, int page, ArrayList<GameRole> createdRoles) {
+    public static <T extends RoleGUI> MessageEmbed getCreatedRolesEmbed(T roleGUI, int page, ArrayList<GameRole> createdRoles) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
 
         if (createdRoles.size() == 0) {
-            Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleModifiers().remove(rd);
+            Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getRoleModifiers().remove(roleGUI);
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
                     .appendDescription("There are no GameRoles created by you. Use **createrole** to do this.")
@@ -484,18 +484,18 @@ public class EmbedUtils {
             count++;
         }
 
-        eb.setTitle("Roles created by " + rd.getUser().getName() + " (Page " + page + "/" + maxPageNumber + ")");
-        eb.setThumbnail(rd.getUser().getAvatarUrl());
+        eb.setTitle("Roles created by " + roleGUI.getUser().getName() + " (Page " + page + "/" + maxPageNumber + ")");
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
 
         return eb.build();
     }
 
-    public static MessageEmbed getGameRoleListEmbed(RoleRemover rr, int page) {
+    public static <T extends RoleGUI> MessageEmbed getUserGameRoleListEmbed(T roleGUI, int page) {
         EmbedBuilder eb = new EmbedBuilder();
-        ArrayList<GameRole> roleList = new Invoker(rr.getGuild().getMember(rr.getUser())).getGameRoles();
+        ArrayList<GameRole> roleList = new Invoker(roleGUI.getGuild().getMember(roleGUI.getUser())).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
-        eb.setTitle("List of game roles for " + rr.getUser().getName());
+        eb.setTitle("List of game roles for " + roleGUI.getUser().getName());
 
         //If there are no roles in the server...
         if (roleList.size() == 0) {
@@ -530,43 +530,43 @@ public class EmbedUtils {
 
             count++;
         }
-        eb.setTitle("Roles for " + rr.getUser().getName() + " (Page " + page + "/" + maxPageNumber + ")");
-        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setTitle("Roles for " + roleGUI.getUser().getName() + " (Page " + page + "/" + maxPageNumber + ")");
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
         return eb.build();
     }
 
-    public static MessageEmbed confirmRemoveRole(RoleRemover rr, GameRole gameRole) {
+    public static <T extends RoleGUI> MessageEmbed confirmRemoveRole(T roleGUI, GameRole gameRole) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
         eb.setTitle("Confirm role removal");
         eb.appendDescription("Please confirm that you would like to remove the following role: " + gameRole.getName());
 
         return eb.build();
     }
 
-    public static MessageEmbed getNullRoleEmbed(RoleRemover rr) {
+    public static <T extends RoleGUI> MessageEmbed getNullRoleEmbed(T roleGUI) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
         eb.setTitle("Error");
         eb.appendDescription("The role you have selected is invalid. Please try again. (It may not exist)");
         return eb.build();
     }
 
-    public static MessageEmbed alreadyHasRoleEmbed(RoleRemover rr) {
+    public static <T extends RoleGUI> MessageEmbed alreadyHasRoleEmbed(T roleGUI) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
         eb.setTitle("Error");
         eb.appendDescription("You already have this role.");
         return eb.build();
     }
 
-    public static MessageEmbed addRoleRemovedEmbed(RoleRemover rr, GameRole gr) {
+    public static <T extends RoleGUI> MessageEmbed addRoleRemovedEmbed(T roleGUI, GameRole gr) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(rr.getUser().getAvatarUrl());
+        eb.setThumbnail(roleGUI.getUser().getAvatarUrl());
         eb.setTitle("Role removed");
         eb.appendDescription("You no longer have the role " + gr.getName());
         return eb.build();
