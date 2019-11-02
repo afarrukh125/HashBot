@@ -55,6 +55,8 @@ public class Constants {
      * Starts up the constants such as bot owner ids, bot token, prefix
      */
 
+    private Constants() { }
+
     public static ArrayList<String> ownerIds;
     public static String token;
 
