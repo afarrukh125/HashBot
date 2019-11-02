@@ -18,8 +18,6 @@ import java.util.*;
  */
 public class GuildGameRoleManager {
 
-    private static final String pinnedKey = "pThreshold";
-
     private final Map<GameRole, Role> roleMap;
     private final Map<Long, RoleGUI> roleModifiers;
     private final Guild guild;
@@ -35,34 +33,51 @@ public class GuildGameRoleManager {
     }
 
     private void init() {
-        DataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
-        JSONArray arr = (JSONArray) jgm.getValue("gameroles");
+        DataManager guildDataManager = GuildDataMapper.getInstance().getDataManager(guild);
+
+        loadRolesFromDatabase(guildDataManager);
+
+        setupCommandPrefix(guildDataManager);
+
+        setupPinnedMessageThreshold(guildDataManager);
+
+        guildDataManager = null; // Clean up
+    }
+
+    private void loadRolesFromDatabase(DataManager guildDataManager) {
+
+        JSONArray arr = (JSONArray) guildDataManager.getValue(Key.GAMEROLES.string());
         //noinspection unchecked
         Iterator<Object> iter = arr.iterator();
         while (iter.hasNext()) {
             JSONObject roleObj = (JSONObject) iter.next();
-            String roleName = (String) roleObj.get("name");
+            String roleName = (String) roleObj.get(Key.NAME.string());
             List<Role> roleList = guild.getRolesByName(roleName, true);
             if (!roleList.isEmpty()) {
                 Role role = roleList.get(0);
-                GameRole gameRole = new GameRole(roleName, (String) roleObj.get("creatorId"));
+                GameRole gameRole = new GameRole(roleName, (String) roleObj.get(Key.CREATOR.string()));
                 roleMap.put(gameRole, role);
             } else
                 iter.remove();
         }
-        jgm.updateValue("gameroles", arr);
-        String prefix = (String) jgm.getValue("prefix");
+        guildDataManager.updateValue(Key.GAMEROLES.string(), arr);
+    }
+
+    private void setupCommandPrefix(DataManager guildDataManager) {
+        String prefix = (String) guildDataManager.getValue(Key.PREFIX.string());
+
         if (prefix != null)
             this.prefix = prefix;
         else
-            jgm.updateValue("prefix", Constants.invokerChar);
+            guildDataManager.updateValue(Key.PREFIX.string(), Constants.invokerChar);
+    }
 
-        // Setting the pinned threshold
-        String threshold = (String) jgm.getValue(pinnedKey);
+    private void setupPinnedMessageThreshold(DataManager guildDataManager) {
+        String threshold = (String) guildDataManager.getValue(Key.PINNED_THRESHOLD.string());
         if (threshold != null)
             this.pinThreshold = Integer.parseInt(threshold);
         else
-            jgm.updateValue(pinnedKey, Long.toString(this.pinThreshold));
+            guildDataManager.updateValue(Key.PINNED_THRESHOLD.string(), Long.toString(this.pinThreshold));
     }
 
     public RoleGUI modifierForUser(User user) {
@@ -86,19 +101,19 @@ public class GuildGameRoleManager {
         return null;
     }
 
-    public Role getRoleFromGameRole(GameRole gr) {
-        if (gr == null)
+    public Role getRoleFromGameRole(GameRole gameRole) {
+        if (gameRole == null)
             return null;
 
-        Role role = roleMap.get(gr);
+        Role retrievedRole = roleMap.get(gameRole);
 
-        if (role != null)
-            return role;
+        if (retrievedRole != null)
+            return retrievedRole;
 
-        for (Role r : guild.getRoles()) {
-            if (r.getName().equalsIgnoreCase(gr.getName())) {
-                roleMap.put(gr, r);
-                return r;
+        for (Role role : guild.getRoles()) {
+            if (role.getName().equalsIgnoreCase(gameRole.getName())) {
+                roleMap.put(gameRole, role);
+                return role;
             }
         }
         return null;
@@ -112,11 +127,6 @@ public class GuildGameRoleManager {
         return new ArrayList<>(roleMap.keySet());
     }
 
-    /**
-     * Returns a linked list of roles.
-     *
-     * @return The list of game roles for the guild as roles.
-     */
     public List<Role> getGameRolesAsRoles() {
         return new ArrayList<>(roleMap.values());
     }
@@ -125,12 +135,6 @@ public class GuildGameRoleManager {
         roleMap.put(gameRole, guild.getRolesByName(gameRole.getName(), true).get(0));
     }
 
-    /**
-     * This one should be used during runtime
-     *
-     * @param gameRole The game role to be added
-     * @param role     The role this game role is to be mapped to
-     */
     public void addGameRole(GameRole gameRole, Role role) {
         roleMap.put(gameRole, role);
     }
@@ -141,7 +145,7 @@ public class GuildGameRoleManager {
 
     public void setPrefix(String prefix) {
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
-        jgm.updateValue("prefix", prefix);
+        jgm.updateValue(Key.PREFIX, prefix);
         this.prefix = prefix;
     }
 
@@ -152,6 +156,26 @@ public class GuildGameRoleManager {
     public void setPinThreshold(int amount) {
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
         this.pinThreshold = amount;
-        jgm.updateValue(pinnedKey, Integer.toString(amount));
+        jgm.updateValue(Key.PINNED_THRESHOLD.string(), Integer.toString(amount));
+    }
+
+    private enum Key {
+
+        PREFIX("prefix"),
+        GAMEROLES("gameroles"),
+        NAME("name"),
+        PINNED_THRESHOLD("pThreshold"),
+        CREATOR("creatorId");
+
+
+        private final String key;
+
+        Key(String key) {
+            this.key = key;
+        }
+
+        public String string() {
+            return key;
+        }
     }
 }
