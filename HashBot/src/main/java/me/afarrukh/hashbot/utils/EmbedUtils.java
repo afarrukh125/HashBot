@@ -20,6 +20,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -492,7 +493,7 @@ public class EmbedUtils {
 
     public static <T extends RoleGUI> MessageEmbed getUserGameRoleListEmbed(T roleGUI, int page) {
         EmbedBuilder eb = new EmbedBuilder();
-        ArrayList<GameRole> roleList = Invoker.of(roleGUI.getGuild().getMember(roleGUI.getUser())).getGameRoles();
+        java.util.List<GameRole> roleList = Invoker.of(roleGUI.getGuild().getMember(roleGUI.getUser())).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("List of game roles for " + roleGUI.getUser().getName());
@@ -572,8 +573,8 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static ArrayList<MessageEmbed> getHelpMsg(GuildMessageReceivedEvent evt, java.util.List<Command> commandList) {
-        ArrayList<MessageEmbed> embedArrayList = new ArrayList<>();
+    public static java.util.List<MessageEmbed> getHelpMsg(GuildMessageReceivedEvent evt, java.util.List<Command> commandList) {
+        java.util.List<MessageEmbed> embedArrayList = new ArrayList<>();
 
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
         eb.setTitle("Commands List (Page 1)");
@@ -628,18 +629,18 @@ public class EmbedUtils {
         return embedArrayList;
     }
 
-    public static MessageEmbed getCreditsLeaderboardEmbed(Member[] memberList, GuildMessageReceivedEvent evt) {
+    public static MessageEmbed getCreditsLeaderboardEmbed(java.util.List<Member> memberList, GuildMessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("Credits leaderboard for " + evt.getGuild().getName());
 
-        int maxIndex = memberList.length;
+        int maxIndex = memberList.size();
 
         if (maxIndex > 10)
             maxIndex = 10;
 
         for (int i = 0; i < maxIndex; i++) {
-            Invoker invoker = Invoker.of(memberList[i]);
+            Invoker invoker = Invoker.of(memberList.get(i));
             eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: " + invoker.getCredit() + "`\n\n");
         }
 
@@ -647,11 +648,11 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static MessageEmbed createCategoryEmbed(java.util.List<String> stringList, String prefix) {
+    public static MessageEmbed createCategoryEmbed(Collection<?> categories, String prefix) {
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Command categories");
 
-        for (String s : stringList) {
-            eb.appendDescription(s + "\n");
+        for (Object o : categories) {
+            eb.appendDescription(o + "\n");
         }
 
         eb.setFooter("Use " + prefix + "help <category name> to view all the commands in the category", null);

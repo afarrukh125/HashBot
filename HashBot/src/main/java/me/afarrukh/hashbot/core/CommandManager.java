@@ -12,8 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
 
-    private final Map<String, Command> commandMap = new ConcurrentHashMap<>();
+    private Map<String, Command> map;
     private int commandCount = 0;
+
+    private CommandManager(Builder builder) {
+        this.map = builder.map;
+    }
 
     /**
      * Each time a message is sent with the bot prefix is sent, this method is called to check if a command exists
@@ -42,46 +46,17 @@ public class CommandManager {
         }
     }
 
-    /**
-     * Adds a command to the command manager
-     *
-     * @param c The command to be added to the command map
-     * @return The command manager itself (Allows for chained addCommand calls
-     */
-    public CommandManager addCommand(Command c) {
-        commandMap.put(c.getName(), c);
-        new Thread(() -> {
-            if (!c.getAliases().isEmpty()) {
-                for (String alias : c.getAliases()) {
-                    commandMap.put(alias, c);
-                }
-            }
-        }).start();
-        return this;
-    }
-
     public int getCommandCount() {
         return commandCount;
     }
 
-    /**
-     * Queries the command manager with a string and returns a command associated with that string
-     *
-     * @param name The name of the command or one of the aliases to get a command from
-     * @return The command with that associated name in the command map, null otherwise
-     */
     public Command commandFromName(String name) {
-        return commandMap.get(name);
+        return map.get(name);
     }
 
-    /**
-     * Returns a new ArrayList with all the commands list, with duplicates omitted
-     *
-     * @return A new ArrayList with all commands, derived from the commandsMap
-     */
     public List<Command> getCommandList() {
         List<Command> commandList = new ArrayList<>();
-        for (Command c : commandMap.values()) {
+        for (Command c : map.values()) {
             if (commandList.contains(c))
                 continue;
             commandList.add(c);
@@ -96,13 +71,6 @@ public class CommandManager {
         return commandList;
     }
 
-    public void removeCommand(Command c) {
-        this.commandMap.remove(c.getName());
-        for (String s : c.getAliases()) {
-            this.commandMap.remove(s);
-        }
-    }
-
     public List<Command> getNonAdminCommands() {
         List<Command> commandList = new LinkedList<>();
 
@@ -112,6 +80,28 @@ public class CommandManager {
         }
 
         return new ArrayList<>(commandList);
+    }
+
+    public static class Builder {
+
+        private final Map<String, Command> map = new ConcurrentHashMap<>();
+
+        public CommandManager build() {
+            return new CommandManager(this);
+        }
+
+        public Builder addCommand(Command c) {
+            map.put(c.getName(), c);
+            new Thread(() -> {
+                if (!c.getAliases().isEmpty()) {
+                    for (String alias : c.getAliases()) {
+                        map.put(alias, c);
+                    }
+                }
+            }).start();
+            return this;
+        }
+
     }
 
 }

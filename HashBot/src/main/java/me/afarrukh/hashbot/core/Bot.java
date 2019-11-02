@@ -79,7 +79,7 @@ public class Bot {
 
         Future<?> commandFuture = service.submit(
                 () -> {
-                    commandManager = new CommandManager()
+                    commandManager = new CommandManager.Builder()
                             .addCommand(new CommandListCommand())
                             .addCommand(new UptimeCommand())
                             .addCommand(new AddRoleCommand())
@@ -135,9 +135,8 @@ public class Bot {
                             .addCommand(new UrbanDictionaryCommand())
                             .addCommand(new CheckMemoryCommand())
                             .addCommand(new RoleStatsCommand())
-                            .addCommand(new SkipCommand());
-
-                    //setMusicOnly();
+                            .addCommand(new SkipCommand())
+                            .build();
 
                 }
         );
@@ -178,17 +177,6 @@ public class Bot {
             }
         }
         ).start();
-    }
-
-    /**
-     * Removes all commands that are not music related commands.
-     */
-    private void setMusicOnly() {
-        for (Command c : commandManager.getCommandList()) {
-            if (!(c instanceof MusicCommand) && !(c instanceof SystemCommand) && !(c instanceof PruneCommand) && !(c instanceof SetNameCommand)
-                    && !(c instanceof SetNickCommand) && !(c instanceof SetPrefixCommand) && !(c instanceof CommandListCommand) && !(c instanceof ViewCategoriesCommand))
-                commandManager.removeCommand(c);
-        }
     }
 
     private void startUpMessages() {

@@ -60,7 +60,7 @@ public class LevelUtils {
         return SQLUserDataManager.getMemberData(g);
     }
 
-    public static Member[] getCreditsLeaderboard(Guild g) {
+    public static List<Member> getCreditsLeaderboard(Guild g) {
 
         ArrayList<Member> memberList = new ArrayList<>();
         for (Member m : g.getMembers()) {
@@ -78,8 +78,6 @@ public class LevelUtils {
 
         memberList.sort(memberSorter);
 
-        Member[] userArray = new Member[memberList.size()];
-
-        return memberList.toArray(userArray);
+        return memberList;
     }
 }

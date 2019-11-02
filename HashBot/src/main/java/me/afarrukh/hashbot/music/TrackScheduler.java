@@ -149,7 +149,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void queueTop(AudioTrack track) {
         if (!player.startTrack(track, true)) {
-            ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
+            List<AudioTrack> trackList = new ArrayList<>(queue);
 
             trackList.add(0, track);
 

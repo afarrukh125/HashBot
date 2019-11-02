@@ -6,7 +6,9 @@ import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ViewCategoriesCommand extends Command {
 
@@ -18,13 +20,11 @@ public class ViewCategoriesCommand extends Command {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        List<String> stringList = new ArrayList<>();
+        Set<String> stringList = new HashSet<>();
 
         for (Command c : Bot.commandManager.getCommandList()) {
             if (c instanceof CategorisedCommand) {
-                if (!stringList.contains(((CategorisedCommand) c).getType())) {
-                    stringList.add(((CategorisedCommand) c).getType());
-                }
+                stringList.add(((CategorisedCommand) c).getType());
             }
         }
 
