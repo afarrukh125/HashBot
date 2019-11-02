@@ -55,13 +55,9 @@ public class LevelUtils {
      * @param g The guild to get the member list from
      * @return An array of type User which returns a sorted array of User objects
      */
-    public static Member[] getLeaderboard(Guild g) {
+    public static List<Member> getLeaderboard(Guild g) {
 
-        List<Member> memberList = SQLUserDataManager.getMemberData(g);
-
-        Member[] userArray = new Member[memberList.size()];
-
-        return memberList.toArray(userArray);
+        return SQLUserDataManager.getMemberData(g);
     }
 
     public static Member[] getCreditsLeaderboard(Guild g) {

@@ -229,19 +229,19 @@ public class EmbedUtils {
      * @param evt        The message received event associated with the leaderboard request
      * @return An embed that refers to the leaderboard of the users sorted by their credit
      */
-    public static MessageEmbed getLeaderboard(Member[] memberList, GuildMessageReceivedEvent evt) {
+    public static MessageEmbed getLeaderboard(java.util.List<Member> memberList, GuildMessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("The leaderboard for " + evt.getGuild().getName() + ":");
 
         int VALUE = Constants.LEADERBOARD_MAX;
 
-        if (memberList.length < VALUE) //If the server does not have enough players to have a leaderboard of 5
-            VALUE = memberList.length;
+        if (memberList.size() < VALUE) //If the server does not have enough players to have a leaderboard of 5
+            VALUE = memberList.size();
 
         for (int i = 0; i < VALUE; i++) {
-            Invoker inv = new Invoker(memberList[i]);
-            eb.appendDescription((i + 1) + ". **" + memberList[i].getUser().getName() + "** " + "| `Level: " + inv.getLevel() + "` | `Experience: "
+            Invoker inv = new Invoker(memberList.get(i));
+            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: " + inv.getLevel() + "` | `Experience: "
                     + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
         }
         eb.setThumbnail(evt.getGuild().getIconUrl());

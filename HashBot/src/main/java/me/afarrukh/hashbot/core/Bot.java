@@ -24,6 +24,7 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -68,6 +69,7 @@ public class Bot {
             try {
                 botUser = new JDABuilder(AccountType.BOT)
                         .setToken(token)
+                        .setStatus(OnlineStatus.INVISIBLE)
                         .build().awaitReady();
             } catch (LoginException | InterruptedException e) {
                 e.printStackTrace();

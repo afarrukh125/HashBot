@@ -7,6 +7,8 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
+import java.util.List;
+
 public class LeaderboardCommand extends Command {
 
     public LeaderboardCommand() {
@@ -23,7 +25,7 @@ public class LeaderboardCommand extends Command {
                 evt.getChannel().sendMessage(EmbedUtils.getCreditsLeaderboardEmbed(LevelUtils.getCreditsLeaderboard(evt.getGuild()), evt)).queue();
             }
         } else {
-            Member[] userList = LevelUtils.getLeaderboard(evt.getGuild());
+            List<Member> userList = LevelUtils.getLeaderboard(evt.getGuild());
             evt.getChannel().sendMessage(EmbedUtils.getLeaderboard(userList, evt)).queue();
         }
     }
