@@ -34,7 +34,7 @@ public class PlayTopCommand extends Command implements MusicCommand {
             }
         }
 
-        if (new Invoker(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
+        if (Invoker.of(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
             evt.getChannel().sendMessage("You need at least " + Constants.PLAY_TOP_COST + " credit to queue tracks to the top of the list.").queue();
             return;
         }

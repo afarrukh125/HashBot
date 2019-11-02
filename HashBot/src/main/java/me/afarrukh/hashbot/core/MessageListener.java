@@ -43,7 +43,7 @@ class MessageListener extends ListenerAdapter {
             evt.getMessage().delete().queue();
             return;
         }
-        Invoker invoker = new Invoker(evt.getMember());
+        Invoker invoker = Invoker.of(evt.getMember());
         if (invoker.hasTimePassed()) {
             invoker.addRandomCredit();
             if (!evt.getMessage().getAttachments().isEmpty())

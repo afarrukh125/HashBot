@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -23,11 +25,18 @@ public class Invoker {
     private final Member member;
     private final IDataManager userFileManager;
     private long credit;
+    private static Map<Member, Invoker> memberInvokerMap = new HashMap<>();
 
-    public Invoker(Member m) {
+    private Invoker(Member m) {
         member = m;
         userFileManager = new SQLUserDataManager(m);
         credit = Long.parseLong((String) userFileManager.getValue("credit"));
+    }
+
+    public static Invoker of(Member m) {
+        if(memberInvokerMap.get(m) == null)
+            memberInvokerMap.put(m, new Invoker(m));
+        return memberInvokerMap.get(m);
     }
 
     /**

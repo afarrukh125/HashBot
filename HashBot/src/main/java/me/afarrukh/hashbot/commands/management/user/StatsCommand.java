@@ -45,7 +45,7 @@ public class StatsCommand extends Command {
         final int originX = 10;
         final int originY = 40;
 
-        Invoker invoker = new Invoker(evt.getMember());
+        Invoker invoker = Invoker.of(evt.getMember());
 
         int exp = (int) invoker.getExp();
         int level = invoker.getLevel();
@@ -60,7 +60,7 @@ public class StatsCommand extends Command {
                 Member m = guild.getMemberById(evt.getAuthor().getId());
                 if (m == null)
                     continue;
-                Invoker tmpInvoker = new Invoker(m);
+                Invoker tmpInvoker = Invoker.of(m);
                 exp += Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel());
                 exp += tmpInvoker.getExp();
             }

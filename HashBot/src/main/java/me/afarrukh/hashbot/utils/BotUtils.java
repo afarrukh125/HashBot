@@ -158,7 +158,7 @@ public class BotUtils {
     }
 
     public static int getMaxUserRolesOnPage(RoleRemover rr, int page) {
-        Iterator<GameRole> iter = new Invoker(rr.getGuild().getMember(rr.getUser())).getGameRoles().iterator();
+        Iterator<GameRole> iter = Invoker.of(rr.getGuild().getMember(rr.getUser())).getGameRoles().iterator();
 
         int startIdx = 1 + ((page - 1) * 10); //The start role on that page eg page 2 would give 11
         int targetIdx = page * 10; //The last role on that page, eg page 2 would give 20

@@ -26,7 +26,7 @@ public class ColourChangeCommand extends Command {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        Invoker invoker = new Invoker(evt.getMember());
+        Invoker invoker = Invoker.of(evt.getMember());
         if (invoker.getCredit() < Constants.colChangeCred) {
             evt.getChannel().sendMessage("You need at least " + Constants.colChangeCred + " credit to change your colour.").queue();
             return;
@@ -86,7 +86,7 @@ public class ColourChangeCommand extends Command {
             }
 
             desiredRole.getManager().setColor(new Color(red, green, blue)).queue();
-            Invoker in = new Invoker(evt.getMember());
+            Invoker in = Invoker.of(evt.getMember());
             in.addCredit(-Constants.colChangeCred);
 
             evt.getChannel().sendMessage("Colour changed from " + prevRed + " " + prevGreen + " " + prevBlue

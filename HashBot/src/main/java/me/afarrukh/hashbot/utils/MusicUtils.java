@@ -25,7 +25,7 @@ public class MusicUtils {
     public static void play(GuildMessageReceivedEvent evt, GuildMusicManager musicManager, AudioTrack track, boolean playTop) {
 
         connectToChannel(evt.getMember());
-        Invoker invoker = new Invoker(evt.getMember());
+        Invoker invoker = Invoker.of(evt.getMember());
         if (playTop) {
             invoker.addCredit(-Constants.PLAY_TOP_COST);
             musicManager.getScheduler().queueTop(track);

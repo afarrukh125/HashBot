@@ -240,7 +240,7 @@ public class EmbedUtils {
             VALUE = memberList.size();
 
         for (int i = 0; i < VALUE; i++) {
-            Invoker inv = new Invoker(memberList.get(i));
+            Invoker inv = Invoker.of(memberList.get(i));
             eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: " + inv.getLevel() + "` | `Experience: "
                     + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
         }
@@ -492,7 +492,7 @@ public class EmbedUtils {
 
     public static <T extends RoleGUI> MessageEmbed getUserGameRoleListEmbed(T roleGUI, int page) {
         EmbedBuilder eb = new EmbedBuilder();
-        ArrayList<GameRole> roleList = new Invoker(roleGUI.getGuild().getMember(roleGUI.getUser())).getGameRoles();
+        ArrayList<GameRole> roleList = Invoker.of(roleGUI.getGuild().getMember(roleGUI.getUser())).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("List of game roles for " + roleGUI.getUser().getName());
@@ -639,7 +639,7 @@ public class EmbedUtils {
             maxIndex = 10;
 
         for (int i = 0; i < maxIndex; i++) {
-            Invoker invoker = new Invoker(memberList[i]);
+            Invoker invoker = Invoker.of(memberList[i]);
             eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: " + invoker.getCredit() + "`\n\n");
         }
 

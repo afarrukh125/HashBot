@@ -23,7 +23,7 @@ class VoiceExperienceTimer extends TimerTask {
                         continue;
                     if (vc.equals(g.getAfkChannel()))
                         continue;
-                    Invoker invoker = new Invoker(m);
+                    Invoker invoker = Invoker.of(m);
                     invoker.addRandomExperience();
                     invoker.addRandomCredit();
                 }

@@ -52,7 +52,7 @@ public class RoleRemover implements RoleGUI {
         }
         message.addReaction(e_right).queue();
 
-        List<GameRole> roleList = new Invoker(guild.getMember(user)).getGameRoles();
+        List<GameRole> roleList = Invoker.of(guild.getMember(user)).getGameRoles();
 
         int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many tracks are displayed per page
 
@@ -124,12 +124,12 @@ public class RoleRemover implements RoleGUI {
             case confirm:
                 return;
             case "\uD83D\uDD1F":
-                desiredRole = new Invoker(guild.getMember(user)).getGameRoles().get((10 * page) - 1);
+                desiredRole = Invoker.of(guild.getMember(user)).getGameRoles().get((10 * page) - 1);
                 break;
             default:
                 try {
                     int index = Integer.parseInt(Character.toString(reactionName.charAt(0)));
-                    desiredRole = new Invoker(guild.getMember(user)).getGameRoles()
+                    desiredRole = Invoker.of(guild.getMember(user)).getGameRoles()
                             .get(((page - 1) * 10) + (index - 1));
                     break;
                 } catch (NumberFormatException e) {

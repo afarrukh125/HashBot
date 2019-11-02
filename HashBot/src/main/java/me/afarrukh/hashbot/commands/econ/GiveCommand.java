@@ -58,8 +58,8 @@ public class GiveCommand extends Command implements EconCommand {
             return;
         }
 
-        Invoker invoker = new Invoker(evt.getMember());
-        Invoker receiver = new Invoker(m);
+        Invoker invoker = Invoker.of(evt.getMember());
+        Invoker receiver = Invoker.of(m);
 
         if (amount > invoker.getCredit()) {
             evt.getChannel().sendMessage("Insufficient credits.").queue();

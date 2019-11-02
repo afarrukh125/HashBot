@@ -38,7 +38,7 @@ public class RewardCommand extends Command implements OwnerCommand {
 
         for (Member m : evt.getGuild().getMembers()) {
             if (m.getUser().getName().equalsIgnoreCase(targetUser)) {
-                Invoker inv = new Invoker(m);
+                Invoker inv = Invoker.of(m);
                 inv.addCredit(amt);
                 evt.getChannel().sendMessage("Rewarded " + m.getUser().getName() + " with " + amt + " credit.").queue();
                 return;
