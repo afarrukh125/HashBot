@@ -22,10 +22,10 @@ import java.util.Random;
 
 public class Invoker {
 
+    private static final Map<Member, Invoker> memberInvokerMap = new HashMap<>();
     private final Member member;
     private final IDataManager userFileManager;
     private long credit;
-    private static Map<Member, Invoker> memberInvokerMap = new HashMap<>();
 
     private Invoker(Member m) {
         member = m;
@@ -34,9 +34,10 @@ public class Invoker {
     }
 
     public static Invoker of(Member m) {
-        if(memberInvokerMap.get(m) == null)
+        Invoker retrievedMember = memberInvokerMap.get(m);
+        if (retrievedMember == null)
             memberInvokerMap.put(m, new Invoker(m));
-        return memberInvokerMap.get(m);
+        return retrievedMember;
     }
 
     /**

@@ -38,7 +38,7 @@ public class LoadListCommand extends Command implements MusicCommand {
             dataManager.loadPlaylistByName(params, loader);
 
         } catch (PlaylistException e) {
-            if(message != null)
+            if (message != null)
                 message.editMessage("Could not find a playlist with that name").queue();
         }
     }

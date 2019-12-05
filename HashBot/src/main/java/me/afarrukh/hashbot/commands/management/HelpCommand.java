@@ -23,9 +23,9 @@ public class HelpCommand extends Command {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        if(params == null) {
+        if (params == null) {
             List<MessageEmbed> embeds = EmbedUtils.getHelpMsg(evt, Bot.commandManager.getCommandList());
-            for(MessageEmbed eb: embeds) {
+            for (MessageEmbed eb : embeds) {
                 evt.getChannel().sendMessage(eb).queue();
             }
             evt.getChannel().sendMessage("If you wish to view the help for an individual command, you can " +
@@ -34,7 +34,7 @@ public class HelpCommand extends Command {
         }
 
         Command command = Bot.commandManager.commandFromName(params);
-        if(command == null) {
+        if (command == null) {
             evt.getChannel().sendMessage("There is no command with the name or alias " + params).queue();
             return;
         }

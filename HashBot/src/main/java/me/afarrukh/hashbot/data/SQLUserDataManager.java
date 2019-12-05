@@ -241,7 +241,7 @@ public class SQLUserDataManager implements IDataManager {
     /**
      * Adds a list of tracks to the database
      *
-     * @param lname     The name of the playlist
+     * @param lname      The name of the playlist
      * @param uriNameMap The map of tracks to add
      * @throws PlaylistException A generic playlist exception to be handled by any client that uses this method
      */
@@ -287,7 +287,7 @@ public class SQLUserDataManager implements IDataManager {
             pslistuser.setString(2, this.member.getUser().getId());
             int pos = 1; // Assigning a position to each of the tracks as well
             // Adding the tracks
-            for (String uri: uriNameMap.keySet()) {
+            for (String uri : uriNameMap.keySet()) {
 
                 String trackURI = uri.replace(":", ";");
 

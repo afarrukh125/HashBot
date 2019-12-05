@@ -16,8 +16,6 @@ import me.afarrukh.hashbot.commands.music.playlist.DeleteListCommand;
 import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
 import me.afarrukh.hashbot.commands.music.playlist.SavePlaylistCommand;
 import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
-import me.afarrukh.hashbot.commands.tagging.MusicCommand;
-import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
@@ -60,7 +58,6 @@ public class Bot {
 
     /**
      * Adds the commands and initialises all the managers
-     *
      */
     private void init() throws InterruptedException {
         ExecutorService service = Executors.newFixedThreadPool(2);

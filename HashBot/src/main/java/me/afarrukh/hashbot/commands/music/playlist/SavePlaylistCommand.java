@@ -48,7 +48,7 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
 
         // Ensuring all tracks in the list are unique
         Map<String, String> uriNameMap = new LinkedHashMap<>();
-        for(AudioTrack track: trackList) {
+        for (AudioTrack track : trackList) {
             uriNameMap.put(track.getInfo().uri, track.getInfo().title);
         }
 

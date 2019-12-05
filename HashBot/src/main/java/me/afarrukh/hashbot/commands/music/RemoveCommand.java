@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * @author Abdullah
- *
+ * <p>
  * Removes a track at the given index from the track queue from the <code>TrackScheduler</code>
  * @see me.afarrukh.hashbot.music.TrackScheduler
  */

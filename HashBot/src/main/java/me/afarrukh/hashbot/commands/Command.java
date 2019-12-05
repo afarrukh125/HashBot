@@ -96,7 +96,7 @@ public abstract class Command {
      * @see #Command(String)
      */
     protected final void addAlias(String alias) {
-        if(alias.equals(name))
+        if (alias.equals(name))
             throw new IllegalArgumentException("You cannot have a command alias that is the same as the original command name");
         aliases.add(alias);
     }
@@ -108,22 +108,23 @@ public abstract class Command {
      * @param description A meaningful description for the parameter
      * @see #parameters
      */
-     protected final void addParameter(String parameter, String description) {
-         String param = processParameter(parameter);
+    protected final void addParameter(String parameter, String description) {
+        String param = processParameter(parameter);
         parameters.put(param, description);
     }
 
     /**
      * Capitalise the first name of the parameter
+     *
      * @param parameter The name of the parameter
      * @return A string that has the parameter formatted correctly
      */
     private String processParameter(String parameter) {
         StringBuilder sb = new StringBuilder();
-        for(String param: parameter.split(" ")) {
+        for (String param : parameter.split(" ")) {
             sb.append(param.substring(0, 1).toUpperCase()).append(param.length() > 1 ? param.substring(1) : "").append(" ");
         }
-         return sb.toString().trim();
+        return sb.toString().trim();
     }
 
     /**
@@ -150,24 +151,24 @@ public abstract class Command {
         StringBuilder sb = new StringBuilder();
         sb.append("**Description:** ").append(this.description).append("\n\n");
 
-        if(!aliases.isEmpty()) {
+        if (!aliases.isEmpty()) {
             sb.append("**Aliases:**\n");
-            for(String alias: aliases) {
+            for (String alias : aliases) {
                 sb.append("- ").append(alias).append("\n");
             }
             sb.append("\n");
         }
-        if(!parameters.keySet().isEmpty()) {
+        if (!parameters.keySet().isEmpty()) {
             sb.append("**Parameters:** \n");
             for (String parameter : parameters.keySet())
                 sb.append("**").append("- ").append(parameter).append(":** ").append(parameters.get(parameter)).append("\n\n");
             sb.append("**Template usage:** ").append(prefix).append(name).append(" ");
-            for(String param: parameters.keySet())
+            for (String param : parameters.keySet())
                 sb.append("<").append(param).append("> ");
             sb.append("\n\n");
-            if(!exampleUsages.isEmpty()) {
+            if (!exampleUsages.isEmpty()) {
                 sb.append("**Example usages:** \n");
-                for(String example: exampleUsages) {
+                for (String example : exampleUsages) {
                     sb.append("- ").append(prefix).append(example).append("\n");
                 }
             }
@@ -205,6 +206,7 @@ public abstract class Command {
 
     /**
      * Returns the set of example strings for this command
+     *
      * @param exampleUsage A string that represents an example usage for this command
      */
     protected final void addExampleUsage(String exampleUsage) {
@@ -213,6 +215,7 @@ public abstract class Command {
 
     /**
      * Obtain the set of example usages
+     *
      * @return The set of all example usages for this command
      */
     public final Set<String> getExampleUsages() {

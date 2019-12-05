@@ -57,17 +57,15 @@ public class PlaylistLoader {
      * The message object to update once the playlist has completed loading
      */
     private final Message message;
-
-    /**
-     * The current index of the playlist, as mentioned, this is counting up towards maxSize (well technically maxSize-1)
-     */
-    private int currentIndex;
-
     /**
      * The name of the playlist. For use in printing the final message to be sent to the user once the playlist
      * has finished loading
      */
     private final String listName;
+    /**
+     * The current index of the playlist, as mentioned, this is counting up towards maxSize (well technically maxSize-1)
+     */
+    private int currentIndex;
 
     /**
      * Create a new playlist loader object

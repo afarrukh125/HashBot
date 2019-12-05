@@ -7,12 +7,15 @@ import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
 
-    private Map<String, Command> map;
+    private final Map<String, Command> map;
     private int commandCount = 0;
 
     private CommandManager(Builder builder) {

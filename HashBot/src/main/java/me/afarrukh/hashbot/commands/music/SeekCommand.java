@@ -35,7 +35,7 @@ public class SeekCommand extends Command implements MusicCommand {
 
                     int desiredTime = desiredMinute + desiredSeconds;
                     MusicUtils.seek(evt, desiredTime);
-                }   else if (params.split(":").length == 2) {
+                } else if (params.split(":").length == 2) {
                     String[] tokens = params.split(":");
                     int minute = Integer.parseInt(tokens[0]);
                     int seconds = Integer.parseInt(tokens[1]);

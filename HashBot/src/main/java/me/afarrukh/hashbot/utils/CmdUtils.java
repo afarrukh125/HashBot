@@ -27,9 +27,9 @@ public class CmdUtils {
      */
     public static String getParamsAsString(String[] tokens, int startIndex) {
         StringBuilder params = new StringBuilder();
-        for (int i = startIndex; i < tokens.length; i++) {
+        for (int i = startIndex; i < tokens.length; i++)
             params.append(tokens[i]).append(" ");
-        }
+
         return params.toString().trim();
     }
 
@@ -43,9 +43,9 @@ public class CmdUtils {
      */
     public static String getParamsAsString(String[] tokens, int startIndex, int endIndex) {
         StringBuilder params = new StringBuilder();
-        for (int i = startIndex; i <= endIndex; i++) {
+        for (int i = startIndex; i <= endIndex; i++)
             params.append(tokens[i]).append(" ");
-        }
+
         return params.toString().trim();
     }
 

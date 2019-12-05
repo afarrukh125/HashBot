@@ -174,7 +174,7 @@ public class GuildGameRoleManager {
             this.key = key;
         }
 
-        public String string() {
+        String string() {
             return key;
         }
     }
