@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class RoleDeleter implements RoleGUI {
 
@@ -24,7 +25,7 @@ public class RoleDeleter implements RoleGUI {
     private final User user;
     private final Message message;
     private final int maxPageNumber;
-    private final ArrayList<GameRole> createdRoles;
+    private final List<GameRole> createdRoles;
     private final String back = "↩";
     private final String cancel = "\u26D4";
     private final String[] numberEmojis;
@@ -44,12 +45,8 @@ public class RoleDeleter implements RoleGUI {
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleDeleter.InactiveTimer(this, evt.getGuild()), 30 * 1000); //30 second timer before builder stops
 
-        this.createdRoles = new ArrayList<>();
-
-        for (GameRole gr : Bot.gameRoleManager.getGuildRoleManager(getGuild()).getGameRoles()) {
-            if (gr.getCreator().equals(getUser().getId()))
-                createdRoles.add(gr);
-        }
+        this.createdRoles = Bot.gameRoleManager.getGuildRoleManager(getGuild()).getGameRoles().stream()
+                .filter(gameRole -> gameRole.getCreatorId().equals(user.getId())).collect(Collectors.toList());
 
         message = evt.getChannel().sendMessage(EmbedUtils.getCreatedRolesEmbed(this, page, createdRoles)).complete();
         message.editMessage("Please wait for all emojis to appear before selecting an option.").queue();
@@ -73,7 +70,6 @@ public class RoleDeleter implements RoleGUI {
         this.maxPageNumber = maxPageNumber;
 
         Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).addRoleManagerForUser(user, this);
-
     }
 
     @Override

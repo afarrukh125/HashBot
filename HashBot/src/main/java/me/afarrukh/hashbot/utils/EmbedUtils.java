@@ -346,9 +346,8 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static <T extends RoleGUI> MessageEmbed getGameRoleListEmbed(T roleGUI, int page) {
+    public static <T extends RoleGUI> MessageEmbed getGameRoleListEmbed(T roleGUI, int page, java.util.List<GameRole> roleList) {
         EmbedBuilder eb = new EmbedBuilder();
-        java.util.List<GameRole> roleList = Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getGameRoles();
 
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("List of game roles for " + roleGUI.getGuild().getName());
@@ -449,7 +448,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static <T extends RoleGUI> MessageEmbed getCreatedRolesEmbed(T roleGUI, int page, ArrayList<GameRole> createdRoles) {
+    public static <T extends RoleGUI> MessageEmbed getCreatedRolesEmbed(T roleGUI, int page, java.util.List<GameRole> createdRoles) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
 
