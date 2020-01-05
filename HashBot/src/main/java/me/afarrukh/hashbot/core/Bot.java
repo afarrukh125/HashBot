@@ -66,10 +66,10 @@ public class Bot {
             try {
                 botUser = new JDABuilder(AccountType.BOT)
                         .setToken(token)
-                        .setStatus(OnlineStatus.INVISIBLE)
                         .build().awaitReady();
             } catch (LoginException | InterruptedException e) {
                 e.printStackTrace();
+                System.exit(0);
             }
         });
 
@@ -188,9 +188,9 @@ public class Bot {
 
         if (!descriptionLessCommands.isEmpty()) {
             System.out.println("\nThe following commands do not have descriptions: ");
-            for (Command c : descriptionLessCommands) {
+            for (Command c : descriptionLessCommands)
                 System.out.println(c.getClass().getSimpleName());
-            }
+
         }
     }
 

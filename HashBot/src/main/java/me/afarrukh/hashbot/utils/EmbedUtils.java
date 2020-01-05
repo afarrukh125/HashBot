@@ -623,8 +623,8 @@ public class EmbedUtils {
         eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
         eb.appendDescription(sb.toString());
 
-        eb.setFooter("If you need help with a particular category, add the commands category, e.g. " +
-                prefix + "help music", evt.getJDA().getSelfUser().getAvatarUrl());
+        eb.setFooter("If you need help with a particular command, add the command name, e.g. " +
+                prefix + "help play", evt.getJDA().getSelfUser().getAvatarUrl());
         embedArrayList.add(eb.build());
         return embedArrayList;
     }

@@ -28,8 +28,6 @@ public class HelpCommand extends Command {
             for (MessageEmbed eb : embeds) {
                 evt.getChannel().sendMessage(eb).queue();
             }
-            evt.getChannel().sendMessage("If you wish to view the help for an individual command, you can " +
-                    "provide it as a parameter to this command").queue();
             return;
         }
 

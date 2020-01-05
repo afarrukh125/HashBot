@@ -72,7 +72,7 @@ public class RoleDeleter implements RoleGUI {
 
         this.maxPageNumber = maxPageNumber;
 
-        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleModifiers().put(user.getIdLong(), this);
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).addRoleManagerForUser(user, this);
 
     }
 
@@ -174,7 +174,7 @@ public class RoleDeleter implements RoleGUI {
                 return;
             case confirm:
                 message.clearReactions().complete();
-                Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
+                Bot.gameRoleManager.getGuildRoleManager(guild).removeRoleManagerForUser(user);
                 if (roleToBeDeleted == null) {
                     message.editMessage(new EmbedBuilder().setColor(Constants.EMB_COL)
                             .appendDescription("Please select a role to delete.").build()).queue();
@@ -195,8 +195,8 @@ public class RoleDeleter implements RoleGUI {
         }
     }
 
-    private void endSession() {
-        Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(this);
+    public void endSession() {
+        Bot.gameRoleManager.getGuildRoleManager(guild).removeRoleManagerForUser(user);
         message.delete().queue();
         this.timeoutTimer.cancel();
     }
@@ -232,7 +232,7 @@ public class RoleDeleter implements RoleGUI {
 
         @Override
         public void run() {
-            Bot.gameRoleManager.getGuildRoleManager(guild).getRoleModifiers().remove(deleter);
+            Bot.gameRoleManager.getGuildRoleManager(guild).removeRoleManagerForUser(user);
             message.delete().queue();
             deleter.timeoutTimer.cancel();
         }

@@ -35,8 +35,10 @@ public class Invoker {
 
     public static Invoker of(Member m) {
         Invoker retrievedMember = memberInvokerMap.get(m);
-        if (retrievedMember == null)
-            memberInvokerMap.put(m, new Invoker(m));
+        if (retrievedMember == null) {
+            retrievedMember = new Invoker(m);
+            memberInvokerMap.put(m, retrievedMember);
+        }
         return retrievedMember;
     }
 

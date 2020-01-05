@@ -14,4 +14,6 @@ public interface RoleGUI {
     Guild getGuild();
 
     Message getMessage();
+
+    void endSession();
 }
