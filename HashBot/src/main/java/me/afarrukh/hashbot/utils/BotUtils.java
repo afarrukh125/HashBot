@@ -6,12 +6,12 @@ import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.*;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -80,7 +80,7 @@ public class BotUtils {
                 return;
             }
 
-        Role newRole = guild.getController().createRole().complete();
+        Role newRole = guild.createRole().complete();
 
         String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
 
@@ -93,7 +93,7 @@ public class BotUtils {
             return;
         }
 
-        guild.getController().addSingleRoleToMember(m, newRole).queue();
+        guild.addRoleToMember(m, newRole).queue();
 
         Bot.gameRoleManager.getGuildRoleManager(guild).addGameRole(new GameRole(cap, rb.getUser().getId()), newRole);
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
@@ -180,13 +180,13 @@ public class BotUtils {
     public static void addRoleToMember(RoleAdder ra) {
         Member m = ra.getGuild().getMemberById(ra.getUser().getId());
         Role roleToAdd = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getRoleFromGameRole(ra.getDesiredRole());
-        ra.getGuild().getController().addSingleRoleToMember(m, roleToAdd).queue();
+        ra.getGuild().addRoleToMember(m, roleToAdd).queue();
     }
 
     public static void removeRoleFromMember(RoleRemover rr, GameRole desiredRole) {
         Member m = rr.getGuild().getMemberById(rr.getUser().getId());
         Role roleToRemove = Bot.gameRoleManager.getGuildRoleManager(rr.getGuild()).getRoleFromGameRole(desiredRole);
-        rr.getGuild().getController().removeSingleRoleFromMember(m, roleToRemove).queue();
+        rr.getGuild().removeRoleFromMember(m, roleToRemove).queue();
     }
 
     /**

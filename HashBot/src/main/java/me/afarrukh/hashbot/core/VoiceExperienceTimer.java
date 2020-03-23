@@ -1,9 +1,9 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.entities.Invoker;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.TimerTask;
 

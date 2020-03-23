@@ -10,17 +10,18 @@ import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
 
@@ -126,13 +127,13 @@ class MessageListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent evt) {
-        Bot.botUser.getPresence().setGame(Game.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+    public void onGuildJoin(@NotNull GuildJoinEvent evt) {
+        Bot.botUser.getPresence().setActivity(Activity.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
     }
 
     @Override
-    public void onGuildLeave(GuildLeaveEvent evt) {
-        Bot.botUser.getPresence().setGame(Game.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+    public void onGuildLeave(@NotNull GuildLeaveEvent evt) {
+        Bot.botUser.getPresence().setActivity(Activity.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
     }
 
     @Override

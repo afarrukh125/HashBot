@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class ShuffleCommand extends Command implements MusicCommand {
 

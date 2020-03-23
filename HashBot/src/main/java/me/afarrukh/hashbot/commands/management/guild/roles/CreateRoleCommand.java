@@ -5,8 +5,8 @@ import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.utils.BotUtils;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CreateRoleCommand extends Command implements RoleCommand, AdminCommand {
 

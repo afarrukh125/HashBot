@@ -7,7 +7,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.PlaylistLoader;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 
 /**
  * @author Abdullah

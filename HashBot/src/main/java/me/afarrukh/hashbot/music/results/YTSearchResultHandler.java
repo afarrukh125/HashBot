@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class YTSearchResultHandler extends YTGenericResultHandler {
 

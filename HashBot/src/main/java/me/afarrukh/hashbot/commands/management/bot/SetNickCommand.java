@@ -3,10 +3,10 @@ package me.afarrukh.hashbot.commands.management.bot;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.utils.BotUtils;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetNickCommand extends Command implements AdminCommand {
 
@@ -31,7 +31,7 @@ public class SetNickCommand extends Command implements AdminCommand {
         }
 
         Guild g = evt.getGuild();
-        g.getController().setNickname(g.getMemberById(g.getJDA().getSelfUser().getId()), params).queue();
+        g.modifyNickname(g.getMemberById(g.getJDA().getSelfUser().getId()), params).queue();
         evt.getChannel().sendMessage("Changed name to " + params).queue();
     }
 

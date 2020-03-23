@@ -3,10 +3,10 @@ package me.afarrukh.hashbot.utils;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.Calendar;
 
@@ -39,7 +39,7 @@ public class MessageUtils {
         }
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(originalMessage.getCreationTime().toInstant().toEpochMilli());
+        calendar.setTimeInMillis(originalMessage.getTimeCreated().toInstant().toEpochMilli());
 
         eb.setFooter(originalMessage.getChannel().getName() + " - " + calendar.getTime().toString()
                 ,

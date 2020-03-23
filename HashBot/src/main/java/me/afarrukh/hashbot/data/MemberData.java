@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.data;
 
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 
 /**
  * Created by Abdullah on 01/05/2019 04:09

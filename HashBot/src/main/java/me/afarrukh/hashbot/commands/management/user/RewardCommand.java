@@ -5,9 +5,9 @@ import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.UserUtils;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class RewardCommand extends Command implements OwnerCommand {
 

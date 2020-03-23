@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

@@ -3,8 +3,8 @@ package me.afarrukh.hashbot.commands.management.guild;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.core.Bot;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetPrefixCommand extends Command implements AdminCommand {
 

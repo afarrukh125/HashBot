@@ -2,7 +2,10 @@ package me.afarrukh.hashbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
-import net.dv8tion.jda.core.audio.AudioSendHandler;
+import net.dv8tion.jda.api.audio.AudioSendHandler;
+
+import javax.annotation.Nullable;
+import java.nio.ByteBuffer;
 
 /**
  * Required to function with JDA and provide correct compatibility
@@ -27,16 +30,10 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
         return lastFrame != null;
     }
 
+    @Nullable
     @Override
-    public byte[] provide20MsAudio() {
-        if (lastFrame == null) {
-            lastFrame = audioPlayer.provide();
-        }
-
-        byte[] data = lastFrame != null ? lastFrame.getData() : null;
-        lastFrame = null;
-
-        return data;
+    public ByteBuffer provide20MsAudio() {
+        return ByteBuffer.wrap(lastFrame.getData());
     }
 
     @Override

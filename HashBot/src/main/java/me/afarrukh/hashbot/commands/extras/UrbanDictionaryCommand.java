@@ -4,9 +4,9 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.ExtrasCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.extras.urbandict.UrbanDictionary;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class UrbanDictionaryCommand extends Command implements ExtrasCommand {
 

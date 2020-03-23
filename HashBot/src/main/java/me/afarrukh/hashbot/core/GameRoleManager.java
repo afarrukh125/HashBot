@@ -1,8 +1,7 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.gameroles.GuildGameRoleManager;
-import net.dv8tion.jda.core.entities.Guild;
-
+import net.dv8tion.jda.api.entities.Guild;
 import java.util.HashMap;
 import java.util.Map;
 

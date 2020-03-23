@@ -6,9 +6,9 @@ import me.afarrukh.hashbot.music.Playlist;
 import me.afarrukh.hashbot.music.PlaylistLoader;
 import me.afarrukh.hashbot.music.results.YTFirstLatentTrackHandler;
 import me.afarrukh.hashbot.music.results.YTLatentTrackHandler;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 
 import java.sql.*;
 import java.util.ArrayList;

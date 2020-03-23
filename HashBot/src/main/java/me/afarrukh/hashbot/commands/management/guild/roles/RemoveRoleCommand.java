@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.management.guild.roles;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.gameroles.RoleRemover;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class RemoveRoleCommand extends Command implements RoleCommand {
 

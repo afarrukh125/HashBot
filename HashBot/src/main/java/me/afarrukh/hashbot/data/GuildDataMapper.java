@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.data;
 
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.HashMap;
 import java.util.Map;

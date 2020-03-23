@@ -2,10 +2,10 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Date;
 
@@ -38,7 +38,7 @@ public class TimeCreatedCommand extends Command {
 
         EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
         eb.setTitle(targetMember.getEffectiveName());
-        long epochMilli = targetMember.getUser().getCreationTime().toInstant().toEpochMilli();
+        long epochMilli = targetMember.getUser().getTimeCreated().toInstant().toEpochMilli();
         Date date = new Date(epochMilli);
 
         eb.appendDescription("Created on " + date.toString() + ".");

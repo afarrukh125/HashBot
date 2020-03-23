@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.management.bot.owner;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SetNameCommand extends Command implements OwnerCommand {
 

@@ -6,8 +6,8 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.gameroles.RoleAdder;
 import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class AddRoleCommand extends Command implements RoleCommand {
                     evt.getChannel().sendMessage(EmbedUtils.alreadyHasRoleEmbed(r))
                             .queue();
                 } else {
-                    evt.getGuild().getController().addSingleRoleToMember(evt.getMember(),
+                    evt.getGuild().addRoleToMember(evt.getMember(),
                             Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getRoleFromGameRole(gr)).queue();
                     evt.getChannel().sendMessage(EmbedUtils.addRoleCompleteEmbed(r)).queue();
                 }

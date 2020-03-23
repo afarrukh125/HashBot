@@ -9,7 +9,7 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;

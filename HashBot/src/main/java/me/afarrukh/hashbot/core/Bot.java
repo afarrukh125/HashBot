@@ -19,13 +19,12 @@ import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
 import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
@@ -154,7 +153,7 @@ public class Bot {
         }
 
         botUser.addEventListener(new MessageListener());
-        botUser.getPresence().setGame(Game.playing(" in " + botUser.getGuilds().size() + " guilds"));
+        botUser.getPresence().setActivity(Activity.playing(" in " + botUser.getGuilds().size() + " guilds"));
         System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
 
         musicManager = new MusicManager();

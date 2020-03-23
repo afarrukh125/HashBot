@@ -7,8 +7,8 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.ArrayList;
 import java.util.HashMap;

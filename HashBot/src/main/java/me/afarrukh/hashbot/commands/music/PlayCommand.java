@@ -6,8 +6,8 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.music.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class PlayCommand extends Command implements MusicCommand {
 

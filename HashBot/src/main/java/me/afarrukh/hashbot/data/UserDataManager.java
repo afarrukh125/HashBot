@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.data;
 
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 import org.json.simple.JSONObject;
 
 import java.io.File;

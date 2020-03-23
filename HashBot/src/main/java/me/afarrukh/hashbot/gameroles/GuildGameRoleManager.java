@@ -4,9 +4,9 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.DataManager;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

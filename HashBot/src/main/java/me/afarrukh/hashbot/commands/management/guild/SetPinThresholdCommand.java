@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.management.guild;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.core.Bot;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Created by Abdullah on 10/04/2019 16:10

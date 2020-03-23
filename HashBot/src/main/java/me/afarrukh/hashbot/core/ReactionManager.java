@@ -4,10 +4,10 @@ import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.gameroles.RoleGUI;
 import me.afarrukh.hashbot.utils.MessageUtils;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 
 class ReactionManager {
 
@@ -25,7 +25,7 @@ class ReactionManager {
      * @param evt The event associated with the reaction being added
      */
     void processForPinning(GuildMessageReactionAddEvent evt) {
-        Message m = evt.getChannel().getMessageById(evt.getMessageId()).complete();
+        Message m = evt.getChannel().retrieveMessageById(evt.getMessageId()).complete();
         if (m == null) // Message might not exist since it might have been deleted
             return;
 
