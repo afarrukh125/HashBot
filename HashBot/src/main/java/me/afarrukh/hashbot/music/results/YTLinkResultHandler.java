@@ -25,7 +25,6 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
 
     @Override
     public void playlistLoaded(AudioPlaylist playlistTracks) {
-        evt.getMessage().delete().queue();
 
         // Load the playlist tracks into an array list, which we can optionally shuffle
         List<AudioTrack> playlist = new ArrayList<>(playlistTracks.getTracks());
