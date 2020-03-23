@@ -7,6 +7,7 @@ import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 
 class ReactionManager {
@@ -35,6 +36,10 @@ class ReactionManager {
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
         if (gdm.isPinned(m.getId()))
+            return;
+
+        TextChannel pinnedChannel = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId());
+        if(pinnedChannel == null)
             return;
 
         String pinnedChannelId = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
