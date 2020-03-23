@@ -91,6 +91,7 @@ public class RoleAdder implements RoleGUI {
                 endSession();
                 return;
             case back:
+            case confirm:
                 return;
             case e_left:
                 if (page <= 1)
@@ -119,8 +120,6 @@ public class RoleAdder implements RoleGUI {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
-                return;
-            case confirm:
                 return;
             case "\uD83D\uDD1F":
                 desiredRole = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles().get((10 * page) - 1);

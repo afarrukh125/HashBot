@@ -26,13 +26,7 @@ public class PlayTopCommand extends Command implements MusicCommand {
             return;
         }
 
-        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
-            if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
-                // If the bot is not in the same channel as the user (assuming already connected) then return
-                evt.getChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
-                return;
-            }
-        }
+        if (isBotConnected(evt)) return;
 
         if (Invoker.of(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
             evt.getChannel().sendMessage("You need at least " + Constants.PLAY_TOP_COST + " credit to queue tracks to the top of the list.").queue();
@@ -44,6 +38,17 @@ public class PlayTopCommand extends Command implements MusicCommand {
             evt.getMessage().delete().queue();
         } else
             Bot.musicManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
+    }
+
+    static boolean isBotConnected(GuildMessageReceivedEvent evt) {
+        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
+            if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
+                // If the bot is not in the same channel as the user (assuming already connected) then return
+                evt.getChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

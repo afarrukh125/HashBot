@@ -44,7 +44,7 @@ public class AddRoleCommand extends Command implements RoleCommand {
                 evt.getChannel().sendMessage(EmbedUtils.getNullRoleEmbed(evt.getGuild())).queue();
             }
         } else {
-            RoleAdder ra = new RoleAdder(evt);
+            new RoleAdder(evt);
         }
     }
 }

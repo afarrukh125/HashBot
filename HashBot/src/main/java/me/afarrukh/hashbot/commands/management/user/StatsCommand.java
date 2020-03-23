@@ -160,7 +160,7 @@ public class StatsCommand extends Command {
 
         int midX = 400;
         int midY = 80;
-        int radius[] = {60, 30, 60, 30};
+        int[] radius = {60, 30, 60, 30};
         int nPoints = 10;
         int[] X = new int[nPoints];
         int[] Y = new int[nPoints];
@@ -188,7 +188,7 @@ public class StatsCommand extends Command {
         return outputFile;
     }
 
-    private class DeletionTimer extends TimerTask {
+    private static class DeletionTimer extends TimerTask {
         private final File file;
 
         private DeletionTimer(File file) {

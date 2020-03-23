@@ -9,6 +9,8 @@ import me.afarrukh.hashbot.music.results.YTSearchResultHandler;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.util.Objects;
+
 public class PlayCommand extends Command implements MusicCommand {
 
     public PlayCommand() {
@@ -27,16 +29,10 @@ public class PlayCommand extends Command implements MusicCommand {
             return;
         }
 
-        if (evt.getMember().getVoiceState().getChannel() == null)
+        if (evt.getMember() != null && Objects.requireNonNull(evt.getMember().getVoiceState()).getChannel() == null)
             return;
 
-        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
-            if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
-                // If the bot is not in the same channel as the user (assuming already connected) then return
-                evt.getChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
-                return;
-            }
-        }
+        if (PlayTopCommand.isBotConnected(evt)) return;
 
         GuildMusicManager gmm = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
         // To account for shuffling the list, we have the first branch

@@ -24,7 +24,6 @@ public class ImageLoader {
         return null;
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static BufferedImage loadUrl(String path) {
         try {
             URL url = new URL(path);

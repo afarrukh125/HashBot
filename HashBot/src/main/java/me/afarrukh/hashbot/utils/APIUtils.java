@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class APIUtils {
 
-    @SuppressWarnings("ConstantConditions")
     public static String getResponseFromURL(String url) {
         try {
 
@@ -29,7 +28,6 @@ public class APIUtils {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static String getResponseFromURL(String url, Map<String, String> headers) {
         try {
 

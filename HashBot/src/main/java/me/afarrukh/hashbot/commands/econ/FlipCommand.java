@@ -43,7 +43,7 @@ public class FlipCommand extends Command implements EconCommand {
         // Converting user input into variables
         String[] tokens = params.split(" ");
         String choice = tokens[1];
-        long amount = 0;
+        long amount;
 
         Invoker invoker = Invoker.of(evt.getMember());
         // Converting user input amount from String to long

@@ -41,7 +41,6 @@ public class GuildGameRoleManager {
 
         setupPinnedMessageThreshold(guildDataManager);
 
-        guildDataManager = null; // Clean up
     }
 
     private void loadRolesFromDatabase(DataManager guildDataManager) {

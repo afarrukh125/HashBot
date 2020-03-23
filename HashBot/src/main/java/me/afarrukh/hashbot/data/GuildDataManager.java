@@ -78,7 +78,6 @@ public class GuildDataManager extends DataManager {
         }
     }
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     public void writePresets() {
         JSONObject obj = new JSONObject();
         obj.put("name", guild.getName());
@@ -201,7 +200,7 @@ public class GuildDataManager extends DataManager {
         Iterator<Object> iter = arr.iterator();
         while (iter.hasNext()) {
             JSONObject obj = (JSONObject) iter.next();
-            if (obj.keySet().contains(id)) {
+            if (obj.containsKey(id)) {
                 iter.remove();
                 pinnedMessageMap.remove(id);
             }
@@ -246,7 +245,7 @@ public class GuildDataManager extends DataManager {
      * @return A boolean corresponding to whether the message is a bot message that represents a pinned message.
      */
     public boolean isBotPinMessage(String id) {
-        return pinnedMessageMap.values().contains(id);
+        return pinnedMessageMap.containsValue(id);
     }
 
     public List<String> getAutoPinChannels() {

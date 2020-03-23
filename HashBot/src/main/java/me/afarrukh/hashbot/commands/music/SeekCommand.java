@@ -23,32 +23,10 @@ public class SeekCommand extends Command implements MusicCommand {
             try {
                 if (params.split("\\.").length == 2) {
                     String[] tokens = params.split("\\.");
-                    int minute = Integer.parseInt(tokens[0]);
-                    int seconds = Integer.parseInt(tokens[1]);
-
-                    int desiredMinute = minute * 60;
-                    int desiredSeconds = seconds % 60;
-
-                    if ((tokens[1]).length() == 1) {
-                        desiredSeconds *= 6;
-                    }
-
-                    int desiredTime = desiredMinute + desiredSeconds;
-                    MusicUtils.seek(evt, desiredTime);
+                    toMinute(evt, tokens);
                 } else if (params.split(":").length == 2) {
                     String[] tokens = params.split(":");
-                    int minute = Integer.parseInt(tokens[0]);
-                    int seconds = Integer.parseInt(tokens[1]);
-
-                    int desiredMinute = minute * 60;
-                    int desiredSeconds = seconds % 60;
-
-                    if ((tokens[1]).length() == 1) {
-                        desiredSeconds *= 6;
-                    }
-
-                    int desiredTime = desiredMinute + desiredSeconds;
-                    MusicUtils.seek(evt, desiredTime);
+                    toMinute(evt, tokens);
                 } else {
                     String[] tokens = params.split(" ");
                     int seconds = Integer.parseInt(tokens[0]);
@@ -62,5 +40,20 @@ public class SeekCommand extends Command implements MusicCommand {
                 evt.getChannel().sendMessage("Please enter a valid number of seconds to skip.").queue();
             }
         }
+    }
+
+    private void toMinute(GuildMessageReceivedEvent evt, String[] tokens) {
+        int minute = Integer.parseInt(tokens[0]);
+        int seconds = Integer.parseInt(tokens[1]);
+
+        int desiredMinute = minute * 60;
+        int desiredSeconds = seconds % 60;
+
+        if ((tokens[1]).length() == 1) {
+            desiredSeconds *= 6;
+        }
+
+        int desiredTime = desiredMinute + desiredSeconds;
+        MusicUtils.seek(evt, desiredTime);
     }
 }

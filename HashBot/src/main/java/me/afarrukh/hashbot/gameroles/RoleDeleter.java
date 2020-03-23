@@ -98,6 +98,7 @@ public class RoleDeleter implements RoleGUI {
                 endSession();
                 return;
             case back:
+            case confirm:
                 return;
             case e_left:
                 if (page <= 1)
@@ -126,8 +127,6 @@ public class RoleDeleter implements RoleGUI {
                     message.addReaction(numberEmojis[i]).queue();
                 }
                 message.addReaction(e_right).queue();
-                return;
-            case confirm:
                 return;
             case "\uD83D\uDD1F":
                 roleToBeDeleted = createdRoles.get((10 * page) - 1);

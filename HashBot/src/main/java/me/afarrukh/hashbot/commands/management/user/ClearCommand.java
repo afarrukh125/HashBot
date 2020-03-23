@@ -28,7 +28,7 @@ public class ClearCommand extends Command implements AdminCommand {
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
 
-        if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+        if (evt.getMember() != null && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
             evt.getChannel().sendMessage("This is an administrator only command.").queue();
             return;
         }
@@ -38,7 +38,7 @@ public class ClearCommand extends Command implements AdminCommand {
             return;
         }
 
-        int amt = 0;
+        int amt;
         try {
             amt = Integer.parseInt(params.split(" ")[0]);
         } catch (NumberFormatException e) {

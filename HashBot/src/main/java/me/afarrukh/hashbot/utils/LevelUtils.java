@@ -24,10 +24,8 @@ public class LevelUtils {
         int rng = random.nextInt(level) + 1;
         int sum = Constants.BASE_EXP + tokens.length + rng + level;
 
-        if (sum > Constants.MAX_EXP_FROM_MSG)
-            return Constants.MAX_EXP_FROM_MSG;
+        return Math.min(sum, Constants.MAX_EXP_FROM_MSG);
 
-        return sum;
     }
 
     /**
@@ -71,9 +69,7 @@ public class LevelUtils {
         Comparator<Member> memberSorter = (m1, m2) -> {
             Invoker in1 = Invoker.of(m1);
             Invoker in2 = Invoker.of(m2);
-            if (in2.getCredit() > in1.getCredit())
-                return 1;
-            return -1;
+            return Math.toIntExact(in2.getCredit() - in1.getCredit());
         };
 
         memberList.sort(memberSorter);
