@@ -158,9 +158,7 @@ public class SQLUserDataManager implements IDataManager {
                 if (o1.getLevel() > o2.getLevel())
                     return -1;
                 if (o1.getLevel() == o2.getLevel()) {
-                    if (o2.getExp() > o1.getExp())
-                        return 1;
-                    return -1;
+                    return Long.compare(o2.getExp(), o1.getExp());
                 }
                 return 1;
             };
@@ -261,9 +259,9 @@ public class SQLUserDataManager implements IDataManager {
             // If this is the case, we throw a checked exception, to be handled by the class calling this method.
             Statement statement = conn.createStatement();
 
-            final String getPlaylistsWithNameQuery = "SELECT DISTINCT(url), name FROM track, listuser, playlist, user, listtrack " +
+            final String getPlaylistsWithNameQuery = "SELECT DISTINCT(trackurl), playlist.name FROM track, listuser, playlist, user, listtrack " +
                     "WHERE track.url=listtrack.trackurl AND playlist.name='" + lname + "' AND listuser.userid=user.id " +
-                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
+                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
 
             ResultSet rs = statement.executeQuery(getPlaylistsWithNameQuery);
 
@@ -330,9 +328,9 @@ public class SQLUserDataManager implements IDataManager {
 
         try {
             // We need to check if the playlist exists first of all
-            final String query = "SELECT DISTINCT(url) FROM track, listuser, playlist, user, listtrack " +
+            final String query = "SELECT DISTINCT(trackurl) FROM track, listuser, playlist, user, listtrack " +
                     "WHERE track.url=listtrack.trackurl AND playlist.name='" + name + "' AND listuser.userid=user.id " +
-                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position ASC";
+                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
 
@@ -370,7 +368,7 @@ public class SQLUserDataManager implements IDataManager {
     public List<Playlist> viewAllPlaylists() {
         checkConn();
 
-        final String query = "SELECT COUNT(DISTINCT (url)) AS trackCount, name AS listName " +
+        final String query = "SELECT COUNT(DISTINCT (trackurl)) AS trackCount, playlist.name AS listName " +
                 "FROM playlist, listuser, track, user, listtrack " +
                 "WHERE user.id=listuser.userid " +
                 "AND listtrack.trackurl=track.url " +
@@ -403,13 +401,13 @@ public class SQLUserDataManager implements IDataManager {
     public int getPlaylistSize(String listName) throws PlaylistException {
         checkConn();
 
-        final String getPlaylistsWithNameQuery = "SELECT DISTINCT(url), MAX(position) AS maxPosition " +
+        final String getPlaylistsWithNameQuery = "SELECT DISTINCT(trackurl), MAX(position) AS maxPosition " +
                 "FROM track, listuser, playlist, user, listtrack " +
                 "WHERE track.url=listtrack.trackurl " +
                 "AND playlist.name='" + listName + "' " +
                 "AND listuser.userid=user.id " +
                 "AND listtrack.listid=playlist.listid " +
-                "ORDER BY listtrack.position ASC";
+                "ORDER BY listtrack.position";
 
         try {
 

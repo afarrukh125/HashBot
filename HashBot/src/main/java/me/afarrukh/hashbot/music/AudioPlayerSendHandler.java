@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.audio.AudioSendHandler;
 
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * Required to function with JDA and provide correct compatibility
@@ -33,7 +34,14 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
     @Nullable
     @Override
     public ByteBuffer provide20MsAudio() {
-        return ByteBuffer.wrap(lastFrame.getData());
+        if (lastFrame == null) {
+            lastFrame = audioPlayer.provide();
+        }
+
+        byte[] data = lastFrame != null ? lastFrame.getData() : null;
+        lastFrame = null;
+
+        return ByteBuffer.wrap(Objects.requireNonNull(data));
     }
 
     @Override
