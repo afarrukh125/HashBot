@@ -154,7 +154,7 @@ public class GuildGameRoleManager {
 
     public void setPrefix(String prefix) {
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
-        jgm.updateValue(Key.PREFIX, prefix);
+        jgm.updateValue(Key.PREFIX.string(), prefix);
         this.prefix = prefix;
     }
 
