@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Member;
  * @author Abdullah
  * Created on 14/09/2019 at 15:57
  * <p>
- * This was done to clean up the code in the <code>SQLUserDataManager</code> class
+ * This was done to clean up the code in the {@link me.afarrukh.hashbot.data.SQLUserDataManager} class
  * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
  */
 public class YTLatentTrackHandler implements AudioLoadResultHandler {
@@ -44,6 +44,7 @@ public class YTLatentTrackHandler implements AudioLoadResultHandler {
 
     @Override
     public void loadFailed(FriendlyException e) {
-        e.printStackTrace();
+        loader.notifyFailed();
+        System.err.println(e.getLocalizedMessage());;
     }
 }

@@ -29,6 +29,11 @@ public class LoadListCommand extends Command implements MusicCommand {
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
 
+        if(params == null) {
+            evt.getChannel().sendMessage("Please provide a playlist to load.").queue();
+            return;
+        }
+
         Message message = null;
         try {
             final int listSize = dataManager.getPlaylistSize(params);

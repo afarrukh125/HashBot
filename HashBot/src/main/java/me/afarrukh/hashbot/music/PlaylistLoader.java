@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.music;
 
 import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -40,19 +39,11 @@ public class PlaylistLoader {
      * The list of <code>AudioTrack</code> objects to be queued.
      */
     private final List<LatentTrack> tracks;
-
-    /**
-     * The original size of the playlist
-     * We aim to count upwards towards this as we add tracks to this "barrier"
-     */
-    private final int maxSize;
-
     /**
      * The associated member object, for use in deciding which guild to send messages to,
      * and which member to join
      */
     private final Member member;
-
     /**
      * The message object to update once the playlist has completed loading
      */
@@ -62,6 +53,15 @@ public class PlaylistLoader {
      * has finished loading
      */
     private final String listName;
+    /**
+     * The original size of the playlist
+     */
+    private final int originalSize;
+    /**
+     * The original size of the playlist
+     * We aim to count upwards towards this as we add tracks to this "barrier"
+     */
+    private int maxSize;
     /**
      * The current index of the playlist, as mentioned, this is counting up towards maxSize (well technically maxSize-1)
      */
@@ -82,6 +82,7 @@ public class PlaylistLoader {
         this.currentIndex = 0;
         this.message = message;
         this.listName = listName;
+        originalSize = maxSize;
     }
 
     /**
@@ -106,13 +107,13 @@ public class PlaylistLoader {
 
 
         if (currentIndex == maxSize - 1) { // We take away 1 because it is likely we queued one track pre-emptively
-            try {
-                queueTracks();
-                MusicUtils.connectToChannel(member);
-                message.editMessage("Completed loading " + maxSize + " tracks from " + listName).queue();
-            } catch (PlaylistException e) {
-                e.printStackTrace();
-            }
+            queueTracks();
+            MusicUtils.connectToChannel(member);
+            message.editMessage("Completed loading " + maxSize + " tracks from " + listName).queue(message -> {
+                if (maxSize != originalSize)
+                    message.editMessage(message.getContentRaw() + ". \nFailed to load " + (originalSize - maxSize) + " tracks because of YouTube copyright errors.").queue();
+            });
+
             notifyAll();
         }
     }
@@ -120,16 +121,14 @@ public class PlaylistLoader {
     /**
      * This is the final procedure to be called by this class upon completion.
      * This essentially dumps all the latent tracks into the track queue, after which the purpose of this class is complete.
-     *
-     * @throws PlaylistException This is thrown if this method is called before we have finished counting up from
-     *                           0 to the size of the playlist.
      */
-    private void queueTracks() throws PlaylistException {
-        if (tracks.size() != maxSize - 1) {
-            throw new PlaylistException("You cannot obtain the tracks until the list has finished loading");
-        }
-
+    private void queueTracks() {
         Bot.musicManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(tracks);
         System.gc();
+    }
+
+    public void notifyFailed() {
+        maxSize--;
+        currentIndex++;
     }
 }

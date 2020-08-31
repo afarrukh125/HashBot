@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  * @author Abdullah
  * <p>
- * Removes a track at the given index from the track queue from the <code>TrackScheduler</code>
+ * Removes a track at the given index from the track queue from the {@link me.afarrukh.hashbot.music.TrackScheduler}
  * @see me.afarrukh.hashbot.music.TrackScheduler
  */
 public class RemoveCommand extends Command implements MusicCommand {

@@ -137,9 +137,6 @@ public class Bot {
                 }
         );
 
-        if(!service.awaitTermination(60, TimeUnit.SECONDS))
-            service.shutdownNow();
-
         while (!(botFuture.isDone() || commandFuture.isDone())) {
             Thread.sleep(300);
             // Waiting for one of the tasks to finish
