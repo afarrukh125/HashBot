@@ -6,12 +6,14 @@ import me.afarrukh.hashbot.commands.tagging.RoleCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
+import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SetRoleCommand extends Command implements AdminCommand, RoleCommand {
 
@@ -54,8 +56,14 @@ public class SetRoleCommand extends Command implements AdminCommand, RoleCommand
                     .queue();
             return;
         }
+
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
+
+        // Add to database for persistence
         jgm.addRole(targetRole.getName(), evt.getAuthor().getId());
+
+        // Add it to the live game role manager object
+        Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).addGameRole(new GameRole(targetRole.getName(), Objects.requireNonNull(evt.getMember()).getId()), targetRole);
 
         evt.getChannel().sendMessage("The role " + targetRole.getName() + " has been added to the list of game roles for this server.").queue();
     }

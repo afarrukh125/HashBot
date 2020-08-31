@@ -16,7 +16,6 @@ import me.afarrukh.hashbot.commands.music.playlist.DeleteListCommand;
 import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
 import me.afarrukh.hashbot.commands.music.playlist.SavePlaylistCommand;
 import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
-import me.afarrukh.hashbot.commands.tagging.ViewCategoriesCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.api.JDA;
@@ -35,6 +34,7 @@ import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class Bot {
     public static CommandManager commandManager;
@@ -128,7 +128,6 @@ public class Bot {
                             .addCommand(new InterleaveCommand())
                             .addCommand(new SetRoleCommand())
                             .addCommand(new FairPlayCommand())
-                            .addCommand(new ViewCategoriesCommand())
                             .addCommand(new UrbanDictionaryCommand())
                             .addCommand(new CheckMemoryCommand())
                             .addCommand(new RoleStatsCommand())
@@ -137,6 +136,9 @@ public class Bot {
 
                 }
         );
+
+        if(!service.awaitTermination(60, TimeUnit.SECONDS))
+            service.shutdownNow();
 
         while (!(botFuture.isDone() || commandFuture.isDone())) {
             Thread.sleep(300);

@@ -17,7 +17,6 @@ public class CommandListCommand extends Command {
         super("commands");
         addAlias("cmds");
         description = "Displays all commands provide a parameter e.g. music to see commands only of that category";
-        addParameter("category", "**Optional**: The category to filter commands for.");
         addExampleUsage("help roles");
     }
 
@@ -25,24 +24,8 @@ public class CommandListCommand extends Command {
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR) ? Bot.commandManager.getCommandList() : Bot.commandManager.getNonAdminCommands();
 
-        if (params == null) {
+        if (params == null)
             for (MessageEmbed embed : EmbedUtils.getHelpMsg(evt, commandList))
                 evt.getChannel().sendMessage(embed).queue();
-
-        } else {
-            List<Command> categoryList = new ArrayList<>();
-            for (Command c : commandList) {
-                if (c instanceof CategorisedCommand) {
-                    if (((CategorisedCommand) c).getType().equalsIgnoreCase(params)) {
-                        categoryList.add(c);
-                    }
-                }
-            }
-            if (categoryList.isEmpty())
-                categoryList = Bot.commandManager.getCommandList();
-            for (MessageEmbed embed : EmbedUtils.getHelpMsg(evt, categoryList)) {
-                evt.getChannel().sendMessage(embed).queue();
-            }
-        }
     }
 }
