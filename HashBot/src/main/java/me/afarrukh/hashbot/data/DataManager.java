@@ -47,7 +47,7 @@ public abstract class DataManager implements IDataManager {
             this.jsonObject = (JSONObject) obj;
         } catch (ParseException e) {
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | NullPointerException e) {
             writePresets();
             load();
         } catch (IOException e) {
