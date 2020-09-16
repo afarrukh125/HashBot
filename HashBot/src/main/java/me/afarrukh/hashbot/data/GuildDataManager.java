@@ -175,6 +175,9 @@ public class GuildDataManager extends DataManager {
      * @return A string of "1" if the guild has no pinned channel, otherwise returns the channel ID of the pinned channel
      */
     public String getPinnedChannelId() {
+        if(jsonObject == null)
+            return null;
+
         if (jsonObject.get(pinnedChannelKey).equals(""))
             return null;
 
