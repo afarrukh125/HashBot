@@ -10,7 +10,6 @@ public class FairShuffleCommand extends Command implements MusicCommand {
 
     public FairShuffleCommand() {
         super("fairshuffle");
-        addAlias("fs");
         description = "Shuffles the tracks and then interleaves them so all users get fair playback.";
     }
 

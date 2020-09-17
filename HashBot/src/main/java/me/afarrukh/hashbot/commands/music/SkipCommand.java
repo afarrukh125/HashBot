@@ -15,6 +15,7 @@ public class SkipCommand extends Command implements MusicCommand {
         addAlias("n");
         addAlias("next");
         addAlias("s");
+        addAlias("fs");
         description = "Skips to the next track or desired position if position is provided";
         addParameter("position", "**Optional**: The position to skip to in the track queue");
         addExampleUsage("skip 28");

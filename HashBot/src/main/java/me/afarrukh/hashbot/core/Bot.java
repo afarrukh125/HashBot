@@ -123,6 +123,7 @@ public class Bot {
                             .addCommand(new SetUnpinnedCommand())
                             .addCommand(new MoveCommand())
                             .addCommand(new TimeCreatedCommand())
+                            .addCommand(new ReverseQueueCommand())
                             .addCommand(new ShuffleCommand())
                             .addCommand(new FairShuffleCommand())
                             .addCommand(new InterleaveCommand())

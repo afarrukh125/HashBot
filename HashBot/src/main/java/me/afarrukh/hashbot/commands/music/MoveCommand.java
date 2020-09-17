@@ -22,6 +22,10 @@ public class MoveCommand extends Command implements MusicCommand {
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         try {
             String[] tokens = params.split(" ");
+            if(tokens.length != 2) {
+                evt.getChannel().sendMessage("Please decide the position to move from/to. Use the help command if you need help").queue();
+                return;
+            }
             if (MusicUtils.canInteract(evt)) {
                 int oldPos = Integer.parseInt(tokens[0]) - 1;
                 int newPos = Integer.parseInt(tokens[1]) - 1;
