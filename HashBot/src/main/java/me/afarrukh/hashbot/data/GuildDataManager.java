@@ -178,7 +178,7 @@ public class GuildDataManager extends DataManager {
         if(jsonObject == null)
             return null;
 
-        if (jsonObject.get(pinnedChannelKey).equals(""))
+        if (jsonObject.get(pinnedChannelKey) == null || jsonObject.get(pinnedChannelKey).equals(""))
             return null;
 
         return (String) jsonObject.get(pinnedChannelKey);
