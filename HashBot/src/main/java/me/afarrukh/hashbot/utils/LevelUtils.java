@@ -64,8 +64,8 @@ public class LevelUtils {
 
         List<Member> memberList = g.getMembers()
                 .stream()
-                .filter(m -> m.getUser().isBot())
-                .filter(m -> m.getUser().getId().equals(g.getJDA().getSelfUser().getId()))
+                .filter(m -> !m.getUser().isBot())
+                .filter(m -> !m.getUser().getId().equals(g.getJDA().getSelfUser().getId()))
                 .collect(Collectors.toCollection((Supplier<List<Member>>) ArrayList::new));
 
         Comparator<Member> memberSorter = (m1, m2) -> {
