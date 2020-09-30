@@ -18,8 +18,8 @@ import me.afarrukh.hashbot.commands.music.playlist.SavePlaylistCommand;
 import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -34,7 +34,6 @@ import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class Bot {
     public static CommandManager commandManager;
@@ -61,87 +60,12 @@ public class Bot {
     private void init() throws InterruptedException {
         ExecutorService service = Executors.newFixedThreadPool(2);
 
-        Future<?> botFuture = service.submit(() -> {
-            try {
-                botUser = new JDABuilder(AccountType.BOT)
-                        .setToken(token)
-                        .build().awaitReady();
-            } catch (LoginException | InterruptedException e) {
-                e.printStackTrace();
-                System.exit(0);
-            }
-        });
+        Future<?> botFuture = service.submit(this::initialiseBotUser);
+        Future<?> commandFuture = service.submit(this::loadCommands);
 
-
-        Future<?> commandFuture = service.submit(
-                () -> {
-                    commandManager = new CommandManager.Builder()
-                            .addCommand(new CommandListCommand())
-                            .addCommand(new UptimeCommand())
-                            .addCommand(new AddRoleCommand())
-                            .addCommand(new CreateRoleCommand())
-                            .addCommand(new RemoveRoleCommand())
-                            .addCommand(new SetPrefixCommand())
-                            .addCommand(new ColourChangeCommand())
-                            .addCommand(new SetNickCommand())
-                            .addCommand(new RoleRGBCommand())
-                            .addCommand(new ListMembersCommand())
-                            .addCommand(new DeleteRoleCommand())
-                            .addCommand(new SetNameCommand())
-                            .addCommand(new PingCommand())
-                            .addCommand(new RewardCommand())
-                            .addCommand(new StatsCommand())
-                            .addCommand(new PruneCommand())
-                            .addCommand(new LeaderboardCommand())
-                            .addCommand(new PlayCommand())
-                            .addCommand(new QueueCommand())
-                            .addCommand(new SavePlaylistCommand())
-                            .addCommand(new LoadListCommand())
-                            .addCommand(new ViewListCommand())
-                            .addCommand(new DeleteListCommand())
-                            .addCommand(new RemoveCommand())
-                            .addCommand(new ClearQueueCommand())
-                            .addCommand(new PruneQueueCommand())
-                            .addCommand(new DisconnectCommand())
-                            .addCommand(new ClearCommand())
-                            .addCommand(new SortByLengthCommand())
-                            .addCommand(new LoopCommand())
-                            .addCommand(new LoopQueueCommand())
-                            .addCommand(new GiveCommand())
-                            .addCommand(new FlipCommand())
-                            .addCommand(new NowPlayingCommand())
-                            .addCommand(new RemoveRangeCommand())
-                            .addCommand(new PauseCommand())
-                            .addCommand(new ResumeCommand())
-                            .addCommand(new ResetPlayerCommand())
-                            .addCommand(new SetVolumeCommand())
-                            .addCommand(new HelpCommand())
-                            .addCommand(new SetPinThresholdCommand())
-                            .addCommand(new PlayTopCommand())
-                            .addCommand(new SeekCommand())
-                            .addCommand(new SetPinnedChannel())
-                            .addCommand(new SetUnpinnedCommand())
-                            .addCommand(new MoveCommand())
-                            .addCommand(new TimeCreatedCommand())
-                            .addCommand(new ReverseQueueCommand())
-                            .addCommand(new ShuffleCommand())
-                            .addCommand(new FairShuffleCommand())
-                            .addCommand(new InterleaveCommand())
-                            .addCommand(new SetRoleCommand())
-                            .addCommand(new FairPlayCommand())
-                            .addCommand(new UrbanDictionaryCommand())
-                            .addCommand(new CheckMemoryCommand())
-                            .addCommand(new RoleStatsCommand())
-                            .addCommand(new SkipCommand())
-                            .build();
-
-                }
-        );
-
-        while (!(botFuture.isDone() || commandFuture.isDone())) {
+        // Waiting for one of the tasks to finish
+        while (!(botFuture.isDone() || commandFuture.isDone()))
             Thread.sleep(300);
-            // Waiting for one of the tasks to finish
-        }
 
         Timer experienceTimer = new Timer();
         experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER * 1000, Constants.EXPERIENCE_TIMER * 1000);
@@ -192,6 +116,80 @@ public class Bot {
                 System.out.println(c.getClass().getSimpleName());
 
         }
+    }
+
+    private void initialiseBotUser() {
+        try {
+            botUser = new JDABuilder(AccountType.BOT)
+                    .setToken(token)
+                    .build().awaitReady();
+        } catch (LoginException | InterruptedException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    private void loadCommands() {
+        commandManager = new CommandManager.Builder()
+                .addCommand(new CommandListCommand())
+                .addCommand(new UptimeCommand())
+                .addCommand(new AddRoleCommand())
+                .addCommand(new CreateRoleCommand())
+                .addCommand(new RemoveRoleCommand())
+                .addCommand(new SetPrefixCommand())
+                .addCommand(new ColourChangeCommand())
+                .addCommand(new SetNickCommand())
+                .addCommand(new RoleRGBCommand())
+                .addCommand(new ListMembersCommand())
+                .addCommand(new DeleteRoleCommand())
+                .addCommand(new SetNameCommand())
+                .addCommand(new PingCommand())
+                .addCommand(new RewardCommand())
+                .addCommand(new StatsCommand())
+                .addCommand(new PruneCommand())
+                .addCommand(new LeaderboardCommand())
+                .addCommand(new PlayCommand())
+                .addCommand(new QueueCommand())
+                .addCommand(new SavePlaylistCommand())
+                .addCommand(new LoadListCommand())
+                .addCommand(new ViewListCommand())
+                .addCommand(new DeleteListCommand())
+                .addCommand(new RemoveCommand())
+                .addCommand(new ClearQueueCommand())
+                .addCommand(new PruneQueueCommand())
+                .addCommand(new DisconnectCommand())
+                .addCommand(new ClearCommand())
+                .addCommand(new SortByLengthCommand())
+                .addCommand(new LoopCommand())
+                .addCommand(new LoopQueueCommand())
+                .addCommand(new GiveCommand())
+                .addCommand(new FlipCommand())
+                .addCommand(new NowPlayingCommand())
+                .addCommand(new RemoveRangeCommand())
+                .addCommand(new PauseCommand())
+                .addCommand(new ResumeCommand())
+                .addCommand(new ResetPlayerCommand())
+                .addCommand(new SetVolumeCommand())
+                .addCommand(new HelpCommand())
+                .addCommand(new SetPinThresholdCommand())
+                .addCommand(new PlayTopCommand())
+                .addCommand(new SeekCommand())
+                .addCommand(new SetPinnedChannel())
+                .addCommand(new SetUnpinnedCommand())
+                .addCommand(new MoveCommand())
+                .addCommand(new TimeCreatedCommand())
+                .addCommand(new ReverseQueueCommand())
+                .addCommand(new ShuffleCommand())
+                .addCommand(new FairShuffleCommand())
+                .addCommand(new InterleaveCommand())
+                .addCommand(new SetRoleCommand())
+                .addCommand(new FairPlayCommand())
+                .addCommand(new UrbanDictionaryCommand())
+                .addCommand(new CheckMemoryCommand())
+                .addCommand(new RoleStatsCommand())
+                .addCommand(new SkipCommand())
+                .build();
+
     }
 
     private void setupNames() {

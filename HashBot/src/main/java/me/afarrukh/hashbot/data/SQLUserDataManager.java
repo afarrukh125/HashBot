@@ -165,9 +165,9 @@ public class SQLUserDataManager implements IDataManager {
 
             memberData.sort(memberDataSorter);
             List<Member> memberList = new ArrayList<>();
-            for (MemberData md : memberData) {
+            for (MemberData md : memberData)
                 memberList.add(md.getMember());
-            }
+
             return memberList;
 
 

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class LevelUtils {
 
@@ -60,11 +62,11 @@ public class LevelUtils {
 
     public static List<Member> getCreditsLeaderboard(Guild g) {
 
-        ArrayList<Member> memberList = new ArrayList<>();
-        for (Member m : g.getMembers()) {
-            if ((!m.getUser().isBot() || m.getUser().getId().equals(g.getJDA().getSelfUser().getId())))
-                memberList.add(m);
-        }
+        List<Member> memberList = g.getMembers()
+                .stream()
+                .filter(m -> m.getUser().isBot())
+                .filter(m -> m.getUser().getId().equals(g.getJDA().getSelfUser().getId()))
+                .collect(Collectors.toCollection((Supplier<List<Member>>) ArrayList::new));
 
         Comparator<Member> memberSorter = (m1, m2) -> {
             Invoker in1 = Invoker.of(m1);
