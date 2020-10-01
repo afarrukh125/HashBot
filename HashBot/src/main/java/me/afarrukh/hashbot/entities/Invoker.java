@@ -10,10 +10,7 @@ import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Views the invoker as a member who has initiated commands from this bot that would lead to a change in their user
@@ -206,7 +203,13 @@ public class Invoker {
     }
 
     public void addRandomExperience() {
-        int amt = new Random().nextInt(Constants.RANDOM_EXPERIENCE_BOUND);
+        int currentLevel = getLevel();
+
+        // Add bonus to help cope with higher level requirements.
+        int bonus = (int) Math.floor((float) currentLevel/10) * currentLevel;
+
+        int amt = new Random().nextInt(Constants.RANDOM_EXPERIENCE_BOUND) + bonus;
+
         int currentExp = (int) getExp();
 
         addExperience(amt);
@@ -225,7 +228,7 @@ public class Invoker {
             setExp(newExp - expForNextLevel);
             setLevel(currentLevel + 1);
 
-            System.out.println("<"
+            System.out.println(new Date(System.currentTimeMillis()) + ": <"
                     + member.getGuild().getName() + "> " +
                     member.getUser().getName() + " has levelled up. (Now level " + (currentLevel + 1) + ")");
         }

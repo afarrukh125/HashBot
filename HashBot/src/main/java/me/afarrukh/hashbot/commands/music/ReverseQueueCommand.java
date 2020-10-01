@@ -14,6 +14,8 @@ public class ReverseQueueCommand extends Command {
     public ReverseQueueCommand() {
         super("reversequeue");
         addAlias("rq");
+        description = "Inverts the queue contents so that the last track is first and the first track is last. " +
+                "Does not affect the currently playing track.";
     }
 
     @Override
