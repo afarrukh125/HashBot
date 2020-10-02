@@ -47,10 +47,7 @@ class MessageListener extends ListenerAdapter {
         Invoker invoker = Invoker.of(evt.getMember());
         if (invoker.hasTimePassed()) {
             invoker.addRandomCredit();
-            if (!evt.getMessage().getAttachments().isEmpty())
-                invoker.addRandomExperience();
-            else
-                invoker.updateExperience(evt.getMessage().getContentRaw());
+            invoker.addRandomExperience();
         }
         RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getAuthor());
         if (rb == null)

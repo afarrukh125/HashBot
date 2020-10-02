@@ -41,7 +41,7 @@ public class Constants {
     public static final Color EMB_COL = new Color(100, 243, 213); //The default color for embeds
     public static final Color STATSIMG_COL = Color.WHITE;
     public static final int RANDOM_EXPERIENCE_BOUND = 50;
-    public static final int EXPERIENCE_TIMER = 150; // Seconds to tick for experience
+    public static final int VOICE_EXPERIENCE_TIMER = 120; // Seconds to tick for experience
     public static final int PIN_THRESHOLD = 5;
     public static String invokerChar = "!";
     public static long timeStarted = 0;

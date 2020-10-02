@@ -68,7 +68,7 @@ public class Bot {
             Thread.sleep(300);
 
         Timer experienceTimer = new Timer();
-        experienceTimer.schedule(new VoiceExperienceTimer(), Constants.EXPERIENCE_TIMER * 1000, Constants.EXPERIENCE_TIMER * 1000);
+        experienceTimer.schedule(new VoiceExperienceTimer(), Constants.VOICE_EXPERIENCE_TIMER * 1000, Constants.VOICE_EXPERIENCE_TIMER * 1000);
 
         startUpMessages();
 

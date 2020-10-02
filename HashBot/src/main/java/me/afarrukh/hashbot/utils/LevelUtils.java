@@ -27,7 +27,6 @@ public class LevelUtils {
         int sum = Constants.BASE_EXP + tokens.length + rng + level;
 
         return Math.min(sum, Constants.MAX_EXP_FROM_MSG);
-
     }
 
     /**
