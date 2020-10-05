@@ -33,10 +33,9 @@ public class MessageUtils {
         eb.setTitle(originalMessage.getMember().getEffectiveName());
 
         // Set the embed's image to be the attachment's image ONLY if it is an image
-        if (!originalMessage.getAttachments().isEmpty()) {
+        if (!originalMessage.getAttachments().isEmpty())
             if (originalMessage.getAttachments().get(0).isImage())
                 eb.setImage(originalMessage.getAttachments().get(0).getUrl());
-        }
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(originalMessage.getTimeCreated().toInstant().toEpochMilli());
@@ -65,6 +64,7 @@ public class MessageUtils {
                 eb.appendDescription(firstEmbed.getDescription());
         }
 
+        eb.appendDescription("\n\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
         Message newMessage = channel.sendMessage(eb.build()).complete();
 
         gdm.addAsPinned(originalMessage.getId(), newMessage.getId());
