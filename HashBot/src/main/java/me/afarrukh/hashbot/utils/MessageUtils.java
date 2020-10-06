@@ -29,7 +29,12 @@ public class MessageUtils {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
 
-        eb.appendDescription(originalMessage.getContentRaw());
+        String originalMessageContent = originalMessage.getContentRaw();
+
+        // Special case for youtube videos since it prints the video URL twice if we don't check
+        if(!originalMessage.getContentRaw().contains("youtube.com"))
+            eb.appendDescription(originalMessage.getContentRaw() + "\n");
+
         eb.setTitle(originalMessage.getMember().getEffectiveName());
 
         // Set the embed's image to be the attachment's image ONLY if it is an image
@@ -40,8 +45,7 @@ public class MessageUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(originalMessage.getTimeCreated().toInstant().toEpochMilli());
 
-        eb.setFooter(originalMessage.getChannel().getName() + " - " + calendar.getTime().toString()
-                ,
+        eb.setFooter(originalMessage.getChannel().getName() + " - " + calendar.getTime().toString(),
                 originalMessage.getAuthor().getAvatarUrl());
 
         // Just copy the original embed if there is one with our title and footer
@@ -61,10 +65,10 @@ public class MessageUtils {
 
             eb.appendDescription(originalMessage.getContentRaw() + "\n");
             if (firstEmbed.getDescription() != null)
-                eb.appendDescription(firstEmbed.getDescription());
+                eb.appendDescription(firstEmbed.getDescription() + "\n");
         }
 
-        eb.appendDescription("\n\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
+        eb.appendDescription("\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
         Message newMessage = channel.sendMessage(eb.build()).complete();
 
         gdm.addAsPinned(originalMessage.getId(), newMessage.getId());
