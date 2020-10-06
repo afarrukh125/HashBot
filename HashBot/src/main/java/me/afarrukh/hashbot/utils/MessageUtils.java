@@ -32,8 +32,8 @@ public class MessageUtils {
         String originalMessageContent = originalMessage.getContentRaw();
 
         // Special case for youtube videos since it prints the video URL twice if we don't check
-        if(!originalMessage.getContentRaw().contains("youtube.com"))
-            eb.appendDescription(originalMessage.getContentRaw() + "\n");
+        if(!originalMessageContent.contains("youtube.com"))
+            eb.appendDescription(originalMessageContent + "\n");
 
         eb.setTitle(originalMessage.getMember().getEffectiveName());
 
