@@ -209,9 +209,9 @@ public class EmbedUtils {
     public static MessageEmbed getPlaylistEmbed(GuildMusicManager gmm, AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
-        if (firstTrack == null) {
+        if (firstTrack == null)
             firstTrack = playlist.getTracks().get(0);
-        }
+
 
         EmbedBuilder eb = new EmbedBuilder();
 
@@ -353,12 +353,12 @@ public class EmbedUtils {
         eb.setTitle("List of game roles for " + roleGUI.getGuild().getName());
 
         //If there are no tracks in the queue then it will just give an embedded message for a single track.
-        if (roleList.size() == 0) {
+        if (roleList.size() == 0)
             return new EmbedBuilder().setTitle("No game roles")
                     .setColor(Constants.EMB_COL)
                     .appendDescription("Use **createrole** to add roles.")
                     .build();
-        }
+
 
         int maxPageNumber = roleList.size() / 10 + 1; //We need to know how many tracks are displayed per page
 
@@ -366,9 +366,9 @@ public class EmbedUtils {
         if (roleList.size() % 10 == 0)
             maxPageNumber--;
 
-        if (page > maxPageNumber) {
+        if (page > maxPageNumber)
             return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
-        }
+
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getGameRoles().iterator();
@@ -377,9 +377,9 @@ public class EmbedUtils {
         int count = 1;
         while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if (count >= startIdx && count <= targetIdx) {
+            if (count >= startIdx && count <= targetIdx)
                 eb.appendDescription(emojiNumArr[(count - 1) % 10] + " " + gameRole.getName() + "\n\n");
-            }
+
             if (count == targetIdx)
                 break;
 
@@ -387,8 +387,10 @@ public class EmbedUtils {
         }
         eb.setTitle("Roles for " + roleGUI.getGuild().getName() + " (Page " + page + "/" + maxPageNumber + ")");
         eb.setThumbnail(roleGUI.getGuild().getIconUrl());
+
         if (Bot.gameRoleManager.getGuildRoleManager(roleGUI.getGuild()).getGameRoles().size() > 10)
             eb.setFooter("Use the arrow reaction to move to the next page of roles", null);
+
         return eb.build();
     }
 
@@ -475,9 +477,9 @@ public class EmbedUtils {
         int count = 1;
         while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if (count >= startIdx && count <= targetIdx) {
+            if (count >= startIdx && count <= targetIdx)
                 eb.appendDescription(emojiNumArr[(count - 1) % 10] + " " + gameRole.getName() + "\n\n");
-            }
+
             if (count == targetIdx)
                 break;
 
@@ -511,9 +513,9 @@ public class EmbedUtils {
         if (roleList.size() % 10 == 0)
             maxPageNumber--;
 
-        if (page > maxPageNumber) {
+        if (page > maxPageNumber)
             return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
-        }
+
 
         String[] emojiNumArr = BotUtils.createStandardNumberEmojiArray();
         Iterator<GameRole> iter = roleList.iterator();
@@ -522,9 +524,8 @@ public class EmbedUtils {
         int count = 1;
         while (iter.hasNext()) {
             GameRole gameRole = iter.next();
-            if (count >= startIdx && count <= targetIdx) {
+            if (count >= startIdx && count <= targetIdx)
                 eb.appendDescription(emojiNumArr[(count - 1) % 10] + " " + gameRole.getName() + "\n\n");
-            }
             if (count == targetIdx)
                 break;
 
@@ -535,7 +536,7 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    public static <T extends RoleGUI> MessageEmbed confirmRemoveRole(T roleGUI, GameRole gameRole) {
+    public static MessageEmbed confirmRemoveRole(RoleGUI roleGUI, GameRole gameRole) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(roleGUI.getUser().getAvatarUrl());

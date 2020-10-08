@@ -109,9 +109,8 @@ public class RoleDeleter implements RoleGUI {
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++)
                     message.addReaction(numberEmojis[i]).queue();
-                }
                 message.addReaction(e_right).queue();
                 return;
             case e_right:
@@ -123,9 +122,8 @@ public class RoleDeleter implements RoleGUI {
                 message.addReaction(back).queue();
                 message.addReaction(e_left).queue();
                 message.addReaction(cancel).queue();
-                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++) {
+                for (int i = 0; i < BotUtils.getMaxEntriesOnPage(createdRoles, page); i++)
                     message.addReaction(numberEmojis[i]).queue();
-                }
                 message.addReaction(e_right).queue();
                 return;
             case "\uD83D\uDD1F":

@@ -40,6 +40,7 @@ class MessageListener extends ListenerAdapter {
             Bot.commandManager.processEvent(evt);
             return;
         }
+
         if (BotUtils.isPinnedChannel(evt) && !evt.getMember().getUser().getId().equals(Bot.botUser.getSelfUser().getId())) {
             evt.getMessage().delete().queue();
             return;
@@ -50,6 +51,7 @@ class MessageListener extends ListenerAdapter {
             invoker.addRandomExperience();
         }
         RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getAuthor());
+
         if (rb == null)
             return;
         if (rb instanceof RoleBuilder)
