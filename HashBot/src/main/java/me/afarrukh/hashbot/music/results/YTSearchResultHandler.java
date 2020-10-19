@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.music.results;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.music.GuildMusicManager;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.MusicUtils;
@@ -15,7 +16,7 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
 
     @Override
     public void noMatches() {
-        evt.getChannel().sendMessage("Nothing found by that query").queue();
+        evt.getChannel().sendMessage("Nothing found by " + query).queue();
     }
 
     @Override

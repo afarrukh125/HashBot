@@ -139,7 +139,7 @@ class MessageListener extends ListenerAdapter {
     public void onGuildMessageDelete(GuildMessageDeleteEvent evt) {
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
-        if (gdm.getPinnedChannelId().equals(""))
+        if (gdm.getPinnedChannelId() == null || gdm.getPinnedChannelId().equals(""))
             return;
 
         if (evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()) == null)

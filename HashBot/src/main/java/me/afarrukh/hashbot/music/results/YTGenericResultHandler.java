@@ -12,7 +12,7 @@ abstract class YTGenericResultHandler implements AudioLoadResultHandler {
     final GuildMusicManager gmm;
     final GuildMessageReceivedEvent evt;
     final boolean playTop;
-    private final String query;
+    protected final String query;
 
     YTGenericResultHandler(GuildMusicManager gmm, GuildMessageReceivedEvent evt, boolean playTop) {
         this.gmm = gmm;
