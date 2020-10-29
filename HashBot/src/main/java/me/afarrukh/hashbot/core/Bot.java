@@ -67,15 +67,15 @@ public class Bot {
         while (!(botFuture.isDone() || commandFuture.isDone()))
             Thread.sleep(300);
 
+
         Timer experienceTimer = new Timer();
         experienceTimer.schedule(new VoiceExperienceTimer(), Constants.VOICE_EXPERIENCE_TIMER * 1000, Constants.VOICE_EXPERIENCE_TIMER * 1000);
 
         startUpMessages();
 
-        while (!botFuture.isDone()) {
+        while (!botFuture.isDone())
             Thread.sleep(300);
-            // Waiting on the bot to finish setting up
-        }
+
 
         botUser.addEventListener(new MessageListener());
         botUser.getPresence().setActivity(Activity.playing(" in " + botUser.getGuilds().size() + " guilds"));
@@ -120,8 +120,7 @@ public class Bot {
 
     private void initialiseBotUser() {
         try {
-            botUser = new JDABuilder(AccountType.BOT)
-                    .setToken(token)
+            botUser = JDABuilder.createLight(token)
                     .build().awaitReady();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
