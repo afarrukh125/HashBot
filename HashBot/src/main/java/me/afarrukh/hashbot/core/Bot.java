@@ -24,13 +24,11 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -120,7 +118,12 @@ public class Bot {
 
     private void initialiseBotUser() {
         try {
-            botUser = JDABuilder.createLight(token)
+            botUser = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES,
+                    GatewayIntent.GUILD_MEMBERS,
+                    GatewayIntent.DIRECT_MESSAGES,
+                    GatewayIntent.GUILD_VOICE_STATES,
+                    GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                    GatewayIntent.GUILD_MESSAGES)
                     .build().awaitReady();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
