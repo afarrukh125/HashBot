@@ -18,7 +18,6 @@ import me.afarrukh.hashbot.commands.music.playlist.SavePlaylistCommand;
 import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -77,7 +76,7 @@ public class Bot {
 
         botUser.addEventListener(new MessageListener());
         botUser.getPresence().setActivity(Activity.playing(" in " + botUser.getGuilds().size() + " guilds"));
-        System.out.println("\nStarted and ready with bot user " + botUser.getSelfUser().getName());
+        System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user " + botUser.getSelfUser().getName());
 
         musicManager = new MusicManager();
 
