@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.cli;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Abdullah
@@ -10,14 +9,14 @@ import java.util.List;
 public abstract class CLICommand {
 
     private final String name;
-    private final List<String> aliases;
+    private final Set<String> aliases;
 
     protected CLICommand(String name) {
         this.name = name;
-        aliases = new ArrayList<>();
+        aliases = new TreeSet<>();
     }
 
-    public List<String> getAliases() {
+    public Set<String> getAliases() {
         return aliases;
     }
 
