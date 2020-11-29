@@ -24,9 +24,8 @@ public class LevelUtils {
     public static int getPointsFromMessage(String[] tokens, int level) {
         Random random = new Random();
         int rng = random.nextInt(level) + 1;
-        int sum = Constants.BASE_EXP + tokens.length + rng + level;
 
-        return Math.min(sum, Constants.MAX_EXP_FROM_MSG);
+        return Constants.BASE_EXP + tokens.length + rng + (10 * level);
     }
 
     /**

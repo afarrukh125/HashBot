@@ -102,7 +102,7 @@ public class Invoker {
      */
     public boolean hasTimePassed() {
         long time = Long.parseLong((String) userFileManager.getValue("time"));
-        if ((System.currentTimeMillis() - time) < Constants.minToMillis)
+        if ((System.currentTimeMillis() - time) < (Constants.minToMillis *0.75))
             return false;
 
         userFileManager.updateValue("time", System.currentTimeMillis());
