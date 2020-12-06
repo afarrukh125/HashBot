@@ -20,8 +20,9 @@ import net.dv8tion.jda.api.entities.Member;
 public class YTFirstLatentTrackHandler implements AudioLoadResultHandler {
     private final Member member;
 
-    public YTFirstLatentTrackHandler(Member member) {
-        this.member = member;
+    public YTFirstLatentTrackHandler(Member member, String userId) {
+        Member m = member.getGuild().getMemberById(userId);
+        this.member = m != null ? m : member;
     }
 
     @Override

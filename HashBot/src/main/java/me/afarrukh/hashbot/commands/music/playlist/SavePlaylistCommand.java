@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.commands.music.playlist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
@@ -10,10 +11,7 @@ import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Abdullah
@@ -72,37 +70,51 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.add(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
-        if(startIndex > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().size()) {
+        if (startIndex > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().size()) {
             evt.getChannel().sendMessage("The index provided is higher than the number of tracks in the track queue.").queue();
             return;
         }
 
         // Ensuring all tracks in the list are unique
-        Map<String, String> uriNameMap = new LinkedHashMap<>();
+        Map<String, String> uriTrackNameMap = new LinkedHashMap<>();
+        Map<String, String> uriUserMap = new LinkedHashMap<>();
         int added = 0;
+
+        Map<String, String> userIdMap = new HashMap<>();
 
         for (int i = startIndex; added != trackList.size(); i++, added++) {
             if (i >= trackList.size())
                 i = 0;
             AudioTrack track = trackList.get(i);
-            uriNameMap.put(track.getInfo().uri, track.getInfo().title);
+            uriTrackNameMap.put(track.getInfo().uri, track.getInfo().title);
+
+            String userName = track.getUserData(String.class);
+            String id = userIdMap.get(userName);
+
+            if (id == null) {
+                id = evt.getGuild().getMembersByName(userName, true).get(0).getId();
+                userIdMap.put(userName, id);
+            }
+
+            uriUserMap.put(track.getInfo().uri, id);
         }
 
-        if (uriNameMap.keySet().size() < 2) {
+        if (uriTrackNameMap.keySet().size() < 2) {
             evt.getChannel().sendMessage("You must have at least 1 track playing, and 1 track in the queue (so 2 total) to create a playlist").queue();
             return;
         }
-        if (uriNameMap.keySet().size() > 100) {
-            evt.getChannel().sendMessage("You can only save playlists that have 100 tracks or less.").queue();
+
+        if (uriTrackNameMap.keySet().size() > Constants.CUSTOM_PLAYLIST_SIZE_LIMIT) {
+            evt.getChannel().sendMessage("You can only save playlists that have " + Constants.CUSTOM_PLAYLIST_SIZE_LIMIT + " tracks or less.").queue();
             return;
         }
 
-        Message message = evt.getChannel().sendMessage("Creating playlist " + params + " with " + uriNameMap.keySet().size() + " tracks.").complete();
+        Message message = evt.getChannel().sendMessage("Creating playlist " + params + " with " + uriTrackNameMap.keySet().size() + " tracks.").complete();
 
         try {
-            new SQLUserDataManager(evt.getMember()).addPlaylist(params, uriNameMap);
+            new SQLUserDataManager(evt.getMember()).addPlaylist(params, uriTrackNameMap, uriUserMap);
 
-            message.editMessage("You have successfully created the playlist " + params + " with " + uriNameMap.keySet().size() + " tracks.").queue();
+            message.editMessage("You have successfully created the playlist " + params + " with " + uriTrackNameMap.keySet().size() + " tracks.").queue();
         } catch (PlaylistException e) {
             message.editMessage("The name you have selected for this playlist is already in use. " +
                     "Please choose another").queue();

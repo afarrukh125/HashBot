@@ -241,9 +241,10 @@ public class SQLUserDataManager implements IDataManager {
      *
      * @param lname      The name of the playlist
      * @param uriNameMap The map of tracks to add
+     * @param uriUserMap A map of all users that have queued the corresponding track with URI
      * @throws PlaylistException A generic playlist exception to be handled by any client that uses this method
      */
-    public void addPlaylist(String lname, Map<String, String> uriNameMap) throws PlaylistException {
+    public void addPlaylist(String lname, Map<String, String> uriNameMap, Map<String, String> uriUserMap) throws PlaylistException {
         checkConn(); // Mandatory before every call to the database
 
         try {
@@ -311,6 +312,17 @@ public class SQLUserDataManager implements IDataManager {
                 pslisttrack.execute();
             }
 
+            for(String uri : uriUserMap.keySet()) {
+                String trackURI = uri.replace(":", ";");
+                PreparedStatement trackUserStmt = conn.prepareStatement("INSERT INTO trackuser VALUES(?, ?, ?)");
+                trackUserStmt.setInt(1, listId);
+                trackUserStmt.setString(2, trackURI);
+                trackUserStmt.setString(3, uriUserMap.get(uri));
+                trackUserStmt.execute();
+            }
+
+
+
             pslistuser.execute();
 
         } catch (SQLException e) {
@@ -328,23 +340,25 @@ public class SQLUserDataManager implements IDataManager {
 
         try {
             // We need to check if the playlist exists first of all
-            final String query = "SELECT DISTINCT(trackurl) FROM track, listuser, playlist, user, listtrack " +
+            final String query = "SELECT DISTINCT(trackurl), trackuser.userid FROM track, listuser, playlist, user, listtrack, trackuser " +
                     "WHERE track.url=listtrack.trackurl AND playlist.name='" + name + "' AND listuser.userid=user.id " +
+                    "AND trackuser.listid=playlist.listid AND trackuser.uri = track.url AND playlist.userid='" + member.getUser().getId() + "'" +
                     "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
 
             if (!rs.next())
-                throw new PlaylistException("No playlist with that name was found");
+                throw new PlaylistException("No playlist with that name that belongs to you was found");
 
             rs = conn.createStatement().executeQuery(query);
 
             // Load the first track in the meantime, while the others load
             if (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
+                String userId = rs.getString(2);
                 Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()),
                         uri,
-                        new YTFirstLatentTrackHandler(member));
+                        new YTFirstLatentTrackHandler(member, userId));
             }
 
             int idx = 0; // Position, for tracking between threads
@@ -352,7 +366,8 @@ public class SQLUserDataManager implements IDataManager {
             // Load all remaining tracks, incrementing the index, idx,  by one each time
             while (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
-                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new YTLatentTrackHandler(member, idx, loader));
+                String userId = rs.getString(2);
+                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new YTLatentTrackHandler(member, idx, loader, userId));
                 idx++;
             }
         } catch (SQLException e) {

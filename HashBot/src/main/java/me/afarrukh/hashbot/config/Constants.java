@@ -49,6 +49,8 @@ public class Constants {
     public static Font bigNumFont = null;
     public static Long INITIAL_MEMORY;
 
+    public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 100;
+
 
     //Bot configuration constants
     public static ArrayList<String> ownerIds;

@@ -16,15 +16,15 @@ import net.dv8tion.jda.api.entities.Member;
  * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
  */
 public class YTLatentTrackHandler implements AudioLoadResultHandler {
-
-    private final Member member;
     private final int idx;
     private final PlaylistLoader loader;
+    private final Member member;
 
-    public YTLatentTrackHandler(Member member, int idx, PlaylistLoader loader) {
-        this.member = member;
+    public YTLatentTrackHandler(Member member, int idx, PlaylistLoader loader, String userId) {
         this.idx = idx;
         this.loader = loader;
+        Member m = member.getGuild().getMemberById(userId);;
+        this.member = m != null ? m : member;
     }
 
     @Override
