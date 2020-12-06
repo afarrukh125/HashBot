@@ -30,14 +30,40 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         description = "Save the current playlist, given a name";
 
         addParameter("list name", "The name of the new playlist to be created");
+        addParameter("FLAG: idx", "The index of the current queue to save the playlist from, loops round to the start and adds all songs regardless");
         addExampleUsage("savelist list");
+        addExampleUsage("savelist list -idx 7 (Note: This starts from the index 7 and runs til the end of the list, then starts from the playing song up to 6)");
     }
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
         if (!MusicUtils.canInteract(evt))
             return;
-        if (params == null) {
+
+        int startIndex = 0;
+
+        // Handle the flag
+        if (params.contains("-idx")) {
+            String[] tokens = params.split(" ");
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            for (; i < tokens.length; i++) {
+                String nameString = tokens[i];
+                if (nameString.equals("-idx"))
+                    break;
+                sb.append(nameString).append(" ");
+            }
+
+            params = sb.toString().trim();
+            try {
+                startIndex = Integer.parseInt(tokens[i + 1]);
+            } catch (Exception e) {
+                evt.getChannel().sendMessage("The index to start the list from is not specified correctly, or exceeds the length of the track queue.").queue();
+                return;
+            }
+        }
+
+        if (params.equals("")) {
             evt.getChannel().sendMessage("You must provide a name for the playlist").queue();
             return;
         }
@@ -46,9 +72,19 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
         trackList.add(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
         trackList.addAll(Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
 
+        if(startIndex > Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().size()) {
+            evt.getChannel().sendMessage("The index provided is higher than the number of tracks in the track queue.").queue();
+            return;
+        }
+
         // Ensuring all tracks in the list are unique
         Map<String, String> uriNameMap = new LinkedHashMap<>();
-        for (AudioTrack track : trackList) {
+        int added = 0;
+
+        for (int i = startIndex; added != trackList.size(); i++, added++) {
+            if (i >= trackList.size())
+                i = 0;
+            AudioTrack track = trackList.get(i);
             uriNameMap.put(track.getInfo().uri, track.getInfo().title);
         }
 

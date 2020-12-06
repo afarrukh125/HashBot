@@ -45,6 +45,5 @@ public class YTLatentTrackHandler implements AudioLoadResultHandler {
     @Override
     public void loadFailed(FriendlyException e) {
         loader.notifyFailed();
-        System.err.println(e.getLocalizedMessage());;
     }
 }
