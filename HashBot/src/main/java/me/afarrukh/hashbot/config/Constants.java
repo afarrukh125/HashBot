@@ -49,7 +49,9 @@ public class Constants {
     public static Font bigNumFont = null;
     public static Long INITIAL_MEMORY;
 
-    public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 100;
+    public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 100; // The limit of a playlist that can be created within the bot
+
+    public static final int PLAYLIST_UPDATE_INTERVAL = 10; // How often to update the message when loading or creating a new playlist through the bot
 
 
     //Bot configuration constants

@@ -109,10 +109,10 @@ public class SavePlaylistCommand extends Command implements MusicCommand {
             return;
         }
 
-        Message message = evt.getChannel().sendMessage("Creating playlist " + params + " with " + uriTrackNameMap.keySet().size() + " tracks.").complete();
+        Message message = evt.getChannel().sendMessage("Creating playlist " + params + " with " + uriTrackNameMap.keySet().size() + " tracks...").complete();
 
         try {
-            new SQLUserDataManager(evt.getMember()).addPlaylist(params, uriTrackNameMap, uriUserMap);
+            new SQLUserDataManager(evt.getMember()).addPlaylist(params, uriTrackNameMap, uriUserMap, message);
 
             message.editMessage("You have successfully created the playlist " + params + " with " + uriTrackNameMap.keySet().size() + " tracks.").queue();
         } catch (PlaylistException e) {

@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.data;
 
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.Playlist;
@@ -8,6 +9,7 @@ import me.afarrukh.hashbot.music.results.YTFirstLatentTrackHandler;
 import me.afarrukh.hashbot.music.results.YTLatentTrackHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 
 import java.sql.*;
@@ -244,7 +246,7 @@ public class SQLUserDataManager implements IDataManager {
      * @param uriUserMap A map of all users that have queued the corresponding track with URI
      * @throws PlaylistException A generic playlist exception to be handled by any client that uses this method
      */
-    public void addPlaylist(String lname, Map<String, String> uriNameMap, Map<String, String> uriUserMap) throws PlaylistException {
+    public void addPlaylist(String lname, Map<String, String> uriNameMap, Map<String, String> uriUserMap, Message message) throws PlaylistException {
         checkConn(); // Mandatory before every call to the database
 
         try {
@@ -309,16 +311,17 @@ public class SQLUserDataManager implements IDataManager {
 
                 pos++;
 
-                pslisttrack.execute();
-            }
-
-            for(String uri : uriUserMap.keySet()) {
-                String trackURI = uri.replace(":", ";");
                 PreparedStatement trackUserStmt = conn.prepareStatement("INSERT INTO trackuser VALUES(?, ?, ?)");
                 trackUserStmt.setInt(1, listId);
                 trackUserStmt.setString(2, trackURI);
                 trackUserStmt.setString(3, uriUserMap.get(uri));
                 trackUserStmt.execute();
+                pslisttrack.execute();
+
+                int size = uriNameMap.keySet().size();
+                if(pos % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
+                    message.editMessage("Creating playlist " + lname + " with " + size +
+                            " tracks... (" + pos  + "/" +  size + ")").queue();
             }
 
 

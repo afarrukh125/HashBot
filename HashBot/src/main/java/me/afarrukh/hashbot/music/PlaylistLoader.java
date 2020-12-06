@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.music;
 
 import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.api.entities.Member;
@@ -106,7 +107,7 @@ public class PlaylistLoader {
         notifyAll();
 
 
-        if (currentIndex == maxSize - 1) { // We take away 1 because it is likely we queued one track pre-emptively
+        if (currentIndex == maxSize - 1) { // We take away 1 because we queued one track pre-emptively
             queueTracks();
             MusicUtils.connectToChannel(member);
             message.editMessage("Completed loading " + maxSize + " tracks from " + listName).queue(message -> {
@@ -115,6 +116,10 @@ public class PlaylistLoader {
             });
 
             notifyAll();
+        } else {
+            if(currentIndex % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
+            message.editMessage("Queueing playlist " + listName + " with " + originalSize + " tracks." +
+                    " It might take a while for all tracks to be added to the queue... (" + currentIndex + "/" + originalSize + ")").queue();
         }
     }
 
