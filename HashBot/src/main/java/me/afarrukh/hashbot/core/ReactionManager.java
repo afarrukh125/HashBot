@@ -38,6 +38,9 @@ class ReactionManager {
         if (gdm.isPinned(m.getId()))
             return;
 
+        if(gdm.getPinnedChannelId() == null)
+            return;
+
         TextChannel pinnedChannel = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId());
         if(pinnedChannel == null)
             return;
