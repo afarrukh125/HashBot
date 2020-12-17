@@ -29,12 +29,15 @@ public class LoadListCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
+        if (!MusicUtils.canInteract(evt)) 
+            return;
 
         if(params == null) {
             evt.getChannel().sendMessage("Please provide a playlist to load.").queue();
             return;
         }
+
+        SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
 
         Message message = null;
         try {
