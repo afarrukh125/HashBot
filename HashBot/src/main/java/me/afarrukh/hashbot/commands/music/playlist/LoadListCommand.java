@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.MusicCommand;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.PlaylistLoader;
+import me.afarrukh.hashbot.utils.MusicUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -29,7 +30,7 @@ public class LoadListCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        if (!MusicUtils.canInteract(evt)) 
+        if (!MusicUtils.canInteract(evt))
             return;
 
         if(params == null) {
