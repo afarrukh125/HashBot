@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.commands.music.playlist;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.MusicCommand;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.music.PlaylistLoader;
@@ -30,7 +31,7 @@ public class LoadListCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        if (!MusicUtils.canInteract(evt))
+        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() == null)
             return;
 
         if(params == null) {
