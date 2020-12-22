@@ -31,7 +31,7 @@ public class LoadListCommand extends Command implements MusicCommand {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() == null)
+        if (Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState()).getChannel() == null)
             return;
 
         if(params == null) {

@@ -2,12 +2,14 @@ package me.afarrukh.hashbot.commands.music.playlist;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.music.Playlist;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Abdullah
@@ -24,17 +26,23 @@ public class ViewListCommand extends Command {
 
     @Override
     public void onInvocation(GuildMessageReceivedEvent evt, String params) {
-        List<Playlist> playlistList = new SQLUserDataManager(evt.getMember()).viewAllPlaylists();
+        List<Playlist> playlists = new SQLUserDataManager(evt.getMember()).viewAllPlaylists();
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("You currently have ").append(playlistList.size()).append(" playlists: \n\n");
-        for (Playlist p : playlistList) {
-            stringBuilder.append("**").append(p.getName()).append(": **").append(p.getSize()).append(" tracks").append("\n\n");
+        if (playlists.size() == 0) {
+            stringBuilder.append("You currently have no playlists, use the ")
+                    .append(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())
+                    .append("savelist command to save the current track queue to a playlist");
+
+        } else {
+            for (Playlist p : playlists)
+                stringBuilder.append("**").append(p.getName()).append(": **").append(p.getSize()).append(" tracks").append("\n\n");
+
         }
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Viewing playlists for " + evt.getMember().getEffectiveName());
+        eb.setTitle("Viewing playlists for " + Objects.requireNonNull(evt.getMember()).getEffectiveName());
         eb.setDescription(stringBuilder);
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(evt.getMember().getUser().getAvatarUrl());
