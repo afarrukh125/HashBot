@@ -9,7 +9,8 @@ import me.afarrukh.hashbot.commands.management.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
-import me.afarrukh.hashbot.commands.management.guild.roles.*;
+import me.afarrukh.hashbot.commands.management.guild.roles.ListMembersCommand;
+import me.afarrukh.hashbot.commands.management.guild.roles.RoleStatsCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.commands.music.*;
 import me.afarrukh.hashbot.commands.music.playlist.DeleteListCommand;
@@ -24,6 +25,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
@@ -123,6 +125,9 @@ public class Bot {
                     GatewayIntent.GUILD_VOICE_STATES,
                     GatewayIntent.GUILD_MESSAGE_REACTIONS,
                     GatewayIntent.GUILD_MESSAGES)
+                    .disableCache(CacheFlag.ACTIVITY,
+                            CacheFlag.EMOTE,
+                            CacheFlag.CLIENT_STATUS)
                     .build().awaitReady();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
