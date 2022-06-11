@@ -33,6 +33,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class Bot {
     public static CommandManager commandManager;
@@ -57,23 +58,14 @@ public class Bot {
      * Adds the commands and initialises all the managers
      */
     private void init() throws InterruptedException {
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
 
-        Future<?> botFuture = service.submit(this::initialiseBotUser);
-        Future<?> commandFuture = service.submit(this::loadCommands);
+        executor.execute(this::initialiseBotUser);
+        executor.execute(this::loadCommands);
+        executor.shutdown();;
 
-        // Waiting for one of the tasks to finish
-        while (!(botFuture.isDone() || commandFuture.isDone()))
-            Thread.sleep(300);
-
-
-        Timer experienceTimer = new Timer();
-        experienceTimer.schedule(new VoiceExperienceTimer(), Constants.VOICE_EXPERIENCE_TIMER * 1000, Constants.VOICE_EXPERIENCE_TIMER * 1000);
-
-        startUpMessages();
-
-        while (!botFuture.isDone())
-            Thread.sleep(300);
+        //noinspection ResultOfMethodCallIgnored
+        executor.awaitTermination(1, TimeUnit.MINUTES);
 
 
         botUser.addEventListener(new MessageListener());
@@ -129,6 +121,12 @@ public class Bot {
                             CacheFlag.EMOTE,
                             CacheFlag.CLIENT_STATUS)
                     .build().awaitReady();
+
+
+            Timer experienceTimer = new Timer();
+            experienceTimer.schedule(new VoiceExperienceTimer(), Constants.VOICE_EXPERIENCE_TIMER * 1000, Constants.VOICE_EXPERIENCE_TIMER * 1000);
+
+            startUpMessages();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
             System.exit(0);
