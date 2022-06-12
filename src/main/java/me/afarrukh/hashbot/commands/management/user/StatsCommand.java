@@ -114,12 +114,7 @@ public class StatsCommand extends Command {
         g.dispose();
 
         File outputFile = saveImage(fileName, bufferedImage);
-        evt.getChannel().sendFile(outputFile).queue();
-
-        Timer timer = new Timer();
-        timer.schedule(new DeletionTimer(outputFile), 5 * 1000);
-
-        System.gc();
+        evt.getChannel().sendFile(outputFile).queue(m -> outputFile.delete());
     }
 
     @Override
@@ -186,18 +181,5 @@ public class StatsCommand extends Command {
             e.printStackTrace();
         }
         return outputFile;
-    }
-
-    private static class DeletionTimer extends TimerTask {
-        private final File file;
-
-        private DeletionTimer(File file) {
-            this.file = file;
-        }
-
-        @Override
-        public void run() {
-            file.delete();
-        }
     }
 }
