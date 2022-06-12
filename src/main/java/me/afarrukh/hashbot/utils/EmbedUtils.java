@@ -9,19 +9,17 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.*;
-import me.afarrukh.hashbot.music.GuildMusicManager;
-import me.afarrukh.hashbot.music.TrackScheduler;
+import me.afarrukh.hashbot.track.GuildAudioTrackManager;
+import me.afarrukh.hashbot.track.TrackScheduler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -30,12 +28,12 @@ import java.util.concurrent.BlockingQueue;
 public class EmbedUtils {
 
     /**
-     * @param gmm  The guild music manager
+     * @param gmm  The guild track manager
      * @param evt  The message received event associated with the queue message request
      * @param page The page of the message queue to be displayed
      * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single track embed.
      */
-    public static MessageEmbed getQueueMsg(GuildMusicManager gmm, MessageReceivedEvent evt, int page) {
+    public static MessageEmbed getQueueMsg(GuildAudioTrackManager gmm, MessageReceivedEvent evt, int page) {
         try {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(Constants.EMB_COL);
@@ -85,7 +83,7 @@ public class EmbedUtils {
             if (gmm.getScheduler().isLoopingQueue())
                 sb.append("The queue is looping. Tracks will be added to the back of the queue once they finish");
             eb.setFooter(sb.toString(), evt.getAuthor().getAvatarUrl());
-            eb.setThumbnail(MusicUtils.getThumbnailURL(currentTrack));
+            eb.setThumbnail(AudioTrackUtils.getThumbnailURL(currentTrack));
             return eb.build();
         } catch (NullPointerException e) {
             return getNothingPlayingEmbed();
@@ -102,27 +100,27 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
-        if (Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping())
+        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping())
             sb.append(" [Looping]");
         eb.setTitle(sb.toString());
         eb.appendDescription("[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri + ")\n\n");
         eb.appendDescription("**Channel**: `" + currentTrack.getInfo().author + "`\n");
         eb.appendDescription("**Queued by**: `" + currentTrack.getUserData().toString() + "`\n");
         eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`\n\n");
-        String musicBar = MusicUtils.getMusicBar(currentTrack);
-        eb.appendDescription(musicBar);
+        String trackBar = AudioTrackUtils.getAudioTrackBar(currentTrack);
+        eb.appendDescription(trackBar);
         eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(MusicUtils.getThumbnailURL(currentTrack));
+        eb.setThumbnail(AudioTrackUtils.getThumbnailURL(currentTrack));
         return eb.build();
     }
 
     /**
-     * @param gmm The guild music manager associated with the embed being requested
+     * @param gmm The guild track manager associated with the embed being requested
      * @param at  The audio track which has been queued
      * @param evt The message received event containing information such as which channel to send to
      * @return an embed referring to a track which has been queued to an audioplayer already playing a track
      */
-    public static MessageEmbed getQueuedEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Now playing");
@@ -138,7 +136,7 @@ public class EmbedUtils {
             if (ts.isFairPlay())
                 eb.setFooter("Fairplay mode is currently on. Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
         }
-        eb.setThumbnail(MusicUtils.getThumbnailURL(at));
+        eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
 
         return eb.build();
     }
@@ -156,7 +154,7 @@ public class EmbedUtils {
         eb.appendDescription("**Channel**: `" + at.getInfo().author + "`\n");
         eb.appendDescription("**Queued by**: `" + at.getUserData().toString() + "`\n");
         eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(at.getDuration()) + "`\n");
-        eb.setThumbnail(MusicUtils.getThumbnailURL(at));
+        eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
         return eb.build();
     }
 
@@ -170,18 +168,18 @@ public class EmbedUtils {
         eb.appendDescription("[" + at.getInfo().title + "](" + at.getInfo().uri + ")\n\n");
         eb.setColor(Constants.EMB_COL);
 
-        eb.setThumbnail(MusicUtils.getThumbnailURL(at));
+        eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
 
         return eb.build();
     }
 
     /**
-     * @param gmm The music manager to query
+     * @param gmm The track manager to query
      * @param at  The audiotrack which is being added
      * @param evt The event (contains information about the channel which queued it, the guild etc.
      * @return A message embed with the appropriate information for a track that has been queued to the top
      */
-    public static MessageEmbed getQueuedTopEmbed(GuildMusicManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedTopEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Queued track to top");
@@ -195,7 +193,7 @@ public class EmbedUtils {
             String totalTime = CmdUtils.longToHHMMSS(gmm.getPlayer().getPlayingTrack().getDuration() - gmm.getPlayer().getPlayingTrack().getPosition());
             eb.appendDescription("**Playing in approximately**: `" + totalTime + "`\n");
         }
-        eb.setThumbnail(MusicUtils.getThumbnailURL(at));
+        eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
 
         return eb.build();
     }
@@ -203,11 +201,11 @@ public class EmbedUtils {
     /**
      * Gets an embed that returns a playlist that has been queued
      *
-     * @param gmm      The guild music manager which has an audioplayer which will have this playlist added to
+     * @param gmm      The guild track manager which has an audioplayer which will have this playlist added to
      * @param playlist The playlist to be added
      * @return the MessageEmbed object to represent this playlist that has been queued
      */
-    public static MessageEmbed getPlaylistEmbed(GuildMusicManager gmm, AudioPlaylist playlist) {
+    public static MessageEmbed getPlaylistEmbed(GuildAudioTrackManager gmm, AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
         if (firstTrack == null)
@@ -219,10 +217,10 @@ public class EmbedUtils {
         eb.setTitle("Playlist added: " + playlist.getName());
         eb.appendDescription("**Queued by**: `" + firstTrack.getUserData().toString() + "`\n");
         eb.appendDescription("**Number of tracks**: `" + playlist.getTracks().size() + "`\n");
-        eb.appendDescription("**Total duration**: `" + MusicUtils.getPlaylistDuration(playlist) + "`\n");
+        eb.appendDescription("**Total duration**: `" + AudioTrackUtils.getPlaylistDuration(playlist) + "`\n");
 
 
-        eb.setThumbnail(MusicUtils.getThumbnailURL(firstTrack));
+        eb.setThumbnail(AudioTrackUtils.getThumbnailURL(firstTrack));
         return eb.build();
     }
 

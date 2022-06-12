@@ -16,7 +16,7 @@ public class CommandListCommand extends Command {
     public CommandListCommand() {
         super("commands");
         addAlias("cmds");
-        description = "Displays all commands provide a parameter e.g. music to see commands only of that category";
+        description = "Displays all commands provide a parameter e.g. track to see commands only of that category";
         addExampleUsage("help roles");
     }
 

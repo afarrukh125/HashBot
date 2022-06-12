@@ -12,11 +12,11 @@ import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.guild.roles.ListMembersCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.RoleStatsCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
-import me.afarrukh.hashbot.commands.music.*;
-import me.afarrukh.hashbot.commands.music.playlist.DeleteListCommand;
-import me.afarrukh.hashbot.commands.music.playlist.LoadListCommand;
-import me.afarrukh.hashbot.commands.music.playlist.SavePlaylistCommand;
-import me.afarrukh.hashbot.commands.music.playlist.ViewListCommand;
+import me.afarrukh.hashbot.commands.audiotracks.*;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.DeleteListCommand;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.LoadListCommand;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.SavePlaylistCommand;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.api.JDA;
@@ -32,7 +32,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Runtime.getRuntime;
@@ -40,7 +39,7 @@ import static java.lang.Runtime.getRuntime;
 public class Bot {
     public static CommandManager commandManager;
     public static GameRoleManager gameRoleManager;
-    public static MusicManager musicManager;
+    public static AudioTrackManager trackManager;
     public static JDA botUser;
     static ReactionManager reactionManager;
     private final String token;
@@ -74,7 +73,7 @@ public class Bot {
         botUser.getPresence().setActivity(Activity.playing(" in " + botUser.getGuilds().size() + " guilds"));
         System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user " + botUser.getSelfUser().getName());
 
-        musicManager = new MusicManager();
+        trackManager = new AudioTrackManager();
 
         gameRoleManager = new GameRoleManager();
         reactionManager = new ReactionManager();

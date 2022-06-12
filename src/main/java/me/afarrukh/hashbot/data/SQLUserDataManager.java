@@ -3,10 +3,10 @@ package me.afarrukh.hashbot.data;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
-import me.afarrukh.hashbot.music.Playlist;
-import me.afarrukh.hashbot.music.PlaylistLoader;
-import me.afarrukh.hashbot.music.results.YTFirstLatentTrackHandler;
-import me.afarrukh.hashbot.music.results.YTLatentTrackHandler;
+import me.afarrukh.hashbot.track.Playlist;
+import me.afarrukh.hashbot.track.PlaylistLoader;
+import me.afarrukh.hashbot.track.results.YTFirstLatentTrackHandler;
+import me.afarrukh.hashbot.track.results.YTLatentTrackHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -359,7 +359,7 @@ public class SQLUserDataManager implements IDataManager {
             if (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
                 String userId = rs.getString(2);
-                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()),
+                Bot.trackManager.getPlayerManager().loadItemOrdered(Bot.trackManager.getGuildAudioPlayer(member.getGuild()),
                         uri,
                         new YTFirstLatentTrackHandler(member, userId));
             }
@@ -370,7 +370,7 @@ public class SQLUserDataManager implements IDataManager {
             while (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
                 String userId = rs.getString(2);
-                Bot.musicManager.getPlayerManager().loadItemOrdered(Bot.musicManager.getGuildAudioPlayer(member.getGuild()), uri, new YTLatentTrackHandler(member, idx, loader, userId));
+                Bot.trackManager.getPlayerManager().loadItemOrdered(Bot.trackManager.getGuildAudioPlayer(member.getGuild()), uri, new YTLatentTrackHandler(member, idx, loader, userId));
                 idx++;
             }
         } catch (SQLException e) {

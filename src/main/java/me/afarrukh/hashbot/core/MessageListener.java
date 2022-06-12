@@ -6,13 +6,12 @@ import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.gameroles.RoleGUI;
-import me.afarrukh.hashbot.music.GuildMusicManager;
+import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
-import me.afarrukh.hashbot.utils.MusicUtils;
+import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
@@ -79,18 +78,18 @@ class MessageListener extends ListenerAdapter {
         if (!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()))) // If the channel that the event is associated with does not contain the bot
             return;
 
-        GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
+        GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
 
-        if (Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
-            MusicUtils.disconnect(evt.getGuild());
+        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
+            AudioTrackUtils.disconnect(evt.getGuild());
             return;
         }
 
         //Pause if no users in channel
         if (vc.getMembers().size() == 1 && !manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
+            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
-            Timer disconnectTimer = Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
+            Timer disconnectTimer = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
             disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY * 1000);
         }
     }
@@ -105,13 +104,13 @@ class MessageListener extends ListenerAdapter {
         if (!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
             return;
 
-        GuildMusicManager manager = Bot.musicManager.getGuildAudioPlayer(evt.getGuild());
+        GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
 
         //Check if the user to join is the first to join and resume if it is already paused
         if ((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
+            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
 
-            Bot.musicManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
+            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
         }
     }
 

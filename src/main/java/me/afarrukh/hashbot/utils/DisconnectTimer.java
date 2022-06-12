@@ -14,6 +14,6 @@ public class DisconnectTimer extends TimerTask {
 
     @Override
     public void run() {
-        MusicUtils.disconnect(guild);
+        AudioTrackUtils.disconnect(guild);
     }
 }
