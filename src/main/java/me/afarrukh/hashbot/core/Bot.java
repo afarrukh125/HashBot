@@ -195,20 +195,16 @@ public class Bot {
     }
 
     private void setupNames() {
-        ExecutorService executorService = Executors.newFixedThreadPool(getRuntime().availableProcessors() * 2);
         for (Guild g : botUser.getGuilds()) {
-            executorService.execute(() -> {
-                try {
-                    SQLUserDataManager.updateUsernames(g);
-                    for (Member m : g.getMembers()) {
-                        if (!SQLUserDataManager.getUserData(m).next())
-                            SQLUserDataManager.addMember(m);
-                    }
-                } catch (ClassNotFoundException | SQLException e) {
-                    e.printStackTrace();
+            try {
+                SQLUserDataManager.updateUsernames(g);
+                for (Member m : g.getMembers()) {
+                    if (!SQLUserDataManager.getUserData(m).next())
+                        SQLUserDataManager.addMember(m);
                 }
-            });
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
         }
-        executorService.shutdown();
     }
 }
