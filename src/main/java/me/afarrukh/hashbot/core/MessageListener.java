@@ -69,6 +69,26 @@ class MessageListener extends ListenerAdapter {
     }
 
     /**
+     * @param evt The event associated with a member joining guild voice
+     */
+    @Override
+    public void onGuildVoiceJoin(GuildVoiceJoinEvent evt) {
+        AudioChannel vc = evt.getChannelJoined();
+
+        if (!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
+            return;
+
+        GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+
+        //Check if the user to join is the first to join and resume if it is already paused
+        if ((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
+            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
+
+            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
+        }
+    }
+
+    /**
      * @param evt The event associated with a member leaving guild voice
      */
     @Override
@@ -91,26 +111,6 @@ class MessageListener extends ListenerAdapter {
 
             Timer disconnectTimer = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
             disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY * 1000);
-        }
-    }
-
-    /**
-     * @param evt The event associated with a member joining guild voice
-     */
-    @Override
-    public void onGuildVoiceJoin(GuildVoiceJoinEvent evt) {
-        AudioChannel vc = evt.getChannelJoined();
-
-        if (!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
-            return;
-
-        GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
-
-        //Check if the user to join is the first to join and resume if it is already paused
-        if ((vc.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
-
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
         }
     }
 
