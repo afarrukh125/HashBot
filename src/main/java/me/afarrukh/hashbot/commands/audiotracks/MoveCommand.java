@@ -30,15 +30,15 @@ public class MoveCommand extends Command implements AudioTrackCommand {
                 int oldPos = Integer.parseInt(tokens[0]) - 1;
                 int newPos = Integer.parseInt(tokens[1]) - 1;
 
-                if (oldPos < 0 || newPos + 1 > Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().size()) {
+                if (oldPos < 0 || newPos + 1 > Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList().size()) {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }
-                if (newPos < 0 || oldPos + 1 > Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().size()) {
+                if (newPos < 0 || oldPos + 1 > Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList().size()) {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }
-                AudioTrack track = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList().get(oldPos);
+                AudioTrack track = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList().get(oldPos);
                 Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().move(oldPos, newPos);
                 evt.getChannel().sendMessage("Moved `" + track.getInfo().title + "` to position " + tokens[1]).queue();
             }

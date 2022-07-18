@@ -17,7 +17,7 @@ public class SortByLengthCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList();
+        List<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList();
 
         if(!Objects.requireNonNull(Objects.requireNonNull(evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId())).getVoiceState()).inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();

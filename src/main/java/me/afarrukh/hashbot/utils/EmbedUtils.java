@@ -2,9 +2,6 @@ package me.afarrukh.hashbot.utils;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.commands.management.bot.CommandListCommand;
-import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
@@ -19,7 +16,6 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -570,62 +566,6 @@ public class EmbedUtils {
         eb.setTitle("Role removed");
         eb.appendDescription("You no longer have the role " + gr.getName());
         return eb.build();
-    }
-
-    public static java.util.List<MessageEmbed> getHelpMsg(MessageReceivedEvent evt, java.util.List<Command> commandList) {
-        java.util.List<MessageEmbed> embedArrayList = new ArrayList<>();
-
-        EmbedBuilder eb = new EmbedBuilder().setColor(Constants.EMB_COL);
-        eb.setTitle("Commands List (Page 1)");
-
-        int pageCount = 2;
-
-        String prefix = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix();
-
-        StringBuilder sb = new StringBuilder();
-
-        for (Command c : commandList) {
-            if (c instanceof OwnerCommand || c instanceof CommandListCommand)
-                continue;
-
-            int descLength = 0;
-            if (c.getDescription() != null)
-                descLength = c.getDescription().length();
-            if (sb.toString().length() + descLength >= 1600) {
-                eb.appendDescription(sb.toString());
-                eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
-                sb = new StringBuilder();
-                embedArrayList.add(eb.build());
-                eb = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Commands List (Page " + pageCount + ")");
-                eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
-                pageCount++;
-            }
-
-            sb.append("**").append(prefix).append(c.getName()).append("**");
-
-            if (!c.getAliases().isEmpty()) {
-                java.util.List<String> aliases = new ArrayList<>(c.getAliases());
-                sb.append(" (");
-                for (int i = 0; i < aliases.size() - 1; i++)
-                    if (!aliases.get(i).equalsIgnoreCase(c.getName()))
-                        sb.append(aliases.get(i)).append("/");
-
-                if (!aliases.get(aliases.size() - 1).equalsIgnoreCase(c.getName()))
-                    sb.append(aliases.get(aliases.size() - 1));
-                sb.append(")");
-            }
-            if (c.getDescription() != null)
-                sb.append(" - ").append(c.getDescription());
-            sb.append("\n\n");
-        }
-
-        eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
-        eb.appendDescription(sb.toString());
-
-        eb.setFooter("If you need help with a particular command, add the command name, e.g. " +
-                prefix + "help play", evt.getJDA().getSelfUser().getAvatarUrl());
-        embedArrayList.add(eb.build());
-        return embedArrayList;
     }
 
     public static MessageEmbed getCreditsLeaderboardEmbed(java.util.List<Member> memberList, MessageReceivedEvent evt) {

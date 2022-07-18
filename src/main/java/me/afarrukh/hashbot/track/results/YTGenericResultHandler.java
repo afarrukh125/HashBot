@@ -38,6 +38,6 @@ abstract class YTGenericResultHandler implements AudioLoadResultHandler {
 
     @Override
     public void loadFailed(FriendlyException e) {
-        evt.getChannel().sendMessage("Nothing found by `" + query + "`").queue();
+        evt.getChannel().sendMessage("Nothing found by `" + query + "` (" + e.getMessage() + ")").queue();
     }
 }

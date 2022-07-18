@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static java.lang.Runtime.getRuntime;
+
 @SuppressWarnings("unchecked")
 public class Constants {
 
@@ -129,4 +131,11 @@ public class Constants {
 
     }
 
+    public static long getMemoryDifferenceFromStartup() {
+        long memoryNow = getRuntime().totalMemory() - getRuntime().freeMemory();
+
+        long memoryDiff = memoryNow - INITIAL_MEMORY;
+        memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
+        return memoryDiff;
+    }
 }

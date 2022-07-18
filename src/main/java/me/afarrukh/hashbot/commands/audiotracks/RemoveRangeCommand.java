@@ -39,7 +39,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
             // Get all the track ranges provided
             String[] ranges = params.split(",");
 
-            List<AudioTrack> trackList = new ArrayList<>(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
+            List<AudioTrack> trackList = new ArrayList<>(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList());
             List<List<AudioTrack>> trackRanges = new ArrayList<>();
             for (String range : ranges) {
                 range = range.trim();

@@ -171,9 +171,7 @@ public class StatsCommand extends Command {
 
         var executorService = newFixedThreadPool(numberPartitions);
         for (var subImage : subImages) {
-            executorService.execute(() -> {
-                drawImageParallel(g, subImage.bufferedImage(), subImage.x(), subImage.y());
-            });
+            executorService.execute(() -> drawImageParallel(g, subImage.bufferedImage(), subImage.x(), subImage.y()));
         }
 
         executorService.shutdown();
@@ -205,7 +203,7 @@ public class StatsCommand extends Command {
             }
         }
         executorService.shutdown();
-        executorService.awaitTermination(30, TimeUnit.MINUTES);
+        executorService.awaitTermination(30, TimeUnit.SECONDS);
         return subImages;
     }
 

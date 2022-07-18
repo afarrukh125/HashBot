@@ -2,21 +2,20 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.commands.audiotracks.*;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.DeleteListCommand;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.LoadListCommand;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.SavePlaylistCommand;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
 import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
-import me.afarrukh.hashbot.commands.management.HelpCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.guild.roles.ListMembersCommand;
 import me.afarrukh.hashbot.commands.management.guild.roles.RoleStatsCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
-import me.afarrukh.hashbot.commands.audiotracks.*;
-import me.afarrukh.hashbot.commands.audiotracks.playlist.DeleteListCommand;
-import me.afarrukh.hashbot.commands.audiotracks.playlist.LoadListCommand;
-import me.afarrukh.hashbot.commands.audiotracks.playlist.SavePlaylistCommand;
-import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.api.JDA;
@@ -26,8 +25,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
@@ -36,14 +33,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.Runtime.getRuntime;
-
 public class Bot {
     public static CommandManager commandManager;
     public static GameRoleManager gameRoleManager;
     public static AudioTrackManager trackManager;
     public static JDA botUser;
-    private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     static ReactionManager reactionManager;
     private final String token;
     private CommandLineInputManager ownerInputManager;
@@ -98,12 +92,12 @@ public class Bot {
     private void startUpMessages() {
         List<Command> descriptionLessCommands = new ArrayList<>();
 
-        for (Command c : commandManager.getCommandList()) {
+        for (Command c : commandManager.getCommands()) {
             System.out.println("Adding " + c.getClass().getSimpleName());
             if (c.getDescription() == null)
                 descriptionLessCommands.add(c);
         }
-        System.out.println("Added " + commandManager.getCommandList().size() + " commands to command manager.");
+        System.out.println("Added " + commandManager.getCommands().size() + " commands to command manager.");
 
         if (!descriptionLessCommands.isEmpty()) {
             System.out.println("\nThe following commands do not have descriptions: ");

@@ -68,7 +68,7 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
         List<AudioTrack> trackList = new ArrayList<>();
         trackList.add(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
-        trackList.addAll(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList());
+        trackList.addAll(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList());
 
         if (startIndex > Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().size()) {
             evt.getChannel().sendMessage("The index provided is higher than the number of tracks in the track queue.").queue();

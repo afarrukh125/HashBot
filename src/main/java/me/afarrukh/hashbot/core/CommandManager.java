@@ -57,7 +57,7 @@ public class CommandManager {
         return map.get(name);
     }
 
-    public List<Command> getCommandList() {
+    public List<Command> getCommands() {
         List<Command> commandList = new ArrayList<>();
         for (Command c : map.values()) {
             if (commandList.contains(c))
@@ -77,7 +77,7 @@ public class CommandManager {
     public List<Command> getNonAdminCommands() {
         List<Command> commandList = new LinkedList<>();
 
-        for (Command c : getCommandList()) {
+        for (Command c : getCommands()) {
             if (!(c instanceof AdminCommand))
                 commandList.add(c);
         }

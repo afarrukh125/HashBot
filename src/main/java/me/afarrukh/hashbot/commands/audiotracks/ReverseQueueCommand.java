@@ -23,7 +23,7 @@ public class ReverseQueueCommand extends Command {
 
         if(AudioTrackUtils.canInteract(evt)) {
 
-            List<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getArrayList();
+            List<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList();
             List<AudioTrack> reversedTracks = new ArrayList<>();
 
             for (int i = tracks.size() - 1; i >= 0; i--)
