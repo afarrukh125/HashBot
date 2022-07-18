@@ -49,22 +49,21 @@ public class Invoker {
         return 10 * (level + 1) * (level + 2);
     }
 
+    public record ExperienceData(int level, long exp){}
+
     /**
      * Returns the level given from the exp and the remaining exp spare.
      *
      * @param exp The experience to calculate from.
      * @return An integer array where the value at index 0 is the level and index 1 is the spare experience.
      */
-    public static int[] parseLevelFromTotalExperience(int exp) {
+    public static ExperienceData parseLevelFromTotalExperience(long exp) {
         int level = 1;
-        int[] data = new int[2];
         while (exp > getExperienceForNextLevel(level)) {
             exp -= getExperienceForNextLevel(level);
-            level += 1;
+            level++;
         }
-        data[0] = level;
-        data[1] = exp;
-        return data;
+        return new ExperienceData(level, exp);
     }
 
     /**
@@ -81,7 +80,7 @@ public class Invoker {
         return exp;
     }
 
-    public static int getPercentageExp(int exp, int level) {
+    public static int getPercentageExp(long exp, int level) {
         int expToProgress = getExperienceForNextLevel(level);
         return (int) Math.round((double) exp / expToProgress * 100);
     }

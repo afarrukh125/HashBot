@@ -10,19 +10,27 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static java.lang.Runtime.getRuntime;
+import static java.util.Collections.synchronizedList;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class StatsCommand extends Command {
 
+    public static final String GLOBAL_PARAM_FLAG = "global";
     private final int width;
     private final int height;
 
@@ -40,33 +48,48 @@ public class StatsCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = initialiseGraphics(bufferedImage);
+        Graphics2D g;
+        try {
+            g = initialiseGraphics(bufferedImage);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         final int originX = 10;
         final int originY = 40;
 
         Invoker invoker = Invoker.of(evt.getMember());
 
-        int exp = (int) invoker.getExp();
+        var exp = new AtomicLong((int) invoker.getExp());
         int level = invoker.getLevel();
         int nextLevelExp = invoker.getExpForNextLevel();
 
         boolean global = false;
 
-        if (params != null && params.equalsIgnoreCase("global")) {
+        if (params != null && params.equalsIgnoreCase(GLOBAL_PARAM_FLAG)) {
             global = true;
-            exp = 0;
+            exp = new AtomicLong();
+            var executorService = newFixedThreadPool(getThreads());
             for (Guild guild : evt.getJDA().getGuilds()) {
-                Member m = guild.getMemberById(evt.getAuthor().getId());
-                if (m == null)
-                    continue;
-                Invoker tmpInvoker = Invoker.of(m);
-                exp += Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel());
-                exp += tmpInvoker.getExp();
+                AtomicLong finalExp = exp;
+                executorService.execute(() -> {
+                    Member m = guild.getMemberById(evt.getAuthor().getId());
+                    if (m == null)
+                        return;
+                    Invoker tmpInvoker = Invoker.of(m);
+                    finalExp.addAndGet(Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel()));
+                    finalExp.addAndGet(tmpInvoker.getExp());
+                });
             }
-            int[] data = Invoker.parseLevelFromTotalExperience(exp);
-            level = data[0];
-            exp = data[1];
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(30, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            var data = Invoker.parseLevelFromTotalExperience(exp.get());
+            level = data.level();
+            exp.set(data.exp());
             nextLevelExp = Invoker.getExperienceForNextLevel(level);
         }
 
@@ -94,7 +117,7 @@ public class StatsCommand extends Command {
         g.fillRect(originX, originY + 80, 100 * 3, 20);
         g.setColor(Color.WHITE);
         if (global)
-            g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp, level) * 3, 20);
+            g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp.get(), level) * 3, 20);
         else
             g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
 
@@ -117,12 +140,16 @@ public class StatsCommand extends Command {
         evt.getChannel().sendFile(outputFile).queue(m -> outputFile.delete());
     }
 
+    private int getThreads() {
+        return getRuntime().availableProcessors() * 2;
+    }
+
     @Override
     public void onIncorrectParams(TextChannel channel) {
 
     }
 
-    private Graphics2D initialiseGraphics(BufferedImage bufferedImage) {
+    private Graphics2D initialiseGraphics(BufferedImage bufferedImage) throws InterruptedException {
         Graphics2D g = bufferedImage.createGraphics();
         g.setFont(Constants.font28);
 
@@ -138,17 +165,52 @@ public class StatsCommand extends Command {
         float opacity = 1.0f;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 
-        g.drawImage(img, 0, 0, null);
+        final int numberPartitions = getThreads();
+
+        List<SubImage> subImages = subImages(img, numberPartitions);
+
+        var executorService = newFixedThreadPool(numberPartitions);
+        for (var subImage : subImages) {
+            executorService.execute(() -> {
+                drawImageParallel(g, subImage.bufferedImage(), subImage.x(), subImage.y());
+            });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(30, TimeUnit.SECONDS);
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         drawStar(g);
-
-        //Uncomment below to use natural background
-//        g.setColor(Color.BLACK);
-//        g.fillRect(0, 0, width, height);
-
         return g;
+    }
+
+    @NotNull
+    private List<SubImage> subImages(BufferedImage bufferedImage, int numberPartitions) throws InterruptedException {
+        List<SubImage> subImages = synchronizedList(new ArrayList<>());
+        int unitWidth = bufferedImage.getWidth() / 4;
+        int unitHeight = bufferedImage.getHeight() / 4;
+
+        var executorService = newFixedThreadPool(numberPartitions);
+        for (int i = 0; i < bufferedImage.getWidth(); i += unitWidth) {
+            for (int j = 0; j < bufferedImage.getHeight(); j += unitHeight) {
+                int finalI = i;
+                int finalJ = j;
+                executorService.execute(() -> {
+                    var subImage = bufferedImage.getSubimage(finalI, finalJ, unitWidth, unitHeight);
+                    subImages.add(new SubImage(finalI,
+                            finalJ,
+                            subImage));
+                });
+            }
+        }
+        executorService.shutdown();
+        executorService.awaitTermination(30, TimeUnit.MINUTES);
+        return subImages;
+    }
+
+    private void drawImageParallel(Graphics2D g, BufferedImage img, int x, int y) {
+        g.drawImage(img, x, y, null);
     }
 
     private void drawStar(Graphics g) {
@@ -181,5 +243,8 @@ public class StatsCommand extends Command {
             e.printStackTrace();
         }
         return outputFile;
+    }
+
+    private record SubImage(int x, int y, BufferedImage bufferedImage) {
     }
 }

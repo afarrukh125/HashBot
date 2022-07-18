@@ -26,6 +26,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
@@ -41,6 +43,7 @@ public class Bot {
     public static GameRoleManager gameRoleManager;
     public static AudioTrackManager trackManager;
     public static JDA botUser;
+    private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     static ReactionManager reactionManager;
     private final String token;
     private CommandLineInputManager ownerInputManager;
