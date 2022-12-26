@@ -4,7 +4,6 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.utils.BotUtils;
-import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

@@ -19,7 +19,7 @@ public class ShutdownCLI extends CLICommand {
     public void onInvocation(String params) {
 
         System.out.println("Shutting down the bot...");
-        Bot.botUser.shutdown();
+        Bot.botUser().shutdown();
         System.out.println("Shut down successfully.");
         System.exit(0);
     }

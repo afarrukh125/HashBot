@@ -23,7 +23,8 @@ public class YTLatentTrackHandler implements AudioLoadResultHandler {
     public YTLatentTrackHandler(Member member, int idx, PlaylistLoader loader, String userId) {
         this.idx = idx;
         this.loader = loader;
-        Member m = member.getGuild().getMemberById(userId);;
+        Member m = member.getGuild().getMemberById(userId);
+        ;
         this.member = m != null ? m : member;
     }
 

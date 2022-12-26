@@ -117,9 +117,9 @@ public class PlaylistLoader {
 
             notifyAll();
         } else {
-            if(currentIndex % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
-            message.editMessage("Queueing playlist " + listName + " with " + originalSize + " tracks." +
-                    " It might take a while for all tracks to be added to the queue... (" + currentIndex + "/" + originalSize + ")").queue();
+            if (currentIndex % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
+                message.editMessage("Queueing playlist " + listName + " with " + originalSize + " tracks." +
+                        " It might take a while for all tracks to be added to the queue... (" + currentIndex + "/" + originalSize + ")").queue();
         }
     }
 

@@ -18,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +32,10 @@ public class StatsCommand extends Command {
     public static final String GLOBAL_PARAM_FLAG = "global";
     private final int width;
     private final int height;
+    private static final Map<RenderingHints.Key, Object> RENDERING_HINTS = Map.of(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON,
+            RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY,
+            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    private final BufferedImage BACKGROUND_IMAGE = ImageLoader.loadImage(Constants.BG_PATH);
 
     public StatsCommand() {
         super("stats");
@@ -44,13 +47,28 @@ public class StatsCommand extends Command {
         description = "Displays your statistics. Optionally, you can provide 'global' as a parameter to view your global stats";
     }
 
+    /**
+     * Returns the level given from the exp and the remaining exp spare.
+     *
+     * @param exp The experience to calculate from.
+     */
+    public static ExperienceData parseLevelFromTotalExperience(long exp) {
+        int level = 1;
+        while (exp > Invoker.getExperienceForNextLevel(level)) {
+            exp -= Invoker.getExperienceForNextLevel(level);
+            level++;
+        }
+        return new ExperienceData(level, exp);
+    }
+
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        Font font = Constants.getInstance().font28();
 
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g;
         try {
-            g = initialiseGraphics(bufferedImage);
+            g = initialiseGraphics(bufferedImage, font);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -74,8 +92,9 @@ public class StatsCommand extends Command {
                 AtomicLong finalExp = exp;
                 executorService.execute(() -> {
                     Member m = guild.getMemberById(evt.getAuthor().getId());
-                    if (m == null)
+                    if (m == null) {
                         return;
+                    }
                     Invoker tmpInvoker = Invoker.of(m);
                     finalExp.addAndGet(Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel()));
                     finalExp.addAndGet(tmpInvoker.getExp());
@@ -87,26 +106,29 @@ public class StatsCommand extends Command {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            var data = Invoker.parseLevelFromTotalExperience(exp.get());
+            var data = parseLevelFromTotalExperience(exp.get());
             level = data.level();
             exp.set(data.exp());
             nextLevelExp = Invoker.getExperienceForNextLevel(level);
         }
 
         BufferedImage profPic = ImageLoader.loadUrl(evt.getAuthor().getAvatarUrl());
-        if (profPic != null)
+        if (profPic != null) {
             g.drawImage(profPic, 460, 10, null);
+        }
 
         String nameString = evt.getAuthor().getName();
-        if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length() + evt.getAuthor().getName().length()) < 24)
+        if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length() + evt.getAuthor().getName().length()) < 24) {
             nameString += "(" + evt.getMember().getNickname() + ")";
+        }
 
-        Text.drawString(g, Integer.toString(level), 399, 78, true, Color.BLACK, Constants.bigNumFont);
+        Font bigNumFont = Constants.getInstance().bigNumFont();
+        Text.drawString(g, Integer.toString(level), 399, 78, true, Color.BLACK, bigNumFont);
 
-        Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, Constants.font28);
-        Text.drawString(g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, Constants.font28);
+        Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, font);
+        Text.drawString(g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, font);
         Text.drawString(g, "Exp: " + exp + "/" + nextLevelExp, originX, originY + 60, false, Constants.STATSIMG_COL,
-                Constants.font28);
+                font);
 
 
         int offset = 3;
@@ -127,9 +149,9 @@ public class StatsCommand extends Command {
             if (!evt.getMember().getRoles().isEmpty())
                 r = evt.getMember().getRoles().get(0);
             if (r != null)
-                Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), Constants.font28);
+                Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), font);
         } else {
-            Text.drawString(g, "Global Stats", originX, originY + 140, false, Color.WHITE, Constants.font28);
+            Text.drawString(g, "Global Stats", originX, originY + 140, false, Color.WHITE, font);
         }
 
         String fileName = "res/images/" + evt.getAuthor().getName() + System.currentTimeMillis() + ".png";
@@ -149,25 +171,19 @@ public class StatsCommand extends Command {
 
     }
 
-    private Graphics2D initialiseGraphics(BufferedImage bufferedImage) throws InterruptedException {
+    private Graphics2D initialiseGraphics(BufferedImage bufferedImage, Font font) throws InterruptedException {
         Graphics2D g = bufferedImage.createGraphics();
-        g.setFont(Constants.font28);
-
-        Map<RenderingHints.Key, Object> renderingHintsMap = new HashMap<>();
-        renderingHintsMap.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        renderingHintsMap.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        renderingHintsMap.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHints(renderingHintsMap);
+        g.setFont(font);
+        g.setRenderingHints(RENDERING_HINTS);
 
         //Drawings to be done in this space
-        BufferedImage img = ImageLoader.loadImage(Constants.BG_PATH);
 
         float opacity = 1.0f;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 
         final int numberPartitions = getThreads();
 
-        List<SubImage> subImages = subImages(img, numberPartitions);
+        List<SubImage> subImages = subImages(BACKGROUND_IMAGE, numberPartitions);
 
         var executorService = newFixedThreadPool(numberPartitions);
         for (var subImage : subImages) {
@@ -244,5 +260,8 @@ public class StatsCommand extends Command {
     }
 
     private record SubImage(int x, int y, BufferedImage bufferedImage) {
+    }
+
+    public record ExperienceData(int level, long exp) {
     }
 }

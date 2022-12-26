@@ -25,10 +25,10 @@ public class AudioTrackManager {
      * Returns the guild's audio player manager (playerManager instance variable)
      */
     public synchronized GuildAudioTrackManager getGuildAudioPlayer(Guild guild) {
-        long guildId = Long.parseLong(guild.getId());
-        GuildAudioTrackManager trackManager = trackManagers.get(guildId); //Gets the current track manager for this guild
+        long guildId = guild.getIdLong();
+        GuildAudioTrackManager trackManager = trackManagers.get(guildId);
 
-        if (trackManager == null) { // If the guild doesn't already have a track manager then create one
+        if (trackManager == null) {
             trackManager = new GuildAudioTrackManager(playerManager, guild);
             trackManagers.put(guildId, trackManager);
         }

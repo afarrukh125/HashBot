@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.cli;
 
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Abdullah

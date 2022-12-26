@@ -37,7 +37,7 @@ public class Bot {
     public static CommandManager commandManager;
     public static GameRoleManager gameRoleManager;
     public static AudioTrackManager trackManager;
-    public static JDA botUser;
+    private static JDA botUser;
     static ReactionManager reactionManager;
     private final String token;
     private CommandLineInputManager ownerInputManager;
@@ -45,11 +45,15 @@ public class Bot {
     /**
      * Creates our JDA user
      *
-     * @param token The unique token used to login to the discord servers
+     * @param token The unique token used to log in to the discord servers
      */
     public Bot(String token) throws InterruptedException {
         this.token = token;
         init();
+    }
+
+    public static JDA botUser() {
+        return botUser;
     }
 
     /**
@@ -66,9 +70,9 @@ public class Bot {
         executor.awaitTermination(1, TimeUnit.MINUTES);
 
 
-        botUser.addEventListener(new MessageListener());
-        botUser.getPresence().setActivity(Activity.playing(" in " + botUser.getGuilds().size() + " guilds"));
-        System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user " + botUser.getSelfUser().getName());
+        botUser().addEventListener(new MessageListener());
+        botUser().getPresence().setActivity(Activity.playing(" in " + botUser().getGuilds().size() + " guilds"));
+        System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user " + botUser().getSelfUser().getName());
 
         trackManager = new AudioTrackManager();
 
@@ -192,7 +196,7 @@ public class Bot {
     }
 
     private void setupNames() {
-        for (Guild g : botUser.getGuilds()) {
+        for (Guild g : botUser().getGuilds()) {
             try {
                 SQLUserDataManager.updateUsernames(g);
                 for (Member m : g.getMembers()) {

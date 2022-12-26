@@ -12,6 +12,8 @@ import net.dv8tion.jda.api.entities.Role;
 
 import java.util.*;
 
+import static java.lang.Long.parseLong;
+
 /**
  * Views the invoker as a member who has initiated commands from this bot that would lead to a change in their user
  * properties (e.g. colour change, name change)
@@ -27,7 +29,7 @@ public class Invoker {
     private Invoker(Member m) {
         member = m;
         userFileManager = new SQLUserDataManager(m);
-        credit = Long.parseLong((String) userFileManager.getValue("credit"));
+        credit = parseLong((String) userFileManager.getValue("credit"));
     }
 
     public static Invoker of(Member m) {
@@ -47,23 +49,6 @@ public class Invoker {
      */
     public static int getExperienceForNextLevel(int level) {
         return 10 * (level + 1) * (level + 2);
-    }
-
-    public record ExperienceData(int level, long exp){}
-
-    /**
-     * Returns the level given from the exp and the remaining exp spare.
-     *
-     * @param exp The experience to calculate from.
-     * @return An integer array where the value at index 0 is the level and index 1 is the spare experience.
-     */
-    public static ExperienceData parseLevelFromTotalExperience(long exp) {
-        int level = 1;
-        while (exp > getExperienceForNextLevel(level)) {
-            exp -= getExperienceForNextLevel(level);
-            level++;
-        }
-        return new ExperienceData(level, exp);
     }
 
     /**
@@ -100,22 +85,22 @@ public class Invoker {
      * @return true if enough time has passed, false otherwise
      */
     public boolean hasTimePassed() {
-        long time = Long.parseLong((String) userFileManager.getValue("time"));
-        if ((System.currentTimeMillis() - time) < (Constants.minToMillis *0.75))
+        long time = parseLong((String) userFileManager.getValue("time"));
+        if ((System.currentTimeMillis() - time) < (Constants.minToMillis * 0.75))
             return false;
 
         userFileManager.updateValue("time", System.currentTimeMillis());
         return true;
     }
 
-    public void addCredit(long amt) {
+    public void addCredit(long amount) {
         if (this.credit >= Integer.MAX_VALUE) {
             userFileManager.updateValue("credit", Integer.MAX_VALUE);
             credit = Integer.MAX_VALUE;
             return;
         }
-        userFileManager.updateValue("credit", credit + amt);
-        credit += amt;
+        userFileManager.updateValue("credit", credit + amount);
+        credit += amount;
     }
 
     /**
@@ -163,9 +148,9 @@ public class Invoker {
 
     public long getExp() {
         try {
-            return Long.parseLong((String) userFileManager.getValue("exp"));
+            return parseLong((String) userFileManager.getValue("exp"));
         } catch (NumberFormatException e) {
-            return Long.parseLong(((String) userFileManager.getValue("exp")).split("\\.")[0]);
+            return parseLong(((String) userFileManager.getValue("exp")).split("\\.")[0]);
         }
     }
 
@@ -205,7 +190,7 @@ public class Invoker {
         int currentLevel = getLevel();
 
         // Add bonus to help cope with higher level requirements.
-        int bonus = (int) Math.floor((float) currentLevel/10) * currentLevel;
+        int bonus = (int) Math.floor((float) currentLevel / 10) * currentLevel;
 
         int amt = new Random().nextInt(Constants.RANDOM_EXPERIENCE_BOUND) + bonus;
 

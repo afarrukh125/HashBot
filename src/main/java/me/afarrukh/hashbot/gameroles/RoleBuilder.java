@@ -177,9 +177,9 @@ public class RoleBuilder implements RoleGUI {
             message.editMessageEmbeds(EmbedUtils.getRoleConfirmEmbed(this)).queue();
         } catch (IllegalArgumentException e) {
             message.editMessageEmbeds(new EmbedBuilder()
-                    .setColor(Constants.EMB_COL)
-                    .setTitle("Role builder terminated (Please try again)")
-                    .appendDescription(e.getLocalizedMessage()).build())
+                            .setColor(Constants.EMB_COL)
+                            .setTitle("Role builder terminated (Please try again)")
+                            .appendDescription(e.getLocalizedMessage()).build())
                     .queue();
             message.clearReactions().complete();
             Bot.gameRoleManager.getGuildRoleManager(guild).removeRoleManagerForUser(user);

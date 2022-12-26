@@ -7,11 +7,12 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.gameroles.RoleBuilder;
 import me.afarrukh.hashbot.gameroles.RoleGUI;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
+import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
-import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
@@ -41,7 +42,7 @@ class MessageListener extends ListenerAdapter {
             return;
         }
 
-        if (BotUtils.isPinnedChannel(evt) && !evt.getMember().getUser().getId().equals(Bot.botUser.getSelfUser().getId())) {
+        if (BotUtils.isPinnedChannel(evt) && !evt.getMember().getUser().getId().equals(Bot.botUser().getSelfUser().getId())) {
             evt.getMessage().delete().queue();
             return;
         }
@@ -95,8 +96,10 @@ class MessageListener extends ListenerAdapter {
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent evt) {
         AudioChannel vc = evt.getChannelLeft();
 
-        if (!vc.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId()))) // If the channel that the event is associated with does not contain the bot
+        Member botMember = evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId());
+        if (!vc.getMembers().contains(botMember)) {
             return;
+        }
 
         GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
 
@@ -126,23 +129,25 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent evt) {
-        Bot.botUser.getPresence().setActivity(Activity.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+        Bot.botUser().getPresence().setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
     }
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent evt) {
-        Bot.botUser.getPresence().setActivity(Activity.playing(" in " + Bot.botUser.getGuilds().size() + " guilds"));
+        Bot.botUser().getPresence().setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
     }
 
     @Override
     public void onMessageDelete(MessageDeleteEvent evt) {
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
-        if (gdm.getPinnedChannelId() == null || gdm.getPinnedChannelId().equals(""))
+        if (gdm.getPinnedChannelId() == null || gdm.getPinnedChannelId().equals("")) {
             return;
+        }
 
-        if (evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()) == null)
+        if (evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()) == null) {
             return;
+        }
 
         // If the message deleted is a pinned message remove its entry by pinned message id
         if (evt.getChannel().getId().equals(gdm.getPinnedChannelId())) {
@@ -150,12 +155,6 @@ class MessageListener extends ListenerAdapter {
         } else {
             // Otherwise remove it by normal message id
             if (gdm.isPinned(evt.getMessageId())) {
-
-                // Get the associated pinned message and delete it
-//                String pinnedMessageId = gdm.getPinnedMessageIdFromOriginalMessage(evt.getMessageId());
-//                evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).deleteMessageById((pinnedMessageId)).queue();
-
-                // Remove from data manager
                 gdm.deletePinnedEntryByOriginal(evt.getMessageId());
             }
         }

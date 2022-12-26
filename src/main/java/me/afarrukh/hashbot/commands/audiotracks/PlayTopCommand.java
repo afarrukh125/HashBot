@@ -41,8 +41,8 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
     }
 
     static boolean isBotConnected(MessageReceivedEvent evt) {
-        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
-            if (!evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
+        if (evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
+            if (!evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
                 // If the bot is not in the same channel as the user (assuming already connected) then return
                 evt.getChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
                 return true;

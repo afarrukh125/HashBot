@@ -179,7 +179,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * Moves a track from one index to another
      *
      * @param originalPosition The track's current index
-     * @param newPosition The desired index
+     * @param newPosition      The desired index
      */
     public void move(int originalPosition, int newPosition) {
         List<AudioTrack> trackList = getAsArrayList();

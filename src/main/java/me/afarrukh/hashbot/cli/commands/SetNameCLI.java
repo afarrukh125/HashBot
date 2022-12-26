@@ -24,7 +24,7 @@ public class SetNameCLI extends CLICommand {
         }
 
         try {
-            Bot.botUser.getSelfUser().getManager().setName(params).queue(
+            Bot.botUser().getSelfUser().getManager().setName(params).queue(
                     aVoid -> System.out.println("Global name changed to " + params),
                     throwable -> {
                         System.out.println("Name change to " + params + " failed: " + throwable.getMessage());

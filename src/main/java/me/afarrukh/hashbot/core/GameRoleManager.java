@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.gameroles.GuildGameRoleManager;
 import net.dv8tion.jda.api.entities.Guild;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class GameRoleManager {
     public GameRoleManager() {
         this.gameRoleManagers = new HashMap<>();
 
-        for (Guild guild : Bot.botUser.getGuilds()) {
+        for (Guild guild : Bot.botUser().getGuilds()) {
             getGuildRoleManager(guild);
         }
     }

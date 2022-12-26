@@ -4,8 +4,8 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
-import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
+import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SkipCommand extends Command implements AudioTrackCommand {

@@ -21,7 +21,7 @@ public class RoleRGBCommand extends Command {
         }
         for (Role r : evt.getGuild().getRoles()) {
             if (r.getName().equalsIgnoreCase(params)) {
-                if(r.getColor() == null) {
+                if (r.getColor() == null) {
                     evt.getChannel().sendMessage("This role does not have a non-default colour").queue();
                     return;
                 }

@@ -20,16 +20,18 @@ public class GuildDataMapper {
     }
 
     public static GuildDataMapper getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new GuildDataMapper();
+        }
         return instance;
     }
 
     public synchronized GuildDataManager getDataManager(Guild guild) {
         String guildId = guild.getId();
 
-        if (dataManagerMap.get(guildId) == null)
+        if (dataManagerMap.get(guildId) == null) {
             dataManagerMap.put(guildId, new GuildDataManager(guild));
+        }
 
         return dataManagerMap.get(guildId);
     }

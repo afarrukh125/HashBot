@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static java.lang.Runtime.getRuntime;
-
 @SuppressWarnings("unchecked")
 public class Constants {
 
@@ -47,34 +45,34 @@ public class Constants {
     public static final int PIN_THRESHOLD = 5;
     public static String invokerChar = "!";
     public static long timeStarted = 0;
-    public static Font font28 = null;
-    public static Font bigNumFont = null;
-    public static Long INITIAL_MEMORY;
+    public final Font font28;
+    public final Font bigNumFont;
+    public static final Long INITIAL_MEMORY = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
     public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 100; // The limit of a playlist that can be created within the bot
 
     public static final int PLAYLIST_UPDATE_INTERVAL = 10; // How often to update the message when loading or creating a new playlist through the bot
 
-
     //Bot configuration constants
     public static ArrayList<String> ownerIds;
     public static String token;
-    /**
-     * Starts up the constants such as bot owner ids, bot token, prefix
-     */
+
+    private static Constants instance;
 
     private Constants() {
+        font28 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 28);
+        bigNumFont = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 36);
+    }
+
+    public static Constants getInstance() {
+        if (instance == null) {
+            instance = new Constants();
+        }
+        return instance;
     }
 
     public static void init() {
-
-        INITIAL_MEMORY = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-
         timeStarted = System.currentTimeMillis();
-
-        font28 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 28);
-        Font font72 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 72);
-        bigNumFont = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 36);
 
         String path = "res/config/settings.json";
         File file = new File(path);
@@ -112,6 +110,14 @@ public class Constants {
         }
     }
 
+    public Font font28() {
+        return font28;
+    }
+
+    public Font bigNumFont() {
+        return bigNumFont;
+    }
+
     private static void createJsonFile() {
         if (new File("res/config").mkdirs()) {
         }
@@ -129,13 +135,5 @@ public class Constants {
             e.printStackTrace();
         }
 
-    }
-
-    public static long getMemoryDifferenceFromStartup() {
-        long memoryNow = getRuntime().totalMemory() - getRuntime().freeMemory();
-
-        long memoryDiff = memoryNow - INITIAL_MEMORY;
-        memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
-        return memoryDiff;
     }
 }

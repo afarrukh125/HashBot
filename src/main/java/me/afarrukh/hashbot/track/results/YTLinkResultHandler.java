@@ -4,8 +4,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
-import me.afarrukh.hashbot.utils.EmbedUtils;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
+import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;

@@ -32,7 +32,7 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
         if (Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState()).getChannel() == null)
             return;
 
-        if(params == null) {
+        if (params == null) {
             evt.getChannel().sendMessage("Please provide a playlist to load.").queue();
             return;
         }

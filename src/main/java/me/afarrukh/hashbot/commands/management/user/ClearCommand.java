@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
-import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -91,8 +90,9 @@ public class ClearCommand extends Command implements AdminCommand {
                         System.out.println("ClearCommand@onInvocation: " + "The associated message ID was " + msgId + " and the deleted ID it compared to was " + delMsg.getIdLong());
                     }
                 }
-                if (messageBin.size() > 0)
+                if (messageBin.size() > 0) {
                     deleteAllMessagesFromBin(evt, messageBin);
+                }
             }
         }
 

@@ -12,7 +12,7 @@ class VoiceExperienceTimer extends TimerTask {
     @Override
     public void run() {
 
-        for (Guild g : Bot.botUser.getGuilds()) {
+        for (Guild g : Bot.botUser().getGuilds()) {
             for (VoiceChannel vc : g.getVoiceChannels()) {
                 if (vc.getMembers().isEmpty())
                     continue;

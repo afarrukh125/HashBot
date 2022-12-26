@@ -14,8 +14,9 @@ class ReactionManager {
 
     void sendToModifier(MessageReactionAddEvent evt) {
         RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getUser());
-        if (rb == null)
+        if (rb == null) {
             return;
+        }
         rb.handleEvent(evt);
     }
 
@@ -27,34 +28,40 @@ class ReactionManager {
      */
     void processForPinning(MessageReactionAddEvent evt) {
         Message m = evt.getChannel().retrieveMessageById(evt.getMessageId()).complete();
-        if (m == null) // Message might not exist since it might have been deleted
+        if (m == null) {
             return;
+        }
 
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
 
         // Getting the pinned channel ID from storage
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
 
-        if (gdm.isPinned(m.getId()))
+        if (gdm.isPinned(m.getId())) {
             return;
+        }
 
-        if(gdm.getPinnedChannelId() == null)
+        if (gdm.getPinnedChannelId() == null) {
             return;
+        }
 
         TextChannel pinnedChannel = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId());
-        if(pinnedChannel == null)
+        if (pinnedChannel == null) {
             return;
+        }
 
         String pinnedChannelId = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
 
         // Checking if the current channel is the pinned channel. If it is then we od not proceed
-        if (pinnedChannelId.equals(evt.getChannel().getId()))
+        if (pinnedChannelId.equals(evt.getChannel().getId())) {
             return;
+        }
 
         // Checking if the pinned channel has been set
         MessageChannel channel = evt.getGuild().getTextChannelById(pinnedChannelId);
-        if (channel == null)
+        if (channel == null) {
             return;
+        }
 
         int size = 0;
 
@@ -66,12 +73,14 @@ class ReactionManager {
         }
 
         // If no reactions have been added then return
-        if (size == 0)
+        if (size == 0) {
             return;
+        }
 
         // If we haven't yet passed the threshold then return
-        if (size < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold())
+        if (size < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()) {
             return;
+        }
 
         MessageUtils.pinMessage(m, channel);
     }

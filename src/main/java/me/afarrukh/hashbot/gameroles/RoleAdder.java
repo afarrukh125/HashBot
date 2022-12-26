@@ -38,7 +38,7 @@ public class RoleAdder implements RoleGUI {
 
         timeoutTimer = new Timer();
         timeoutTimer.schedule(new RoleAdder.InactiveTimer(this, evt.getGuild()), 30 * 1000); //30 second timer before builder stops
-        
+
         this.roleList = Bot.gameRoleManager.getGuildRoleManager(guild).getGameRoles();
         System.out.println(roleList);
 

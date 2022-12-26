@@ -7,15 +7,13 @@ import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
 
     private final Map<String, Command> map;
+
     private int commandCount = 0;
 
     private CommandManager(Builder builder) {
@@ -35,11 +33,13 @@ public class CommandManager {
 
         Command command = commandFromName(commandName);
 
-        if (command instanceof OwnerCommand && UserUtils.isBotAdmin(evt.getAuthor()))
+        if (command instanceof OwnerCommand && UserUtils.isBotAdmin(evt.getAuthor())) {
             return;
+        }
 
-        if (command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR))
+        if (command instanceof AdminCommand && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
             return;
+        }
 
         if (command != null) {
             this.commandCount += 1;
@@ -64,13 +64,7 @@ public class CommandManager {
                 continue;
             commandList.add(c);
         }
-        commandList.sort((o1, o2) -> {
-            if (o1.getName().compareTo(o2.getName()) < 0)
-                return -1;
-            else if (o1.getName().compareTo(o2.getName()) > 0)
-                return 1;
-            return 0;
-        });
+        commandList.sort(Comparator.comparing(Command::getName).reversed());
         return commandList;
     }
 

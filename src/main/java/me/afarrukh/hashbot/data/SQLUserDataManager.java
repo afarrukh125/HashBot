@@ -142,10 +142,12 @@ public class SQLUserDataManager implements IDataManager {
 
             while (rs.next()) {
                 Member member = guild.getMemberById(rs.getString("id"));
-                if (member == null)
+                if (member == null) {
                     continue;
-                if (member.getUser().isBot())
+                }
+                if (member.getUser().isBot()) {
                     continue;
+                }
                 int lvl = rs.getInt("level");
                 long exp;
                 try {
@@ -157,18 +159,20 @@ public class SQLUserDataManager implements IDataManager {
             }
 
             Comparator<MemberData> memberDataSorter = (o1, o2) -> {
-                if (o1.getLevel() > o2.getLevel())
+                if (o1.level() > o2.level()) {
                     return -1;
-                if (o1.getLevel() == o2.getLevel()) {
-                    return Long.compare(o2.getExp(), o1.getExp());
+                }
+                if (o1.level() == o2.level()) {
+                    return Long.compare(o2.exp(), o1.exp());
                 }
                 return 1;
             };
 
             memberData.sort(memberDataSorter);
             List<Member> memberList = new ArrayList<>();
-            for (MemberData md : memberData)
-                memberList.add(md.getMember());
+            for (MemberData md : memberData) {
+                memberList.add(md.member());
+            }
 
             return memberList;
 
@@ -319,11 +323,10 @@ public class SQLUserDataManager implements IDataManager {
                 pslisttrack.execute();
 
                 int size = uriNameMap.keySet().size();
-                if(pos % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
+                if (pos % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
                     message.editMessage("Creating playlist " + lname + " with " + size +
-                            " tracks... (" + pos  + "/" +  size + ")").queue();
+                            " tracks... (" + pos + "/" + size + ")").queue();
             }
-
 
 
             pslistuser.execute();
@@ -456,5 +459,13 @@ public class SQLUserDataManager implements IDataManager {
         } catch (SQLException e) {
             throw new PlaylistException(); // Wrap a playlist exception
         }
+    }
+
+    /**
+     * Created by Abdullah on 01/05/2019 04:09
+     * <p>
+     * Used as a temporary class to map a member to their level and experience value
+     */
+    private record MemberData(Member member, int level, long exp) {
     }
 }

@@ -47,7 +47,7 @@ public class GuildGameRoleManager {
     private void loadRolesFromDatabase(DataManager guildDataManager) {
 
         JSONArray arr = (JSONArray) guildDataManager.getValue(Key.GAMEROLES.string());
-        if(arr == null || arr.isEmpty())
+        if (arr == null || arr.isEmpty())
             return;
 
         Iterator<Object> iter = arr.iterator();
@@ -126,7 +126,7 @@ public class GuildGameRoleManager {
     }
 
     public void addRoleManagerForUser(User user, RoleGUI roleGUI) {
-        if(roleModifiers.get(user) != null)
+        if (roleModifiers.get(user) != null)
             roleModifiers.get(user).endSession();
         roleModifiers.put(user, roleGUI);
     }

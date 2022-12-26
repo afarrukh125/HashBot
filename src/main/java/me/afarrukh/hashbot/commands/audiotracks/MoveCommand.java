@@ -22,7 +22,7 @@ public class MoveCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
             String[] tokens = params.split(" ");
-            if(tokens.length != 2) {
+            if (tokens.length != 2) {
                 evt.getChannel().sendMessage("Please decide the position to move from/to. Use the help command if you need help").queue();
                 return;
             }

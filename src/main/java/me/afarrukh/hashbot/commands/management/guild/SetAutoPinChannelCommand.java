@@ -44,7 +44,7 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
             }
             if (channelList.size() > 1) {
                 evt.getChannel().sendMessage("There is more than one channel with this name. Either provide the ID of this channel through developer mode " +
-                        "or change channel names. For more on enabling and using developer mode visit https://discordia.me/developer-mode then right click the channel and click copy ID")
+                                "or change channel names. For more on enabling and using developer mode visit https://discordia.me/developer-mode then right click the channel and click copy ID")
                         .queue();
                 return;
             }

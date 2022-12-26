@@ -99,10 +99,11 @@ public class AudioTrackUtils {
      * @return True or false depending on whether track commands can be called
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
-        if (evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel() == null || evt.getMember().getVoiceState().getChannel() == null)
+        if (evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel() == null || evt.getMember().getVoiceState().getChannel() == null) {
             return false;
+        }
 
-        return evt.getGuild().getMemberById(Bot.botUser.getSelfUser().getId()).getVoiceState().getChannel()
+        return evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel()
                 .equals(evt.getMember().getVoiceState().getChannel());
     }
 
