@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
@@ -48,7 +48,7 @@ public class ColourChangeCommand extends Command {
                 blue = colorFromHex.getBlue();
             } else {
                 if (tokens.length < 4) {
-                    onIncorrectParams(evt.getTextChannel());
+                    onIncorrectParams(evt.getChannel().asTextChannel());
                     return;
                 }
                 roleName = CmdUtils.getParamsAsString(tokens, 0, maxIndex - 3);
@@ -94,7 +94,7 @@ public class ColourChangeCommand extends Command {
 
 
         } catch (NumberFormatException | NullPointerException e) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
         } catch (IllegalArgumentException ignore) {
         }
 

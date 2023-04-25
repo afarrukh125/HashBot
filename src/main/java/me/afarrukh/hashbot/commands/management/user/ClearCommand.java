@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class ClearCommand extends Command implements AdminCommand {
         }
 
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
             return;
         }
 

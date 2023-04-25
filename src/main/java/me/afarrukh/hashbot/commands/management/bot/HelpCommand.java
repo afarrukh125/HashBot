@@ -43,7 +43,7 @@ public class HelpCommand extends Command {
             return;
         }
 
-        evt.getChannel().sendMessageEmbeds(command.getCommandHelpMessage(evt.getTextChannel())).queue();
+        evt.getChannel().sendMessageEmbeds(command.getCommandHelpMessage(evt.getChannel().asTextChannel())).queue();
     }
 
     private List<MessageEmbed> getHelpMessageEmbeds(MessageReceivedEvent evt) {

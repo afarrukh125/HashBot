@@ -6,7 +6,7 @@ import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.track.results.YTSearchResultHandler;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class PlayCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
             return;
         }
 

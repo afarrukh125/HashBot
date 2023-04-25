@@ -25,7 +25,7 @@ public class GiveCommand extends Command implements EconCommand {
 
         Member m = null;
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
             return;
         }
         if (evt.getMessage().getMentions().getMembers().isEmpty()) {

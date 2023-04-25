@@ -2,23 +2,14 @@ package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
-import me.afarrukh.hashbot.gameroles.RoleGUI;
 import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageReaction;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 class ReactionManager {
-
-    void sendToModifier(MessageReactionAddEvent evt) {
-        RoleGUI rb = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).modifierForUser(evt.getUser());
-        if (rb == null) {
-            return;
-        }
-        rb.handleEvent(evt);
-    }
 
     /**
      * We decide here if we want to post the message to the pinned channel depending on the reaction count
@@ -66,7 +57,7 @@ class ReactionManager {
         int size = 0;
 
         for (MessageReaction reaction : m.getReactions()) {
-            if (reaction.getReactionEmote().getName().equals(reactionId)) {
+            if (reaction.getEmoji().getName().equals(reactionId)) {
                 size = reaction.getCount();
                 break;
             }

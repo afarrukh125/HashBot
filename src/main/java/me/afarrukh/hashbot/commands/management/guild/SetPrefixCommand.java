@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.management.guild;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.core.Bot;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SetPrefixCommand extends Command implements AdminCommand {
@@ -23,7 +23,7 @@ public class SetPrefixCommand extends Command implements AdminCommand {
                     .setPrefix(params);
             evt.getChannel().sendMessage("Bot prefix is now " + params).queue();
         } else {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
         }
     }
 

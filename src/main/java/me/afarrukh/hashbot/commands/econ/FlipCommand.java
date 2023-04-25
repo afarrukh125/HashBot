@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.EconCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
@@ -31,12 +31,12 @@ public class FlipCommand extends Command implements EconCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         // Checking parameter validity
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
             return;
         }
 
         if (params.split(" ").length != 2) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
             return;
         }
 

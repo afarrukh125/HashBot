@@ -33,7 +33,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null)
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
         else {
             StringBuilder errorMessageBuilder = new StringBuilder();
             // Get all the track ranges provided

@@ -8,8 +8,9 @@ import me.afarrukh.hashbot.graphics.Text;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -159,7 +160,7 @@ public class StatsCommand extends Command {
         g.dispose();
 
         File outputFile = saveImage(fileName, bufferedImage);
-        evt.getChannel().sendFile(outputFile).queue(m -> outputFile.delete());
+        evt.getChannel().sendFiles(FileUpload.fromData(outputFile)).queue(m -> outputFile.delete());
     }
 
     private int getThreads() {

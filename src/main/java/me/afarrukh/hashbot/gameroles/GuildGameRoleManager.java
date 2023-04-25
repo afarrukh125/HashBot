@@ -20,14 +20,12 @@ import java.util.*;
 public class GuildGameRoleManager {
 
     private final Map<GameRole, Role> roleMap;
-    private final Map<User, RoleGUI> roleModifiers; // Object pool design pattern to ensure 1-1 constraint
     private final Guild guild;
     private String prefix = Constants.invokerChar;
     private int pinThreshold = Constants.PIN_THRESHOLD;
 
     public GuildGameRoleManager(Guild guild) {
         this.guild = guild;
-        roleModifiers = new HashMap<>();
 
         roleMap = new HashMap<>();
         init();
@@ -82,10 +80,6 @@ public class GuildGameRoleManager {
             guildDataManager.updateValue(Key.PINNED_THRESHOLD.string(), Long.toString(this.pinThreshold));
     }
 
-    public RoleGUI modifierForUser(User user) {
-        return roleModifiers.get(user);
-    }
-
     public void removeRole(String name) {
         for (GameRole gr : new HashSet<>(roleMap.keySet())) {
             if (gr.getName().equalsIgnoreCase(name)) {
@@ -119,20 +113,6 @@ public class GuildGameRoleManager {
             }
         }
         return null;
-    }
-
-    public List<RoleGUI> getRoleModifiers() {
-        return Collections.unmodifiableList(new ArrayList<>(new HashSet<>(roleModifiers.values())));
-    }
-
-    public void addRoleManagerForUser(User user, RoleGUI roleGUI) {
-        if (roleModifiers.get(user) != null)
-            roleModifiers.get(user).endSession();
-        roleModifiers.put(user, roleGUI);
-    }
-
-    public void removeRoleManagerForUser(User user) {
-        roleModifiers.remove(user);
     }
 
     public ArrayList<GameRole> getGameRoles() {

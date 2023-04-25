@@ -4,7 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.EmbedUtils;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import static java.lang.Integer.parseInt;
@@ -28,12 +28,12 @@ public class QueueCommand extends Command implements AudioTrackCommand {
         else {
             try {
                 if (parseInt(params) == 0) {
-                    onIncorrectParams(evt.getTextChannel());
+                    onIncorrectParams(evt.getChannel().asTextChannel());
                     return;
                 }
                 evt.getChannel().sendMessageEmbeds(EmbedUtils.getQueueMsg(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, parseInt(params))).queue();
             } catch (NumberFormatException e) {
-                onIncorrectParams(evt.getTextChannel());
+                onIncorrectParams(evt.getChannel().asTextChannel());
             }
         }
     }

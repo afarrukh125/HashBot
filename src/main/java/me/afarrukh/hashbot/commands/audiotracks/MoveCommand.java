@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MoveCommand extends Command implements AudioTrackCommand {
@@ -43,7 +43,7 @@ public class MoveCommand extends Command implements AudioTrackCommand {
                 evt.getChannel().sendMessage("Moved `" + track.getInfo().title + "` to position " + tokens[1]).queue();
             }
         } catch (NullPointerException e) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
         } catch (NumberFormatException e) {
             evt.getChannel().sendMessage("Please enter numerical indices only.").queue();
         }

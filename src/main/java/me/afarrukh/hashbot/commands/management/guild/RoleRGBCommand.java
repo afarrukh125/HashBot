@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class RoleRGBCommand extends Command {
@@ -16,7 +16,7 @@ public class RoleRGBCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getTextChannel());
+            onIncorrectParams(evt.getChannel().asTextChannel());
             return;
         }
         for (Role r : evt.getGuild().getRoles()) {

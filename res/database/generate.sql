@@ -22,21 +22,6 @@ create table playlist
     userid VARCHAR(60)
 );
 
-create table sqlite_master
-(
-    type     TEXT,
-    name     TEXT,
-    tbl_name TEXT,
-    rootpage INT,
-    sql      TEXT
-);
-
-create table sqlite_sequence
-(
-    name,
-    seq
-);
-
 create table track
 (
     url  VARCHAR(100),

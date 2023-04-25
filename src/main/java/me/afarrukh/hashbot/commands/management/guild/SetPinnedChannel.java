@@ -5,7 +5,7 @@ import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.utils.BotUtils;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SetPinnedChannel extends Command implements AdminCommand {
@@ -19,7 +19,7 @@ public class SetPinnedChannel extends Command implements AdminCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        TextChannel channel = evt.getTextChannel();
+        TextChannel channel = evt.getChannel().asTextChannel();
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
         jgm.setPinnedChannel(channel.getId());
         channel.sendMessage("The new pinned channel for this server is " + channel.getName()).queue();

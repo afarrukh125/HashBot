@@ -119,9 +119,10 @@ public class Bot {
                             GatewayIntent.GUILD_VOICE_STATES,
                             GatewayIntent.GUILD_MESSAGE_REACTIONS,
                             GatewayIntent.GUILD_PRESENCES,
+                            GatewayIntent.MESSAGE_CONTENT,
                             GatewayIntent.GUILD_MESSAGES)
                     .disableCache(CacheFlag.ACTIVITY,
-                            CacheFlag.EMOTE,
+                            CacheFlag.EMOJI,
                             CacheFlag.CLIENT_STATUS)
                     .build()
                     .awaitReady();
@@ -131,7 +132,7 @@ public class Bot {
             experienceTimer.schedule(new VoiceExperienceTimer(), Constants.VOICE_EXPERIENCE_TIMER * 1000, Constants.VOICE_EXPERIENCE_TIMER * 1000);
 
             startUpMessages();
-        } catch (LoginException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
             System.exit(0);
         }

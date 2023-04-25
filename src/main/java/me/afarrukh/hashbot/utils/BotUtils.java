@@ -50,56 +50,6 @@ public class BotUtils {
         return false;
     }
 
-    public static void createRole(Guild guild, RoleBuilder rb) {
-        //Validating if the role is already existing in the guild
-        if (rb.getColor().getBlue() == 0 && rb.getColor().getGreen() == 0 && rb.getColor().getRed() == 0) {
-            rb.message.editMessageEmbeds(EmbedUtils.getInvalidRoleEmbed()).queue();
-            return;
-        }
-
-        if (rb.roleName.equals("")) {
-            rb.message.editMessageEmbeds(EmbedUtils.getInvalidRoleEmbed()).queue();
-            return;
-        }
-
-        if (rb.getColor().getBlue() > 255 || rb.getColor().getGreen() > 255 || rb.getColor().getRed() > 255) {
-            rb.message.editMessageEmbeds(EmbedUtils.getInvalidRoleEmbed()).queue();
-            return;
-        }
-
-        for (Role r : guild.getRoles()) {
-            if (r.getName().equalsIgnoreCase(rb.roleName)) {
-                rb.message.editMessageEmbeds(EmbedUtils.getRoleExistsEmbed()).queue();
-                return;
-            }
-        }
-        Member m = guild.getMemberById(rb.getUser().getId());
-        for (Role r : m.getRoles())
-            if (r.getName().equalsIgnoreCase(rb.roleName)) {
-                rb.message.editMessageEmbeds(EmbedUtils.getRoleExistsEmbed()).queue();
-                return;
-            }
-
-        Role newRole = guild.createRole().complete();
-
-        String cap = rb.roleName.substring(0, 1).toUpperCase() + rb.roleName.substring(1);
-
-        try {
-            newRole.getManager().setName(cap).setMentionable(true).setHoisted(false).setColor(rb.getColor())
-                    .queue();
-        } catch (IllegalArgumentException e) {
-            rb.message.editMessageEmbeds(EmbedUtils.getInvalidRoleEmbed()).queue();
-            newRole.delete().queue();
-            return;
-        }
-
-        guild.addRoleToMember(m, newRole).queue();
-
-        Bot.gameRoleManager.getGuildRoleManager(guild).addGameRole(new GameRole(cap, rb.getUser().getId()), newRole);
-        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(guild);
-        jgm.addRole(cap, rb.getUser().getId());
-    }
-
     public static String[] createNumberEmojiArray() {
         String[] arr = new String[10];
         for (int i = 0; i < 9; i++) {
@@ -150,43 +100,6 @@ public class BotUtils {
             count++;
         }
         return emojiCount;
-    }
-
-    public static void deleteRole(RoleDeleter rd) {
-        Role role = Bot.gameRoleManager.getGuildRoleManager(rd.getGuild()).getRoleFromGameRole(rd.getRoleToBeDeleted());
-        role.delete().queue();
-    }
-
-    public static int getMaxUserRolesOnPage(RoleRemover rr, int page) {
-        Iterator<GameRole> iter = Invoker.of(rr.getGuild().getMember(rr.getUser())).getGameRoles().iterator();
-
-        int startIdx = 1 + ((page - 1) * 10); //The start role on that page eg page 2 would give 11
-        int targetIdx = page * 10; //The last role on that page, eg page 2 would give 20
-        int count = 1;
-        int emojiCount = 0;
-        while (iter.hasNext()) {
-            iter.next();
-            if (count >= startIdx && count <= targetIdx) {
-                emojiCount++;
-            }
-            if (count == targetIdx)
-                break;
-
-            count++;
-        }
-        return emojiCount;
-    }
-
-    public static void addRoleToMember(RoleAdder ra) {
-        Member m = ra.getGuild().getMemberById(ra.getUser().getId());
-        Role roleToAdd = Bot.gameRoleManager.getGuildRoleManager(ra.getGuild()).getRoleFromGameRole(ra.getDesiredRole());
-        ra.getGuild().addRoleToMember(m, roleToAdd).queue();
-    }
-
-    public static void removeRoleFromMember(RoleRemover rr, GameRole desiredRole) {
-        Member m = rr.getGuild().getMemberById(rr.getUser().getId());
-        Role roleToRemove = Bot.gameRoleManager.getGuildRoleManager(rr.getGuild()).getRoleFromGameRole(desiredRole);
-        rr.getGuild().removeRoleFromMember(m, roleToRemove).queue();
     }
 
     /**
