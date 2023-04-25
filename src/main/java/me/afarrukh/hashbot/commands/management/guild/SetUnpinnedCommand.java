@@ -21,7 +21,9 @@ public class SetUnpinnedCommand extends Command implements AdminCommand {
 
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
         jgm.unsetPinnedChannel();
-        Message message = evt.getChannel().sendMessage("There is no longer a pinned channel for this server.").complete();
+        Message message = evt.getChannel()
+                .sendMessage("There is no longer a pinned channel for this server.")
+                .complete();
         message.delete().queueAfter(2, TimeUnit.SECONDS);
     }
 }

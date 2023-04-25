@@ -15,8 +15,10 @@ public class TimeCreatedCommand extends Command {
     public TimeCreatedCommand() {
         super("timecreated");
         description = "Allows you to check the account creation date of any member on the server";
-        addParameter("name", "**Optional**: The user name of the user you would like to search for. " +
-                "Omitting this simply returns *your* creation date instead");
+        addParameter(
+                "name",
+                "**Optional**: The user name of the user you would like to search for. "
+                        + "Omitting this simply returns *your* creation date instead");
     }
 
     @Override
@@ -26,15 +28,17 @@ public class TimeCreatedCommand extends Command {
             List<Member> mentionedMembers = evt.getMessage().getMentions().getMembers();
             if (!mentionedMembers.isEmpty()) {
                 targetMember = mentionedMembers.get(0);
-            } else
-                targetMember = evt.getMember();
+            } else targetMember = evt.getMember();
         } else {
             if (evt.getGuild().getMembersByEffectiveName(params, true) != null)
-                targetMember = evt.getGuild().getMembersByEffectiveName(params, true).get(0);
+                targetMember =
+                        evt.getGuild().getMembersByEffectiveName(params, true).get(0);
         }
 
         if (targetMember == null) {
-            evt.getChannel().sendMessage("The user " + params + " does not exist.").queue();
+            evt.getChannel()
+                    .sendMessage("The user " + params + " does not exist.")
+                    .queue();
             return;
         }
 
@@ -46,11 +50,8 @@ public class TimeCreatedCommand extends Command {
         eb.appendDescription("Created on " + date + ".");
 
         evt.getChannel().sendMessageEmbeds(eb.build()).queue();
-
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
+    public void onIncorrectParams(TextChannel channel) {}
 }

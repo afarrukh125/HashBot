@@ -64,10 +64,12 @@ public class Bot {
         //noinspection ResultOfMethodCallIgnored
         executor.awaitTermination(1, TimeUnit.MINUTES);
 
-
         botUser().addEventListener(new MessageListener());
-        botUser().getPresence().setActivity(Activity.playing(" in " + botUser().getGuilds().size() + " guilds"));
-        System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user " + botUser().getSelfUser().getName());
+        botUser()
+                .getPresence()
+                .setActivity(Activity.playing(" in " + botUser().getGuilds().size() + " guilds"));
+        System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user "
+                + botUser().getSelfUser().getName());
 
         trackManager = new AudioTrackManager();
 
@@ -79,12 +81,13 @@ public class Bot {
         ownerInputManager = new CommandLineInputManager();
 
         new Thread(() -> {
-            while (true) {
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine();
-                ownerInputManager.processInput(input);
-            }
-        }).start();
+                    while (true) {
+                        Scanner scanner = new Scanner(System.in);
+                        String input = scanner.nextLine();
+                        ownerInputManager.processInput(input);
+                    }
+                })
+                .start();
     }
 
     private void startUpMessages() {
@@ -102,30 +105,35 @@ public class Bot {
             System.out.println("\nThe following commands do not have descriptions: ");
             for (Command c : descriptionLessCommands)
                 System.out.println(c.getClass().getSimpleName());
-
         }
     }
 
     private void initialiseBotUser() {
         try {
-            botUser = JDABuilder.create(token,
-                    GatewayIntent.DIRECT_MESSAGES,
-                    GatewayIntent.GUILD_MEMBERS,
-                    GatewayIntent.GUILD_MESSAGES,
-                    GatewayIntent.GUILD_MESSAGES,
-                    GatewayIntent.GUILD_MESSAGE_REACTIONS,
-                    GatewayIntent.GUILD_PRESENCES,
-                    GatewayIntent.GUILD_VOICE_STATES,
-                    GatewayIntent.MESSAGE_CONTENT)
-                    .disableCache(CacheFlag.ACTIVITY,
+            botUser = JDABuilder.create(
+                            token,
+                            GatewayIntent.DIRECT_MESSAGES,
+                            GatewayIntent.GUILD_MEMBERS,
+                            GatewayIntent.GUILD_MESSAGES,
+                            GatewayIntent.GUILD_MESSAGES,
+                            GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                            GatewayIntent.GUILD_PRESENCES,
+                            GatewayIntent.GUILD_VOICE_STATES,
+                            GatewayIntent.MESSAGE_CONTENT)
+                    .disableCache(
+                            CacheFlag.ACTIVITY,
                             CacheFlag.CLIENT_STATUS,
                             CacheFlag.EMOJI,
                             CacheFlag.SCHEDULED_EVENTS,
-                            CacheFlag.STICKER).build().awaitReady();
-
+                            CacheFlag.STICKER)
+                    .build()
+                    .awaitReady();
 
             Timer experienceTimer = new Timer();
-            experienceTimer.schedule(new VoiceExperienceTimer(), Constants.VOICE_EXPERIENCE_TIMER * 1000, Constants.VOICE_EXPERIENCE_TIMER * 1000);
+            experienceTimer.schedule(
+                    new VoiceExperienceTimer(),
+                    Constants.VOICE_EXPERIENCE_TIMER * 1000,
+                    Constants.VOICE_EXPERIENCE_TIMER * 1000);
 
             startUpMessages();
         } catch (InterruptedException e) {
@@ -184,7 +192,6 @@ public class Bot {
                 .addCommand(new UptimeCommand())
                 .addCommand(new ViewListCommand())
                 .build();
-
     }
 
     private void setupNames() {

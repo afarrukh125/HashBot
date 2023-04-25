@@ -31,7 +31,8 @@ public class SetNickCommand extends Command implements AdminCommand {
         }
 
         Guild g = evt.getGuild();
-        g.modifyNickname(g.getMemberById(g.getJDA().getSelfUser().getId()), params).queue();
+        g.modifyNickname(g.getMemberById(g.getJDA().getSelfUser().getId()), params)
+                .queue();
         evt.getChannel().sendMessage("Changed name to " + params).queue();
     }
 

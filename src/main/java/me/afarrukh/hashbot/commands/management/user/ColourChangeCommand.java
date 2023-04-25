@@ -28,7 +28,9 @@ public class ColourChangeCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         Invoker invoker = Invoker.of(evt.getMember());
         if (invoker.getCredit() < Constants.colChangeCred) {
-            evt.getChannel().sendMessage("You need at least " + Constants.colChangeCred + " credit to change your colour.").queue();
+            evt.getChannel()
+                    .sendMessage("You need at least " + Constants.colChangeCred + " credit to change your colour.")
+                    .queue();
             return;
         }
         try {
@@ -61,7 +63,9 @@ public class ColourChangeCommand extends Command {
             Role desiredRole = invoker.getRole(roleName);
 
             if (desiredRole == null) {
-                evt.getChannel().sendMessage("You do not have this role so you cannot modify it.").queue();
+                evt.getChannel()
+                        .sendMessage("You do not have this role so you cannot modify it.")
+                        .queue();
                 BotUtils.deleteLastMsg(evt);
                 return;
             }
@@ -69,9 +73,11 @@ public class ColourChangeCommand extends Command {
             ArrayList<Role> singularRole = new ArrayList<>();
             singularRole.add(desiredRole);
 
-            //If the role isn't a custom role (i.e. only has one member in it, then do not change it)
+            // If the role isn't a custom role (i.e. only has one member in it, then do not change it)
             if (evt.getGuild().getMembersWithRoles(singularRole).size() > 1) {
-                evt.getChannel().sendMessage("You cannot change this role because it is not unique to you.").queue();
+                evt.getChannel()
+                        .sendMessage("You cannot change this role because it is not unique to you.")
+                        .queue();
                 return;
             }
 
@@ -81,7 +87,9 @@ public class ColourChangeCommand extends Command {
             String prevBlue = Integer.toString(prevCol.getBlue());
 
             if (red == 0 && green == 0 && blue == 0) {
-                evt.getChannel().sendMessage("You cannot use this colour. (Use at least one value above 0)").queue();
+                evt.getChannel()
+                        .sendMessage("You cannot use this colour. (Use at least one value above 0)")
+                        .queue();
                 return;
             }
 
@@ -89,19 +97,20 @@ public class ColourChangeCommand extends Command {
             Invoker in = Invoker.of(evt.getMember());
             in.addCredit(-Constants.colChangeCred);
 
-            evt.getChannel().sendMessage("Colour changed from " + prevRed + " " + prevGreen + " " + prevBlue
-                    + " to " + red + " " + green + " " + blue + " [Cost: " + Constants.colChangeCred + " credit]").queue();
-
+            evt.getChannel()
+                    .sendMessage("Colour changed from " + prevRed + " " + prevGreen + " " + prevBlue + " to " + red
+                            + " " + green + " " + blue + " [Cost: " + Constants.colChangeCred + " credit]")
+                    .queue();
 
         } catch (NumberFormatException | NullPointerException e) {
             onIncorrectParams(evt.getChannel().asTextChannel());
         } catch (IllegalArgumentException ignore) {
         }
-
     }
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        channel.sendMessage("Correct usage: rolecol <role name> <red> <green> <blue> OR rolecol <role name> <#hex>").queue();
+        channel.sendMessage("Correct usage: rolecol <role name> <red> <green> <blue> OR rolecol <role name> <#hex>")
+                .queue();
     }
 }

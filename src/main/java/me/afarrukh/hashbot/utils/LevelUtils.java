@@ -37,11 +37,8 @@ public class LevelUtils {
     public static String getBar(int num) {
         StringBuilder val = new StringBuilder();
         for (int i = 0; i < 10; i++) {
-            if (i < num)
-
-                val.append(":" + Constants.LEFTBAR + ":");
-            else
-                val.append(":" + Constants.RIGHTBAR + ":");
+            if (i < num) val.append(":" + Constants.LEFTBAR + ":");
+            else val.append(":" + Constants.RIGHTBAR + ":");
         }
         return val.toString();
     }
@@ -60,10 +57,10 @@ public class LevelUtils {
 
     public static List<Member> getCreditsLeaderboard(Guild g) {
 
-        List<Member> memberList = g.getMembers()
-                .stream()
+        List<Member> memberList = g.getMembers().stream()
                 .filter(m -> !m.getUser().isBot())
-                .filter(m -> !m.getUser().getId().equals(g.getJDA().getSelfUser().getId()))
+                .filter(m ->
+                        !m.getUser().getId().equals(g.getJDA().getSelfUser().getId()))
                 .collect(Collectors.toCollection((Supplier<List<Member>>) ArrayList::new));
 
         Comparator<Member> memberSorter = (m1, m2) -> {

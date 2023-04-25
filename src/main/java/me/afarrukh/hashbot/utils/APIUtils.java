@@ -13,9 +13,7 @@ public class APIUtils {
         try {
 
             OkHttpClient okHttpClient = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+            Request request = new Request.Builder().url(url).build();
 
             Response response = okHttpClient.newCall(request).execute();
             String res = null;
@@ -32,8 +30,7 @@ public class APIUtils {
         try {
 
             OkHttpClient okHttpClient = new OkHttpClient();
-            Request.Builder requestBuilder = new Request.Builder()
-                    .url(url);
+            Request.Builder requestBuilder = new Request.Builder().url(url);
 
             for (String s : headers.keySet()) {
                 requestBuilder.addHeader(s, headers.get(s));

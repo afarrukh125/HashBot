@@ -1,15 +1,16 @@
 package me.afarrukh.hashbot.entities;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.IDataManager;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import static java.lang.Long.parseLong;
 
@@ -17,7 +18,6 @@ import static java.lang.Long.parseLong;
  * Views the invoker as a member who has initiated commands from this bot that would lead to a change in their user
  * properties (e.g. colour change, name change)
  */
-
 public class Invoker {
 
     private static final Map<Member, Invoker> memberInvokerMap = new HashMap<>();
@@ -71,8 +71,7 @@ public class Invoker {
 
     public Role getRole(String name) {
         for (Role r : member.getRoles()) {
-            if (r.getName().equalsIgnoreCase(name))
-                return r;
+            if (r.getName().equalsIgnoreCase(name)) return r;
         }
         return null;
     }
@@ -85,8 +84,7 @@ public class Invoker {
      */
     public boolean hasTimePassed() {
         long time = parseLong((String) userFileManager.getValue("time"));
-        if ((System.currentTimeMillis() - time) < (Constants.minToMillis * 0.75))
-            return false;
+        if ((System.currentTimeMillis() - time) < (Constants.minToMillis * 0.75)) return false;
 
         userFileManager.updateValue("time", System.currentTimeMillis());
         return true;
@@ -188,13 +186,12 @@ public class Invoker {
             setLevel(currentLevel + 1);
 
             System.out.println(new Date(System.currentTimeMillis()) + ": <"
-                    + member.getGuild().getName() + "> " +
-                    member.getUser().getName() + " has levelled up. (Now level " + (currentLevel + 1) + ")");
+                    + member.getGuild().getName() + "> " + member.getUser().getName()
+                    + " has levelled up. (Now level " + (currentLevel + 1) + ")");
         }
     }
 
     public Member getMember() {
         return member;
     }
-
 }

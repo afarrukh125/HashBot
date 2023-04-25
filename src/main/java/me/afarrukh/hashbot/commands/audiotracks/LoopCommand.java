@@ -17,15 +17,22 @@ public class LoopCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            TrackScheduler trackScheduler = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+            TrackScheduler trackScheduler =
+                    Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
             trackScheduler.setLooping(!trackScheduler.isLooping());
             String status;
-            if (trackScheduler.isLooping())
-                status = "Now";
-            else
-                status = "No longer";
-            evt.getChannel().sendMessage(status + " looping: `"
-                    + Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack().getInfo().title + "`").queue();
+            if (trackScheduler.isLooping()) status = "Now";
+            else status = "No longer";
+            evt.getChannel()
+                    .sendMessage(status + " looping: `"
+                            + Bot.trackManager
+                                    .getGuildAudioPlayer(evt.getGuild())
+                                    .getPlayer()
+                                    .getPlayingTrack()
+                                    .getInfo()
+                                    .title
+                            + "`")
+                    .queue();
         }
     }
 }

@@ -18,14 +18,18 @@ public class LoopQueueCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            TrackScheduler ts = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+            TrackScheduler ts =
+                    Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
             if (ts.isFairPlay()) {
-                evt.getChannel().sendMessage("Cannot use this feature unless fairplay is disabled.").queue();
+                evt.getChannel()
+                        .sendMessage("Cannot use this feature unless fairplay is disabled.")
+                        .queue();
                 return;
             }
             ts.setLoopingQueue(!ts.isLoopingQueue());
-            String string = (ts.isLoopingQueue() ? "Now looping the queue. Tracks will be added" +
-                    " to the back of the queue." : "No longer looping the queue.");
+            String string = (ts.isLoopingQueue()
+                    ? "Now looping the queue. Tracks will be added" + " to the back of the queue."
+                    : "No longer looping the queue.");
             evt.getChannel().sendMessage(string).queue();
         }
     }

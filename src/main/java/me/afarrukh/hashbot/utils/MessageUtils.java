@@ -5,8 +5,8 @@ import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Calendar;
@@ -35,8 +35,7 @@ public class MessageUtils {
         String originalMessageContent = originalMessage.getContentRaw();
 
         // Special case for youtube videos since it prints the video URL twice if we don't check
-        if (!originalMessageContent.contains("youtube.com"))
-            eb.appendDescription(originalMessageContent + "\n");
+        if (!originalMessageContent.contains("youtube.com")) eb.appendDescription(originalMessageContent + "\n");
 
         eb.setTitle(originalMessage.getMember().getEffectiveName());
 
@@ -48,27 +47,25 @@ public class MessageUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(originalMessage.getTimeCreated().toInstant().toEpochMilli());
 
-        eb.setFooter(originalMessage.getChannel().getName() + " - " + calendar.getTime().toString(),
+        eb.setFooter(
+                originalMessage.getChannel().getName() + " - "
+                        + calendar.getTime().toString(),
                 originalMessage.getAuthor().getAvatarUrl());
 
         // Just copy the original embed if there is one with our title and footer
         if (!originalMessage.getEmbeds().isEmpty()) {
             MessageEmbed firstEmbed = originalMessage.getEmbeds().get(0);
-            if (firstEmbed.getImage() != null)
-                eb.setImage(firstEmbed.getImage().getUrl());
+            if (firstEmbed.getImage() != null) eb.setImage(firstEmbed.getImage().getUrl());
             if (firstEmbed.getThumbnail() != null)
                 eb.setThumbnail(firstEmbed.getThumbnail().getUrl());
             if (!firstEmbed.getFields().isEmpty()) {
-                for (MessageEmbed.Field field : firstEmbed.getFields())
-                    eb.addField(field);
+                for (MessageEmbed.Field field : firstEmbed.getFields()) eb.addField(field);
             }
 
-            if (firstEmbed.getTitle() != null)
-                eb.appendDescription(firstEmbed.getTitle() + "\n");
+            if (firstEmbed.getTitle() != null) eb.appendDescription(firstEmbed.getTitle() + "\n");
 
             eb.appendDescription(originalMessage.getContentRaw() + "\n");
-            if (firstEmbed.getDescription() != null)
-                eb.appendDescription(firstEmbed.getDescription() + "\n");
+            if (firstEmbed.getDescription() != null) eb.appendDescription(firstEmbed.getDescription() + "\n");
         }
 
         eb.appendDescription("\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
@@ -78,6 +75,7 @@ public class MessageUtils {
     }
 
     public static void deleteAllMessagesFromBin(MessageReceivedEvent evt, List<Message> messageBin) {
-        CompletableFuture.allOf(evt.getChannel().purgeMessages(messageBin).toArray(new CompletableFuture[0])).join();
+        CompletableFuture.allOf(evt.getChannel().purgeMessages(messageBin).toArray(new CompletableFuture[0]))
+                .join();
     }
 }

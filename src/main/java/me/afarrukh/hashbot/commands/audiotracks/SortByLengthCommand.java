@@ -17,29 +17,48 @@ public class SortByLengthCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList();
+        List<AudioTrack> tracks = Bot.trackManager
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler()
+                .getAsArrayList();
 
-        if (!Objects.requireNonNull(Objects.requireNonNull(evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId())).getVoiceState()).inAudioChannel()) {
+        if (!Objects.requireNonNull(Objects.requireNonNull(evt.getGuild()
+                                .getMemberById(Bot.botUser().getSelfUser().getId()))
+                        .getVoiceState())
+                .inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();
             return;
         }
 
-        if (!Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState()).inAudioChannel()) {
+        if (!Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState())
+                .inAudioChannel()) {
             evt.getChannel().sendMessage("You are not in a voice channel").queue();
             return;
         }
 
-        if (!evt.getMember().getVoiceState().getChannel().equals(evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel())) {
-            evt.getChannel().sendMessage("You are not in the same channel as the bot").queue();
+        if (!evt.getMember()
+                .getVoiceState()
+                .getChannel()
+                .equals(evt.getGuild()
+                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getVoiceState()
+                        .getChannel())) {
+            evt.getChannel()
+                    .sendMessage("You are not in the same channel as the bot")
+                    .queue();
             return;
         }
 
         if (!tracks.isEmpty()) {
             tracks.sort((o1, o2) -> -Long.compare(o2.getDuration(), o1.getDuration()));
             Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(tracks);
-            evt.getChannel().sendMessage("The queue has been sorted in order of size").queue();
+            evt.getChannel()
+                    .sendMessage("The queue has been sorted in order of size")
+                    .queue();
         } else {
-            evt.getChannel().sendMessage("There are currently no songs left to be queued").queue();
+            evt.getChannel()
+                    .sendMessage("There are currently no songs left to be queued")
+                    .queue();
         }
     }
 }

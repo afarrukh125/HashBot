@@ -16,9 +16,12 @@ public class PlayCommand extends Command implements AudioTrackCommand {
     public PlayCommand() {
         super("play");
         addAlias("p");
-        description = "Adds a track to the track queue. If you are queuing a playlist, you can provide 'shuffle' as an additional parameter " +
-                "to shuffle the list before adding it";
-        addParameter("track name, track link, or youtube playlist link", "The name/link of the youtube track, or playlist to be queued");
+        description =
+                "Adds a track to the track queue. If you are queuing a playlist, you can provide 'shuffle' as an additional parameter "
+                        + "to shuffle the list before adding it";
+        addParameter(
+                "track name, track link, or youtube playlist link",
+                "The name/link of the youtube track, or playlist to be queued");
         addExampleUsage("p name");
     }
 
@@ -29,25 +32,30 @@ public class PlayCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        if (evt.getMember() != null && Objects.requireNonNull(evt.getMember().getVoiceState()).getChannel() == null)
-            return;
+        if (evt.getMember() != null
+                && Objects.requireNonNull(evt.getMember().getVoiceState()).getChannel() == null) return;
 
         if (PlayTopCommand.isBotConnected(evt)) return;
 
         GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
         // To account for shuffling the list, we have the first branch
         if (params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
-            Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false));
+            Bot.trackManager
+                    .getPlayerManager()
+                    .loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
         } else if (params.split(" ").length == 1 && params.contains("http")) {
             Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
         } else
-            Bot.trackManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
+            Bot.trackManager
+                    .getPlayerManager()
+                    .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
     }
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        channel.sendMessage("Usage: play <youtube search> OR play <youtube link>").queue();
+        channel.sendMessage("Usage: play <youtube search> OR play <youtube link>")
+                .queue();
     }
 }

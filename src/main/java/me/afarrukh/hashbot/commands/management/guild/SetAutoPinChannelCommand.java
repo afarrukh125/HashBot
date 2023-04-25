@@ -19,16 +19,22 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
         addAlias("sp");
         addAlias("sap");
 
-        description = "Sets whether a given channel should automatically pin messages to the pinned channel instead of the normal discord pinning method";
-        addParameter("channel name/ID", "The name or ID of the channel you would like to set as the 'pinned' messages " +
-                "channel for this guild/server");
+        description =
+                "Sets whether a given channel should automatically pin messages to the pinned channel instead of the normal discord pinning method";
+        addParameter(
+                "channel name/ID",
+                "The name or ID of the channel you would like to set as the 'pinned' messages "
+                        + "channel for this guild/server");
         addExampleUsage("setautopin #bot");
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null) {
-            evt.getChannel().sendMessage("You need to provide the channel name or ID that you wish to add to the list of autopin channels.").queue();
+            evt.getChannel()
+                    .sendMessage(
+                            "You need to provide the channel name or ID that you wish to add to the list of autopin channels.")
+                    .queue();
             return;
         }
 
@@ -39,12 +45,16 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
             List<TextChannel> channelList = evt.getGuild().getTextChannelsByName(params, true);
 
             if (channelList.isEmpty()) {
-                evt.getChannel().sendMessage("There is no channel with this name.").queue();
+                evt.getChannel()
+                        .sendMessage("There is no channel with this name.")
+                        .queue();
                 return;
             }
             if (channelList.size() > 1) {
-                evt.getChannel().sendMessage("There is more than one channel with this name. Either provide the ID of this channel through developer mode " +
-                                "or change channel names. For more on enabling and using developer mode visit https://discordia.me/developer-mode then right click the channel and click copy ID")
+                evt.getChannel()
+                        .sendMessage(
+                                "There is more than one channel with this name. Either provide the ID of this channel through developer mode "
+                                        + "or change channel names. For more on enabling and using developer mode visit https://discordia.me/developer-mode then right click the channel and click copy ID")
                         .queue();
                 return;
             }
@@ -59,14 +69,17 @@ public class SetAutoPinChannelCommand extends Command implements AdminCommand {
 
         GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
         if (gdm.getAutoPinChannels().contains(channelId)) {
-            evt.getChannel().sendMessage("The provided channel is already an autopin channel.").queue();
+            evt.getChannel()
+                    .sendMessage("The provided channel is already an autopin channel.")
+                    .queue();
             return;
         }
 
         gdm.addAutoPinChannel(channelId);
 
-        evt.getChannel().sendMessage("The channel " + tc.getName() + " will no longer allow normal pins and will automatically add to the pinned channel instead.")
+        evt.getChannel()
+                .sendMessage("The channel " + tc.getName()
+                        + " will no longer allow normal pins and will automatically add to the pinned channel instead.")
                 .queue();
-
     }
 }

@@ -12,8 +12,9 @@ public class SeekCommand extends Command implements AudioTrackCommand {
         addAlias("skim");
         addAlias("ff");
         description = "Seeks to the particular time (in seconds) of the currently playing track.";
-        addParameter("position", "The position, in either seconds or MM:SS format to seek to in the currently " +
-                "playing track");
+        addParameter(
+                "position",
+                "The position, in either seconds or MM:SS format to seek to in the currently " + "playing track");
         addExampleUsage("seek 1:20");
     }
 
@@ -33,11 +34,17 @@ public class SeekCommand extends Command implements AudioTrackCommand {
                     AudioTrackUtils.seek(evt, seconds);
                 }
             } catch (NumberFormatException e) {
-                evt.getChannel().sendMessage("Need to specify a valid number of seconds to seek.").queue();
+                evt.getChannel()
+                        .sendMessage("Need to specify a valid number of seconds to seek.")
+                        .queue();
             } catch (NullPointerException e) {
-                evt.getChannel().sendMessage("Usage: seek/skim <number of seconds into current track>").queue();
+                evt.getChannel()
+                        .sendMessage("Usage: seek/skim <number of seconds into current track>")
+                        .queue();
             } catch (ArrayIndexOutOfBoundsException e) {
-                evt.getChannel().sendMessage("Please enter a valid number of seconds to skip.").queue();
+                evt.getChannel()
+                        .sendMessage("Please enter a valid number of seconds to skip.")
+                        .queue();
             }
         }
     }

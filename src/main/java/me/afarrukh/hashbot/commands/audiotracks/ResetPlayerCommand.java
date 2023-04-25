@@ -13,16 +13,18 @@ public class ResetPlayerCommand extends Command implements AudioTrackCommand, Ad
     public ResetPlayerCommand() {
         super("resetplayer");
         addAlias("rp");
-        description = "Resets the track player for this guild. Use if any issues are occurring with the track player. Admin only command.";
+        description =
+                "Resets the track player for this guild. Use if any issues are occurring with the track player. Admin only command.";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR))
-            return;
+        if (!evt.getMember().hasPermission(Permission.ADMINISTRATOR)) return;
 
         AudioTrackUtils.disconnect(evt.getGuild());
         Bot.trackManager.resetGuildAudioPlayer(evt.getGuild());
-        evt.getChannel().sendMessage("Reset the audio player for this guild successfully.").queue();
+        evt.getChannel()
+                .sendMessage("Reset the audio player for this guild successfully.")
+                .queue();
     }
 }

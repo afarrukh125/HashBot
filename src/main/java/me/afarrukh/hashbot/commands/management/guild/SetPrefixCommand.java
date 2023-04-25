@@ -19,8 +19,7 @@ public class SetPrefixCommand extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         if (params != null && params.length() < 2) {
-            Bot.prefixManager.getGuildRoleManager(evt.getGuild())
-                    .setPrefix(params);
+            Bot.prefixManager.getGuildRoleManager(evt.getGuild()).setPrefix(params);
             evt.getChannel().sendMessage("Bot prefix is now " + params).queue();
         } else {
             onIncorrectParams(evt.getChannel().asTextChannel());
@@ -29,6 +28,7 @@ public class SetPrefixCommand extends Command implements AdminCommand {
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        channel.sendMessage("Usage: setprefix <prefix> \nThis must be at most 1 character and non empty").queue();
+        channel.sendMessage("Usage: setprefix <prefix> \nThis must be at most 1 character and non empty")
+                .queue();
     }
 }

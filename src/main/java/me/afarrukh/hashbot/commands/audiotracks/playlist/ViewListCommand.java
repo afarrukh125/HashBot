@@ -11,10 +11,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Abdullah
- * Created on 11/09/2019 at 23:08
- */
 public class ViewListCommand extends Command {
 
     public ViewListCommand() {
@@ -31,22 +27,30 @@ public class ViewListCommand extends Command {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (playlists.size() == 0) {
-            stringBuilder.append("You currently have no playlists, use the ")
-                    .append(Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())
+            stringBuilder
+                    .append("You currently have no playlists, use the ")
+                    .append(Bot.prefixManager
+                            .getGuildRoleManager(evt.getGuild())
+                            .getPrefix())
                     .append("savelist command to save the current track queue to a playlist");
 
         } else {
             for (Playlist p : playlists)
-                stringBuilder.append("**").append(p.getName()).append(": **").append(p.getSize()).append(" tracks").append("\n\n");
-
+                stringBuilder
+                        .append("**")
+                        .append(p.getName())
+                        .append(": **")
+                        .append(p.getSize())
+                        .append(" tracks")
+                        .append("\n\n");
         }
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Viewing playlists for " + Objects.requireNonNull(evt.getMember()).getEffectiveName());
+        eb.setTitle("Viewing playlists for "
+                + Objects.requireNonNull(evt.getMember()).getEffectiveName());
         eb.setDescription(stringBuilder);
         eb.setColor(Constants.EMB_COL);
         eb.setThumbnail(evt.getMember().getUser().getAvatarUrl());
         evt.getChannel().sendMessageEmbeds(eb.build()).queue();
-
     }
 }

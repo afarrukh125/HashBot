@@ -20,8 +20,7 @@ public class ResumeCommand extends Command implements AudioTrackCommand {
             if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
                 AudioTrackUtils.resume(evt);
                 evt.getChannel().sendMessage("Resumed.").queue();
-            } else
-                evt.getChannel().sendMessage("The bot is already playing.").queue();
+            } else evt.getChannel().sendMessage("The bot is already playing.").queue();
         }
     }
 }

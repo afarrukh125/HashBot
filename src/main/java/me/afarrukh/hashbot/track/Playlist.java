@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Abdullah
- * Created on 11/09/2019 at 23:10
- */
 public class Playlist {
 
     private final String name;

@@ -20,18 +20,21 @@ public class CheckMemoryCommand extends Command implements SystemCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         long memoryDiff = getMemoryDifferenceFromStartup();
 
-        evt.getChannel().sendMessageEmbeds(new EmbedBuilder().setColor(Constants.EMB_COL)
-                .appendDescription("Memory usage since startup is " + memoryDiff + "MB").build()).queue();
+        evt.getChannel()
+                .sendMessageEmbeds(new EmbedBuilder()
+                        .setColor(Constants.EMB_COL)
+                        .appendDescription("Memory usage since startup is " + memoryDiff + "MB")
+                        .build())
+                .queue();
 
-        if (memoryDiff > 30)
-            System.gc();
+        if (memoryDiff > 30) System.gc();
     }
 
     public static long getMemoryDifferenceFromStartup() {
         long memoryNow = getRuntime().totalMemory() - getRuntime().freeMemory();
 
         long memoryDiff = memoryNow - Constants.INITIAL_MEMORY;
-        memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
+        memoryDiff /= (1024 * 1024); // Converting from bytes to kb to mb by dividing by 1024 twice
         return memoryDiff;
     }
 }

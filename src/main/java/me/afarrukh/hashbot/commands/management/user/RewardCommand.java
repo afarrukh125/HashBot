@@ -31,7 +31,8 @@ public class RewardCommand extends Command implements OwnerCommand {
         try {
             amt = Long.parseLong(tokens[tokens.length - 1]);
         } catch (NumberFormatException e) {
-            evt.getChannel().sendMessage("Could not add this amount of credit, exceeds " + Long.MAX_VALUE + ".")
+            evt.getChannel()
+                    .sendMessage("Could not add this amount of credit, exceeds " + Long.MAX_VALUE + ".")
                     .queue();
             return;
         }
@@ -40,7 +41,9 @@ public class RewardCommand extends Command implements OwnerCommand {
             if (m.getUser().getName().equalsIgnoreCase(targetUser)) {
                 Invoker inv = Invoker.of(m);
                 inv.addCredit(amt);
-                evt.getChannel().sendMessage("Rewarded " + m.getUser().getName() + " with " + amt + " credit.").queue();
+                evt.getChannel()
+                        .sendMessage("Rewarded " + m.getUser().getName() + " with " + amt + " credit.")
+                        .queue();
                 return;
             }
         }

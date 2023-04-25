@@ -15,8 +15,7 @@ public class FairShuffleCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!AudioTrackUtils.canInteract(evt))
-            return;
+        if (!AudioTrackUtils.canInteract(evt)) return;
 
         Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().fairShuffle();
         evt.getChannel().sendMessage("Shuffled the playlist fairly :ok_hand:").queue();

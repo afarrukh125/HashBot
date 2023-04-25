@@ -17,10 +17,11 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
         addAlias("setthreshold");
         addAlias("setpinthreshold");
 
-        description = "Set how many reactions are required on a message to pin it. The threshold is the number of reactions needed for a message to be pinned.";
-        addParameter("threshold", "The number of reactions that are required for a message to be added to the pinned channel");
-
-
+        description =
+                "Set how many reactions are required on a message to pin it. The threshold is the number of reactions needed for a message to be pinned.";
+        addParameter(
+                "threshold",
+                "The number of reactions that are required for a message to be added to the pinned channel");
     }
 
     @Override
@@ -28,16 +29,23 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
         try {
             int newValue = Integer.parseInt(params);
             if (newValue <= 0) {
-                evt.getChannel().sendMessage("The minimum pin threshold value is 1").queue();
+                evt.getChannel()
+                        .sendMessage("The minimum pin threshold value is 1")
+                        .queue();
                 return;
             }
             Bot.prefixManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);
-            evt.getChannel().sendMessage("The pinned threshold is now " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()).queue();
+            evt.getChannel()
+                    .sendMessage("The pinned threshold is now "
+                            + Bot.prefixManager
+                                    .getGuildRoleManager(evt.getGuild())
+                                    .getPinThreshold())
+                    .queue();
         } catch (NumberFormatException e) {
-            evt.getChannel().sendMessage("Please enter a numerical value for threshold. The threshold is the number of reactions needed for a message to be pinned.")
+            evt.getChannel()
+                    .sendMessage(
+                            "Please enter a numerical value for threshold. The threshold is the number of reactions needed for a message to be pinned.")
                     .queue();
         }
     }
 }
-
-

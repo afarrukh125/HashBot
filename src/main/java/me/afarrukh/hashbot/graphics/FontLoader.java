@@ -16,5 +16,4 @@ public class FontLoader {
         }
         return null;
     }
-
 }

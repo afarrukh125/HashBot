@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.api.entities.Guild;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,8 +35,7 @@ public class GuildDataManager extends DataManager {
 
         file = new File(filePath);
 
-        if (file.exists())
-            load();
+        if (file.exists()) load();
         else {
             if (new File("res/guilds/" + guildId + "/data").mkdirs()) {
                 load();
@@ -127,11 +125,10 @@ public class GuildDataManager extends DataManager {
      * Returns the pinned channel ID for the guild held in this GuildDataManager object
      */
     public String getPinnedChannelId() {
-        if (jsonObject == null)
-            return null;
+        if (jsonObject == null) return null;
 
-        if (jsonObject.get(pinnedChannelKey) == null || jsonObject.get(pinnedChannelKey).equals(""))
-            return null;
+        if (jsonObject.get(pinnedChannelKey) == null
+                || jsonObject.get(pinnedChannelKey).equals("")) return null;
 
         return (String) jsonObject.get(pinnedChannelKey);
     }
@@ -147,7 +144,6 @@ public class GuildDataManager extends DataManager {
         arr.add(channelId);
         jsonObject.put(autoPinKey, arr);
         flushData();
-
     }
 
     public void deletePinnedEntryByOriginal(String id) {

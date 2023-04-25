@@ -1,9 +1,6 @@
 package me.afarrukh.hashbot.commands.tagging;
 
 import me.afarrukh.hashbot.commands.management.bot.CommandListCommand;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
 
 /**
  * A command that is to be categorised by the command manager as having a certain types.
@@ -25,12 +22,14 @@ public interface CategorisedCommand {
     default String getType() {
         if (this.getClass().getInterfaces().length > 1) {
             for (Class<?> itf : this.getClass().getInterfaces()) {
-                if (itf.getSimpleName().equals("AdminCommand"))
-                    continue;
+                if (itf.getSimpleName().equals("AdminCommand")) continue;
                 return itf.getSimpleName().replace("Command", "").toLowerCase();
             }
         }
-        return getClass().getInterfaces()[0].getSimpleName().replace("Command", "").toLowerCase();
+        return getClass()
+                .getInterfaces()[0]
+                .getSimpleName()
+                .replace("Command", "")
+                .toLowerCase();
     }
-
 }

@@ -17,7 +17,6 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,14 +33,20 @@ class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
-        if (evt.getAuthor().isBot())
-            return;
-        if (evt.getMessage().getContentRaw().startsWith(Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+        if (evt.getAuthor().isBot()) return;
+        if (evt.getMessage()
+                .getContentRaw()
+                .startsWith(
+                        Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
             Bot.commandManager.processEvent(evt);
             return;
         }
 
-        if (BotUtils.isPinnedChannel(evt) && !evt.getMember().getUser().getId().equals(Bot.botUser().getSelfUser().getId())) {
+        if (BotUtils.isPinnedChannel(evt)
+                && !evt.getMember()
+                        .getUser()
+                        .getId()
+                        .equals(Bot.botUser().getSelfUser().getId())) {
             evt.getMessage().delete().queue();
             return;
         }
@@ -57,13 +62,17 @@ class MessageListener extends ListenerAdapter {
         AudioChannel joinedChannel = evt.getChannelJoined();
         if (nonNull(joinedChannel)) {
 
-            if (!joinedChannel.getMembers().contains(evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId())))
-                return;
+            if (!joinedChannel
+                    .getMembers()
+                    .contains(evt.getGuild()
+                            .getMemberById(evt.getJDA().getSelfUser().getId()))) return;
 
             GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
 
-            //Check if the user to join is the first to join and resume if it is already paused
-            if ((joinedChannel.getMembers().size() == 2) && manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
+            // Check if the user to join is the first to join and resume if it is already paused
+            if ((joinedChannel.getMembers().size() == 2)
+                    && manager.getPlayer().isPaused()
+                    && evt.getGuild().getAudioManager().isConnected()) {
                 Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
 
                 Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
@@ -71,8 +80,9 @@ class MessageListener extends ListenerAdapter {
         }
 
         AudioChannel leftChannel = evt.getChannelLeft();
-        if(nonNull(leftChannel)) {
-            Member botMember = evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId());
+        if (nonNull(leftChannel)) {
+            Member botMember =
+                    evt.getGuild().getMemberById(evt.getJDA().getSelfUser().getId());
             if (!leftChannel.getMembers().contains(botMember)) {
                 return;
             }
@@ -84,11 +94,14 @@ class MessageListener extends ListenerAdapter {
                 return;
             }
 
-            //Pause if no users in channel
-            if (leftChannel.getMembers().size() == 1 && !manager.getPlayer().isPaused() && evt.getGuild().getAudioManager().isConnected()) {
+            // Pause if no users in channel
+            if (leftChannel.getMembers().size() == 1
+                    && !manager.getPlayer().isPaused()
+                    && evt.getGuild().getAudioManager().isConnected()) {
                 Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
-                Timer disconnectTimer = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
+                Timer disconnectTimer =
+                        Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
                 disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY * 1000);
             }
         }
@@ -105,12 +118,16 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent evt) {
-        Bot.botUser().getPresence().setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
+        Bot.botUser()
+                .getPresence()
+                .setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
     }
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent evt) {
-        Bot.botUser().getPresence().setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
+        Bot.botUser()
+                .getPresence()
+                .setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
     }
 
     @Override
@@ -134,6 +151,5 @@ class MessageListener extends ListenerAdapter {
                 gdm.deletePinnedEntryByOriginal(evt.getMessageId());
             }
         }
-
     }
 }

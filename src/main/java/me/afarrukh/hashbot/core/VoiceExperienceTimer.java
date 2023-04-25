@@ -14,15 +14,11 @@ class VoiceExperienceTimer extends TimerTask {
 
         for (Guild g : Bot.botUser().getGuilds()) {
             for (VoiceChannel vc : g.getVoiceChannels()) {
-                if (vc.getMembers().isEmpty())
-                    continue;
+                if (vc.getMembers().isEmpty()) continue;
                 for (Member m : vc.getMembers()) {
-                    if (m.getUser().isBot())
-                        continue;
-                    if (m.getVoiceState().isMuted() || m.getVoiceState().isDeafened())
-                        continue;
-                    if (vc.equals(g.getAfkChannel()))
-                        continue;
+                    if (m.getUser().isBot()) continue;
+                    if (m.getVoiceState().isMuted() || m.getVoiceState().isDeafened()) continue;
+                    if (vc.equals(g.getAfkChannel())) continue;
                     Invoker invoker = Invoker.of(m);
                     invoker.addRandomExperience();
                     invoker.addRandomCredit();

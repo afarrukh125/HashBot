@@ -14,8 +14,8 @@ public class ReverseQueueCommand extends Command {
     public ReverseQueueCommand() {
         super("reversequeue");
         addAlias("rq");
-        description = "Inverts the queue contents so that the last track is first and the first track is last. " +
-                "Does not affect the currently playing track.";
+        description = "Inverts the queue contents so that the last track is first and the first track is last. "
+                + "Does not affect the currently playing track.";
     }
 
     @Override
@@ -23,12 +23,13 @@ public class ReverseQueueCommand extends Command {
 
         if (AudioTrackUtils.canInteract(evt)) {
 
-            List<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList();
+            List<AudioTrack> tracks = Bot.trackManager
+                    .getGuildAudioPlayer(evt.getGuild())
+                    .getScheduler()
+                    .getAsArrayList();
             List<AudioTrack> reversedTracks = new ArrayList<>();
 
-            for (int i = tracks.size() - 1; i >= 0; i--)
-                reversedTracks.add(tracks.get(i));
-
+            for (int i = tracks.size() - 1; i >= 0; i--) reversedTracks.add(tracks.get(i));
 
             Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(reversedTracks);
 

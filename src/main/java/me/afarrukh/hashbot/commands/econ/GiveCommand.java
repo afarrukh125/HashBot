@@ -13,8 +13,10 @@ public class GiveCommand extends Command implements EconCommand {
         super("give");
         addAlias("transfer");
         description = "Transfers credit to the mentioned user";
-        addParameter("username", "The user who you would like to give credit to. This can be " +
-                "their name, or you can simply mention them.");
+        addParameter(
+                "username",
+                "The user who you would like to give credit to. This can be "
+                        + "their name, or you can simply mention them.");
         addParameter("amount", "The amount you would like to give to the user");
 
         addExampleUsage("give HashBot 5000");
@@ -32,16 +34,15 @@ public class GiveCommand extends Command implements EconCommand {
             String[] userName = params.split(" ");
             String memberByName = CmdUtils.getParamsAsString(userName, 0, userName.length - 2);
             for (Member member : evt.getGuild().getMembers()) {
-                if (member.getEffectiveName().equalsIgnoreCase(memberByName) || member.getUser().getName().equalsIgnoreCase(memberByName))
-                    m = member;
+                if (member.getEffectiveName().equalsIgnoreCase(memberByName)
+                        || member.getUser().getName().equalsIgnoreCase(memberByName)) m = member;
             }
 
             if (m == null) {
                 evt.getChannel().sendMessage("Invalid user provided.").queue();
                 return;
             }
-        } else
-            m = evt.getMessage().getMentions().getMembers().get(0);
+        } else m = evt.getMessage().getMentions().getMembers().get(0);
 
         long amount;
         String[] tokens = params.split(" ");
@@ -49,12 +50,16 @@ public class GiveCommand extends Command implements EconCommand {
         try {
             amount = Long.parseLong(tokens[tokens.length - 1]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException | NullPointerException e) {
-            evt.getChannel().sendMessage("You must provide a numerical amount to give to the mentioned user.").queue();
+            evt.getChannel()
+                    .sendMessage("You must provide a numerical amount to give to the mentioned user.")
+                    .queue();
             return;
         }
 
         if (amount <= 0) {
-            evt.getChannel().sendMessage("You must provide an amount to transfer.").queue();
+            evt.getChannel()
+                    .sendMessage("You must provide an amount to transfer.")
+                    .queue();
             return;
         }
 
@@ -69,7 +74,8 @@ public class GiveCommand extends Command implements EconCommand {
         invoker.addCredit(-amount);
         receiver.addCredit(amount);
 
-        evt.getChannel().sendMessage("Successfully transferred " + amount + " credit to " + m.getEffectiveName() + ".").queue();
-
+        evt.getChannel()
+                .sendMessage("Successfully transferred " + amount + " credit to " + m.getEffectiveName() + ".")
+                .queue();
     }
 }

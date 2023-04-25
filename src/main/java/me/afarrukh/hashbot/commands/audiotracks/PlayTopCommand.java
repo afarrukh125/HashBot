@@ -29,7 +29,10 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
         if (isBotConnected(evt)) return;
 
         if (Invoker.of(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
-            evt.getChannel().sendMessage("You need at least " + Constants.PLAY_TOP_COST + " credit to queue tracks to the top of the list.").queue();
+            evt.getChannel()
+                    .sendMessage("You need at least " + Constants.PLAY_TOP_COST
+                            + " credit to queue tracks to the top of the list.")
+                    .queue();
             return;
         }
         GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
@@ -37,14 +40,26 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
             Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
             evt.getMessage().delete().queue();
         } else
-            Bot.trackManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
+            Bot.trackManager
+                    .getPlayerManager()
+                    .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
     }
 
     static boolean isBotConnected(MessageReceivedEvent evt) {
-        if (evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel() != null) { // If the bot is already connected
-            if (!evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel())) {
+        if (evt.getGuild()
+                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getVoiceState()
+                        .getChannel()
+                != null) { // If the bot is already connected
+            if (!evt.getGuild()
+                    .getMemberById(Bot.botUser().getSelfUser().getId())
+                    .getVoiceState()
+                    .getChannel()
+                    .equals(evt.getMember().getVoiceState().getChannel())) {
                 // If the bot is not in the same channel as the user (assuming already connected) then return
-                evt.getChannel().sendMessage("You must be in the same channel as the bot to queue tracks to it.").queue();
+                evt.getChannel()
+                        .sendMessage("You must be in the same channel as the bot to queue tracks to it.")
+                        .queue();
                 return true;
             }
         }
@@ -53,6 +68,7 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
-        channel.sendMessage("Usage: play <youtube search> OR play <youtube link>").queue();
+        channel.sendMessage("Usage: play <youtube search> OR play <youtube link>")
+                .queue();
     }
 }

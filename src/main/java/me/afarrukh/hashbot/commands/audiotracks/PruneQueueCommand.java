@@ -27,9 +27,13 @@ public class PruneQueueCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        List<Member> memberList = evt.getGuild().getAudioManager().getConnectedChannel().getMembers();
+        List<Member> memberList =
+                evt.getGuild().getAudioManager().getConnectedChannel().getMembers();
 
-        Queue<AudioTrack> trackQueue = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
+        Queue<AudioTrack> trackQueue = Bot.trackManager
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler()
+                .getQueue();
         List<String> prunedUsers = new ArrayList<>();
 
         int removedCount = 0;
@@ -40,14 +44,12 @@ public class PruneQueueCommand extends Command implements AudioTrackCommand {
 
             for (int i = 0; i < memberList.size(); i++) {
                 Member m = memberList.get(i);
-                if (m.getUser().getName().equals(trackOwner))
-                    break;
+                if (m.getUser().getName().equals(trackOwner)) break;
                 if (i == memberList.size() - 1 && !m.getUser().getName().equalsIgnoreCase(trackOwner)) {
                     trackQueue.remove(track);
                     removedCount++;
 
-                    if (!prunedUsers.contains(trackOwner))
-                        prunedUsers.add(trackOwner);
+                    if (!prunedUsers.contains(trackOwner)) prunedUsers.add(trackOwner);
                 }
             }
         }
@@ -55,8 +57,7 @@ public class PruneQueueCommand extends Command implements AudioTrackCommand {
         sb.append("Removed ").append(removedCount).append(" tracks from the queue.\n");
         if (!prunedUsers.isEmpty()) {
             sb.append("From user(s): \n");
-            for (String s : prunedUsers)
-                sb.append(s).append("\n");
+            for (String s : prunedUsers) sb.append(s).append("\n");
         }
         evt.getChannel().sendMessage(sb.toString().trim()).queue();
     }
