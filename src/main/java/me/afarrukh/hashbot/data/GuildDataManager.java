@@ -140,14 +140,6 @@ public class GuildDataManager extends DataManager {
         flushData();
     }
 
-    public void addAutoPinChannel(String channelId) {
-        autoPinChannels.add(channelId);
-        JSONArray arr = (JSONArray) jsonObject.get(autoPinKey);
-        arr.add(channelId);
-        jsonObject.put(autoPinKey, arr);
-        flushData();
-    }
-
     public void deletePinnedEntryByOriginal(String id) {
         JSONArray arr = (JSONArray) jsonObject.get(pinnedMessages);
         Iterator<Object> iter = arr.iterator();
@@ -176,10 +168,6 @@ public class GuildDataManager extends DataManager {
         }
         jsonObject.put(pinnedMessages, arr);
         flushData();
-    }
-
-    public String getPinnedMessageIdFromOriginalMessage(String s) {
-        return pinnedMessageMap.get(s);
     }
 
     public Object getValue(Object key) {

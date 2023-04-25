@@ -40,7 +40,6 @@ public class PruneQueueCommand extends Command implements AudioTrackCommand {
 
         for (AudioTrack track : trackQueue) {
             String trackOwner = (String) track.getUserData();
-            boolean remove = false;
 
             for (int i = 0; i < memberList.size(); i++) {
                 Member m = memberList.get(i);

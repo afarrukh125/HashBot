@@ -14,8 +14,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class Constants {
@@ -23,17 +24,9 @@ public class Constants {
     public static final int WIDTH = 600;
     public static final int HEIGHT = 200;
     public static final String BG_PATH = "res/images/bg.jpg";
-    public static final String FLIP_HEAD =
-            "https://cdn.discordapp.com/attachments/281033379150036992/564885363059982338/head.png";
-    public static final String FLIP_TAIL =
-            "https://cdn.discordapp.com/attachments/281033379150036992/564885363085148168/tail.png";
     public static final long minToMillis = 60000;
     public static final int colChangeCred = 500;
-    public static final String LEFTBAR = "full_moon"; // Emoji name for experience bar in stats command
-    public static final String RIGHTBAR = "new_moon";
     public static final int MAX_CREDIT = 75;
-    public static final int MAX_EXP_FROM_MSG = 200; // A single message cannot give more than this much experience
-    public static final int BASE_EXP = 20; // The amount of experience the user gets per message
     public static final int LEADERBOARD_MAX = 10;
     public static final int PLAY_TOP_COST = 15;
     public static final int MAX_PLAYLIST_SIZE = 400;
@@ -62,7 +55,7 @@ public class Constants {
             10; // How often to update the message when loading or creating a new playlist through the bot
 
     // Bot configuration constants
-    public static ArrayList<String> ownerIds;
+    public static Set<String> ownerIds;
     public static String token;
 
     private static Constants instance;
@@ -86,7 +79,7 @@ public class Constants {
         File file = new File(path);
         String prefix;
 
-        ownerIds = new ArrayList<>();
+        ownerIds = new HashSet<>();
 
         if (new File("res/config").mkdirs()) {}
 

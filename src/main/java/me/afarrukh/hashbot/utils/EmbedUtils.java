@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.awt.*;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
@@ -144,10 +143,9 @@ public class EmbedUtils {
 
     /**
      * @param at  The audio track which has been skipped to
-     * @param evt The message received event associated with the skip embed request
      * @return Returns an embed referring to the track which has been skipped to
      */
-    public static MessageEmbed getSkippedToEmbed(AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getSkippedToEmbed(AudioTrack at) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Skipped to");
         eb.setColor(Constants.EMB_COL);
@@ -177,10 +175,9 @@ public class EmbedUtils {
     /**
      * @param gmm The track manager to query
      * @param at  The audiotrack which is being added
-     * @param evt The event (contains information about the channel which queued it, the guild etc.
      * @return A message embed with the appropriate information for a track that has been queued to the top
      */
-    public static MessageEmbed getQueuedTopEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedTopEmbed(GuildAudioTrackManager gmm, AudioTrack at) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Queued track to top");
@@ -204,11 +201,10 @@ public class EmbedUtils {
     /**
      * Gets an embed that returns a playlist that has been queued
      *
-     * @param gmm      The guild track manager which has an audioplayer which will have this playlist added to
      * @param playlist The playlist to be added
      * @return the MessageEmbed object to represent this playlist that has been queued
      */
-    public static MessageEmbed getPlaylistEmbed(GuildAudioTrackManager gmm, AudioPlaylist playlist) {
+    public static MessageEmbed getPlaylistEmbed(AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
         if (firstTrack == null) firstTrack = playlist.getTracks().get(0);
@@ -234,12 +230,13 @@ public class EmbedUtils {
         eb.setColor(Constants.EMB_COL);
         eb.setTitle("The leaderboard for " + evt.getGuild().getName() + ":");
 
-        int VALUE = Constants.LEADERBOARD_MAX;
+        int maxMembers = Constants.LEADERBOARD_MAX;
 
-        if (memberList.size() < VALUE) // If the server does not have enough players to have a leaderboard of 5
-        VALUE = memberList.size();
+        if (memberList.size() < maxMembers) {
+            maxMembers = memberList.size();
+        }
 
-        for (int i = 0; i < VALUE; i++) {
+        for (int i = 0; i < maxMembers; i++) {
             Invoker inv = Invoker.of(memberList.get(i));
             eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: "
                     + inv.getLevel() + "` | `Experience: " + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
@@ -256,53 +253,6 @@ public class EmbedUtils {
                 .setDescription("Nothing playing right now.")
                 .setColor(Constants.EMB_COL)
                 .build();
-    }
-
-    public static MessageEmbed getRoleName(String name) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.setTitle("Choose your new role name");
-        eb.setDescription("Current name is: " + name);
-        return eb.build();
-    }
-
-    public static MessageEmbed getRoleRed(int number) {
-        EmbedBuilder eb = new EmbedBuilder();
-        try {
-            eb.setColor(new Color(number, 0, 0));
-        } catch (IllegalArgumentException e) {
-            eb.setDescription("That is an invalid colour. Please select a number between 0-255");
-        }
-
-        eb.setTitle("Choose your new role red colour");
-        eb.setDescription("The colour to the left is the current intensity of red: " + number);
-        return eb.build();
-    }
-
-    public static MessageEmbed getRoleGreen(int number) {
-        EmbedBuilder eb = new EmbedBuilder();
-        try {
-            eb.setColor(new Color(0, number, 0));
-        } catch (IllegalArgumentException e) {
-            eb.setDescription("That is an invalid colour. Please select a number between 0-255");
-        }
-
-        eb.setTitle("Choose your new role green colour");
-        eb.setDescription("The colour to the left is the current intensity of green: " + number);
-        return eb.build();
-    }
-
-    public static MessageEmbed getRoleBlue(int number) {
-        EmbedBuilder eb = new EmbedBuilder();
-        try {
-            eb.setColor(new Color(0, 0, number));
-        } catch (IllegalArgumentException e) {
-            eb.setDescription("That is an invalid colour. Please select a number between 0-255");
-        }
-
-        eb.setTitle("Choose your new role blue colour");
-        eb.setDescription("The colour to the left is the current intensity of blue: " + number);
-        return eb.build();
     }
 
     public static MessageEmbed getCreditsLeaderboardEmbed(java.util.List<Member> memberList, MessageReceivedEvent evt) {

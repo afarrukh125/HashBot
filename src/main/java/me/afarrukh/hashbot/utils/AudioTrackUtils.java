@@ -36,7 +36,7 @@ public class AudioTrackUtils {
 
         if (playTop) {
             evt.getChannel()
-                    .sendMessageEmbeds(EmbedUtils.getQueuedTopEmbed(trackManager, track, evt))
+                    .sendMessageEmbeds(EmbedUtils.getQueuedTopEmbed(trackManager, track))
                     .queue();
         } else
             evt.getChannel()
@@ -88,14 +88,6 @@ public class AudioTrackUtils {
         for (AudioTrack t : pl.getTracks()) duration += t.getDuration();
 
         return CmdUtils.longToHHMMSS(duration);
-    }
-
-    /**
-     * Deletes the last bot message and message event message for 'play' commands mainly
-     */
-    public static void cleanPlayMessage(MessageReceivedEvent evt) {
-        BotUtils.deleteLastMsg(evt);
-        evt.getMessage().delete().queue();
     }
 
     /**

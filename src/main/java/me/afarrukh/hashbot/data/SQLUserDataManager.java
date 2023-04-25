@@ -186,9 +186,6 @@ public class SQLUserDataManager implements IDataManager {
     public void load() {}
 
     @Override
-    public void writePresets() {}
-
-    @Override
     public Object getValue(Object key) {
         if (conn == null)
             try {
