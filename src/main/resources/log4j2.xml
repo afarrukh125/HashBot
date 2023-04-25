@@ -3,13 +3,12 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                    pattern="[%d{yyyy.MM.dd HH:mm:ss.SSS}] [%t] %-5level ${sys:process.name:-parent} %X{instanceId} %logger{36} - %msg%n"/>
+                    pattern="[%d{yyyy.MM.dd HH:mm:ss.SSS}] [%t] %-5level%logger{36} - %msg%n"/>
         </Console>
     </Appenders>
     <Loggers>
         <Root level="INFO">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="me.afarrukh.hashbot" level="DEBUG"/>
     </Loggers>
 </Configuration>

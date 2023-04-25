@@ -7,7 +7,6 @@ import me.afarrukh.hashbot.commands.audiotracks.playlist.DeleteListCommand;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.LoadListCommand;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.SavePlaylistCommand;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
-import me.afarrukh.hashbot.commands.econ.GiveCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
@@ -21,14 +20,20 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Bot {
+    private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     public static CommandManager commandManager;
     public static PrefixManager prefixManager;
     public static AudioTrackManager trackManager;
@@ -55,22 +60,21 @@ public class Bot {
      * Adds the commands and initialises all the managers
      */
     private void init() throws InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
 
-        executor.execute(this::initialiseBotUser);
-        executor.execute(this::loadCommands);
-        executor.shutdown();
+            executor.execute(this::initialiseBotUser);
+            executor.execute(this::loadCommands);
+            executor.shutdown();
 
-        //noinspection ResultOfMethodCallIgnored
-        executor.awaitTermination(1, TimeUnit.MINUTES);
+            //noinspection ResultOfMethodCallIgnored
+            executor.awaitTermination(1, TimeUnit.MINUTES);
+        }
 
         botUser().addEventListener(new MessageListener());
         botUser()
                 .getPresence()
                 .setActivity(Activity.playing(" in " + botUser().getGuilds().size() + " guilds"));
-        System.out.println("\n" + new Date(System.currentTimeMillis()) + ": Started and ready with bot user "
-                + botUser().getSelfUser().getName());
-
+        LOG.info("Started and ready with bot user {}", botUser().getSelfUser().getName());
         trackManager = new AudioTrackManager();
 
         prefixManager = new PrefixManager();
@@ -80,31 +84,36 @@ public class Bot {
 
         ownerInputManager = new CommandLineInputManager();
 
-        new Thread(() -> {
-                    while (true) {
-                        Scanner scanner = new Scanner(System.in);
-                        String input = scanner.nextLine();
-                        ownerInputManager.processInput(input);
-                    }
-                })
-                .start();
+        try (ExecutorService cliExecutor = Executors.newSingleThreadExecutor()) {
+            cliExecutor.execute(() -> {
+                while (true) {
+                    Scanner scanner = new Scanner(System.in);
+                    String input = scanner.nextLine();
+                    ownerInputManager.processInput(input);
+                }
+            });
+        }
     }
 
     private void startUpMessages() {
         List<Command> descriptionLessCommands = new ArrayList<>();
 
         for (Command c : commandManager.getCommands()) {
-            System.out.println("Adding " + c.getClass().getSimpleName());
+            LOG.info("Adding {}", c.getClass().getSimpleName());
             if (c.getDescription() == null) {
                 descriptionLessCommands.add(c);
             }
         }
-        System.out.println("Added " + commandManager.getCommands().size() + " commands to command manager.");
+        LOG.info(
+                "Added {} commands to command manager",
+                commandManager.getCommands().size());
 
         if (!descriptionLessCommands.isEmpty()) {
-            System.out.println("\nThe following commands do not have descriptions: ");
-            for (Command c : descriptionLessCommands)
-                System.out.println(c.getClass().getSimpleName());
+            for (Command c : descriptionLessCommands) {
+                LOG.warn(
+                        "The following command does not have a description: {}",
+                        c.getClass().getSimpleName());
+            }
         }
     }
 
@@ -153,7 +162,6 @@ public class Bot {
                 .addCommand(new DisconnectCommand())
                 .addCommand(new FairPlayCommand())
                 .addCommand(new FairShuffleCommand())
-                .addCommand(new GiveCommand())
                 .addCommand(new HelpCommand())
                 .addCommand(new InterleaveCommand())
                 .addCommand(new LeaderboardCommand())
@@ -174,7 +182,6 @@ public class Bot {
                 .addCommand(new ResetPlayerCommand())
                 .addCommand(new ResumeCommand())
                 .addCommand(new ReverseQueueCommand())
-                .addCommand(new RewardCommand())
                 .addCommand(new RoleRGBCommand())
                 .addCommand(new SavePlaylistCommand())
                 .addCommand(new SeekCommand())
@@ -188,7 +195,6 @@ public class Bot {
                 .addCommand(new SkipCommand())
                 .addCommand(new SortByLengthCommand())
                 .addCommand(new StatsCommand())
-                .addCommand(new TimeCreatedCommand())
                 .addCommand(new UptimeCommand())
                 .addCommand(new ViewListCommand())
                 .build();

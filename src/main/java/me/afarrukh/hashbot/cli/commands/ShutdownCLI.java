@@ -2,8 +2,12 @@ package me.afarrukh.hashbot.cli.commands;
 
 import me.afarrukh.hashbot.cli.CLICommand;
 import me.afarrukh.hashbot.core.Bot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShutdownCLI extends CLICommand {
+    private static final Logger LOG = LoggerFactory.getLogger(ShutdownCLI.class);
+
     public ShutdownCLI() {
         super("shutdown");
         addAlias("exit");
@@ -13,9 +17,9 @@ public class ShutdownCLI extends CLICommand {
     @Override
     public void onInvocation(String params) {
 
-        System.out.println("Shutting down the bot...");
+        LOG.info("Shutting down the bot...");
         Bot.botUser().shutdown();
-        System.out.println("Shut down successfully.");
+        LOG.info("Shut down successfully.");
         System.exit(0);
     }
 }

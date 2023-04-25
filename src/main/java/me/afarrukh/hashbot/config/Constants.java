@@ -6,6 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
@@ -17,7 +19,7 @@ import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
 public class Constants {
-
+    private static final Logger LOG = LoggerFactory.getLogger(Constants.class);
     public static final int WIDTH = 600;
     public static final int HEIGHT = 200;
     public static final String BG_PATH = "res/images/bg.jpg";
@@ -103,14 +105,12 @@ public class Constants {
                 if (prefix != null) invokerChar = prefix;
             }
 
-        } catch (ParseException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
-            System.out.println(
+            LOG.info(
                     "Cannot retrieve settings file. Please ensure it is there and in the correct format and then restart the bot.");
             createJsonFile();
             System.exit(0);
-        } catch (IOException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -130,9 +130,9 @@ public class Constants {
         File dest = new File("res/config/settings.json");
         try {
             if (dest.createNewFile()) {
-                System.out.println("File is created!");
+                LOG.info("Configuration file created at {}", dest.getAbsolutePath());
             } else {
-                System.out.println("File already exists.");
+                LOG.info("Configuration file already exists");
             }
             FileUtils.copyFile(src, dest);
         } catch (IOException e) {

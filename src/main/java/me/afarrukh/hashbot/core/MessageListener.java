@@ -26,11 +26,6 @@ import static java.util.Objects.nonNull;
 
 class MessageListener extends ListenerAdapter {
 
-    /**
-     * Processes any message being received on every single message received event
-     *
-     * @param evt The message received event being passed in to process
-     */
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
         if (evt.getAuthor().isBot()) return;
@@ -107,9 +102,6 @@ class MessageListener extends ListenerAdapter {
         }
     }
 
-    /**
-     * @param evt The event associated with a reaction being added to a message
-     */
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent evt) {
         if (evt.getUser().isBot()) return;

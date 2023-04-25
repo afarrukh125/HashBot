@@ -6,8 +6,9 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -19,7 +20,7 @@ import static java.lang.Long.parseLong;
  * properties (e.g. colour change, name change)
  */
 public class Invoker {
-
+    private static final Logger LOG = LoggerFactory.getLogger(Invoker.class);
     private static final Map<Member, Invoker> memberInvokerMap = new HashMap<>();
     private final Member member;
     private final IDataManager userFileManager;
@@ -185,9 +186,11 @@ public class Invoker {
             setExp(newExp - expForNextLevel);
             setLevel(currentLevel + 1);
 
-            System.out.println(new Date(System.currentTimeMillis()) + ": <"
-                    + member.getGuild().getName() + "> " + member.getUser().getName()
-                    + " has levelled up. (Now level " + (currentLevel + 1) + ")");
+            LOG.info(
+                    "Member {} has levelled up to level {} in guild {}",
+                    member.getUser().getName(),
+                    currentLevel + 1,
+                    member.getGuild().getName());
         }
     }
 

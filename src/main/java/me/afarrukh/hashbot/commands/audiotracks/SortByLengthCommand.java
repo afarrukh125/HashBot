@@ -6,7 +6,8 @@ import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 public class SortByLengthCommand extends Command {
 
@@ -22,7 +23,7 @@ public class SortByLengthCommand extends Command {
                 .getScheduler()
                 .getAsArrayList();
 
-        if (!Objects.requireNonNull(Objects.requireNonNull(evt.getGuild()
+        if (!requireNonNull(requireNonNull(evt.getGuild()
                                 .getMemberById(Bot.botUser().getSelfUser().getId()))
                         .getVoiceState())
                 .inAudioChannel()) {
@@ -30,8 +31,7 @@ public class SortByLengthCommand extends Command {
             return;
         }
 
-        if (!Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState())
-                .inAudioChannel()) {
+        if (!requireNonNull(requireNonNull(evt.getMember()).getVoiceState()).inAudioChannel()) {
             evt.getChannel().sendMessage("You are not in a voice channel").queue();
             return;
         }

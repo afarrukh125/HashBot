@@ -4,6 +4,8 @@ import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.api.entities.Guild;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,7 +17,7 @@ import java.util.*;
  */
 @SuppressWarnings("unchecked")
 public class GuildDataManager extends DataManager {
-
+    private static final Logger LOG = LoggerFactory.getLogger(GuildDataManager.class);
     private static final String pinnedChannelKey = "pinnedchannel";
     private static final String pinnedMessages = "pinnedmessages";
     private static final String autoPinKey = "autopinchannels";
@@ -88,7 +90,7 @@ public class GuildDataManager extends DataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(obj);
+        LOG.info("Wrote presets {}", obj);
     }
 
     public void setPrefix(String prefix) {

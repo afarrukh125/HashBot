@@ -49,15 +49,6 @@ public class CmdUtils {
     }
 
     /**
-     * Takes a given array and prints each element line by line
-     *
-     * @param arr - the array to be printed
-     */
-    public static void printArray(String[] arr) {
-        for (String anArr : arr) System.out.println(anArr);
-    }
-
-    /**
      * Converts long to HHMMSS
      *
      * @param count The long to be converted

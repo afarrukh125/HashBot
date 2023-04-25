@@ -2,8 +2,11 @@ package me.afarrukh.hashbot.cli.commands;
 
 import me.afarrukh.hashbot.cli.CLICommand;
 import me.afarrukh.hashbot.core.Bot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SetNameCLI extends CLICommand {
+    private static final Logger LOG = LoggerFactory.getLogger(SetNameCLI.class);
 
     public SetNameCLI() {
         super("setname");
@@ -13,7 +16,7 @@ public class SetNameCLI extends CLICommand {
     @Override
     public void onInvocation(String params) {
         if (params == null) {
-            System.out.println("You need to provide a username to set");
+            LOG.info("You need to provide a username to set");
             return;
         }
 
@@ -22,11 +25,11 @@ public class SetNameCLI extends CLICommand {
                     .getSelfUser()
                     .getManager()
                     .setName(params)
-                    .queue(aVoid -> System.out.println("Global name changed to " + params), throwable -> {
-                        System.out.println("Name change to " + params + " failed: " + throwable.getMessage());
+                    .queue(aVoid -> LOG.info("Global name changed to {}", params), throwable -> {
+                        LOG.error("Name change to {} failed: {}", params, throwable.getMessage());
                     });
         } catch (Exception e) {
-            System.out.println("Exception occurred " + e.getLocalizedMessage());
+            throw new RuntimeException(e);
         }
     }
 }

@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,11 +20,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Abdullah on 01/05/2019 00:03
- */
 public class SQLUserDataManager implements IDataManager {
-
+    private static final Logger LOG = LoggerFactory.getLogger(SQLUserDataManager.class);
     private static Connection conn;
     private static boolean hasData = false;
 
@@ -40,8 +39,7 @@ public class SQLUserDataManager implements IDataManager {
 
             if (getUserData(member) == null) addMember(member);
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("SQLUserDataManager@SQLUserDataManager: " + e.getLocalizedMessage());
-            System.out.println("SQLUserDataManager@SQLUserDataManager: " + "failed to create user profile");
+            LOG.info("Failed to create user profile: {}", e.getMessage());
         }
     }
 
@@ -68,7 +66,7 @@ public class SQLUserDataManager implements IDataManager {
             ResultSet rs =
                     statement.executeQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name='USER'");
             if (rs == null) {
-                System.out.println("SQLUserDataManager@initialise: Building USER table");
+                LOG.info("Building USER table...");
 
                 // Creating table
                 Statement statement2 = conn.createStatement();

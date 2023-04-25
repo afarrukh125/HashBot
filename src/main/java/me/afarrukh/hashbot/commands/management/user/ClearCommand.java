@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +21,7 @@ import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
  * Created by Abdullah on 08/04/2019 20:22
  */
 public class ClearCommand extends Command implements AdminCommand {
+    private static final Logger LOG = LoggerFactory.getLogger(ClearCommand.class);
 
     public ClearCommand() {
         super("clear");
@@ -91,9 +94,11 @@ public class ClearCommand extends Command implements AdminCommand {
                         }
                     } catch (NumberFormatException ex) {
                         // Temporary solution to fixing clear command exception, will remove later. [10/04/2019]
-                        System.out.println("ClearCommand@onInvocation: " + "```java\n" + ex.getMessage() + "```");
-                        System.out.println("ClearCommand@onInvocation: " + "The associated message ID was " + msgId
-                                + " and the deleted ID it compared to was " + delMsg.getIdLong());
+                        LOG.error(
+                                "Error thrown when clearing {}, where message ID was {} and deleted ID compared to was {}",
+                                ex.getMessage(),
+                                msgId,
+                                delMsg.getIdLong());
                     }
                 }
                 if (messageBin.size() > 0) {
