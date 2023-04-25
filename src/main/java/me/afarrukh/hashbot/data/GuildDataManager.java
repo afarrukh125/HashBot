@@ -1,10 +1,11 @@
 package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.api.entities.Guild;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +17,7 @@ import java.util.*;
  */
 @SuppressWarnings("unchecked")
 public class GuildDataManager extends DataManager {
-
+    private static final Logger LOG = LoggerFactory.getLogger(GuildDataManager.class);
     private static final String pinnedChannelKey = "pinnedchannel";
     private static final String pinnedMessages = "pinnedmessages";
     private static final String autoPinKey = "autopinchannels";
@@ -36,8 +37,7 @@ public class GuildDataManager extends DataManager {
 
         file = new File(filePath);
 
-        if (file.exists())
-            load();
+        if (file.exists()) load();
         else {
             if (new File("res/guilds/" + guildId + "/data").mkdirs()) {
                 load();
@@ -90,7 +90,7 @@ public class GuildDataManager extends DataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(obj);
+        LOG.info("Wrote presets {}", obj);
     }
 
     public void setPrefix(String prefix) {
@@ -127,11 +127,10 @@ public class GuildDataManager extends DataManager {
      * Returns the pinned channel ID for the guild held in this GuildDataManager object
      */
     public String getPinnedChannelId() {
-        if (jsonObject == null)
-            return null;
+        if (jsonObject == null) return null;
 
-        if (jsonObject.get(pinnedChannelKey) == null || jsonObject.get(pinnedChannelKey).equals(""))
-            return null;
+        if (jsonObject.get(pinnedChannelKey) == null
+                || jsonObject.get(pinnedChannelKey).equals("")) return null;
 
         return (String) jsonObject.get(pinnedChannelKey);
     }
@@ -147,7 +146,6 @@ public class GuildDataManager extends DataManager {
         arr.add(channelId);
         jsonObject.put(autoPinKey, arr);
         flushData();
-
     }
 
     public void deletePinnedEntryByOriginal(String id) {

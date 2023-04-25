@@ -22,7 +22,8 @@ public class AudioTrackUtils {
      * @param track        The track being queued
      * @param playTop      Whether or not the track is to be queued to the top of the list
      */
-    public static void play(MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
+    public static void play(
+            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
 
         connectToChannel(evt.getMember());
         Invoker invoker = Invoker.of(evt.getMember());
@@ -34,9 +35,13 @@ public class AudioTrackUtils {
         }
 
         if (playTop) {
-            evt.getChannel().sendMessageEmbeds(EmbedUtils.getQueuedTopEmbed(trackManager, track, evt)).queue();
+            evt.getChannel()
+                    .sendMessageEmbeds(EmbedUtils.getQueuedTopEmbed(trackManager, track, evt))
+                    .queue();
         } else
-            evt.getChannel().sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt)).queue();
+            evt.getChannel()
+                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt))
+                    .queue();
     }
 
     /**
@@ -80,8 +85,7 @@ public class AudioTrackUtils {
      */
     public static String getPlaylistDuration(AudioPlaylist pl) {
         long duration = 0;
-        for (AudioTrack t : pl.getTracks())
-            duration += t.getDuration();
+        for (AudioTrack t : pl.getTracks()) duration += t.getDuration();
 
         return CmdUtils.longToHHMMSS(duration);
     }
@@ -99,11 +103,19 @@ public class AudioTrackUtils {
      * @return True or false depending on whether track commands can be called
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
-        if (evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel() == null || evt.getMember().getVoiceState().getChannel() == null) {
+        if (evt.getGuild()
+                                .getMemberById(Bot.botUser().getSelfUser().getId())
+                                .getVoiceState()
+                                .getChannel()
+                        == null
+                || evt.getMember().getVoiceState().getChannel() == null) {
             return false;
         }
 
-        return evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel()
+        return evt.getGuild()
+                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getVoiceState()
+                .getChannel()
                 .equals(evt.getMember().getVoiceState().getChannel());
     }
 
@@ -131,10 +143,8 @@ public class AudioTrackUtils {
         int remainder = (int) Math.round((double) currentPosition / totalDuration * Constants.AudioTrackBAR_SCALE);
         StringBuilder val = new StringBuilder();
         for (int i = 0; i < Constants.AudioTrackBAR_SCALE; i++) {
-            if (i == remainder)
-                val.append(":" + Constants.SELECTEDPOS + ":");
-            else
-                val.append(Constants.UNSELECTEDPOS);
+            if (i == remainder) val.append(":" + Constants.SELECTEDPOS + ":");
+            else val.append(Constants.UNSELECTEDPOS);
         }
         return val.toString();
     }
@@ -147,7 +157,9 @@ public class AudioTrackUtils {
      */
     public static void setVolume(MessageReceivedEvent evt, int vol) {
         if (vol < 0 || vol > Constants.MAX_VOL) {
-            evt.getChannel().sendMessage("You cannot set the volume to that value").queue();
+            evt.getChannel()
+                    .sendMessage("You cannot set the volume to that value")
+                    .queue();
             return;
         }
         Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
@@ -182,15 +194,23 @@ public class AudioTrackUtils {
      */
     public static void seek(MessageReceivedEvent evt, int seconds) {
         try {
-            AudioTrack track = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
+            AudioTrack track = Bot.trackManager
+                    .getGuildAudioPlayer(evt.getGuild())
+                    .getPlayer()
+                    .getPlayingTrack();
 
             if (seconds > track.getDuration() / 1000 || seconds < 0)
-                evt.getChannel().sendMessage("Please enter a valid time for this track to seek. " +
-                        "Maximum time in seconds for this track is " + ((track.getDuration() / 1000) - 1) + " seconds.").queue();
+                evt.getChannel()
+                        .sendMessage("Please enter a valid time for this track to seek. "
+                                + "Maximum time in seconds for this track is " + ((track.getDuration() / 1000) - 1)
+                                + " seconds.")
+                        .queue();
             else {
                 int toMilliSeconds = seconds * 1000;
                 track.setPosition(toMilliSeconds);
-                evt.getChannel().sendMessage("Set position of current track to " + seconds).queue();
+                evt.getChannel()
+                        .sendMessage("Set position of current track to " + seconds)
+                        .queue();
             }
         } catch (NullPointerException e) {
             evt.getChannel().sendMessage("Nothing is playing right now.").queue();
@@ -204,18 +224,22 @@ public class AudioTrackUtils {
      * @param idx The current index of the track to be removed
      */
     public static void remove(MessageReceivedEvent evt, int idx) {
-        BlockingQueue<AudioTrack> tracks = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
+        BlockingQueue<AudioTrack> tracks = Bot.trackManager
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler()
+                .getQueue();
 
         int count = 1;
         for (AudioTrack track : tracks) {
             if (count == idx) {
                 tracks.remove(track);
-                evt.getChannel().sendMessage("Removed `" + track.getInfo().title + "` from queue").queue();
+                evt.getChannel()
+                        .sendMessage("Removed `" + track.getInfo().title + "` from queue")
+                        .queue();
                 return;
             }
             count++;
         }
         evt.getChannel().sendMessage("Could not find a track at that index.").queue();
     }
-
 }

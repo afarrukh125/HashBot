@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,11 +20,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Abdullah on 01/05/2019 00:03
- */
 public class SQLUserDataManager implements IDataManager {
-
+    private static final Logger LOG = LoggerFactory.getLogger(SQLUserDataManager.class);
     private static Connection conn;
     private static boolean hasData = false;
 
@@ -36,24 +35,21 @@ public class SQLUserDataManager implements IDataManager {
         this.member = member;
 
         try {
-            if (conn == null)
-                getConnection();
+            if (conn == null) getConnection();
 
-            if (getUserData(member) == null)
-                addMember(member);
+            if (getUserData(member) == null) addMember(member);
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("SQLUserDataManager@SQLUserDataManager: " + e.getLocalizedMessage());
-            System.out.println("SQLUserDataManager@SQLUserDataManager: " + "failed to create user profile");
+            LOG.info("Failed to create user profile: {}", e.getMessage());
         }
     }
 
     public static ResultSet getUserData(Member m) throws ClassNotFoundException, SQLException {
-        if (conn == null)
-            getConnection();
+        if (conn == null) getConnection();
 
         Statement statement = conn.createStatement();
 
-        return statement.executeQuery("SELECT id, exp, level, time, credit, guild FROM USER WHERE id = " + m.getUser().getId() + " AND guild = " + m.getGuild().getId());
+        return statement.executeQuery("SELECT id, exp, level, time, credit, guild FROM USER WHERE id = "
+                + m.getUser().getId() + " AND guild = " + m.getGuild().getId());
     }
 
     private static void getConnection() throws ClassNotFoundException, SQLException {
@@ -67,44 +63,40 @@ public class SQLUserDataManager implements IDataManager {
             hasData = true;
 
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name='USER'");
+            ResultSet rs =
+                    statement.executeQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name='USER'");
             if (rs == null) {
-                System.out.println("SQLUserDataManager@initialise: Building USER table");
+                LOG.info("Building USER table...");
 
                 // Creating table
                 Statement statement2 = conn.createStatement();
-                statement2.execute("CREATE TABLE user(id VARCHAR(60)," +
-                        "exp VARCHAR(60), level integer, time VARCHAR(60), credit VARCHAR(60), guild VARCHAR(60))");
+                statement2.execute("CREATE TABLE user(id VARCHAR(60),"
+                        + "exp VARCHAR(60), level integer, time VARCHAR(60), credit VARCHAR(60), guild VARCHAR(60))");
             }
         }
     }
 
     private static ResultSet getUserNameData(User u) throws SQLException, ClassNotFoundException {
-        if (conn == null)
-            getConnection();
+        if (conn == null) getConnection();
 
         Statement statement = conn.createStatement();
         return statement.executeQuery("SELECT * FROM username WHERE id=" + u.getId());
     }
 
     public static void updateUsernames(Guild g) throws ClassNotFoundException, SQLException {
-        if (conn == null)
-            getConnection();
+        if (conn == null) getConnection();
 
         for (Member m : g.getMembers()) {
-            if (SQLUserDataManager.getUserNameData(m.getUser()).next())
-                continue;
+            if (SQLUserDataManager.getUserNameData(m.getUser()).next()) continue;
             PreparedStatement ps = conn.prepareStatement("INSERT INTO username VALUES (?, ?);");
             ps.setString(1, m.getUser().getName());
             ps.setString(2, m.getUser().getId());
             ps.execute();
         }
-
     }
 
     public static void addMember(Member member) throws ClassNotFoundException, SQLException {
-        if (conn == null)
-            getConnection();
+        if (conn == null) getConnection();
 
         PreparedStatement ps = conn.prepareStatement("INSERT INTO USER VALUES(?, ?, ?, ?, ?, ?);");
         ps.setString(1, member.getUser().getId());
@@ -116,8 +108,7 @@ public class SQLUserDataManager implements IDataManager {
 
         ps.execute();
 
-        if (getUserNameData(member.getUser()).next())
-            return;
+        if (getUserNameData(member.getUser()).next()) return;
 
         PreparedStatement ps2 = conn.prepareStatement("INSERT INTO username VALUES (?, ?);");
         ps2.setString(1, member.getUser().getName());
@@ -176,7 +167,6 @@ public class SQLUserDataManager implements IDataManager {
 
             return memberList;
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -193,13 +183,10 @@ public class SQLUserDataManager implements IDataManager {
     }
 
     @Override
-    public void load() {
-    }
+    public void load() {}
 
     @Override
-    public void writePresets() {
-
-    }
+    public void writePresets() {}
 
     @Override
     public Object getValue(Object key) {
@@ -212,11 +199,15 @@ public class SQLUserDataManager implements IDataManager {
 
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
+            ResultSet rs = statement.executeQuery(
+                    "SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild="
+                            + member.getGuild().getId());
             if (!rs.next()) {
                 rs.close();
                 addMember(member);
-                rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
+                rs = statement.executeQuery("SELECT " + key + " FROM USER WHERE id="
+                        + member.getUser().getId() + " AND guild="
+                        + member.getGuild().getId());
             }
             return rs.getObject(key.toString());
         } catch (SQLException | ClassNotFoundException e) {
@@ -234,7 +225,9 @@ public class SQLUserDataManager implements IDataManager {
             }
 
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE USER SET " + key + "=? WHERE id=" + member.getUser().getId() + " AND guild=" + member.getGuild().getId());
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE USER SET " + key + "=? WHERE id=" + member.getUser().getId() + " AND guild="
+                            + member.getGuild().getId());
             ps.setObject(1, value);
             ps.execute();
         } catch (SQLException e) {
@@ -250,7 +243,9 @@ public class SQLUserDataManager implements IDataManager {
      * @param uriUserMap A map of all users that have queued the corresponding track with URI
      * @throws PlaylistException A generic playlist exception to be handled by any client that uses this method
      */
-    public void addPlaylist(String lname, Map<String, String> uriNameMap, Map<String, String> uriUserMap, Message message) throws PlaylistException {
+    public void addPlaylist(
+            String lname, Map<String, String> uriNameMap, Map<String, String> uriUserMap, Message message)
+            throws PlaylistException {
         checkConn(); // Mandatory before every call to the database
 
         try {
@@ -266,23 +261,27 @@ public class SQLUserDataManager implements IDataManager {
             // If this is the case, we throw a checked exception, to be handled by the class calling this method.
             Statement statement = conn.createStatement();
 
-            final String getPlaylistsWithNameQuery = "SELECT DISTINCT(trackurl), playlist.name FROM track, listuser, playlist, user, listtrack " +
-                    "WHERE track.url=listtrack.trackurl AND playlist.name='" + lname + "' AND listuser.userid=user.id " +
-                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
+            final String getPlaylistsWithNameQuery =
+                    "SELECT DISTINCT(trackurl), playlist.name FROM track, listuser, playlist, user, listtrack "
+                            + "WHERE track.url=listtrack.trackurl AND playlist.name='"
+                            + lname + "' AND listuser.userid=user.id "
+                            + "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
 
             ResultSet rs = statement.executeQuery(getPlaylistsWithNameQuery);
 
             int listId;
-            if (!rs.next())
-                listId = conn.createStatement().getGeneratedKeys().getInt(1);
+            if (!rs.next()) listId = conn.createStatement().getGeneratedKeys().getInt(1);
             else {
                 /* We need to undo the creation of the playlist from earlier.
-                 For some reason, the JDBC Statement class has a method that allows you to obtain generated keys, as
-                 exhibited above, that obtains the latest auto incrementing key based on 'context'.
-                 I am currently aware of how to circumvent such behaviour, other than to delete the entry we created
-                 just to obtain the context */
-                conn.prepareStatement("DELETE FROM playlist WHERE userid=" + this.member.getUser().getId() + " " +
-                        "AND listid=(SELECT MAX(listid) FROM playlist WHERE userid = " + this.member.getUser().getId() + ");").execute();
+                For some reason, the JDBC Statement class has a method that allows you to obtain generated keys, as
+                exhibited above, that obtains the latest auto incrementing key based on 'context'.
+                I am currently aware of how to circumvent such behaviour, other than to delete the entry we created
+                just to obtain the context */
+                conn.prepareStatement("DELETE FROM playlist WHERE userid="
+                                + this.member.getUser().getId() + " "
+                                + "AND listid=(SELECT MAX(listid) FROM playlist WHERE userid = "
+                                + this.member.getUser().getId() + ");")
+                        .execute();
                 throw new PlaylistException("A playlist with that name already exists!");
             }
 
@@ -306,7 +305,6 @@ public class SQLUserDataManager implements IDataManager {
                     // Duplicate track detected, ignore
                 }
 
-
                 // Add to the table that maps the playlist ID to the track URL. Assign the position too.
                 PreparedStatement pslisttrack = conn.prepareStatement("INSERT INTO listtrack VALUES(?, ?, ?)");
                 pslisttrack.setInt(1, listId);
@@ -324,10 +322,10 @@ public class SQLUserDataManager implements IDataManager {
 
                 int size = uriNameMap.keySet().size();
                 if (pos % Constants.PLAYLIST_UPDATE_INTERVAL == 0)
-                    message.editMessage("Creating playlist " + lname + " with " + size +
-                            " tracks... (" + pos + "/" + size + ")").queue();
+                    message.editMessage("Creating playlist " + lname + " with " + size + " tracks... (" + pos + "/"
+                                    + size + ")")
+                            .queue();
             }
-
 
             pslistuser.execute();
 
@@ -346,15 +344,17 @@ public class SQLUserDataManager implements IDataManager {
 
         try {
             // We need to check if the playlist exists first of all
-            final String query = "SELECT DISTINCT(trackurl), trackuser.userid FROM track, listuser, playlist, user, listtrack, trackuser " +
-                    "WHERE track.url=listtrack.trackurl AND playlist.name='" + name + "' AND listuser.userid=user.id " +
-                    "AND trackuser.listid=playlist.listid AND trackuser.uri = track.url AND playlist.userid='" + member.getUser().getId() + "'" +
-                    "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
+            final String query =
+                    "SELECT DISTINCT(trackurl), trackuser.userid FROM track, listuser, playlist, user, listtrack, trackuser "
+                            + "WHERE track.url=listtrack.trackurl AND playlist.name='"
+                            + name + "' AND listuser.userid=user.id "
+                            + "AND trackuser.listid=playlist.listid AND trackuser.uri = track.url AND playlist.userid='"
+                            + member.getUser().getId() + "'"
+                            + "AND listtrack.listid=playlist.listid ORDER BY listtrack.position";
 
             ResultSet rs = conn.createStatement().executeQuery(query);
 
-            if (!rs.next())
-                throw new PlaylistException("No playlist with that name that belongs to you was found");
+            if (!rs.next()) throw new PlaylistException("No playlist with that name that belongs to you was found");
 
             rs = conn.createStatement().executeQuery(query);
 
@@ -362,9 +362,12 @@ public class SQLUserDataManager implements IDataManager {
             if (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
                 String userId = rs.getString(2);
-                Bot.trackManager.getPlayerManager().loadItemOrdered(Bot.trackManager.getGuildAudioPlayer(member.getGuild()),
-                        uri,
-                        new YTFirstLatentTrackHandler(member, userId));
+                Bot.trackManager
+                        .getPlayerManager()
+                        .loadItemOrdered(
+                                Bot.trackManager.getGuildAudioPlayer(member.getGuild()),
+                                uri,
+                                new YTFirstLatentTrackHandler(member, userId));
             }
 
             int idx = 0; // Position, for tracking between threads
@@ -373,7 +376,12 @@ public class SQLUserDataManager implements IDataManager {
             while (rs.next()) {
                 String uri = rs.getString(1).replace(";", ":");
                 String userId = rs.getString(2);
-                Bot.trackManager.getPlayerManager().loadItemOrdered(Bot.trackManager.getGuildAudioPlayer(member.getGuild()), uri, new YTLatentTrackHandler(member, idx, loader, userId));
+                Bot.trackManager
+                        .getPlayerManager()
+                        .loadItemOrdered(
+                                Bot.trackManager.getGuildAudioPlayer(member.getGuild()),
+                                uri,
+                                new YTLatentTrackHandler(member, idx, loader, userId));
                 idx++;
             }
         } catch (SQLException e) {
@@ -389,14 +397,14 @@ public class SQLUserDataManager implements IDataManager {
     public List<Playlist> viewAllPlaylists() {
         checkConn();
 
-        final String query = "SELECT COUNT(DISTINCT (trackurl)) AS trackCount, playlist.name AS listName " +
-                "FROM playlist, listuser, track, user, listtrack " +
-                "WHERE user.id=listuser.userid " +
-                "AND listtrack.trackurl=track.url " +
-                "AND listtrack.listid=playlist.listid " +
-                "AND listuser.userid=" + member.getUser().getId() + " " +
-                "AND playlist.listid=listuser.listid" +
-                " GROUP BY playlist.listid ORDER BY playlist.listid";
+        final String query = "SELECT COUNT(DISTINCT (trackurl)) AS trackCount, playlist.name AS listName "
+                + "FROM playlist, listuser, track, user, listtrack "
+                + "WHERE user.id=listuser.userid "
+                + "AND listtrack.trackurl=track.url "
+                + "AND listtrack.listid=playlist.listid "
+                + "AND listuser.userid="
+                + member.getUser().getId() + " " + "AND playlist.listid=listuser.listid"
+                + " GROUP BY playlist.listid ORDER BY playlist.listid";
 
         try {
             List<Playlist> plist = new ArrayList<>();
@@ -422,17 +430,19 @@ public class SQLUserDataManager implements IDataManager {
     public int getPlaylistSize(String listName) throws PlaylistException {
         checkConn();
 
-        final String getPlaylistsWithNameQuery = "SELECT DISTINCT(trackurl), MAX(position) AS maxPosition " +
-                "FROM track, listuser, playlist, user, listtrack " +
-                "WHERE track.url=listtrack.trackurl " +
-                "AND playlist.name='" + listName + "' " +
-                "AND listuser.userid=user.id " +
-                "AND listtrack.listid=playlist.listid " +
-                "ORDER BY listtrack.position";
+        final String getPlaylistsWithNameQuery = "SELECT DISTINCT(trackurl), MAX(position) AS maxPosition "
+                + "FROM track, listuser, playlist, user, listtrack "
+                + "WHERE track.url=listtrack.trackurl "
+                + "AND playlist.name='"
+                + listName + "' " + "AND listuser.userid=user.id "
+                + "AND listtrack.listid=playlist.listid "
+                + "ORDER BY listtrack.position";
 
         try {
 
-            return conn.createStatement().executeQuery(getPlaylistsWithNameQuery).getInt("maxPosition");
+            return conn.createStatement()
+                    .executeQuery(getPlaylistsWithNameQuery)
+                    .getInt("maxPosition");
 
         } catch (SQLException e) {
             throw new PlaylistException("No playlist was found with that name");
@@ -442,12 +452,11 @@ public class SQLUserDataManager implements IDataManager {
     public void deletePlaylist(String name) throws PlaylistException {
         checkConn(); // Mandatory before every call to the database
 
-
         try {
-            final int listId = conn.createStatement().executeQuery(
-                    "SELECT playlist.listid FROM playlist, listuser WHERE name='" + name + "' AND listuser.userid='"
-                            + member.getUser().getId() + "'"
-            ).getInt(1);
+            final int listId = conn.createStatement()
+                    .executeQuery("SELECT playlist.listid FROM playlist, listuser WHERE name='" + name
+                            + "' AND listuser.userid='" + member.getUser().getId() + "'")
+                    .getInt(1);
             final String sList = "DELETE FROM playlist WHERE playlist.name= '" + name + "';";
             final String sUserList = "DELETE FROM listuser WHERE listid=" + listId + ";";
             final String sListTrack = "DELETE FROM listtrack WHERE listid=" + listId + ";";
@@ -466,6 +475,5 @@ public class SQLUserDataManager implements IDataManager {
      * <p>
      * Used as a temporary class to map a member to their level and experience value
      */
-    private record MemberData(Member member, int level, long exp) {
-    }
+    private record MemberData(Member member, int level, long exp) {}
 }

@@ -24,7 +24,9 @@ public class SetVolumeCommand extends Command implements OwnerCommand {
         try {
             AudioTrackUtils.setVolume(evt, Integer.parseInt(params));
         } catch (NumberFormatException e) {
-            evt.getChannel().sendMessage("Need to provide an integer as the volume to set to").queue();
+            evt.getChannel()
+                    .sendMessage("Need to provide an integer as the volume to set to")
+                    .queue();
         }
     }
 }

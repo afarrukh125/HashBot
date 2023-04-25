@@ -18,10 +18,17 @@ public class NowPlayingCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
-            AudioTrack currentTrack = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
-            evt.getChannel().sendMessageEmbeds(EmbedUtils.getSingleTrackEmbed(currentTrack, evt)).queue();
+            AudioTrack currentTrack = Bot.trackManager
+                    .getGuildAudioPlayer(evt.getGuild())
+                    .getPlayer()
+                    .getPlayingTrack();
+            evt.getChannel()
+                    .sendMessageEmbeds(EmbedUtils.getSingleTrackEmbed(currentTrack, evt))
+                    .queue();
         } catch (NullPointerException e) {
-            evt.getChannel().sendMessageEmbeds(EmbedUtils.getNothingPlayingEmbed()).queue();
+            evt.getChannel()
+                    .sendMessageEmbeds(EmbedUtils.getNothingPlayingEmbed())
+                    .queue();
         }
     }
 }

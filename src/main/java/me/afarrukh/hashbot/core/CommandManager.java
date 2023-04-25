@@ -44,8 +44,10 @@ public class CommandManager {
         if (command != null) {
             this.commandCount += 1;
             new Thread(() -> {
-                command.onInvocation(evt, params); //Only does the command onInvocation method if class is valid
-            }).start();
+                        command.onInvocation(
+                                evt, params); // Only does the command onInvocation method if class is valid
+                    })
+                    .start();
         }
     }
 
@@ -60,8 +62,7 @@ public class CommandManager {
     public List<Command> getCommands() {
         List<Command> commandList = new ArrayList<>();
         for (Command c : map.values()) {
-            if (commandList.contains(c))
-                continue;
+            if (commandList.contains(c)) continue;
             commandList.add(c);
         }
         commandList.sort(Comparator.comparing(Command::getName).reversed());
@@ -72,8 +73,7 @@ public class CommandManager {
         List<Command> commandList = new LinkedList<>();
 
         for (Command c : getCommands()) {
-            if (!(c instanceof AdminCommand))
-                commandList.add(c);
+            if (!(c instanceof AdminCommand)) commandList.add(c);
         }
 
         return new ArrayList<>(commandList);
@@ -90,15 +90,14 @@ public class CommandManager {
         public Builder addCommand(Command c) {
             map.put(c.getName(), c);
             new Thread(() -> {
-                if (!c.getAliases().isEmpty()) {
-                    for (String alias : c.getAliases()) {
-                        map.put(alias, c);
-                    }
-                }
-            }).start();
+                        if (!c.getAliases().isEmpty()) {
+                            for (String alias : c.getAliases()) {
+                                map.put(alias, c);
+                            }
+                        }
+                    })
+                    .start();
             return this;
         }
-
     }
-
 }

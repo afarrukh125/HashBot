@@ -7,10 +7,6 @@ import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-/**
- * @author Abdullah
- * Created on 14/09/2019 at 16:27
- */
 public class DeleteListCommand extends Command implements AudioTrackCommand {
 
     public DeleteListCommand() {
@@ -25,9 +21,13 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         if (params == null) {
-            evt.getChannel().sendMessage("You need to provide the name of the playlist you would like to delete." +
-                    "Use " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix() + new ViewListCommand().getName()
-                    + " to view your playlists.").queue();
+            evt.getChannel()
+                    .sendMessage("You need to provide the name of the playlist you would like to delete." + "Use "
+                            + Bot.prefixManager
+                                    .getGuildRoleManager(evt.getGuild())
+                                    .getPrefix() + new ViewListCommand().getName()
+                            + " to view your playlists.")
+                    .queue();
             return;
         }
 
@@ -36,9 +36,13 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
         try {
             int listSize = dataManager.getPlaylistSize(params);
             dataManager.deletePlaylist(params);
-            evt.getChannel().sendMessage("Successfully deleted the playlist " + params + " with " + listSize + " tracks").queue();
+            evt.getChannel()
+                    .sendMessage("Successfully deleted the playlist " + params + " with " + listSize + " tracks")
+                    .queue();
         } catch (PlaylistException e) {
-            evt.getChannel().sendMessage("There is no playlist with the name " + params + ".").queue();
+            evt.getChannel()
+                    .sendMessage("There is no playlist with the name " + params + ".")
+                    .queue();
         }
     }
 }

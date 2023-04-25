@@ -97,7 +97,8 @@ public abstract class Command {
      */
     protected final void addAlias(String alias) {
         if (alias.equals(name))
-            throw new IllegalArgumentException("You cannot have a command alias that is the same as the original command name");
+            throw new IllegalArgumentException(
+                    "You cannot have a command alias that is the same as the original command name");
         aliases.add(alias);
     }
 
@@ -122,7 +123,9 @@ public abstract class Command {
     private String processParameter(String parameter) {
         StringBuilder sb = new StringBuilder();
         for (String param : parameter.split(" ")) {
-            sb.append(param.substring(0, 1).toUpperCase()).append(param.length() > 1 ? param.substring(1) : "").append(" ");
+            sb.append(param.substring(0, 1).toUpperCase())
+                    .append(param.length() > 1 ? param.substring(1) : "")
+                    .append(" ");
         }
         return sb.toString().trim();
     }
@@ -145,7 +148,8 @@ public abstract class Command {
     }
 
     public final MessageEmbed getCommandHelpMessage(TextChannel channel) {
-        String prefix = Bot.prefixManager.getGuildRoleManager(channel.getGuild()).getPrefix();
+        String prefix =
+                Bot.prefixManager.getGuildRoleManager(channel.getGuild()).getPrefix();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Viewing help for " + this.name);
         StringBuilder sb = new StringBuilder();
@@ -161,7 +165,12 @@ public abstract class Command {
         if (!parameters.keySet().isEmpty()) {
             sb.append("**Parameters:** \n");
             for (String parameter : parameters.keySet())
-                sb.append("**").append("- ").append(parameter).append(":** ").append(parameters.get(parameter)).append("\n\n");
+                sb.append("**")
+                        .append("- ")
+                        .append(parameter)
+                        .append(":** ")
+                        .append(parameters.get(parameter))
+                        .append("\n\n");
             sb.append("**Template usage:** ").append(prefix).append(name).append(" ");
             for (String param : parameters.keySet())
                 sb.append("<").append(param).append("> ");
@@ -172,7 +181,6 @@ public abstract class Command {
                     sb.append("- ").append(prefix).append(example).append("\n");
                 }
             }
-
         }
         return eb.setDescription(sb).build();
     }

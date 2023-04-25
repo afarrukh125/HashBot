@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +21,7 @@ import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
  * Created by Abdullah on 08/04/2019 20:22
  */
 public class ClearCommand extends Command implements AdminCommand {
+    private static final Logger LOG = LoggerFactory.getLogger(ClearCommand.class);
 
     public ClearCommand() {
         super("clear");
@@ -31,7 +34,9 @@ public class ClearCommand extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         if (evt.getMember() != null && !evt.getMember().hasPermission(Permission.ADMINISTRATOR)) {
-            evt.getChannel().sendMessage("This is an administrator only command.").queue();
+            evt.getChannel()
+                    .sendMessage("This is an administrator only command.")
+                    .queue();
             return;
         }
 
@@ -44,15 +49,18 @@ public class ClearCommand extends Command implements AdminCommand {
         try {
             amt = Integer.parseInt(params.split(" ")[0]);
         } catch (NumberFormatException e) {
-            evt.getChannel().sendMessage("You must provide a number of messages to delete.").queue();
+            evt.getChannel()
+                    .sendMessage("You must provide a number of messages to delete.")
+                    .queue();
             return;
         }
 
         if (amt > 1000) {
-            evt.getChannel().sendMessage("You can only delete up to 1000 messages at a time with this command.").queue();
+            evt.getChannel()
+                    .sendMessage("You can only delete up to 1000 messages at a time with this command.")
+                    .queue();
             return;
         }
-
 
         List<List<Message>> messageBins = new ArrayList<>();
         Iterator<Message> iter = evt.getChannel().getIterableHistory().iterator();
@@ -86,8 +94,11 @@ public class ClearCommand extends Command implements AdminCommand {
                         }
                     } catch (NumberFormatException ex) {
                         // Temporary solution to fixing clear command exception, will remove later. [10/04/2019]
-                        System.out.println("ClearCommand@onInvocation: " + "```java\n" + ex.getMessage() + "```");
-                        System.out.println("ClearCommand@onInvocation: " + "The associated message ID was " + msgId + " and the deleted ID it compared to was " + delMsg.getIdLong());
+                        LOG.error(
+                                "Error thrown when clearing {}, where message ID was {} and deleted ID compared to was {}",
+                                ex.getMessage(),
+                                msgId,
+                                delMsg.getIdLong());
                     }
                 }
                 if (messageBin.size() > 0) {
@@ -96,7 +107,9 @@ public class ClearCommand extends Command implements AdminCommand {
             }
         }
 
-        Message m = evt.getChannel().sendMessage("Deleted " + msgCount + " messages.").complete();
+        Message m = evt.getChannel()
+                .sendMessage("Deleted " + msgCount + " messages.")
+                .complete();
         m.delete().queueAfter(2, TimeUnit.SECONDS);
     }
 

@@ -11,10 +11,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Abdullah
- * Created on 16/09/2019 at 11:47
- */
 public class HelpCommand extends Command {
 
     private static final int MAX_DESCRIPTION_LENGTH = 1600;
@@ -39,11 +35,16 @@ public class HelpCommand extends Command {
 
         Command command = Bot.commandManager.commandFromName(params);
         if (command == null) {
-            evt.getChannel().sendMessage("There is no command with the name or alias " + params).queue();
+            evt.getChannel()
+                    .sendMessage("There is no command with the name or alias " + params)
+                    .queue();
             return;
         }
 
-        evt.getChannel().sendMessageEmbeds(command.getCommandHelpMessage(evt.getChannel().asTextChannel())).queue();
+        evt.getChannel()
+                .sendMessageEmbeds(
+                        command.getCommandHelpMessage(evt.getChannel().asTextChannel()))
+                .queue();
     }
 
     private List<MessageEmbed> getHelpMessageEmbeds(MessageReceivedEvent evt) {
@@ -59,18 +60,18 @@ public class HelpCommand extends Command {
         StringBuilder sb = new StringBuilder();
 
         for (Command c : Bot.commandManager.getCommands()) {
-            if (c instanceof OwnerCommand || c instanceof CommandListCommand)
-                continue;
+            if (c instanceof OwnerCommand || c instanceof CommandListCommand) continue;
 
             int descLength = 0;
-            if (c.getDescription() != null)
-                descLength = c.getDescription().length();
+            if (c.getDescription() != null) descLength = c.getDescription().length();
             if (sb.toString().length() + descLength >= MAX_DESCRIPTION_LENGTH) {
                 initialEmbed.appendDescription(sb.toString());
                 initialEmbed.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
                 sb = new StringBuilder();
                 embedArrayList.add(initialEmbed.build());
-                initialEmbed = new EmbedBuilder().setColor(Constants.EMB_COL).setTitle("Commands List (Page " + pageCount + ")");
+                initialEmbed = new EmbedBuilder()
+                        .setColor(Constants.EMB_COL)
+                        .setTitle("Commands List (Page " + pageCount + ")");
                 initialEmbed.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
                 pageCount++;
             }
@@ -81,8 +82,9 @@ public class HelpCommand extends Command {
         initialEmbed.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
         initialEmbed.appendDescription(sb.toString());
 
-        initialEmbed.setFooter("If you need help with a particular command, add the command name, e.g. " +
-                prefix + "help play", evt.getJDA().getSelfUser().getAvatarUrl());
+        initialEmbed.setFooter(
+                "If you need help with a particular command, add the command name, e.g. " + prefix + "help play",
+                evt.getJDA().getSelfUser().getAvatarUrl());
         embedArrayList.add(initialEmbed.build());
         return embedArrayList;
     }
@@ -101,8 +103,7 @@ public class HelpCommand extends Command {
                 sb.append(aliases.get(aliases.size() - 1));
             sb.append(")");
         }
-        if (c.getDescription() != null)
-            sb.append(" - ").append(c.getDescription());
+        if (c.getDescription() != null) sb.append(" - ").append(c.getDescription());
         sb.append("\n\n");
     }
 }

@@ -25,7 +25,9 @@ public class CommandListCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR) ? Bot.commandManager.getCommands() : Bot.commandManager.getNonAdminCommands();
+        List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR)
+                ? Bot.commandManager.getCommands()
+                : Bot.commandManager.getNonAdminCommands();
 
         List<MessageEmbed> embedArrayList = new ArrayList<>();
 
@@ -39,12 +41,10 @@ public class CommandListCommand extends Command {
         StringBuilder sb = new StringBuilder();
 
         for (Command c : commandList) {
-            if (c instanceof OwnerCommand || c instanceof CommandListCommand)
-                continue;
+            if (c instanceof OwnerCommand || c instanceof CommandListCommand) continue;
 
             int descLength = 0;
-            if (c.getDescription() != null)
-                descLength = c.getDescription().length();
+            if (c.getDescription() != null) descLength = c.getDescription().length();
             if (sb.toString().length() + descLength >= 1600) {
                 eb.appendDescription(sb.toString());
                 eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
@@ -61,8 +61,9 @@ public class CommandListCommand extends Command {
         eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());
         eb.appendDescription(sb.toString());
 
-        eb.setFooter("If you need help with a particular command, add the command name, e.g. " +
-                prefix + "help play", evt.getJDA().getSelfUser().getAvatarUrl());
+        eb.setFooter(
+                "If you need help with a particular command, add the command name, e.g. " + prefix + "help play",
+                evt.getJDA().getSelfUser().getAvatarUrl());
         embedArrayList.add(eb.build());
         if (params == null)
             for (MessageEmbed embed : embedArrayList)

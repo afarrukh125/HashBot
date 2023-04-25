@@ -4,9 +4,9 @@ import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
 import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 class ReactionManager {
@@ -41,7 +41,8 @@ class ReactionManager {
             return;
         }
 
-        String pinnedChannelId = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
+        String pinnedChannelId =
+                evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
 
         // Checking if the current channel is the pinned channel. If it is then we od not proceed
         if (pinnedChannelId.equals(evt.getChannel().getId())) {

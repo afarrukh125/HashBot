@@ -10,10 +10,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Objects;
 
-/**
- * @author Abdullah
- * Created on 10/09/2019 at 22:59
- */
 public class LoadListCommand extends Command implements AudioTrackCommand {
 
     public LoadListCommand() {
@@ -29,8 +25,9 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState()).getChannel() == null)
-            return;
+        if (Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState())
+                        .getChannel()
+                == null) return;
 
         if (params == null) {
             evt.getChannel().sendMessage("Please provide a playlist to load.").queue();
@@ -42,8 +39,10 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
         Message message = null;
         try {
             final int listSize = dataManager.getPlaylistSize(params);
-            message = evt.getChannel().sendMessage("Queueing playlist " + params + " with " + listSize + " tracks." +
-                    " It might take a while for all tracks to be added to the queue.").complete();
+            message = evt.getChannel()
+                    .sendMessage("Queueing playlist " + params + " with " + listSize + " tracks."
+                            + " It might take a while for all tracks to be added to the queue.")
+                    .complete();
             PlaylistLoader loader = new PlaylistLoader(evt.getMember(), listSize, message, params);
             dataManager.loadPlaylistByName(params, loader);
 

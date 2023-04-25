@@ -33,9 +33,13 @@ public class StatsCommand extends Command {
     public static final String GLOBAL_PARAM_FLAG = "global";
     private final int width;
     private final int height;
-    private static final Map<RenderingHints.Key, Object> RENDERING_HINTS = Map.of(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON,
-            RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY,
-            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    private static final Map<RenderingHints.Key, Object> RENDERING_HINTS = Map.of(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON,
+            RenderingHints.KEY_RENDERING,
+            RenderingHints.VALUE_RENDER_QUALITY,
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
     private final BufferedImage BACKGROUND_IMAGE = ImageLoader.loadImage(Constants.BG_PATH);
 
     public StatsCommand() {
@@ -45,7 +49,8 @@ public class StatsCommand extends Command {
         addAlias("bal");
         width = Constants.WIDTH;
         height = Constants.HEIGHT;
-        description = "Displays your statistics. Optionally, you can provide 'global' as a parameter to view your global stats";
+        description =
+                "Displays your statistics. Optionally, you can provide 'global' as a parameter to view your global stats";
     }
 
     /**
@@ -119,7 +124,10 @@ public class StatsCommand extends Command {
         }
 
         String nameString = evt.getAuthor().getName();
-        if (evt.getMember().getNickname() != null && (evt.getMember().getNickname().length() + evt.getAuthor().getName().length()) < 24) {
+        if (evt.getMember().getNickname() != null
+                && (evt.getMember().getNickname().length()
+                                + evt.getAuthor().getName().length())
+                        < 24) {
             nameString += "(" + evt.getMember().getNickname() + ")";
         }
 
@@ -127,10 +135,10 @@ public class StatsCommand extends Command {
         Text.drawString(g, Integer.toString(level), 399, 78, true, Color.BLACK, bigNumFont);
 
         Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, font);
-        Text.drawString(g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, font);
-        Text.drawString(g, "Exp: " + exp + "/" + nextLevelExp, originX, originY + 60, false, Constants.STATSIMG_COL,
-                font);
-
+        Text.drawString(
+                g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, font);
+        Text.drawString(
+                g, "Exp: " + exp + "/" + nextLevelExp, originX, originY + 60, false, Constants.STATSIMG_COL, font);
 
         int offset = 3;
 
@@ -139,18 +147,14 @@ public class StatsCommand extends Command {
         g.setColor(Color.GRAY);
         g.fillRect(originX, originY + 80, 100 * 3, 20);
         g.setColor(Color.WHITE);
-        if (global)
-            g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp.get(), level) * 3, 20);
-        else
-            g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
-
+        if (global) g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp.get(), level) * 3, 20);
+        else g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
 
         if (!global) {
             Role r = null;
             if (!evt.getMember().getRoles().isEmpty())
                 r = evt.getMember().getRoles().get(0);
-            if (r != null)
-                Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), font);
+            if (r != null) Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), font);
         } else {
             Text.drawString(g, "Global Stats", originX, originY + 140, false, Color.WHITE, font);
         }
@@ -168,16 +172,14 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
+    public void onIncorrectParams(TextChannel channel) {}
 
     private Graphics2D initialiseGraphics(BufferedImage bufferedImage, Font font) throws InterruptedException {
         Graphics2D g = bufferedImage.createGraphics();
         g.setFont(font);
         g.setRenderingHints(RENDERING_HINTS);
 
-        //Drawings to be done in this space
+        // Drawings to be done in this space
 
         float opacity = 1.0f;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
@@ -213,9 +215,7 @@ public class StatsCommand extends Command {
                 int finalJ = j;
                 executorService.execute(() -> {
                     var subImage = bufferedImage.getSubimage(finalI, finalJ, unitWidth, unitHeight);
-                    subImages.add(new SubImage(finalI,
-                            finalJ,
-                            subImage));
+                    subImages.add(new SubImage(finalI, finalJ, subImage));
                 });
             }
         }
@@ -260,9 +260,7 @@ public class StatsCommand extends Command {
         return outputFile;
     }
 
-    private record SubImage(int x, int y, BufferedImage bufferedImage) {
-    }
+    private record SubImage(int x, int y, BufferedImage bufferedImage) {}
 
-    public record ExperienceData(int level, long exp) {
-    }
+    public record ExperienceData(int level, long exp) {}
 }

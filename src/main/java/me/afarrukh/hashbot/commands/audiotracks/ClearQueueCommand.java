@@ -16,14 +16,23 @@ public class ClearQueueCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!AudioTrackUtils.canInteract(evt))
-            return;
+        if (!AudioTrackUtils.canInteract(evt)) return;
 
-        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().isEmpty()) {
-            evt.getChannel().sendMessage("Nothing is in the queue to be cleared.").queue();
+        if (Bot.trackManager
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler()
+                .getQueue()
+                .isEmpty()) {
+            evt.getChannel()
+                    .sendMessage("Nothing is in the queue to be cleared.")
+                    .queue();
             return;
         }
-        Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue().clear();
+        Bot.trackManager
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler()
+                .getQueue()
+                .clear();
         evt.getChannel().sendMessage("Queue cleared :ok_hand:").queue();
     }
 }

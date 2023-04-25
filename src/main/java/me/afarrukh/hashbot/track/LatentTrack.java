@@ -2,14 +2,6 @@ package me.afarrukh.hashbot.track;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-/**
- * @author Abdullah
- * Created on 14/09/2019 at 14:28
- * <p>
- * A wrapper class that stores the track, as well as its position in the associated
- * <code>PlaylistLoader</code>.
- * @see PlaylistLoader
- */
 public class LatentTrack implements Runnable {
 
     /**

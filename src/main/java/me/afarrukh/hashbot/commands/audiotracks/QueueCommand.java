@@ -16,22 +16,30 @@ public class QueueCommand extends Command implements AudioTrackCommand {
         addAlias("q");
         addAlias("page");
         description = "Shows the current queue of tracks";
-        addParameter("page number", "If there are not enough tracks to fit on first page of the queue, " +
-                "the page number can be provided to see the next page(s)");
+        addParameter(
+                "page number",
+                "If there are not enough tracks to fit on first page of the queue, "
+                        + "the page number can be provided to see the next page(s)");
         addExampleUsage("queue 4");
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null)
-            evt.getChannel().sendMessageEmbeds(EmbedUtils.getQueueMsg(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, 1)).queue();
+            evt.getChannel()
+                    .sendMessageEmbeds(
+                            EmbedUtils.getQueueMsg(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, 1))
+                    .queue();
         else {
             try {
                 if (parseInt(params) == 0) {
                     onIncorrectParams(evt.getChannel().asTextChannel());
                     return;
                 }
-                evt.getChannel().sendMessageEmbeds(EmbedUtils.getQueueMsg(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, parseInt(params))).queue();
+                evt.getChannel()
+                        .sendMessageEmbeds(EmbedUtils.getQueueMsg(
+                                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, parseInt(params)))
+                        .queue();
             } catch (NumberFormatException e) {
                 onIncorrectParams(evt.getChannel().asTextChannel());
             }

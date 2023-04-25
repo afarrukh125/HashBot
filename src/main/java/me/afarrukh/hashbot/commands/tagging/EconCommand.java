@@ -7,5 +7,4 @@ package me.afarrukh.hashbot.commands.tagging;
  *
  * @see me.afarrukh.hashbot.commands.econ.FlipCommand
  */
-public interface EconCommand extends CategorisedCommand {
-}
+public interface EconCommand extends CategorisedCommand {}

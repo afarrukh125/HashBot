@@ -16,7 +16,6 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
-
 @SuppressWarnings("Duplicates")
 public class EmbedUtils {
 
@@ -34,28 +33,32 @@ public class EmbedUtils {
             AudioTrack currentTrack = gmm.getPlayer().getPlayingTrack();
 
             BlockingQueue<AudioTrack> queue = gmm.getScheduler().getQueue();
-            int maxPageNumber = queue.size() / 10 + 1; //We need to know how many tracks are displayed per page
+            int maxPageNumber = queue.size() / 10 + 1; // We need to know how many tracks are displayed per page
 
-            //If there are no tracks in the queue then it will just give an embedded message for a single track.
+            // If there are no tracks in the queue then it will just give an embedded message for a single track.
             if (queue.size() == 0) {
                 return getSingleTrackEmbed(gmm.getPlayer().getPlayingTrack(), evt);
             }
 
-            //This block of code is to prevent the list from displaying a blank page as the last one
-            if (queue.size() % 10 == 0)
-                maxPageNumber--;
+            // This block of code is to prevent the list from displaying a blank page as the last one
+            if (queue.size() % 10 == 0) maxPageNumber--;
 
             if (page > maxPageNumber) {
-                return new EmbedBuilder().setDescription("Page " + page + " out of bounds.").setColor(Constants.EMB_COL).build();
+                return new EmbedBuilder()
+                        .setDescription("Page " + page + " out of bounds.")
+                        .setColor(Constants.EMB_COL)
+                        .build();
             }
 
             Iterator<AudioTrack> iter = gmm.getScheduler().getQueue().iterator();
-            int startIdx = 1 + ((page - 1) * 10); //The start track on that page eg page 2 would give 11
-            int targetIdx = page * 10; //The last track on that page, eg page 2 would give 20
+            int startIdx = 1 + ((page - 1) * 10); // The start track on that page eg page 2 would give 11
+            int targetIdx = page * 10; // The last track on that page, eg page 2 would give 20
             int count = 1;
-            eb.appendDescription("__Now Playing:__\n[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri
-                    + ") | (`" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`) `queued by: "
-                    + currentTrack.getUserData().toString() + "`\n\n\n__Upcoming__\n\n");
+            eb.appendDescription(
+                    "__Now Playing:__\n[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri
+                            + ") | (`" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/"
+                            + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`) `queued by: "
+                            + currentTrack.getUserData().toString() + "`\n\n\n__Upcoming__\n\n");
             while (iter.hasNext()) {
                 AudioTrack at = iter.next();
                 if (count >= startIdx && count <= targetIdx) {
@@ -63,12 +66,12 @@ public class EmbedUtils {
                             + ") | (`" + CmdUtils.longToMMSS(at.getDuration()) + "`) `queued by: "
                             + at.getUserData().toString() + "`\n\n");
                 }
-                if (count == targetIdx)
-                    break;
+                if (count == targetIdx) break;
 
                 count++;
             }
-            eb.appendDescription("\n**" + queue.size() + " tracks queued, 1 playing** | Total duration**: `" + gmm.getScheduler().getTotalQueueTime() + "` | **");
+            eb.appendDescription("\n**" + queue.size() + " tracks queued, 1 playing** | Total duration**: `"
+                    + gmm.getScheduler().getTotalQueueTime() + "` | **");
             StringBuilder sb = new StringBuilder();
             sb.append("[Page ").append(page).append("/").append(maxPageNumber).append("] ");
             if (gmm.getScheduler().isFairPlay())
@@ -93,13 +96,13 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
-        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping())
-            sb.append(" [Looping]");
+        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping()) sb.append(" [Looping]");
         eb.setTitle(sb.toString());
         eb.appendDescription("[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri + ")\n\n");
         eb.appendDescription("**Channel**: `" + currentTrack.getInfo().author + "`\n");
         eb.appendDescription("**Queued by**: `" + currentTrack.getUserData().toString() + "`\n");
-        eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/" + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`\n\n");
+        eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(currentTrack.getPosition()) + "/"
+                + CmdUtils.longToMMSS(currentTrack.getDuration()) + "`\n\n");
         String trackBar = AudioTrackUtils.getAudioTrackBar(currentTrack);
         eb.appendDescription(trackBar);
         eb.setColor(Constants.EMB_COL);
@@ -127,7 +130,12 @@ public class EmbedUtils {
             eb.appendDescription("**Position in queue**: `" + ts.getTrackIndex(at) + "`\n");
             eb.appendDescription("**Playing in approximately**: `" + ts.getTotalTimeTil(at) + "`\n");
             if (ts.isFairPlay())
-                eb.setFooter("Fairplay mode is currently on. Use " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
+                eb.setFooter(
+                        "Fairplay mode is currently on. Use "
+                                + Bot.prefixManager
+                                        .getGuildRoleManager(evt.getGuild())
+                                        .getPrefix() + "fairplay to turn it off.",
+                        null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
 
@@ -183,7 +191,9 @@ public class EmbedUtils {
         eb.appendDescription("**Duration**: `" + CmdUtils.longToMMSS(at.getDuration()) + "`\n");
         if (!ts.getQueue().isEmpty() || gmm.getPlayer().getPlayingTrack() != null) {
             eb.appendDescription("**Position in queue**: `1`\n");
-            String totalTime = CmdUtils.longToHHMMSS(gmm.getPlayer().getPlayingTrack().getDuration() - gmm.getPlayer().getPlayingTrack().getPosition());
+            String totalTime =
+                    CmdUtils.longToHHMMSS(gmm.getPlayer().getPlayingTrack().getDuration()
+                            - gmm.getPlayer().getPlayingTrack().getPosition());
             eb.appendDescription("**Playing in approximately**: `" + totalTime + "`\n");
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
@@ -201,9 +211,7 @@ public class EmbedUtils {
     public static MessageEmbed getPlaylistEmbed(GuildAudioTrackManager gmm, AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
-        if (firstTrack == null)
-            firstTrack = playlist.getTracks().get(0);
-
+        if (firstTrack == null) firstTrack = playlist.getTracks().get(0);
 
         EmbedBuilder eb = new EmbedBuilder();
 
@@ -211,7 +219,6 @@ public class EmbedUtils {
         eb.appendDescription("**Queued by**: `" + firstTrack.getUserData().toString() + "`\n");
         eb.appendDescription("**Number of tracks**: `" + playlist.getTracks().size() + "`\n");
         eb.appendDescription("**Total duration**: `" + AudioTrackUtils.getPlaylistDuration(playlist) + "`\n");
-
 
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(firstTrack));
         return eb.build();
@@ -229,13 +236,13 @@ public class EmbedUtils {
 
         int VALUE = Constants.LEADERBOARD_MAX;
 
-        if (memberList.size() < VALUE) //If the server does not have enough players to have a leaderboard of 5
-            VALUE = memberList.size();
+        if (memberList.size() < VALUE) // If the server does not have enough players to have a leaderboard of 5
+        VALUE = memberList.size();
 
         for (int i = 0; i < VALUE; i++) {
             Invoker inv = Invoker.of(memberList.get(i));
-            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: " + inv.getLevel() + "` | `Experience: "
-                    + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
+            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: "
+                    + inv.getLevel() + "` | `Experience: " + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
         }
         eb.setThumbnail(evt.getGuild().getIconUrl());
         return eb.build();
@@ -245,7 +252,10 @@ public class EmbedUtils {
      * @return An embed which informs that nothing is playing right now
      */
     public static MessageEmbed getNothingPlayingEmbed() {
-        return new EmbedBuilder().setDescription("Nothing playing right now.").setColor(Constants.EMB_COL).build();
+        return new EmbedBuilder()
+                .setDescription("Nothing playing right now.")
+                .setColor(Constants.EMB_COL)
+                .build();
     }
 
     public static MessageEmbed getRoleName(String name) {
@@ -302,12 +312,12 @@ public class EmbedUtils {
 
         int maxIndex = memberList.size();
 
-        if (maxIndex > 10)
-            maxIndex = 10;
+        if (maxIndex > 10) maxIndex = 10;
 
         for (int i = 0; i < maxIndex; i++) {
             Invoker invoker = Invoker.of(memberList.get(i));
-            eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: " + invoker.getCredit() + "`\n\n");
+            eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: "
+                    + invoker.getCredit() + "`\n\n");
         }
 
         eb.setThumbnail(evt.getGuild().getIconUrl());

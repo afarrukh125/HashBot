@@ -32,8 +32,7 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
         // Now we are checking whether the user chose to shuffle the list before adding it
         String[] tokens = evt.getMessage().getContentRaw().split(" ");
         if (tokens.length > 2) {
-            if (tokens[2].equals("shuffle"))
-                Collections.shuffle(playlist);
+            if (tokens[2].equals("shuffle")) Collections.shuffle(playlist);
         }
 
         // We need the firstTrack to create the embed
@@ -44,7 +43,9 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
         }
 
         if (playlist.size() > Constants.MAX_PLAYLIST_SIZE) {
-            evt.getChannel().sendMessage("Cannot queue playlist larger than " + Constants.MAX_PLAYLIST_SIZE).queue();
+            evt.getChannel()
+                    .sendMessage("Cannot queue playlist larger than " + Constants.MAX_PLAYLIST_SIZE)
+                    .queue();
             return;
         }
 
@@ -52,15 +53,15 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
         AudioTrackUtils.play(evt, gmm, firstTrack, playTop);
 
         for (AudioTrack track : playlist) {
-            if (track.equals(firstTrack))
-                continue;
+            if (track.equals(firstTrack)) continue;
 
             track.setUserData(evt.getAuthor().getName());
             gmm.getScheduler().queue(track);
         }
 
-        evt.getChannel().sendMessageEmbeds(EmbedUtils.getPlaylistEmbed(gmm, playlistTracks)).queue();
-
+        evt.getChannel()
+                .sendMessageEmbeds(EmbedUtils.getPlaylistEmbed(gmm, playlistTracks))
+                .queue();
     }
 
     @Override

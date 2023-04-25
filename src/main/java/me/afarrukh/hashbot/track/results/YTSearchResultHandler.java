@@ -33,7 +33,9 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
 
     @Override
     public void trackLoaded(AudioTrack track) {
-        evt.getChannel().sendMessageEmbeds(EmbedUtils.getQueuedEmbed(gmm, track, evt)).queue();
+        evt.getChannel()
+                .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(gmm, track, evt))
+                .queue();
 
         track.setUserData(evt.getAuthor().getName());
         AudioTrackUtils.play(evt, gmm, track, playTop);

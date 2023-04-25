@@ -1,12 +1,5 @@
 package me.afarrukh.hashbot.data;
 
-
-/**
- * @author Abdullah
- * Created on 13/09/2019 at 22:56
- * <p>
- * An interface that should be implemented by any classes that intend to be used to access any kind of data.
- */
 public interface IDataManager {
 
     /**
@@ -22,7 +15,7 @@ public interface IDataManager {
      * value for credit has changed over time), among other values that are set to defaults.
      * This is particularly useful in preventing <code>FileNotFoundException</code> type behaviour, if a simple
      * file based database is being used, or preventing <code>SQLException</code> or <code>NullPointerException</code>
-     * if SQl is being used
+     * if SQL is being used
      */
     void writePresets();
 

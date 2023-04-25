@@ -3,13 +3,8 @@ package me.afarrukh.hashbot.utils;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.GuildDataManager;
 import me.afarrukh.hashbot.data.GuildDataMapper;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,11 +37,11 @@ public class BotUtils {
      * @see me.afarrukh.hashbot.commands.management.bot.CheckMemoryCommand
      */
     public static long getMemoryUsage() {
-        long memoryNow = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long memoryNow =
+                Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long memoryDiff = memoryNow - Constants.INITIAL_MEMORY;
-        memoryDiff /= (1024 * 1024); //Converting from bytes to kb to mb by dividing by 1024 twice
+        memoryDiff /= (1024 * 1024); // Converting from bytes to kb to mb by dividing by 1024 twice
 
         return memoryDiff;
     }
-
 }

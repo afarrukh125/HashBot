@@ -6,12 +6,6 @@ import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-/**
- * @author Abdullah
- * <p>
- * Removes a track at the given index from the track queue from the {@link me.afarrukh.hashbot.track.TrackScheduler}
- * @see me.afarrukh.hashbot.track.TrackScheduler
- */
 public class RemoveCommand extends Command implements AudioTrackCommand {
 
     public RemoveCommand() {
@@ -26,8 +20,7 @@ public class RemoveCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
-            if (AudioTrackUtils.canInteract(evt))
-                AudioTrackUtils.remove(evt, Integer.parseInt(params));
+            if (AudioTrackUtils.canInteract(evt)) AudioTrackUtils.remove(evt, Integer.parseInt(params));
         } catch (NullPointerException | NumberFormatException e) {
             onIncorrectParams(evt.getChannel().asTextChannel());
         }

@@ -27,8 +27,7 @@ public class GuildPrefixManager {
 
         if (prefix != null) {
             this.prefix = prefix;
-        }
-        else {
+        } else {
             guildDataManager.updateValue(Key.PREFIX.string(), Constants.invokerChar);
         }
     }
@@ -37,8 +36,7 @@ public class GuildPrefixManager {
         String threshold = (String) guildDataManager.getValue(Key.PINNED_THRESHOLD.string());
         if (threshold != null) {
             this.pinThreshold = Integer.parseInt(threshold);
-        }
-        else {
+        } else {
             guildDataManager.updateValue(Key.PINNED_THRESHOLD.string(), Long.toString(this.pinThreshold));
         }
     }
@@ -64,7 +62,6 @@ public class GuildPrefixManager {
     }
 
     private enum Key {
-
         PREFIX("prefix"),
         NAME("name"),
         PINNED_THRESHOLD("pThreshold"),

@@ -14,7 +14,8 @@ public class LeaderboardCommand extends Command {
     public LeaderboardCommand() {
         super("leaderboard");
         addAlias("lb");
-        description = "Shows the leaderboard for this server. You can provide 'credits' as a parameter to see the credits leaderboard, instead";
+        description =
+                "Shows the leaderboard for this server. You can provide 'credits' as a parameter to see the credits leaderboard, instead";
     }
 
     @Override
@@ -22,16 +23,19 @@ public class LeaderboardCommand extends Command {
 
         if (params != null) {
             if (params.equalsIgnoreCase("credits")) {
-                evt.getChannel().sendMessageEmbeds(EmbedUtils.getCreditsLeaderboardEmbed(LevelUtils.getCreditsLeaderboard(evt.getGuild()), evt)).queue();
+                evt.getChannel()
+                        .sendMessageEmbeds(EmbedUtils.getCreditsLeaderboardEmbed(
+                                LevelUtils.getCreditsLeaderboard(evt.getGuild()), evt))
+                        .queue();
             }
         } else {
             List<Member> userList = LevelUtils.getLeaderboard(evt.getGuild());
-            evt.getChannel().sendMessageEmbeds(EmbedUtils.getLeaderboard(userList, evt)).queue();
+            evt.getChannel()
+                    .sendMessageEmbeds(EmbedUtils.getLeaderboard(userList, evt))
+                    .queue();
         }
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
-
-    }
+    public void onIncorrectParams(TextChannel channel) {}
 }

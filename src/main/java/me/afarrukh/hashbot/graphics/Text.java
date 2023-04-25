@@ -4,8 +4,7 @@ import java.awt.*;
 
 public class Text {
 
-    public static void drawString(Graphics g, String text, int xPos,
-                                  int yPos, boolean center, Color c, Font font) {
+    public static void drawString(Graphics g, String text, int xPos, int yPos, boolean center, Color c, Font font) {
 
         g.setColor(c);
         g.setFont(font);
@@ -19,6 +18,5 @@ public class Text {
         }
 
         g.drawString(text, x, y);
-
     }
 }

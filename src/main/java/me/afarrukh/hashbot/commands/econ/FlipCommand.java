@@ -19,10 +19,14 @@ public class FlipCommand extends Command implements EconCommand {
         super("flip");
         addAlias("f");
         description = "Flips a coin on head or tails. You can choose an amount.";
-        addParameter("amount", "The amount of credit to use on this coin flip. " +
-                "You can use 'all' here if you wish to use all the credits.");
-        addParameter("heads or tails", "The coin result you are expecting to win on, either heads or tails" +
-                ". Can be written as 'h' or 't'");
+        addParameter(
+                "amount",
+                "The amount of credit to use on this coin flip. "
+                        + "You can use 'all' here if you wish to use all the credits.");
+        addParameter(
+                "heads or tails",
+                "The coin result you are expecting to win on, either heads or tails"
+                        + ". Can be written as 'h' or 't'");
 
         addExampleUsage("flip all t");
     }
@@ -50,8 +54,7 @@ public class FlipCommand extends Command implements EconCommand {
         try {
             amount = Long.parseLong(tokens[0]);
         } catch (NumberFormatException e) {
-            if (tokens[0].equalsIgnoreCase("all"))
-                amount = invoker.getCredit();
+            if (tokens[0].equalsIgnoreCase("all")) amount = invoker.getCredit();
             else {
                 evt.getChannel().sendMessage("Please enter a valid amount.").queue();
                 return;
@@ -69,7 +72,9 @@ public class FlipCommand extends Command implements EconCommand {
 
         // Checking if the user choice entered is valid
         if (userInputMap.get(tokens[1]) == null) {
-            evt.getChannel().sendMessage("You must flip on either heads or tails.").queue();
+            evt.getChannel()
+                    .sendMessage("You must flip on either heads or tails.")
+                    .queue();
             return;
         }
 
@@ -102,10 +107,8 @@ public class FlipCommand extends Command implements EconCommand {
             // Otherwise take away credits
             sb.append("You lost ").append(amount).append(" credits!");
             eb.setColor(Color.RED);
-            if (invoker.getCredit() - amount < 0)
-                invoker.addCredit(-invoker.getCredit());
-            else
-                invoker.addCredit(-amount);
+            if (invoker.getCredit() - amount < 0) invoker.addCredit(-invoker.getCredit());
+            else invoker.addCredit(-amount);
         }
 
         sb.append("\n\n You now have ").append(invoker.getCredit()).append(" credits.");
@@ -113,12 +116,10 @@ public class FlipCommand extends Command implements EconCommand {
         eb.setDescription(sb.toString());
 
         evt.getChannel().sendMessageEmbeds(eb.build()).queue();
-
     }
 
     @Override
     public void onIncorrectParams(TextChannel channel) {
         channel.sendMessage("Usage: flip <amount> <heads or tails>").queue();
-
     }
 }

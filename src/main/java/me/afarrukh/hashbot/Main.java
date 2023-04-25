@@ -11,7 +11,8 @@ class Main {
         if (args.length == 0) {
             tok = Constants.token;
             new Bot(tok);
-        } else
+        } else {
             new Bot(args[0]);
+        }
     }
 }

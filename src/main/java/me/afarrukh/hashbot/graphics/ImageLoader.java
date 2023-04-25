@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImageLoader {
@@ -18,8 +17,7 @@ public class ImageLoader {
             return ImageIO.read(new File(path));
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1); //We don't want to run if the image fails to load.
-            //Exit code 1
+            System.exit(1);
         }
         return null;
     }
@@ -29,9 +27,7 @@ public class ImageLoader {
             URL url = new URL(path);
 
             OkHttpClient okHttpClient = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+            Request request = new Request.Builder().url(url).build();
 
             Response response = okHttpClient.newCall(request).execute();
 
@@ -39,11 +35,8 @@ public class ImageLoader {
                 return ImageIO.read(response.body().byteStream());
             }
             response.close();
-        } catch (MalformedURLException ignore) {
-        } catch (IOException e) {
-            e.getMessage();
+        } catch (IOException ignored) {
         }
         return null;
     }
-
 }

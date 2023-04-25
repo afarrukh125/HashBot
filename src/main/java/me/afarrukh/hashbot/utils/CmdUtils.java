@@ -43,19 +43,9 @@ public class CmdUtils {
      */
     public static String getParamsAsString(String[] tokens, int startIndex, int endIndex) {
         StringBuilder params = new StringBuilder();
-        for (int i = startIndex; i <= endIndex; i++)
-            params.append(tokens[i]).append(" ");
+        for (int i = startIndex; i <= endIndex; i++) params.append(tokens[i]).append(" ");
 
         return params.toString().trim();
-    }
-
-    /**
-     * Takes a given array and prints each element line by line
-     *
-     * @param arr - the array to be printed
-     */
-    public static void printArray(String[] arr) {
-        for (String anArr : arr) System.out.println(anArr);
     }
 
     /**
@@ -65,7 +55,9 @@ public class CmdUtils {
      * @return A String in HHMMSS format
      */
     public static String longToHHMMSS(long count) {
-        return String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(count),
+        return String.format(
+                "%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(count),
                 TimeUnit.MILLISECONDS.toMinutes(count) % TimeUnit.HOURS.toMinutes(1),
                 TimeUnit.MILLISECONDS.toSeconds(count) % TimeUnit.MINUTES.toSeconds(1));
     }
@@ -80,5 +72,4 @@ public class CmdUtils {
         long time = count / 1000;
         return String.format("%02d:%02d", time / 60, time % 60);
     }
-
 }

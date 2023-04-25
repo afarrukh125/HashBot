@@ -8,13 +8,6 @@ import me.afarrukh.hashbot.track.LatentTrack;
 import me.afarrukh.hashbot.track.PlaylistLoader;
 import net.dv8tion.jda.api.entities.Member;
 
-/**
- * @author Abdullah
- * Created on 14/09/2019 at 15:57
- * <p>
- * This was done to clean up the code in the {@link me.afarrukh.hashbot.data.SQLUserDataManager} class
- * @see me.afarrukh.hashbot.data.SQLUserDataManager#loadPlaylistByName(String, PlaylistLoader)
- */
 public class YTLatentTrackHandler implements AudioLoadResultHandler {
     private final int idx;
     private final PlaylistLoader loader;
@@ -36,12 +29,10 @@ public class YTLatentTrackHandler implements AudioLoadResultHandler {
     }
 
     @Override
-    public void playlistLoaded(AudioPlaylist audioPlaylist) {
-    }
+    public void playlistLoaded(AudioPlaylist audioPlaylist) {}
 
     @Override
-    public void noMatches() {
-    }
+    public void noMatches() {}
 
     @Override
     public void loadFailed(FriendlyException e) {

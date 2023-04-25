@@ -17,10 +17,12 @@ public class DisconnectCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!AudioTrackUtils.canInteract(evt))
-            return;
+        if (!AudioTrackUtils.canInteract(evt)) return;
 
-        if (evt.getGuild().getMemberById(Bot.botUser().getSelfUser().getId()).getVoiceState().getChannel().equals(evt.getMember().getVoiceState().getChannel()))
-            AudioTrackUtils.disconnect(evt.getGuild());
+        if (evt.getGuild()
+                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getVoiceState()
+                .getChannel()
+                .equals(evt.getMember().getVoiceState().getChannel())) AudioTrackUtils.disconnect(evt.getGuild());
     }
 }

@@ -21,10 +21,7 @@ public class AudioTrackManager {
         AudioSourceManagers.registerRemoteSources(playerManager);
     }
 
-    /**
-     * Returns the guild's audio player manager (playerManager instance variable)
-     */
-    public synchronized GuildAudioTrackManager getGuildAudioPlayer(Guild guild) {
+    public GuildAudioTrackManager getGuildAudioPlayer(Guild guild) {
         long guildId = guild.getIdLong();
         GuildAudioTrackManager trackManager = trackManagers.get(guildId);
 
@@ -37,13 +34,12 @@ public class AudioTrackManager {
         return trackManager;
     }
 
-    public synchronized void resetGuildAudioPlayer(Guild guild) {
-        if (trackManagers.get(guild.getIdLong()) == null)
+    public void resetGuildAudioPlayer(Guild guild) {
+        if (trackManagers.get(guild.getIdLong()) == null) {
             return;
+        }
         trackManagers.remove(guild.getIdLong());
         trackManagers.put(guild.getIdLong(), new GuildAudioTrackManager(playerManager, guild));
-
-
     }
 
     public AudioPlayerManager getPlayerManager() {
