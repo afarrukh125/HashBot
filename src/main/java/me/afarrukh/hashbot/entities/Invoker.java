@@ -4,7 +4,6 @@ import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.IDataManager;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import me.afarrukh.hashbot.gameroles.GameRole;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.api.entities.Member;
@@ -156,30 +155,6 @@ public class Invoker {
 
     private void setExp(int exp) {
         userFileManager.updateValue("exp", (long) exp);
-    }
-
-    public ArrayList<Role> getGameRolesAsRoles() {
-        ArrayList<Role> roleList = new ArrayList<>();
-
-        for (Role r : member.getRoles()) {
-            if (BotUtils.isGameRole(r, member.getGuild()))
-                roleList.add(r);
-        }
-
-        return roleList;
-    }
-
-    public ArrayList<GameRole> getGameRoles() {
-        ArrayList<GameRole> roleList = new ArrayList<>();
-
-        for (GameRole gr : Bot.gameRoleManager.getGuildRoleManager(member.getGuild()).getGameRoles()) {
-            for (Role r : member.getRoles()) {
-                if (r.getName().equalsIgnoreCase(gr.getName()))
-                    roleList.add(gr);
-            }
-        }
-
-        return roleList;
     }
 
     private void addExperience(int amount) {

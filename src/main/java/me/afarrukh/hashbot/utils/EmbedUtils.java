@@ -5,14 +5,11 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.entities.Invoker;
-import me.afarrukh.hashbot.gameroles.*;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
@@ -130,7 +127,7 @@ public class EmbedUtils {
             eb.appendDescription("**Position in queue**: `" + ts.getTrackIndex(at) + "`\n");
             eb.appendDescription("**Playing in approximately**: `" + ts.getTotalTimeTil(at) + "`\n");
             if (ts.isFairPlay())
-                eb.setFooter("Fairplay mode is currently on. Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
+                eb.setFooter("Fairplay mode is currently on. Use " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix() + "fairplay to turn it off.", null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
 

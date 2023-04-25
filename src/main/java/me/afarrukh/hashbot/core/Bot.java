@@ -7,14 +7,10 @@ import me.afarrukh.hashbot.commands.audiotracks.playlist.DeleteListCommand;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.LoadListCommand;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.SavePlaylistCommand;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
-import me.afarrukh.hashbot.commands.econ.FlipCommand;
 import me.afarrukh.hashbot.commands.econ.GiveCommand;
-import me.afarrukh.hashbot.commands.extras.UrbanDictionaryCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
-import me.afarrukh.hashbot.commands.management.guild.roles.ListMembersCommand;
-import me.afarrukh.hashbot.commands.management.guild.roles.RoleStatsCommand;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
@@ -26,7 +22,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -35,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Bot {
     public static CommandManager commandManager;
-    public static GameRoleManager gameRoleManager;
+    public static PrefixManager prefixManager;
     public static AudioTrackManager trackManager;
     private static JDA botUser;
     static ReactionManager reactionManager;
@@ -76,7 +71,7 @@ public class Bot {
 
         trackManager = new AudioTrackManager();
 
-        gameRoleManager = new GameRoleManager();
+        prefixManager = new PrefixManager();
         reactionManager = new ReactionManager();
 
         setupNames();
@@ -140,58 +135,53 @@ public class Bot {
 
     private void loadCommands() {
         commandManager = new CommandManager.Builder()
-                .addCommand(new CommandListCommand())
-                .addCommand(new UptimeCommand())
-                .addCommand(new SetPrefixCommand())
-                .addCommand(new ColourChangeCommand())
-                .addCommand(new SetNickCommand())
-                .addCommand(new RoleRGBCommand())
-                .addCommand(new ListMembersCommand())
-                .addCommand(new SetNameCommand())
-                .addCommand(new PingCommand())
-                .addCommand(new RewardCommand())
-                .addCommand(new StatsCommand())
-                .addCommand(new PruneCommand())
-                .addCommand(new LeaderboardCommand())
-                .addCommand(new PlayCommand())
-                .addCommand(new QueueCommand())
-                .addCommand(new SavePlaylistCommand())
-                .addCommand(new LoadListCommand())
-                .addCommand(new ViewListCommand())
-                .addCommand(new DeleteListCommand())
-                .addCommand(new RemoveCommand())
-                .addCommand(new ClearQueueCommand())
-                .addCommand(new PruneQueueCommand())
-                .addCommand(new DisconnectCommand())
+                .addCommand(new CheckMemoryCommand())
                 .addCommand(new ClearCommand())
-                .addCommand(new SortByLengthCommand())
+                .addCommand(new ClearQueueCommand())
+                .addCommand(new ColourChangeCommand())
+                .addCommand(new CommandListCommand())
+                .addCommand(new DeleteListCommand())
+                .addCommand(new DisconnectCommand())
+                .addCommand(new FairPlayCommand())
+                .addCommand(new FairShuffleCommand())
+                .addCommand(new GiveCommand())
+                .addCommand(new HelpCommand())
+                .addCommand(new InterleaveCommand())
+                .addCommand(new LeaderboardCommand())
+                .addCommand(new LoadListCommand())
                 .addCommand(new LoopCommand())
                 .addCommand(new LoopQueueCommand())
-                .addCommand(new GiveCommand())
-                .addCommand(new FlipCommand())
-                .addCommand(new NowPlayingCommand())
-                .addCommand(new RemoveRangeCommand())
-                .addCommand(new PauseCommand())
-                .addCommand(new ResumeCommand())
-                .addCommand(new ResetPlayerCommand())
-                .addCommand(new SetVolumeCommand())
-                .addCommand(new HelpCommand())
-                .addCommand(new SetPinThresholdCommand())
-                .addCommand(new PlayTopCommand())
-                .addCommand(new SeekCommand())
-                .addCommand(new SetPinnedChannel())
-                .addCommand(new SetUnpinnedCommand())
                 .addCommand(new MoveCommand())
-                .addCommand(new TimeCreatedCommand())
+                .addCommand(new NowPlayingCommand())
+                .addCommand(new PauseCommand())
+                .addCommand(new PingCommand())
+                .addCommand(new PlayCommand())
+                .addCommand(new PlayTopCommand())
+                .addCommand(new PruneCommand())
+                .addCommand(new PruneQueueCommand())
+                .addCommand(new QueueCommand())
+                .addCommand(new RemoveCommand())
+                .addCommand(new RemoveRangeCommand())
+                .addCommand(new ResetPlayerCommand())
+                .addCommand(new ResumeCommand())
                 .addCommand(new ReverseQueueCommand())
+                .addCommand(new RewardCommand())
+                .addCommand(new RoleRGBCommand())
+                .addCommand(new SavePlaylistCommand())
+                .addCommand(new SeekCommand())
+                .addCommand(new SetNameCommand())
+                .addCommand(new SetPinThresholdCommand())
+                .addCommand(new SetPinnedChannel())
+                .addCommand(new SetPrefixCommand())
+                .addCommand(new SetUnpinnedCommand())
+                .addCommand(new SetVolumeCommand())
                 .addCommand(new ShuffleCommand())
-                .addCommand(new FairShuffleCommand())
-                .addCommand(new InterleaveCommand())
-                .addCommand(new FairPlayCommand())
-                .addCommand(new UrbanDictionaryCommand())
-                .addCommand(new CheckMemoryCommand())
-                .addCommand(new RoleStatsCommand())
                 .addCommand(new SkipCommand())
+                .addCommand(new SortByLengthCommand())
+                .addCommand(new StatsCommand())
+                .addCommand(new TimeCreatedCommand())
+                .addCommand(new UptimeCommand())
+                .addCommand(new ViewListCommand())
                 .build();
 
     }

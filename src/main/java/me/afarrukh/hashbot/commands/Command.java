@@ -145,7 +145,7 @@ public abstract class Command {
     }
 
     public final MessageEmbed getCommandHelpMessage(TextChannel channel) {
-        String prefix = Bot.gameRoleManager.getGuildRoleManager(channel.getGuild()).getPrefix();
+        String prefix = Bot.prefixManager.getGuildRoleManager(channel.getGuild()).getPrefix();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Viewing help for " + this.name);
         StringBuilder sb = new StringBuilder();

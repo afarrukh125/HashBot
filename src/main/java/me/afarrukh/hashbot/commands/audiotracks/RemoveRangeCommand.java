@@ -67,7 +67,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                     if (range.split("-").length == 1) {
                         errorMessageBuilder.append("- Range ").append(range).append(" was invalid, as it is not a range. "
                                         + "If you wish to remove individual tracks use ")
-                                .append(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())
+                                .append(Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())
                                 .append(new RemoveCommand().getName()).append(".").append(" Alternatively you can " +
                                         "provide a range of 0 (e.g. 87-87)\n");
                         continue;

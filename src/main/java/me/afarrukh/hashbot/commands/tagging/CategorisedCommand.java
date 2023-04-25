@@ -16,9 +16,7 @@ import java.util.List;
  * @see AudioTrackCommand
  * @see EconCommand
  * @see ExtrasCommand
- * @see RoleCommand
  * @see SystemCommand
- * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(MessageReceivedEvent, List)
  * @see CommandListCommand
  * @see me.afarrukh.hashbot.core.CommandManager
  */

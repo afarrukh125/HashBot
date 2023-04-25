@@ -31,7 +31,7 @@ public class PruneCommand extends Command {
         for (Message m : messageHistory) {
             if (gdm.isBotPinMessage(m.getId())) // Do not want to clear any bot pinned message
                 continue;
-            if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+            if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId()) || m.getContentRaw().startsWith(Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
                 messageBin.add(m);
             }
             if (messageBin.size() == 100)

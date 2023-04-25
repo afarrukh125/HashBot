@@ -69,7 +69,7 @@ class ReactionManager {
         }
 
         // If we haven't yet passed the threshold then return
-        if (size < Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()) {
+        if (size < Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()) {
             return;
         }
 

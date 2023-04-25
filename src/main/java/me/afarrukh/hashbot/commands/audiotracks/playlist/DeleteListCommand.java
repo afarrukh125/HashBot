@@ -26,7 +26,7 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
 
         if (params == null) {
             evt.getChannel().sendMessage("You need to provide the name of the playlist you would like to delete." +
-                    "Use " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix() + new ViewListCommand().getName()
+                    "Use " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix() + new ViewListCommand().getName()
                     + " to view your playlists.").queue();
             return;
         }

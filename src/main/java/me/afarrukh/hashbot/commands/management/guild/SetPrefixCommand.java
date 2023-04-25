@@ -19,7 +19,7 @@ public class SetPrefixCommand extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         if (params != null && params.length() < 2) {
-            Bot.gameRoleManager.getGuildRoleManager(evt.getGuild())
+            Bot.prefixManager.getGuildRoleManager(evt.getGuild())
                     .setPrefix(params);
             evt.getChannel().sendMessage("Bot prefix is now " + params).queue();
         } else {

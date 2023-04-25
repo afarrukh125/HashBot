@@ -31,8 +31,8 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
                 evt.getChannel().sendMessage("The minimum pin threshold value is 1").queue();
                 return;
             }
-            Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);
-            evt.getChannel().sendMessage("The pinned threshold is now " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()).queue();
+            Bot.prefixManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);
+            evt.getChannel().sendMessage("The pinned threshold is now " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()).queue();
         } catch (NumberFormatException e) {
             evt.getChannel().sendMessage("Please enter a numerical value for threshold. The threshold is the number of reactions needed for a message to be pinned.")
                     .queue();

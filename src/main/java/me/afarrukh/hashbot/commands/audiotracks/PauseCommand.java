@@ -19,10 +19,10 @@ public class PauseCommand extends Command implements AudioTrackCommand {
             ResumeCommand resumeCommand = new ResumeCommand();
             if (!Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
                 AudioTrackUtils.pause(evt);
-                evt.getChannel().sendMessage("Now paused. Type " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()
+                evt.getChannel().sendMessage("Now paused. Type " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix()
                         + resumeCommand.getName() + " to resume.").queue();
             } else
-                evt.getChannel().sendMessage("The bot is already paused. Type " + Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix()
+                evt.getChannel().sendMessage("The bot is already paused. Type " + Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix()
                         + resumeCommand.getName() + " to resume.").queue();
         }
     }

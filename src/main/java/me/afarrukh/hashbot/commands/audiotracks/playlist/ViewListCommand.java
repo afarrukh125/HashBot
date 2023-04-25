@@ -32,7 +32,7 @@ public class ViewListCommand extends Command {
 
         if (playlists.size() == 0) {
             stringBuilder.append("You currently have no playlists, use the ")
-                    .append(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())
+                    .append(Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())
                     .append("savelist command to save the current track queue to a playlist");
 
         } else {

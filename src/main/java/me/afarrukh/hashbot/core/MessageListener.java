@@ -36,7 +36,7 @@ class MessageListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent evt) {
         if (evt.getAuthor().isBot())
             return;
-        if (evt.getMessage().getContentRaw().startsWith(Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+        if (evt.getMessage().getContentRaw().startsWith(Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
             Bot.commandManager.processEvent(evt);
             return;
         }
@@ -49,16 +49,6 @@ class MessageListener extends ListenerAdapter {
         if (invoker.hasTimePassed()) {
             invoker.addRandomCredit();
             invoker.addRandomExperience();
-        }
-    }
-
-    /**
-     * @param evt The event associated with the deletion of a role
-     */
-    public void onRoleDelete(RoleDeleteEvent evt) {
-        if (BotUtils.isGameRole(evt.getRole(), evt.getGuild())) {
-            GuildDataMapper.getInstance().getDataManager(evt.getGuild()).removeRole(evt.getRole().getName()); // Remove from file
-            Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).removeRole(evt.getRole().getName()); // Remove from live game role list
         }
     }
 

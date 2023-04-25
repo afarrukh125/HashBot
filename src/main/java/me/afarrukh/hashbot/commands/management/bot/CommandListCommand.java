@@ -34,7 +34,7 @@ public class CommandListCommand extends Command {
 
         int pageCount = 2;
 
-        String prefix = Bot.gameRoleManager.getGuildRoleManager(evt.getGuild()).getPrefix();
+        String prefix = Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix();
 
         StringBuilder sb = new StringBuilder();
 
