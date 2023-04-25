@@ -84,8 +84,7 @@ public class Bot {
                 String input = scanner.nextLine();
                 ownerInputManager.processInput(input);
             }
-        }
-        ).start();
+        }).start();
     }
 
     private void startUpMessages() {
@@ -93,8 +92,9 @@ public class Bot {
 
         for (Command c : commandManager.getCommands()) {
             System.out.println("Adding " + c.getClass().getSimpleName());
-            if (c.getDescription() == null)
+            if (c.getDescription() == null) {
                 descriptionLessCommands.add(c);
+            }
         }
         System.out.println("Added " + commandManager.getCommands().size() + " commands to command manager.");
 
@@ -108,19 +108,20 @@ public class Bot {
 
     private void initialiseBotUser() {
         try {
-            botUser = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES,
-                            GatewayIntent.GUILD_MEMBERS,
-                            GatewayIntent.DIRECT_MESSAGES,
-                            GatewayIntent.GUILD_VOICE_STATES,
-                            GatewayIntent.GUILD_MESSAGE_REACTIONS,
-                            GatewayIntent.GUILD_PRESENCES,
-                            GatewayIntent.MESSAGE_CONTENT,
-                            GatewayIntent.GUILD_MESSAGES)
+            botUser = JDABuilder.create(token,
+                    GatewayIntent.DIRECT_MESSAGES,
+                    GatewayIntent.GUILD_MEMBERS,
+                    GatewayIntent.GUILD_MESSAGES,
+                    GatewayIntent.GUILD_MESSAGES,
+                    GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                    GatewayIntent.GUILD_PRESENCES,
+                    GatewayIntent.GUILD_VOICE_STATES,
+                    GatewayIntent.MESSAGE_CONTENT)
                     .disableCache(CacheFlag.ACTIVITY,
+                            CacheFlag.CLIENT_STATUS,
                             CacheFlag.EMOJI,
-                            CacheFlag.CLIENT_STATUS)
-                    .build()
-                    .awaitReady();
+                            CacheFlag.SCHEDULED_EVENTS,
+                            CacheFlag.STICKER).build().awaitReady();
 
 
             Timer experienceTimer = new Timer();
@@ -191,8 +192,9 @@ public class Bot {
             try {
                 SQLUserDataManager.updateUsernames(g);
                 for (Member m : g.getMembers()) {
-                    if (!SQLUserDataManager.getUserData(m).next())
+                    if (!SQLUserDataManager.getUserData(m).next()) {
                         SQLUserDataManager.addMember(m);
+                    }
                 }
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
