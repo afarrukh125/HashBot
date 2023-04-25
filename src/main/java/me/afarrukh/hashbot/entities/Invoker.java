@@ -108,16 +108,6 @@ public class Invoker {
         addCredit(new Random().nextInt(Constants.MAX_CREDIT) + 1);
     }
 
-    public void updateExperience(String msg) {
-        String[] tokens = msg.split(" ");
-        int amt = LevelUtils.getPointsFromMessage(tokens, getLevel());
-        int currentExp = (int) getExp();
-
-        this.setExp(currentExp + amt);
-
-        checkExperience(currentExp, amt);
-    }
-
     /**
      * @return An integer representing how much experience the user will need for their next level
      */
