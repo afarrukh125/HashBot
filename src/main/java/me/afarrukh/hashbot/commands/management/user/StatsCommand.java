@@ -93,21 +93,20 @@ public class StatsCommand extends Command {
         if (params != null && params.equalsIgnoreCase(GLOBAL_PARAM_FLAG)) {
             global = true;
             exp = new AtomicLong();
-            var executorService = newFixedThreadPool(getThreads());
-            for (Guild guild : evt.getJDA().getGuilds()) {
-                AtomicLong finalExp = exp;
-                executorService.execute(() -> {
-                    Member m = guild.getMemberById(evt.getAuthor().getId());
-                    if (m == null) {
-                        return;
-                    }
-                    Invoker tmpInvoker = Invoker.of(m);
-                    finalExp.addAndGet(Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel()));
-                    finalExp.addAndGet(tmpInvoker.getExp());
-                });
-            }
-            executorService.shutdown();
-            try {
+            try (var executorService = newFixedThreadPool(getThreads())) {
+                for (Guild guild : evt.getJDA().getGuilds()) {
+                    AtomicLong finalExp = exp;
+                    executorService.execute(() -> {
+                        Member m = guild.getMemberById(evt.getAuthor().getId());
+                        if (m == null) {
+                            return;
+                        }
+                        Invoker tmpInvoker = Invoker.of(m);
+                        finalExp.addAndGet(Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel()));
+                        finalExp.addAndGet(tmpInvoker.getExp());
+                    });
+                }
+                executorService.shutdown();
                 executorService.awaitTermination(30, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

@@ -63,9 +63,7 @@ public class GuildPrefixManager {
 
     private enum Key {
         PREFIX("prefix"),
-        NAME("name"),
-        PINNED_THRESHOLD("pThreshold"),
-        CREATOR("creatorId");
+        PINNED_THRESHOLD("pThreshold");
 
         private final String key;
 

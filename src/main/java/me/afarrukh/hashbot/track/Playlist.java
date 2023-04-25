@@ -26,14 +26,6 @@ public class Playlist {
         return size;
     }
 
-    public void addTrack(AudioTrack t) {
-        tracks.add(t);
-    }
-
-    public void removeTrack(AudioTrack t) {
-        tracks.remove(t);
-    }
-
     public List<AudioTrack> getTracks() {
         return Collections.unmodifiableList(tracks);
     }

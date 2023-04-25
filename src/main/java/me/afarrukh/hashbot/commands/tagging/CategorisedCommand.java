@@ -11,8 +11,6 @@ import me.afarrukh.hashbot.commands.management.bot.CommandListCommand;
  * to the bot, and the command manager will return all commands with that category.
  *
  * @see AudioTrackCommand
- * @see EconCommand
- * @see ExtrasCommand
  * @see SystemCommand
  * @see CommandListCommand
  * @see me.afarrukh.hashbot.core.CommandManager

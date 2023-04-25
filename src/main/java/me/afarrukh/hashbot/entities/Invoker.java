@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.entities;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.IDataManager;
 import me.afarrukh.hashbot.data.SQLUserDataManager;
-import me.afarrukh.hashbot.utils.LevelUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;

@@ -60,7 +60,7 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
         }
 
         evt.getChannel()
-                .sendMessageEmbeds(EmbedUtils.getPlaylistEmbed(gmm, playlistTracks))
+                .sendMessageEmbeds(EmbedUtils.getPlaylistEmbed(playlistTracks))
                 .queue();
     }
 

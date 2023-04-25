@@ -39,7 +39,7 @@ public class SkipCommand extends Command implements AudioTrackCommand {
                 if (gmm.getPlayer().getPlayingTrack() != null)
                     evt.getChannel()
                             .sendMessageEmbeds(
-                                    EmbedUtils.getSkippedToEmbed(gmm.getPlayer().getPlayingTrack(), evt))
+                                    EmbedUtils.getSkippedToEmbed(gmm.getPlayer().getPlayingTrack()))
                             .queue();
             } else {
                 try {
@@ -58,7 +58,7 @@ public class SkipCommand extends Command implements AudioTrackCommand {
                     gmm.getScheduler().skip(idx);
                     evt.getChannel()
                             .sendMessageEmbeds(
-                                    EmbedUtils.getSkippedToEmbed(gmm.getPlayer().getPlayingTrack(), evt))
+                                    EmbedUtils.getSkippedToEmbed(gmm.getPlayer().getPlayingTrack()))
                             .queue();
                 } catch (NumberFormatException e) {
                     evt.getChannel().sendMessage("Please enter numbers only.").queue();
