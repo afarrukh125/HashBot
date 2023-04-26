@@ -156,7 +156,6 @@ public class Bot {
                 .addCommand(new CheckMemoryCommand())
                 .addCommand(new ClearCommand())
                 .addCommand(new ClearQueueCommand())
-                .addCommand(new ColourChangeCommand())
                 .addCommand(new CommandListCommand())
                 .addCommand(new DeleteListCommand())
                 .addCommand(new DisconnectCommand())

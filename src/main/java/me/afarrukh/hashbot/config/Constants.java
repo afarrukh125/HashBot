@@ -25,7 +25,6 @@ public class Constants {
     public static final int HEIGHT = 200;
     public static final String BG_PATH = "res/images/bg.jpg";
     public static final long minToMillis = 60000;
-    public static final int colChangeCred = 500;
     public static final int MAX_CREDIT = 75;
     public static final int LEADERBOARD_MAX = 10;
     public static final int PLAY_TOP_COST = 15;
@@ -95,7 +94,9 @@ public class Constants {
                 for (Object o : userList) {
                     ownerIds.add((String) o);
                 }
-                if (prefix != null) invokerChar = prefix;
+                if (prefix != null) {
+                    invokerChar = prefix;
+                }
             }
 
         } catch (FileNotFoundException e) {
