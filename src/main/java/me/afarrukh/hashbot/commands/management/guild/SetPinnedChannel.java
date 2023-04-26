@@ -8,6 +8,8 @@ import me.afarrukh.hashbot.utils.BotUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.concurrent.TimeUnit;
+
 public class SetPinnedChannel extends Command implements AdminCommand {
 
     public SetPinnedChannel() {
@@ -24,7 +26,7 @@ public class SetPinnedChannel extends Command implements AdminCommand {
         GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
         jgm.setPinnedChannel(channel.getId());
         channel.sendMessage("The new pinned channel for this server is " + channel.getName())
-                .queue();
-        BotUtils.deleteLastMsg(evt);
+                .queueAfter(
+                        1500, TimeUnit.MILLISECONDS, message -> message.delete().queue());
     }
 }

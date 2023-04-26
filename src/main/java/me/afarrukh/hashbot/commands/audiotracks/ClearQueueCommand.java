@@ -24,7 +24,7 @@ public class ClearQueueCommand extends Command implements AudioTrackCommand {
                 .getQueue()
                 .isEmpty()) {
             evt.getChannel()
-                    .sendMessage("Nothing is in the queue to be cleared.")
+                    .sendMessage("Queue is empty - nothing cleared")
                     .queue();
             return;
         }
