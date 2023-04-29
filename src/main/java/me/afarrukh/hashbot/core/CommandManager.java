@@ -7,8 +7,13 @@ import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.Comparator.comparing;
 
 public class CommandManager {
 
@@ -19,13 +24,6 @@ public class CommandManager {
     private CommandManager(Builder builder) {
         this.map = builder.map;
     }
-
-    /**
-     * Each time a message is sent with the bot prefix is sent, this method is called to check if a command exists
-     * with that command name
-     *
-     * @param evt The message received event associated with the possible command invocation
-     */
     public void processEvent(MessageReceivedEvent evt) {
         String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
         final String params = (tokens.length > 1) ? tokens[1].trim() : null;
@@ -44,9 +42,9 @@ public class CommandManager {
         if (command != null) {
             this.commandCount += 1;
             new Thread(() -> {
-                        command.onInvocation(
-                                evt, params); // Only does the command onInvocation method if class is valid
-                    })
+                command.onInvocation(
+                        evt, params); // Only does the command onInvocation method if class is valid
+            })
                     .start();
         }
     }
@@ -62,10 +60,12 @@ public class CommandManager {
     public List<Command> getCommands() {
         List<Command> commandList = new ArrayList<>();
         for (Command c : map.values()) {
-            if (commandList.contains(c)) continue;
+            if (commandList.contains(c)) {
+                continue;
+            }
             commandList.add(c);
         }
-        commandList.sort(Comparator.comparing(Command::getName).reversed());
+        commandList.sort(comparing(Command::getName).reversed());
         return commandList;
     }
 
@@ -73,7 +73,9 @@ public class CommandManager {
         List<Command> commandList = new LinkedList<>();
 
         for (Command c : getCommands()) {
-            if (!(c instanceof AdminCommand)) commandList.add(c);
+            if (!(c instanceof AdminCommand)) {
+                commandList.add(c);
+            }
         }
 
         return new ArrayList<>(commandList);
@@ -89,14 +91,12 @@ public class CommandManager {
 
         public Builder addCommand(Command c) {
             map.put(c.getName(), c);
-            new Thread(() -> {
-                        if (!c.getAliases().isEmpty()) {
-                            for (String alias : c.getAliases()) {
-                                map.put(alias, c);
-                            }
-                        }
-                    })
-                    .start();
+            if (!c.getAliases().isEmpty()) {
+                for (String alias : c.getAliases()) {
+                    map.put(alias, c);
+                }
+            }
+
             return this;
         }
     }

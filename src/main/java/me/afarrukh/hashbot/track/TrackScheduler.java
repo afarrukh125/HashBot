@@ -35,11 +35,6 @@ public class TrackScheduler extends AudioEventAdapter {
         fairPlay = false;
     }
 
-    /**
-     * Queues the track onto the track and informs if it was immediately played or queued
-     *
-     * @param track The AudioTrack to play
-     */
     public void queue(AudioTrack track) {
         if (!player.startTrack(track, true)) {
             queue.offer(track);
