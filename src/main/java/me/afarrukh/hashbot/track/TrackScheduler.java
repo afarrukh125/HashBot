@@ -4,7 +4,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import me.afarrukh.hashbot.commands.audiotracks.FairShuffleCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.utils.CmdUtils;
@@ -16,9 +15,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Class that contains a queue of track to play onto the bot
- */
+import static java.lang.String.format;
+import static java.util.Collections.shuffle;
+
 public class TrackScheduler extends AudioEventAdapter {
 
     private final AudioPlayer player;
@@ -45,7 +44,9 @@ public class TrackScheduler extends AudioEventAdapter {
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         }
-        if (fairPlay) interleave(false);
+        if (fairPlay) {
+            interleave(false);
+        }
     }
 
     public void queue(Collection<LatentTrack> tracks) {
@@ -129,7 +130,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
         count += (player.getPlayingTrack().getDuration()
                 - player.getPlayingTrack().getPosition());
-        return String.format(
+        return format(
                 "%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(count),
                 TimeUnit.MILLISECONDS.toMinutes(count) % TimeUnit.HOURS.toMinutes(1),
@@ -170,7 +171,9 @@ public class TrackScheduler extends AudioEventAdapter {
     public int getTrackIndex(AudioTrack targetTrack) {
         int count = 1;
         for (AudioTrack track : queue) {
-            if (track.equals(targetTrack)) break;
+            if (track.equals(targetTrack)) {
+                break;
+            }
             count++;
         }
         return count;
@@ -226,29 +229,17 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Shuffles the queue
      */
-    public void shuffle() {
+    public void shuffleAndReplace() {
         // Convert the queue to arraylist
         List<AudioTrack> trackList = getAsArrayList();
 
-        Collections.shuffle(trackList);
+        shuffle(trackList);
 
         queue.clear(); // Clear the queue
         queue.addAll(trackList); // Repopulate with array list elements
     }
 
-    /**
-     * An O(mn) algorithm, where
-     * m is the size of the set representing the users that have queued a track
-     * n is the number of total tracks in the queue
-     * And interleaves the track, such that, while assuming all users in the chat have queued an equal number of track,
-     * no m tracks in a row are queued by the same user. It essentially ensures that, for as long as possible, each
-     * subsequent track in the queue is by a different user. If one user has queued significantly more tracks than the
-     * other users, then all excess tracks are appended to the end of the list.
-     *
-     * @param shuffle Whether or not to shuffle the tracks before performing the algorithm.
-     *                See <code>FairShuffleCommand</code> for an example use of this.
-     * @see FairShuffleCommand#FairShuffleCommand()
-     */
+
     public void interleave(boolean shuffle) {
         List<AudioTrack> tracks = getAsArrayList();
         LinkedList<String> userNames = new LinkedList<>();
@@ -256,15 +247,19 @@ public class TrackScheduler extends AudioEventAdapter {
 
         for (AudioTrack track : tracks) {
             String userName = track.getUserData().toString();
-            if (!userNames.contains(userName)) userNames.add(userName);
+            if (!userNames.contains(userName)) {
+                userNames.add(userName);
+            }
             trackMap.computeIfAbsent(userName, k -> new LinkedList<>());
             trackMap.get(userName).add(track);
         }
 
-        if (userNames.size() == 0) return;
+        if (userNames.size() == 0) {
+            return;
+        }
 
         if (userNames.size() == 1 && shuffle) {
-            shuffle();
+            shuffleAndReplace();
             return;
         }
 
@@ -279,13 +274,17 @@ public class TrackScheduler extends AudioEventAdapter {
             }
         }
 
-        if (shuffle) Collections.shuffle(userNames); // Shuffling the list of users to decide who goes first
+        if (shuffle) {
+            shuffle(userNames); // Shuffling the list of users to decide who goes first
+        }
 
         List<AudioTrack> newTrackList = new ArrayList<>();
 
         for (int i = 0; i < tracks.size() / userNames.size(); i++) {
             for (String s : userNames) {
-                if (trackMap.get(s).isEmpty()) continue;
+                if (trackMap.get(s).isEmpty()) {
+                    continue;
+                }
                 newTrackList.add(trackMap.get(s).poll());
             }
         }
@@ -294,18 +293,22 @@ public class TrackScheduler extends AudioEventAdapter {
 
         if (newTrackList.size() < tracks.size()) {
             for (Queue<AudioTrack> queue : trackMap.values()) {
-                if (!queue.isEmpty()) shuffledTracks.addAll(queue);
+                if (!queue.isEmpty()) {
+                    shuffledTracks.addAll(queue);
+                }
             }
         }
 
-        if (shuffle) Collections.shuffle(shuffledTracks);
+        if (shuffle) {
+            shuffle(shuffledTracks);
+        }
 
         newTrackList.addAll(shuffledTracks);
         replaceQueue(newTrackList);
     }
 
     public void fairShuffle() {
-        shuffle();
+        shuffleAndReplace();
         interleave(true);
     }
 
