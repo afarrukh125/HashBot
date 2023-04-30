@@ -1,12 +1,7 @@
 package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.data.GuildDataManager;
-import me.afarrukh.hashbot.data.GuildDataMapper;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Runtime.getRuntime;
 

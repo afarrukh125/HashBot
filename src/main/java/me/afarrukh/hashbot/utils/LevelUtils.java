@@ -1,7 +1,5 @@
 package me.afarrukh.hashbot.utils;
 
-import me.afarrukh.hashbot.data.SQLUserDataManager;
-import me.afarrukh.hashbot.entities.Invoker;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 

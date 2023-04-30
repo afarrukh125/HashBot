@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.commands.audiotracks.playlist;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -31,7 +30,7 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
+        var dataManager = new SQLUserDataManager(evt.getMember());
 
         try {
             int listSize = dataManager.getPlaylistSize(params);

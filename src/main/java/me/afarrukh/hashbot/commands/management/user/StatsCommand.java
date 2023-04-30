@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.entities.Invoker;
 import me.afarrukh.hashbot.graphics.ImageLoader;
 import me.afarrukh.hashbot.graphics.Text;
 import net.dv8tion.jda.api.entities.Guild;

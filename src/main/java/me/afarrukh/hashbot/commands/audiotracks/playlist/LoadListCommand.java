@@ -2,13 +2,11 @@ package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.data.SQLUserDataManager;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.PlaylistLoader;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.Objects;
 
 public class LoadListCommand extends Command implements AudioTrackCommand {
 
@@ -25,25 +23,28 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (Objects.requireNonNull(Objects.requireNonNull(evt.getMember()).getVoiceState())
-                        .getChannel()
-                == null) return;
+        if (evt.getMember().getVoiceState().getChannel() == null) {
+            return;
+        }
 
         if (params == null) {
             evt.getChannel().sendMessage("Please provide a playlist to load.").queue();
             return;
         }
 
-        SQLUserDataManager dataManager = new SQLUserDataManager(evt.getMember());
+        var database = Database.getInstance();
 
         Message message = null;
         try {
-            final int listSize = dataManager.getPlaylistSize(params);
+            //noinspection UnnecessaryLocalVariable
+            String playlistName = params;
+            var playlist = database.getPlaylistForUser(playlistName, evt.getMember().getId());
+            int playlistSize = playlist.getSize();
             message = evt.getChannel()
-                    .sendMessage("Queueing playlist " + params + " with " + listSize + " tracks."
+                    .sendMessage("Queueing playlist " + params + " with " + playlistSize + " tracks."
                             + " It might take a while for all tracks to be added to the queue.")
                     .complete();
-            PlaylistLoader loader = new PlaylistLoader(evt.getMember(), listSize, message, params);
+            PlaylistLoader loader = new PlaylistLoader(evt.getMember(), playlistSize, message, params);
             dataManager.loadPlaylistByName(params, loader);
 
         } catch (PlaylistException e) {

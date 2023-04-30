@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 public class Playlist {
 
     private final String name;
@@ -27,6 +29,6 @@ public class Playlist {
     }
 
     public List<AudioTrack> getTracks() {
-        return Collections.unmodifiableList(tracks);
+        return unmodifiableList(tracks);
     }
 }

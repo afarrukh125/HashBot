@@ -1,8 +1,6 @@
 package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.data.GuildDataManager;
-import me.afarrukh.hashbot.data.GuildDataMapper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;

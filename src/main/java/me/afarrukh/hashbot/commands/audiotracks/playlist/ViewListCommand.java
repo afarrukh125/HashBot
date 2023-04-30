@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.commands.audiotracks.playlist;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.data.SQLUserDataManager;
 import me.afarrukh.hashbot.track.Playlist;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

@@ -74,7 +74,9 @@ public class PlaylistLoader {
 
         // We want to add the first track, so in case there are no tracks in the queue, the user can listen to the first
         // in the meantime
-        while (currentIndex != track.getPos()) wait();
+        while (currentIndex != track.getPos()) {
+            wait();
+        }
 
         tracks.add(track);
         currentIndex++;

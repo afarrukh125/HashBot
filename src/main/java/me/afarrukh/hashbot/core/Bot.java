@@ -12,7 +12,6 @@ import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.user.*;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.data.SQLUserDataManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -35,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 public class Bot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     public static CommandManager commandManager;
-    public static PrefixManager prefixManager;
     public static AudioTrackManager trackManager;
     private static JDA botUser;
     static ReactionManager reactionManager;
