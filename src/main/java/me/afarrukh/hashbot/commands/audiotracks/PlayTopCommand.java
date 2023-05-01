@@ -2,7 +2,6 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
@@ -25,30 +24,26 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        if (isBotConnected(evt)) return;
-
-        if (Invoker.of(evt.getMember()).getCredit() < Constants.PLAY_TOP_COST) {
-            evt.getChannel()
-                    .sendMessage("You need at least " + Constants.PLAY_TOP_COST
-                            + " credit to queue tracks to the top of the list.")
-                    .queue();
+        if (isBotConnected(evt)) {
             return;
         }
+
         GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
         if (params.split(" ").length == 1 && params.contains("http")) {
             Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
             evt.getMessage().delete().queue();
-        } else
+        } else {
             Bot.trackManager
                     .getPlayerManager()
                     .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
+        }
     }
 
     static boolean isBotConnected(MessageReceivedEvent evt) {
         if (evt.getGuild()
-                        .getMemberById(Bot.botUser().getSelfUser().getId())
-                        .getVoiceState()
-                        .getChannel()
+                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getVoiceState()
+                .getChannel()
                 != null) { // If the bot is already connected
             if (!evt.getGuild()
                     .getMemberById(Bot.botUser().getSelfUser().getId())

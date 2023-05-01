@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -50,12 +51,12 @@ public class HelpCommand extends Command {
     private List<MessageEmbed> getHelpMessageEmbeds(MessageReceivedEvent evt) {
         List<MessageEmbed> embedArrayList = new ArrayList<>();
 
-        EmbedBuilder initialEmbed = new EmbedBuilder().setColor(Constants.EMB_COL);
+        var initialEmbed = new EmbedBuilder().setColor(Constants.EMB_COL);
         initialEmbed.setTitle("Commands List (Page 1)");
 
         int pageCount = 2;
 
-        String prefix = Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix();
+        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
 
         StringBuilder sb = new StringBuilder();
 

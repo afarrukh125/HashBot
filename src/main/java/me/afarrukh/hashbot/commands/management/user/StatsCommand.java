@@ -2,8 +2,10 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.graphics.ImageLoader;
 import me.afarrukh.hashbot.graphics.Text;
+import me.afarrukh.hashbot.utils.ExperienceUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -25,6 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static java.lang.Runtime.getRuntime;
 import static java.util.Collections.synchronizedList;
+import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class StatsCommand extends Command {
@@ -59,8 +62,8 @@ public class StatsCommand extends Command {
      */
     public static ExperienceData parseLevelFromTotalExperience(long exp) {
         int level = 1;
-        while (exp > Invoker.getExperienceForNextLevel(level)) {
-            exp -= Invoker.getExperienceForNextLevel(level);
+        while (exp > ExperienceUtils.getExperienceForNextLevel(level)) {
+            exp -= ExperienceUtils.getExperienceForNextLevel(level);
             level++;
         }
         return new ExperienceData(level, exp);
@@ -81,11 +84,12 @@ public class StatsCommand extends Command {
         final int originX = 10;
         final int originY = 40;
 
-        Invoker invoker = Invoker.of(evt.getMember());
-
-        var exp = new AtomicLong((int) invoker.getExp());
-        int level = invoker.getLevel();
-        int nextLevelExp = invoker.getExpForNextLevel();
+        Database database = Database.getInstance();
+        var userId = requireNonNull(evt.getMember()).getId();
+        String guildId = evt.getGuild().getId();
+        var exp = new AtomicLong((int) database.getExperienceForUserInGuild(userId, guildId));
+        var level = database.getLevelForUserInGuild(userId, guildId);
+        var nextLevelExp = ExperienceUtils.getExperienceForNextLevel(level);
 
         boolean global = false;
 
@@ -100,9 +104,10 @@ public class StatsCommand extends Command {
                         if (m == null) {
                             return;
                         }
-                        Invoker tmpInvoker = Invoker.of(m);
-                        finalExp.addAndGet(Invoker.parseTotalExperienceFromLevel(tmpInvoker.getLevel()));
-                        finalExp.addAndGet(tmpInvoker.getExp());
+                        String nextGuildId = guild.getId();
+                        var levelInGuild = database.getLevelForUserInGuild(userId, nextGuildId);
+                        finalExp.addAndGet(ExperienceUtils.parseTotalExperienceFromLevel(levelInGuild));
+                        finalExp.addAndGet(database.getExperienceForUserInGuild(userId, nextGuildId));
                     });
                 }
                 executorService.shutdown();
@@ -113,7 +118,7 @@ public class StatsCommand extends Command {
             var data = parseLevelFromTotalExperience(exp.get());
             level = data.level();
             exp.set(data.exp());
-            nextLevelExp = Invoker.getExperienceForNextLevel(level);
+            nextLevelExp = ExperienceUtils.getExperienceForNextLevel(level);
         }
 
         BufferedImage profPic = ImageLoader.loadUrl(evt.getAuthor().getAvatarUrl());
@@ -124,8 +129,8 @@ public class StatsCommand extends Command {
         String nameString = evt.getAuthor().getName();
         if (evt.getMember().getNickname() != null
                 && (evt.getMember().getNickname().length()
-                                + evt.getAuthor().getName().length())
-                        < 24) {
+                + evt.getAuthor().getName().length())
+                < 24) {
             nameString += "(" + evt.getMember().getNickname() + ")";
         }
 
@@ -134,7 +139,7 @@ public class StatsCommand extends Command {
 
         Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, font);
         Text.drawString(
-                g, "Credit: " + invoker.getCredit(), originX, originY + 30, false, Constants.STATSIMG_COL, font);
+                g, "Credit: " + database.getCreditForUser(userId), originX, originY + 30, false, Constants.STATSIMG_COL, font);
         Text.drawString(
                 g, "Exp: " + exp + "/" + nextLevelExp, originX, originY + 60, false, Constants.STATSIMG_COL, font);
 
@@ -145,14 +150,21 @@ public class StatsCommand extends Command {
         g.setColor(Color.GRAY);
         g.fillRect(originX, originY + 80, 100 * 3, 20);
         g.setColor(Color.WHITE);
-        if (global) g.fillRect(originX, originY + 80, Invoker.getPercentageExp(exp.get(), level) * 3, 20);
-        else g.fillRect(originX, originY + 80, invoker.getPercentageExp() * 3, 20);
+        if (global) {
+            g.fillRect(originX, originY + 80, ExperienceUtils.getPercentageExperience(exp.get(), level) * 3, 20);
+        } else {
+            g.fillRect(originX, originY + 80, ExperienceUtils.getPercentageExperience(database.getExperienceForUserInGuild(userId, guildId),
+                    database.getLevelForUserInGuild(userId, guildId)) * 3, 20);
+        }
 
         if (!global) {
             Role r = null;
-            if (!evt.getMember().getRoles().isEmpty())
+            if (!evt.getMember().getRoles().isEmpty()) {
                 r = evt.getMember().getRoles().get(0);
-            if (r != null) Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), font);
+            }
+            if (r != null) {
+                Text.drawString(g, r.getName(), originX, originY + 140, false, r.getColor(), font);
+            }
         } else {
             Text.drawString(g, "Global Stats", originX, originY + 140, false, Color.WHITE, font);
         }
@@ -170,7 +182,8 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {}
+    public void onIncorrectParams(TextChannel channel) {
+    }
 
     private Graphics2D initialiseGraphics(BufferedImage bufferedImage, Font font) throws InterruptedException {
         Graphics2D g = bufferedImage.createGraphics();
@@ -258,7 +271,9 @@ public class StatsCommand extends Command {
         return outputFile;
     }
 
-    private record SubImage(int x, int y, BufferedImage bufferedImage) {}
+    private record SubImage(int x, int y, BufferedImage bufferedImage) {
+    }
 
-    public record ExperienceData(int level, long exp) {}
+    public record ExperienceData(int level, long exp) {
+    }
 }

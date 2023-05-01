@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
@@ -34,12 +34,10 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
                         .queue();
                 return;
             }
-            Bot.prefixManager.getGuildRoleManager(evt.getGuild()).setPinThreshold(newValue);
+            Database.getInstance().setPinThresholdForGuild(evt.getGuild().getId(), newValue);
             evt.getChannel()
                     .sendMessage("The pinned threshold is now "
-                            + Bot.prefixManager
-                                    .getGuildRoleManager(evt.getGuild())
-                                    .getPinThreshold())
+                            + newValue)
                     .queue();
         } catch (NumberFormatException e) {
             evt.getChannel()

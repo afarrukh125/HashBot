@@ -24,11 +24,14 @@ public class YTFirstLatentTrackHandler implements AudioLoadResultHandler {
     }
 
     @Override
-    public void playlistLoaded(AudioPlaylist audioPlaylist) {}
+    public void playlistLoaded(AudioPlaylist audioPlaylist) {
+    }
 
     @Override
-    public void noMatches() {}
+    public void noMatches() {
+    }
 
     @Override
-    public void loadFailed(FriendlyException e) {}
+    public void loadFailed(FriendlyException e) {
+    }
 }

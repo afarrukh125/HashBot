@@ -10,7 +10,10 @@ import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
-import me.afarrukh.hashbot.commands.management.user.*;
+import me.afarrukh.hashbot.commands.management.user.ClearCommand;
+import me.afarrukh.hashbot.commands.management.user.LeaderboardCommand;
+import me.afarrukh.hashbot.commands.management.user.PruneCommand;
+import me.afarrukh.hashbot.commands.management.user.StatsCommand;
 import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -75,7 +78,6 @@ public class Bot {
         LOG.info("Started and ready with bot user {}", botUser().getSelfUser().getName());
         trackManager = new AudioTrackManager();
 
-        prefixManager = new PrefixManager();
         reactionManager = new ReactionManager();
 
         setupNames();

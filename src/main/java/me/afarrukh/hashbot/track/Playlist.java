@@ -1,9 +1,6 @@
 package me.afarrukh.hashbot.track;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
@@ -12,7 +9,7 @@ public class Playlist {
 
     private final String name;
     private final int size;
-    private final List<AudioTrack> tracks;
+    private final List<PlaylistItem> tracks;
 
     public Playlist(String name, int size) {
         tracks = new ArrayList<>();
@@ -28,7 +25,7 @@ public class Playlist {
         return size;
     }
 
-    public List<AudioTrack> getTracks() {
+    public List<PlaylistItem> getItems() {
         return unmodifiableList(tracks);
     }
 }

@@ -24,6 +24,7 @@ public class CommandManager {
     private CommandManager(Builder builder) {
         this.map = builder.map;
     }
+
     public void processEvent(MessageReceivedEvent evt) {
         String[] tokens = evt.getMessage().getContentRaw().substring(1).split(" ", 2);
         final String params = (tokens.length > 1) ? tokens[1].trim() : null;

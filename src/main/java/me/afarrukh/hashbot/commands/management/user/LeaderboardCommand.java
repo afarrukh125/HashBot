@@ -37,5 +37,6 @@ public class LeaderboardCommand extends Command {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {}
+    public void onIncorrectParams(TextChannel channel) {
+    }
 }

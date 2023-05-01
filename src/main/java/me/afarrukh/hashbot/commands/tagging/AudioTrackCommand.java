@@ -7,4 +7,5 @@ import me.afarrukh.hashbot.track.GuildAudioTrackManager;
  *
  * @see GuildAudioTrackManager
  */
-public interface AudioTrackCommand extends CategorisedCommand {}
+public interface AudioTrackCommand extends CategorisedCommand {
+}

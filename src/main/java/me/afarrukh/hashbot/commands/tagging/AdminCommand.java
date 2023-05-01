@@ -9,4 +9,5 @@ package me.afarrukh.hashbot.commands.tagging;
  *
  * @see me.afarrukh.hashbot.core.CommandManager
  */
-public interface AdminCommand {}
+public interface AdminCommand {
+}

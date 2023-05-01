@@ -131,8 +131,8 @@ public class EmbedUtils {
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
                                 + Bot.prefixManager
-                                        .getGuildRoleManager(evt.getGuild())
-                                        .getPrefix() + "fairplay to turn it off.",
+                                .getGuildRoleManager(evt.getGuild())
+                                .getPrefix() + "fairplay to turn it off.",
                         null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
@@ -141,7 +141,7 @@ public class EmbedUtils {
     }
 
     /**
-     * @param at  The audio track which has been skipped to
+     * @param at The audio track which has been skipped to
      * @return Returns an embed referring to the track which has been skipped to
      */
     public static MessageEmbed getSkippedToEmbed(AudioTrack at) {

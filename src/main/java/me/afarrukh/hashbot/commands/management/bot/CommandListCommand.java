@@ -4,6 +4,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -36,15 +37,19 @@ public class CommandListCommand extends Command {
 
         int pageCount = 2;
 
-        String prefix = Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix();
+        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
 
         StringBuilder sb = new StringBuilder();
 
         for (Command c : commandList) {
-            if (c instanceof OwnerCommand || c instanceof CommandListCommand) continue;
+            if (c instanceof OwnerCommand || c instanceof CommandListCommand) {
+                continue;
+            }
 
             int descLength = 0;
-            if (c.getDescription() != null) descLength = c.getDescription().length();
+            if (c.getDescription() != null) {
+                descLength = c.getDescription().length();
+            }
             if (sb.toString().length() + descLength >= 1600) {
                 eb.appendDescription(sb.toString());
                 eb.setThumbnail(evt.getJDA().getSelfUser().getAvatarUrl());

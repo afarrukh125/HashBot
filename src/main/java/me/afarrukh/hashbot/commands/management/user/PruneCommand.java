@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -25,16 +25,14 @@ public class PruneCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         MessagePaginationAction messageHistory = evt.getChannel().getIterableHistory();
         List<Message> messageBin = new LinkedList<>();
-        GuildDataManager gdm = new GuildDataManager(evt.getGuild());
+        Database database = Database.getInstance();
         for (Message m : messageHistory) {
-            if (gdm.isBotPinMessage(m.getId())) {
+            if (database.isBotPinMessageInGuild(m.getGuild().getId(), m.getId())) {
                 continue;
             }
             if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId())
                     || m.getContentRaw()
-                            .startsWith(Bot.prefixManager
-                                    .getGuildRoleManager(evt.getGuild())
-                                    .getPrefix())) {
+                    .startsWith(database.getPrefixForGuild(evt.getGuild().getId()))) {
                 messageBin.add(m);
             }
             if (messageBin.size() == 100) {
@@ -55,8 +53,7 @@ public class PruneCommand extends Command {
             int delCount = messageBin.size();
             if (delCount < 2 || delCount > 100) {
                 delCount = 0;
-            }
-            else {
+            } else {
                 deleteAllMessagesFromBin(evt, messageBin);
             }
             Message m = evt.getChannel()
