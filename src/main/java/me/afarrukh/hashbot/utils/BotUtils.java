@@ -1,15 +1,21 @@
 package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.Optional;
 
 import static java.lang.Runtime.getRuntime;
 
 public class BotUtils {
 
     public static boolean isPinnedChannel(MessageReceivedEvent evt) {
-        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
-        return evt.getChannel().getId().equals(jgm.getValue("pinnedchannel"));
+        Optional<String> pinnedChannelIdForGuild =
+                Database.getInstance().getPinnedChannelIdForGuild(evt.getGuild().getId());
+        return pinnedChannelIdForGuild
+                .filter(s -> evt.getChannel().getId().equals(s))
+                .isPresent();
     }
 
     /**

@@ -78,10 +78,10 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
         if (startIndex
                 > Bot.trackManager
-                .getGuildAudioPlayer(evt.getGuild())
-                .getScheduler()
-                .getQueue()
-                .size()) {
+                        .getGuildAudioPlayer(evt.getGuild())
+                        .getScheduler()
+                        .getQueue()
+                        .size()) {
             evt.getChannel()
                     .sendMessage("The index provided is higher than the number of tracks in the track queue.")
                     .queue();
@@ -136,16 +136,16 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
         var maybePlaylist = database.getPlaylistForUser(playlistName, userId);
 
         if (maybePlaylist.isPresent()) {
-            evt.getChannel().sendMessage("The name you have selected for this playlist is already in use. "
+            evt.getChannel()
+                    .sendMessage("The name you have selected for this playlist is already in use. "
                             + "Please choose another")
                     .queue();
         } else {
             database.createPlaylistForUser(userId, playlistName, trackDataMap);
-            evt.getChannel().sendMessage("You have successfully created the playlist `" + params + "` with "
+            evt.getChannel()
+                    .sendMessage("You have successfully created the playlist `" + params + "` with "
                             + trackDataMap.keySet().size() + " tracks.")
                     .queue();
         }
-
-
     }
 }

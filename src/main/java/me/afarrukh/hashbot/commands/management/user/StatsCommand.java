@@ -129,8 +129,8 @@ public class StatsCommand extends Command {
         String nameString = evt.getAuthor().getName();
         if (evt.getMember().getNickname() != null
                 && (evt.getMember().getNickname().length()
-                + evt.getAuthor().getName().length())
-                < 24) {
+                                + evt.getAuthor().getName().length())
+                        < 24) {
             nameString += "(" + evt.getMember().getNickname() + ")";
         }
 
@@ -139,7 +139,13 @@ public class StatsCommand extends Command {
 
         Text.drawString(g, nameString, originX, originY, false, Constants.STATSIMG_COL, font);
         Text.drawString(
-                g, "Credit: " + database.getCreditForUser(userId), originX, originY + 30, false, Constants.STATSIMG_COL, font);
+                g,
+                "Credit: " + database.getCreditForUser(userId),
+                originX,
+                originY + 30,
+                false,
+                Constants.STATSIMG_COL,
+                font);
         Text.drawString(
                 g, "Exp: " + exp + "/" + nextLevelExp, originX, originY + 60, false, Constants.STATSIMG_COL, font);
 
@@ -153,8 +159,14 @@ public class StatsCommand extends Command {
         if (global) {
             g.fillRect(originX, originY + 80, ExperienceUtils.getPercentageExperience(exp.get(), level) * 3, 20);
         } else {
-            g.fillRect(originX, originY + 80, ExperienceUtils.getPercentageExperience(database.getExperienceForUserInGuild(userId, guildId),
-                    database.getLevelForUserInGuild(userId, guildId)) * 3, 20);
+            g.fillRect(
+                    originX,
+                    originY + 80,
+                    ExperienceUtils.getPercentageExperience(
+                                    database.getExperienceForUserInGuild(userId, guildId),
+                                    database.getLevelForUserInGuild(userId, guildId))
+                            * 3,
+                    20);
         }
 
         if (!global) {
@@ -182,8 +194,7 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
-    }
+    public void onIncorrectParams(TextChannel channel) {}
 
     private Graphics2D initialiseGraphics(BufferedImage bufferedImage, Font font) throws InterruptedException {
         Graphics2D g = bufferedImage.createGraphics();
@@ -271,9 +282,7 @@ public class StatsCommand extends Command {
         return outputFile;
     }
 
-    private record SubImage(int x, int y, BufferedImage bufferedImage) {
-    }
+    private record SubImage(int x, int y, BufferedImage bufferedImage) {}
 
-    public record ExperienceData(int level, long exp) {
-    }
+    public record ExperienceData(int level, long exp) {}
 }

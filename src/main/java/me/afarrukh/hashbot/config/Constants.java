@@ -80,8 +80,7 @@ public class Constants {
 
         ownerIds = new HashSet<>();
 
-        if (new File("res/config").mkdirs()) {
-        }
+        if (new File("res/config").mkdirs()) {}
 
         try {
             JSONArray arr = (JSONArray) new JSONParser().parse(new FileReader(file));
@@ -119,8 +118,7 @@ public class Constants {
     }
 
     private static void createJsonFile() {
-        if (new File("res/config").mkdirs()) {
-        }
+        if (new File("res/config").mkdirs()) {}
 
         File src = new File("settings_template.json");
         File dest = new File("res/config/settings.json");

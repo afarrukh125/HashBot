@@ -11,13 +11,6 @@ import java.util.stream.Collectors;
 
 public class LevelUtils {
 
-    /**
-     * Sorts the members of a guild in order of their level and experience points (score)
-     * Uses TimSort
-     *
-     * @param g The guild to get the member list from
-     * @return An array of type User which returns a sorted array of User objects
-     */
     public static List<Member> getLeaderboard(Guild g) {
         return SQLUserDataManager.getMemberData(g);
     }

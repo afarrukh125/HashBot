@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -130,9 +131,8 @@ public class EmbedUtils {
             if (ts.isFairPlay())
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
-                                + Bot.prefixManager
-                                .getGuildRoleManager(evt.getGuild())
-                                .getPrefix() + "fairplay to turn it off.",
+                                + Database.getInstance()
+                                        .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
@@ -235,10 +235,14 @@ public class EmbedUtils {
             maxMembers = memberList.size();
         }
 
+        Database database = Database.getInstance();
+        String guildId = evt.getGuild().getId();
+        String userId = evt.getMember().getId();
+        var level = database.getLevelForUserInGuild(userId, guildId);
+        var exp = database.getExperienceForUserInGuild(userId, guildId);
         for (int i = 0; i < maxMembers; i++) {
-            Invoker inv = Invoker.of(memberList.get(i));
-            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: "
-                    + inv.getLevel() + "` | `Experience: " + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
+            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: " + level
+                    + "` | `Experience: " + exp + "/" + ExperienceUtils.getExperienceForNextLevel(level) + "`\n\n");
         }
         eb.setThumbnail(evt.getGuild().getIconUrl());
         return eb.build();
@@ -261,12 +265,17 @@ public class EmbedUtils {
 
         int maxIndex = memberList.size();
 
-        if (maxIndex > 10) maxIndex = 10;
+        if (maxIndex > 10) {
+            maxIndex = 10;
+        }
+
+        Database database = Database.getInstance();
 
         for (int i = 0; i < maxIndex; i++) {
-            Invoker invoker = Invoker.of(memberList.get(i));
-            eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: "
-                    + invoker.getCredit() + "`\n\n");
+            Member member = memberList.get(i);
+            String effectiveName = member.getEffectiveName();
+            eb.appendDescription((i + 1) + ". | **" + effectiveName + "** | `Credits: "
+                    + database.getCreditForUser(member.getId()) + "`\n\n");
         }
 
         eb.setThumbnail(evt.getGuild().getIconUrl());

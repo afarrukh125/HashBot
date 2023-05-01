@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -25,9 +26,8 @@ public class AudioTrackUtils {
             MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
 
         connectToChannel(evt.getMember());
-        Invoker invoker = Invoker.of(evt.getMember());
         if (playTop) {
-            invoker.addCredit(-Constants.PLAY_TOP_COST);
+            Database.getInstance().addCreditForUser(evt.getMember().getId(), -Constants.PLAY_TOP_COST);
             trackManager.getScheduler().queueTop(track);
         } else {
             trackManager.getScheduler().queue(track);
@@ -43,11 +43,6 @@ public class AudioTrackUtils {
                     .queue();
     }
 
-    /**
-     * Connects to a voice channel
-     *
-     * @param caller The user who called the command that caused the bot to connect
-     */
     public static void connectToChannel(Member caller) {
         if (!caller.getGuild().getAudioManager().isConnected()) {
             if (caller.getVoiceState().inAudioChannel()) {
@@ -57,11 +52,6 @@ public class AudioTrackUtils {
         }
     }
 
-    /**
-     * Disconnects the bot from the channel provided in the provided message event
-     *
-     * @param guild The guild to disconnect the bot from
-     */
     public static void disconnect(Guild guild) {
         GuildAudioTrackManager gm = Bot.trackManager.getGuildAudioPlayer(guild);
         if (gm.getPlayer().getPlayingTrack() != null)
@@ -95,10 +85,10 @@ public class AudioTrackUtils {
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
         if (evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
-                .getVoiceState()
-                .getChannel()
-                == null
+                                .getMemberById(Bot.botUser().getSelfUser().getId())
+                                .getVoiceState()
+                                .getChannel()
+                        == null
                 || evt.getMember().getVoiceState().getChannel() == null) {
             return false;
         }

@@ -36,8 +36,7 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
             }
             Database.getInstance().setPinThresholdForGuild(evt.getGuild().getId(), newValue);
             evt.getChannel()
-                    .sendMessage("The pinned threshold is now "
-                            + newValue)
+                    .sendMessage("The pinned threshold is now " + newValue)
                     .queue();
         } catch (NumberFormatException e) {
             evt.getChannel()

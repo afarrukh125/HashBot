@@ -74,7 +74,8 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                 } else {
                     // If it is not a range
                     if (range.split("-").length == 1) {
-                        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
+                        var prefix = Database.getInstance()
+                                .getPrefixForGuild(evt.getGuild().getId());
                         errorMessageBuilder
                                 .append("- Range ")
                                 .append(range)

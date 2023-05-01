@@ -35,21 +35,21 @@ public class MoveCommand extends Command implements AudioTrackCommand {
 
                 if (oldPos < 0
                         || newPos + 1
-                        > Bot.trackManager
-                        .getGuildAudioPlayer(evt.getGuild())
-                        .getScheduler()
-                        .getAsArrayList()
-                        .size()) {
+                                > Bot.trackManager
+                                        .getGuildAudioPlayer(evt.getGuild())
+                                        .getScheduler()
+                                        .getAsArrayList()
+                                        .size()) {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }
                 if (newPos < 0
                         || oldPos + 1
-                        > Bot.trackManager
-                        .getGuildAudioPlayer(evt.getGuild())
-                        .getScheduler()
-                        .getAsArrayList()
-                        .size()) {
+                                > Bot.trackManager
+                                        .getGuildAudioPlayer(evt.getGuild())
+                                        .getScheduler()
+                                        .getAsArrayList()
+                                        .size()) {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }

@@ -164,13 +164,18 @@ public abstract class Command {
         if (!parameters.keySet().isEmpty()) {
             stringBuilder.append("**Parameters:** \n");
             for (String parameter : parameters.keySet())
-                stringBuilder.append("**")
+                stringBuilder
+                        .append("**")
                         .append("- ")
                         .append(parameter)
                         .append(":** ")
                         .append(parameters.get(parameter))
                         .append("\n\n");
-            stringBuilder.append("**Template usage:** ").append(prefix).append(name).append(" ");
+            stringBuilder
+                    .append("**Template usage:** ")
+                    .append(prefix)
+                    .append(name)
+                    .append(" ");
             for (String param : parameters.keySet())
                 stringBuilder.append("<").append(param).append("> ");
             stringBuilder.append("\n\n");

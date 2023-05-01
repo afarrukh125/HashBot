@@ -41,9 +41,9 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
 
     static boolean isBotConnected(MessageReceivedEvent evt) {
         if (evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
-                .getVoiceState()
-                .getChannel()
+                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getVoiceState()
+                        .getChannel()
                 != null) { // If the bot is already connected
             if (!evt.getGuild()
                     .getMemberById(Bot.botUser().getSelfUser().getId())

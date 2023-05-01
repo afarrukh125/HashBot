@@ -12,18 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Created by Abdullah on 15/04/2019 19:36
- */
 public class MessageUtils {
-
-    /**
-     * Pin a message based on an original message
-     * Plenty of unpleasant code in this method, because of the way EmbedBuilder can return null values from JDA.
-     *
-     * @param originalMessage The original message to pin
-     * @param channel         The channel to send the new pinned message to
-     */
     public static void pinMessage(Message originalMessage, MessageChannel channel) {
 
         EmbedBuilder eb = new EmbedBuilder();
@@ -48,8 +37,7 @@ public class MessageUtils {
         calendar.setTimeInMillis(originalMessage.getTimeCreated().toInstant().toEpochMilli());
 
         eb.setFooter(
-                originalMessage.getChannel().getName() + " - "
-                        + calendar.getTime(),
+                originalMessage.getChannel().getName() + " - " + calendar.getTime(),
                 originalMessage.getAuthor().getAvatarUrl());
 
         // Just copy the original embed if there is one with our title and footer
@@ -78,7 +66,9 @@ public class MessageUtils {
         eb.appendDescription("\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
         Message newMessage = channel.sendMessageEmbeds(eb.build()).complete();
 
-        Database.getInstance().setMessageAsPinnedInGuild(originalMessage.getGuild().getId(), originalMessage.getId(), newMessage.getId());
+        Database.getInstance()
+                .setMessageAsPinnedInGuild(
+                        originalMessage.getGuild().getId(), originalMessage.getId(), newMessage.getId());
     }
 
     public static void deleteAllMessagesFromBin(MessageReceivedEvent evt, List<Message> messageBin) {

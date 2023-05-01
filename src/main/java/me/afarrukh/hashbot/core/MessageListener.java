@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.BotUtils;
@@ -25,20 +26,22 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
-        if (evt.getAuthor().isBot()) return;
+        if (evt.getAuthor().isBot()) {
+            return;
+        }
         if (evt.getMessage()
                 .getContentRaw()
                 .startsWith(
-                        Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+                        Database.getInstance().getPrefixForGuild(evt.getGuild().getId()))) {
             Bot.commandManager.processEvent(evt);
             return;
         }
 
         if (BotUtils.isPinnedChannel(evt)
                 && !evt.getMember()
-                .getUser()
-                .getId()
-                .equals(Bot.botUser().getSelfUser().getId())) {
+                        .getUser()
+                        .getId()
+                        .equals(Bot.botUser().getSelfUser().getId())) {
             evt.getMessage().delete().queue();
             return;
         }

@@ -234,7 +234,6 @@ public class TrackScheduler extends AudioEventAdapter {
         queue.addAll(trackList); // Repopulate with array list elements
     }
 
-
     public void interleave(boolean shuffle) {
         List<AudioTrack> tracks = getAsArrayList();
         LinkedList<String> userNames = new LinkedList<>();

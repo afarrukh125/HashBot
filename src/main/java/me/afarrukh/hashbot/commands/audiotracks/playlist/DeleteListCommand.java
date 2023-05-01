@@ -23,8 +23,9 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
         var viewListCommandName = new ViewListCommand().getName();
         if (params == null) {
             evt.getChannel()
-                    .sendMessage(("You need to provide the name of the playlist you would like to delete. " +
-                            "Use %s%s to view your playlists.").formatted(prefix, viewListCommandName))
+                    .sendMessage(("You need to provide the name of the playlist you would like to delete. "
+                                    + "Use %s%s to view your playlists.")
+                            .formatted(prefix, viewListCommandName))
                     .queue();
             return;
         }
@@ -34,10 +35,18 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
         var playlistName = params;
 
         String memberId = requireNonNull(evt.getMember()).getId();
-        database.getPlaylistForUser(playlistName, memberId).ifPresentOrElse(playlist -> {
-            var listSize = playlist.getSize();
-            database.deletePlaylistForUser(playlistName, memberId);
-            evt.getChannel().sendMessage("Successfully deleted the playlist " + playlistName + " with " + listSize + " tracks").queue();
-        }, () -> evt.getChannel().sendMessage("There is no playlist with the name " + playlistName + ".").queue());
+        database.getPlaylistForUser(playlistName, memberId)
+                .ifPresentOrElse(
+                        playlist -> {
+                            var listSize = playlist.getSize();
+                            database.deletePlaylistForUser(playlistName, memberId);
+                            evt.getChannel()
+                                    .sendMessage("Successfully deleted the playlist " + playlistName + " with "
+                                            + listSize + " tracks")
+                                    .queue();
+                        },
+                        () -> evt.getChannel()
+                                .sendMessage("There is no playlist with the name " + playlistName + ".")
+                                .queue());
     }
 }

@@ -18,14 +18,11 @@ import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,6 +31,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
 public class Bot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     public static CommandManager commandManager;
@@ -41,7 +40,7 @@ public class Bot {
     private static JDA botUser;
     static ReactionManager reactionManager;
     private final String token;
-    private CommandLineInputManager ownerInputManager;
+    private CommandLineInputManager commandLineInputManager;
 
     /**
      * Creates our JDA user
@@ -79,17 +78,14 @@ public class Bot {
         trackManager = new AudioTrackManager();
 
         reactionManager = new ReactionManager();
+        commandLineInputManager = new CommandLineInputManager();
 
-        setupNames();
-
-        ownerInputManager = new CommandLineInputManager();
-
-        try (ExecutorService cliExecutor = Executors.newSingleThreadExecutor()) {
+        try (ExecutorService cliExecutor = newSingleThreadExecutor()) {
             cliExecutor.execute(() -> {
                 while (true) {
                     Scanner scanner = new Scanner(System.in);
                     String input = scanner.nextLine();
-                    ownerInputManager.processInput(input);
+                    commandLineInputManager.processInput(input);
                 }
             });
         }
@@ -197,20 +193,5 @@ public class Bot {
                 .addCommand(new UptimeCommand())
                 .addCommand(new ViewListCommand())
                 .build();
-    }
-
-    private void setupNames() {
-        for (Guild g : botUser().getGuilds()) {
-            try {
-                SQLUserDataManager.updateUsernames(g);
-                for (Member m : g.getMembers()) {
-                    if (!SQLUserDataManager.getUserData(m).next()) {
-                        SQLUserDataManager.addMember(m);
-                    }
-                }
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

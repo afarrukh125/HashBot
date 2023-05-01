@@ -7,5 +7,4 @@ import me.afarrukh.hashbot.config.Constants;
  *
  * @see Constants#init()
  */
-public interface OwnerCommand {
-}
+public interface OwnerCommand {}

@@ -40,4 +40,10 @@ public interface Database {
     long getExperienceForUserInGuild(String userId, String guildId);
 
     String getCreditForUser(String userId);
+
+    Optional<String> getPinnedChannelIdForGuild(String id);
+
+    int getPinThresholdForGuild(String id);
+
+    void addCreditForUser(String userId, int amount);
 }
