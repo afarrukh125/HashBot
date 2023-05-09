@@ -220,35 +220,6 @@ public class EmbedUtils {
     }
 
     /**
-     * @param memberList An array of members which are sorted by order of experience
-     * @param evt        The message received event associated with the leaderboard request
-     * @return An embed that refers to the leaderboard of the users sorted by their credit
-     */
-    public static MessageEmbed getLeaderboard(java.util.List<Member> memberList, MessageReceivedEvent evt) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.setTitle("The leaderboard for " + evt.getGuild().getName() + ":");
-
-        int maxMembers = Constants.LEADERBOARD_MAX;
-
-        if (memberList.size() < maxMembers) {
-            maxMembers = memberList.size();
-        }
-
-        Database database = Database.getInstance();
-        String guildId = evt.getGuild().getId();
-        String userId = evt.getMember().getId();
-        var level = database.getLevelForUserInGuild(userId, guildId);
-        var exp = database.getExperienceForUserInGuild(userId, guildId);
-        for (int i = 0; i < maxMembers; i++) {
-            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: " + level
-                    + "` | `Experience: " + exp + "/" + ExperienceUtils.getExperienceForNextLevel(level) + "`\n\n");
-        }
-        eb.setThumbnail(evt.getGuild().getIconUrl());
-        return eb.build();
-    }
-
-    /**
      * @return An embed which informs that nothing is playing right now
      */
     public static MessageEmbed getNothingPlayingEmbed() {
@@ -256,29 +227,5 @@ public class EmbedUtils {
                 .setDescription("Nothing playing right now.")
                 .setColor(Constants.EMB_COL)
                 .build();
-    }
-
-    public static MessageEmbed getCreditsLeaderboardEmbed(java.util.List<Member> memberList, MessageReceivedEvent evt) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.setTitle("Credits leaderboard for " + evt.getGuild().getName());
-
-        int maxIndex = memberList.size();
-
-        if (maxIndex > 10) {
-            maxIndex = 10;
-        }
-
-        Database database = Database.getInstance();
-
-        for (int i = 0; i < maxIndex; i++) {
-            Member member = memberList.get(i);
-            String effectiveName = member.getEffectiveName();
-            eb.appendDescription((i + 1) + ". | **" + effectiveName + "** | `Credits: "
-                    + database.getCreditForUser(member.getId()) + "`\n\n");
-        }
-
-        eb.setThumbnail(evt.getGuild().getIconUrl());
-        return eb.build();
     }
 }

@@ -27,7 +27,6 @@ public class AudioTrackUtils {
 
         connectToChannel(evt.getMember());
         if (playTop) {
-            Database.getInstance().addCreditForUser(evt.getMember().getId(), -Constants.PLAY_TOP_COST);
             trackManager.getScheduler().queueTop(track);
         } else {
             trackManager.getScheduler().queue(track);

@@ -11,9 +11,7 @@ import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.user.ClearCommand;
-import me.afarrukh.hashbot.commands.management.user.LeaderboardCommand;
 import me.afarrukh.hashbot.commands.management.user.PruneCommand;
-import me.afarrukh.hashbot.commands.management.user.StatsCommand;
 import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -133,13 +131,6 @@ public class Bot {
                             CacheFlag.STICKER)
                     .build()
                     .awaitReady();
-
-            Timer experienceTimer = new Timer();
-            experienceTimer.schedule(
-                    new VoiceExperienceTimer(),
-                    Constants.VOICE_EXPERIENCE_TIMER * 1000,
-                    Constants.VOICE_EXPERIENCE_TIMER * 1000);
-
             startUpMessages();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -159,7 +150,6 @@ public class Bot {
                 .addCommand(new FairShuffleCommand())
                 .addCommand(new HelpCommand())
                 .addCommand(new InterleaveCommand())
-                .addCommand(new LeaderboardCommand())
                 .addCommand(new LoadListCommand())
                 .addCommand(new LoopCommand())
                 .addCommand(new LoopQueueCommand())
@@ -189,7 +179,6 @@ public class Bot {
                 .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand())
                 .addCommand(new SortByLengthCommand())
-                .addCommand(new StatsCommand())
                 .addCommand(new UptimeCommand())
                 .addCommand(new ViewListCommand())
                 .build();

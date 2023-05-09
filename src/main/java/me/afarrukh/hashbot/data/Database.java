@@ -35,15 +35,11 @@ public interface Database {
 
     boolean isBotPinMessageInGuild(String guildId, String messageId);
 
-    int getLevelForUserInGuild(String userId, String guildId);
-
-    long getExperienceForUserInGuild(String userId, String guildId);
-
-    String getCreditForUser(String userId);
-
     Optional<String> getPinnedChannelIdForGuild(String id);
 
     int getPinThresholdForGuild(String id);
 
-    void addCreditForUser(String userId, int amount);
+    void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId);
+
+    void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId);
 }
