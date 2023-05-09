@@ -12,7 +12,7 @@ import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.user.ClearCommand;
 import me.afarrukh.hashbot.commands.management.user.PruneCommand;
-import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.config.Config;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -37,21 +36,20 @@ public class Bot {
     public static AudioTrackManager trackManager;
     private static JDA botUser;
     static ReactionManager reactionManager;
-    private final String token;
+    private static Config config;
     private CommandLineInputManager commandLineInputManager;
 
-    /**
-     * Creates our JDA user
-     *
-     * @param token The unique token used to log in to the discord servers
-     */
-    public Bot(String token) throws InterruptedException {
-        this.token = token;
+    public Bot(Config config) throws InterruptedException {
+        Bot.config = config;
         init();
     }
 
     public static JDA botUser() {
         return botUser;
+    }
+
+    public static Config getConfig() {
+        return config;
     }
 
     /**
@@ -114,7 +112,7 @@ public class Bot {
     private void initialiseBotUser() {
         try {
             botUser = JDABuilder.create(
-                            token,
+                            config.getBotToken(),
                             GatewayIntent.DIRECT_MESSAGES,
                             GatewayIntent.GUILD_MEMBERS,
                             GatewayIntent.GUILD_MESSAGES,

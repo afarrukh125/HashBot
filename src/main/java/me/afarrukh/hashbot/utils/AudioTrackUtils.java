@@ -5,7 +5,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -84,10 +83,10 @@ public class AudioTrackUtils {
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
         if (evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId())
-                                .getVoiceState()
-                                .getChannel()
-                        == null
+                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getVoiceState()
+                .getChannel()
+                == null
                 || evt.getMember().getVoiceState().getChannel() == null) {
             return false;
         }

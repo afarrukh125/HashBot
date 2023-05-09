@@ -78,10 +78,10 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
         if (startIndex
                 > Bot.trackManager
-                        .getGuildAudioPlayer(evt.getGuild())
-                        .getScheduler()
-                        .getQueue()
-                        .size()) {
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler()
+                .getQueue()
+                .size()) {
             evt.getChannel()
                     .sendMessage("The index provided is higher than the number of tracks in the track queue.")
                     .queue();

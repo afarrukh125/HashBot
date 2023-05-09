@@ -24,7 +24,7 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
         if (params == null) {
             evt.getChannel()
                     .sendMessage(("You need to provide the name of the playlist you would like to delete. "
-                                    + "Use %s%s to view your playlists.")
+                            + "Use %s%s to view your playlists.")
                             .formatted(prefix, viewListCommandName))
                     .queue();
             return;

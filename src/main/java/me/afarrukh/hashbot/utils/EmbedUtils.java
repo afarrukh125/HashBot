@@ -8,7 +8,6 @@ import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -132,7 +131,7 @@ public class EmbedUtils {
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
                                 + Database.getInstance()
-                                        .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
+                                .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));

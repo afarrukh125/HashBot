@@ -1,23 +1,25 @@
 package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
+import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.track.Playlist;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class Neo4jDatabase implements Database {
+
+    private final Driver driver;
+
+    public Neo4jDatabase(Config config) {
+        driver = GraphDatabase.driver(config.getDbUri(), AuthTokens.basic(config.getDbUsername(), config.getDbPassword()));
+    }
+
     // TODO implement
-    @Override
-    public Optional<Playlist> getPlaylistForUser(String playlistName, String userId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public void deletePlaylistForUser(String playlistName, String userId) {
-
-    }
 
     @Override
     public String getPrefixForGuild(String guildId) {
@@ -25,7 +27,17 @@ public class Neo4jDatabase implements Database {
     }
 
     @Override
+    public Optional<Playlist> getPlaylistForUser(String playlistName, String userId) {
+        return Optional.empty();
+    }
+
+    @Override
     public void createPlaylistForUser(String userId, String playlistName, Map<String, TrackData> trackDataMap) {
+
+    }
+
+    @Override
+    public void deletePlaylistForUser(String playlistName, String userId) {
 
     }
 
