@@ -4,7 +4,6 @@ import me.afarrukh.hashbot.graphics.FontLoader;
 
 import java.awt.*;
 
-@SuppressWarnings("unchecked")
 public class Constants {
     public static final int MAX_PLAYLIST_SIZE = 400;
     public static final int DISCONNECT_DELAY =
@@ -30,8 +29,8 @@ public class Constants {
     private static Constants instance;
 
     private Constants() {
-        font28 = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 28);
-        bigNumFont = FontLoader.loadFont("res/fonts/VCR_OSD_MONO.ttf", 36);
+        font28 = FontLoader.loadFont("fonts/VCR_OSD_MONO.ttf", 28);
+        bigNumFont = FontLoader.loadFont("fonts/VCR_OSD_MONO.ttf", 36);
     }
 
     public static Constants getInstance() {
@@ -43,6 +42,7 @@ public class Constants {
 
     public static void init() {
         timeStarted = System.currentTimeMillis();
+        getInstance();
     }
 
     public Font font28() {
