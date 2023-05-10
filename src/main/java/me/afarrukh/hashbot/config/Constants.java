@@ -7,7 +7,7 @@ import java.awt.*;
 public class Constants {
     public static final int MAX_PLAYLIST_SIZE = 400;
     public static final int DISCONNECT_DELAY =
-            5; // The amount of seconds to wait before disconnecting after a user leaves
+            60; // The amount of seconds to wait before disconnecting after a user leaves
     public static final int AudioTrackBAR_SCALE = 35;
     public static final int MAX_VOL = 100; // The maximum volume the bot can play at.
     public static final String SELECTEDPOS = "full_moon";
