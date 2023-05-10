@@ -2,8 +2,10 @@ package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +22,7 @@ public interface Database {
 
     String getPrefixForGuild(String guildId);
 
-    void createPlaylistForUser(String userId, String playlistName, Map<String, TrackData> trackDataMap);
+    void createPlaylistForUser(String userId, String playlistName, Collection<TrackData> trackDataMap) throws PlaylistException;
 
     List<Playlist> getAllPlaylistsForUser(String userId);
 

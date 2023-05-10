@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.track;
 
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +10,13 @@ import static java.util.Collections.unmodifiableList;
 public class Playlist {
 
     private final String name;
-    private final int size;
     private final List<PlaylistItem> tracks;
+    private final int size;
 
-    public Playlist(String name, int size) {
-        tracks = new ArrayList<>();
+    public Playlist(String name, List<PlaylistItem> tracks) {
         this.name = name;
-        this.size = size;
+        this.tracks = tracks;
+        this.size = tracks.size();
     }
 
     public String getName() {

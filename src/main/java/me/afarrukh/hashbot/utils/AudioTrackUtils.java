@@ -52,8 +52,9 @@ public class AudioTrackUtils {
 
     public static void disconnect(Guild guild) {
         GuildAudioTrackManager gm = Bot.trackManager.getGuildAudioPlayer(guild);
-        if (gm.getPlayer().getPlayingTrack() != null)
+        if (gm.getPlayer().getPlayingTrack() != null) {
             gm.getPlayer().getPlayingTrack().stop();
+        }
         gm.getScheduler().getQueue().clear();
         gm.getScheduler().setLoopingQueue(false);
         gm.getScheduler().setLooping(false);

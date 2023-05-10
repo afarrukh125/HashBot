@@ -6,6 +6,7 @@ import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.data.Database;
+import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -78,10 +79,10 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
         if (startIndex
                 > Bot.trackManager
-                .getGuildAudioPlayer(evt.getGuild())
-                .getScheduler()
-                .getQueue()
-                .size()) {
+                        .getGuildAudioPlayer(evt.getGuild())
+                        .getScheduler()
+                        .getQueue()
+                        .size()) {
             evt.getChannel()
                     .sendMessage("The index provided is higher than the number of tracks in the track queue.")
                     .queue();
@@ -89,7 +90,7 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
         }
 
         // Ensuring all tracks in the list are unique
-        Map<String, TrackData> trackDataMap = new LinkedHashMap<>();
+        Collection<TrackData> trackData = new LinkedHashSet<>();
         int added = 0;
 
         Map<String, String> userIdMap = new HashMap<>();
@@ -110,10 +111,10 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
             }
 
             String trackUri = track.getInfo().uri;
-            trackDataMap.put(trackUri, new TrackData(track.getInfo().title, id));
+            trackData.add(new TrackData(trackUri));
         }
 
-        if (trackDataMap.keySet().size() < 2) {
+        if (trackData.size() < 2) {
             evt.getChannel()
                     .sendMessage(
                             "You must have at least 1 track playing, and 1 track in the queue (2 total) to create a playlist")
@@ -121,7 +122,7 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        if (trackDataMap.keySet().size() > Constants.CUSTOM_PLAYLIST_SIZE_LIMIT) {
+        if (trackData.size() > Constants.CUSTOM_PLAYLIST_SIZE_LIMIT) {
             evt.getChannel()
                     .sendMessage("You can only save playlists that have " + Constants.CUSTOM_PLAYLIST_SIZE_LIMIT
                             + " tracks or less.")
@@ -133,19 +134,18 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
         var userId = evt.getMember().getId();
 
         var playlistName = params;
-        var maybePlaylist = database.getPlaylistForUser(playlistName, userId);
 
-        if (maybePlaylist.isPresent()) {
+        try {
+            database.createPlaylistForUser(userId, playlistName, trackData);
+        } catch (PlaylistException e) {
             evt.getChannel()
                     .sendMessage("The name you have selected for this playlist is already in use. "
                             + "Please choose another")
                     .queue();
-        } else {
-            database.createPlaylistForUser(userId, playlistName, trackDataMap);
-            evt.getChannel()
-                    .sendMessage("You have successfully created the playlist `" + params + "` with "
-                            + trackDataMap.keySet().size() + " tracks.")
-                    .queue();
         }
+        evt.getChannel()
+                .sendMessage("You have successfully created the playlist `" + params + "` with " + trackData.size()
+                        + " tracks.")
+                .queue();
     }
 }

@@ -42,7 +42,8 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
 
         //noinspection UnnecessaryLocalVariable
         var playlistName = params;
-        var maybePlaylist = database.getPlaylistForUser(playlistName, member.getId());
+        String memberId = member.getId();
+        var maybePlaylist = database.getPlaylistForUser(playlistName, memberId);
         maybePlaylist.ifPresentOrElse(
                 playlist -> {
                     int playlistSize = playlist.getSize();
@@ -60,14 +61,14 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
                     playerManager.loadItemOrdered(
                             guildAudioPlayer,
                             firstItem.uri(),
-                            new YTFirstLatentTrackHandler(member, firstItem.userId()));
+                            new YTFirstLatentTrackHandler(member, memberId));
                     int idx = 0;
                     while (iterator.hasNext()) {
                         var nextItem = iterator.next();
                         playerManager.loadItemOrdered(
                                 guildAudioPlayer,
                                 nextItem.uri(),
-                                new YTLatentTrackHandler(member, idx++, playlistLoader, nextItem.userId()));
+                                new YTLatentTrackHandler(member, idx++, playlistLoader, memberId));
                     }
                 },
                 sendPlaylistNotFoundMessage(evt, playlistName));
