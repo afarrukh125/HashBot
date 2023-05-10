@@ -71,10 +71,10 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
-        Bot.trackManager
+        Timer disconnectTimer = Bot.trackManager
                 .getGuildAudioPlayer(guild)
-                .getDisconnectTimer()
-                .schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
+                .getDisconnectTimer();
+        disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
         if (isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();
@@ -90,7 +90,9 @@ public class TrackScheduler extends AudioEventAdapter {
             queue(cloneTrack);
         }
 
-        if (endReason.mayStartNext) nextTrack();
+        if (endReason.mayStartNext) {
+            nextTrack();
+        }
     }
 
     /**

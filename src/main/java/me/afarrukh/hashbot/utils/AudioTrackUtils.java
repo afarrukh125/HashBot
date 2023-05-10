@@ -54,15 +54,16 @@ public class AudioTrackUtils {
         GuildAudioTrackManager gm = Bot.trackManager.getGuildAudioPlayer(guild);
         if (gm.getPlayer().getPlayingTrack() != null) {
             gm.getPlayer().getPlayingTrack().stop();
+        } else {
+            // TODO hack since if there is a track running it will also cause bot user to disconnect which also schedules a timer that has been cancelled
+            gm.getDisconnectTimer().cancel();
         }
         gm.getScheduler().getQueue().clear();
         gm.getScheduler().setLoopingQueue(false);
         gm.getScheduler().setLooping(false);
         gm.getPlayer().setPaused(false);
-        gm.getDisconnectTimer().cancel();
         guild.getAudioManager().closeAudioConnection();
         gm.getPlayer().destroy();
-        System.gc();
     }
 
     /**
@@ -73,7 +74,9 @@ public class AudioTrackUtils {
      */
     public static String getPlaylistDuration(AudioPlaylist pl) {
         long duration = 0;
-        for (AudioTrack t : pl.getTracks()) duration += t.getDuration();
+        for (AudioTrack t : pl.getTracks()) {
+            duration += t.getDuration();
+        }
 
         return CmdUtils.longToHHMMSS(duration);
     }
@@ -84,10 +87,10 @@ public class AudioTrackUtils {
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
         if (evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
-                .getVoiceState()
-                .getChannel()
-                == null
+                                .getMemberById(Bot.botUser().getSelfUser().getId())
+                                .getVoiceState()
+                                .getChannel()
+                        == null
                 || evt.getMember().getVoiceState().getChannel() == null) {
             return false;
         }

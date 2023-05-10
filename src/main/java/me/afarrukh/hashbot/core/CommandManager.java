@@ -42,11 +42,7 @@ public class CommandManager {
 
         if (command != null) {
             this.commandCount += 1;
-            new Thread(() -> {
-                command.onInvocation(
-                        evt, params); // Only does the command onInvocation method if class is valid
-            })
-                    .start();
+            command.onInvocation(evt, params);
         }
     }
 
