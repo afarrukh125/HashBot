@@ -63,6 +63,10 @@ class ReactionManager {
                 return;
             }
 
+            if (database.isMessagePinnedInGuild(evt.getGuild().getId(), evt.getMessageId())) {
+                return;
+            }
+
             MessageUtils.pinMessage(message, channel);
         });
     }

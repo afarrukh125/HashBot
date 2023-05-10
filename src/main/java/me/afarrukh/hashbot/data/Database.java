@@ -21,7 +21,8 @@ public interface Database {
 
     String getPrefixForGuild(String guildId);
 
-    void createPlaylistForUser(String userId, String playlistName, Collection<TrackData> trackDataMap) throws PlaylistException;
+    void createPlaylistForUser(String userId, String playlistName, Collection<TrackData> trackDataMap)
+            throws PlaylistException;
 
     List<Playlist> getAllPlaylistsForUser(String userId);
 
@@ -44,4 +45,6 @@ public interface Database {
     void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId);
 
     void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId);
+
+    boolean isMessagePinnedInGuild(String guildId, String originalMessageId);
 }

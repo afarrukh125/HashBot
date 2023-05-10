@@ -173,6 +173,20 @@ public class Neo4jDatabase implements Database {
     }
 
     @Override
+    public boolean isMessagePinnedInGuild(String guildId, String originalMessageId) {
+        Map<String, Object> parameters = Map.of("guild_id", guildId, "message_id", originalMessageId);
+        var result = driver.session()
+                .run(
+                        """
+                                MATCH (g:Guild)-[:HAS_PINNED_MESSAGE]->(p:PinnedMessage)
+                                WHERE g.id = $guild_id
+                                AND p.originalMessageId = $message_id
+                                RETURN p""",
+                        parameters);
+        return result.hasNext();
+    }
+
+    @Override
     public void setMessageAsPinnedInGuild(String guildId, String originalMessageId, String newMessageId) {
         Map<String, Object> parameters =
                 Map.of("guild_id", guildId, "original_message_id", originalMessageId, "new_message_id", newMessageId);
