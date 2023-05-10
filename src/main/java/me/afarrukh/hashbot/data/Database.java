@@ -7,7 +7,6 @@ import me.afarrukh.hashbot.track.Playlist;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface Database {
@@ -18,7 +17,7 @@ public interface Database {
 
     Optional<Playlist> getPlaylistForUser(String playlistName, String userId);
 
-    void deletePlaylistForUser(String playlistName, String userId);
+    boolean deletePlaylistForUser(String playlistName, String userId);
 
     String getPrefixForGuild(String guildId);
 

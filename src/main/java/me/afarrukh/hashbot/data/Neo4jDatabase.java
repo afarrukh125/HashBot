@@ -26,8 +26,6 @@ public class Neo4jDatabase implements Database {
         this.config = config;
     }
 
-    // TODO implement
-
     @Override
     public String getPrefixForGuild(String guildId) {
         Map<String, Object> parameters = new HashMap<>();
@@ -115,11 +113,29 @@ public class Neo4jDatabase implements Database {
     }
 
     @Override
-    public void deletePlaylistForUser(String playlistName, String userId) {}
+    public boolean deletePlaylistForUser(String playlistName, String userId) {
+        var initialRun = driver.session()
+                .run(
+                        """
+                MATCH (u:User)-[:HAS_PLAYLIST]->(p:Playlist)
+                WHERE u.id = $user_id AND p.name = $playlist_name
+                DETACH DELETE p""",
+                        Map.of("user_id", userId, "playlist_name", playlistName));
+        driver.session().run("MATCH (t:Track) WHERE NOT (:Playlist)-[:HAS_TRACK]->(t) DETACH DELETE t");
+        return initialRun.consume().counters().nodesDeleted() > 0;
+    }
 
     @Override
     public List<Playlist> getAllPlaylistsForUser(String userId) {
-        return null;
+        Map<String, Object> parameters = Map.of("user_id", userId);
+        var run = driver.session()
+                .run(
+                        "MATCH (u:User)-[:HAS_PLAYLIST]->(p:Playlist) WHERE u.id = $user_id RETURN p.name AS playlistName",
+                        parameters);
+        return run.list().parallelStream()
+                .map(r -> getPlaylistForUser(r.get("playlistName").asString(), userId))
+                .flatMap(Optional::stream)
+                .toList();
     }
 
     @Override
