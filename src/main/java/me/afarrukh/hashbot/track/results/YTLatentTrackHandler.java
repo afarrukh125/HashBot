@@ -29,10 +29,12 @@ public class YTLatentTrackHandler implements AudioLoadResultHandler {
     }
 
     @Override
-    public void playlistLoaded(AudioPlaylist audioPlaylist) {}
+    public void playlistLoaded(AudioPlaylist audioPlaylist) {
+    }
 
     @Override
-    public void noMatches() {}
+    public void noMatches() {
+    }
 
     @Override
     public void loadFailed(FriendlyException e) {

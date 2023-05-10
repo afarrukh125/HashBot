@@ -2,14 +2,14 @@ package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.data.SQLUserDataManager;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.Playlist;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 public class ViewListCommand extends Command {
 
@@ -22,20 +22,19 @@ public class ViewListCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<Playlist> playlists = new SQLUserDataManager(evt.getMember()).viewAllPlaylists();
-
-        StringBuilder stringBuilder = new StringBuilder();
+        var database = Database.getInstance();
+        List<Playlist> playlists =
+                database.getAllPlaylistsForUser(evt.getMember().getId());
+        var stringBuilder = new StringBuilder();
 
         if (playlists.size() == 0) {
             stringBuilder
                     .append("You currently have no playlists, use the ")
-                    .append(Bot.prefixManager
-                            .getGuildRoleManager(evt.getGuild())
-                            .getPrefix())
+                    .append(database.getPrefixForGuild(evt.getGuild().getId()))
                     .append("savelist command to save the current track queue to a playlist");
 
         } else {
-            for (Playlist p : playlists)
+            for (Playlist p : playlists) {
                 stringBuilder
                         .append("**")
                         .append(p.getName())
@@ -43,14 +42,15 @@ public class ViewListCommand extends Command {
                         .append(p.getSize())
                         .append(" tracks")
                         .append("\n\n");
+            }
         }
 
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Viewing playlists for "
-                + Objects.requireNonNull(evt.getMember()).getEffectiveName());
-        eb.setDescription(stringBuilder);
-        eb.setColor(Constants.EMB_COL);
-        eb.setThumbnail(evt.getMember().getUser().getAvatarUrl());
-        evt.getChannel().sendMessageEmbeds(eb.build()).queue();
+        var embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(
+                "Viewing playlists for " + requireNonNull(evt.getMember()).getEffectiveName());
+        embedBuilder.setDescription(stringBuilder);
+        embedBuilder.setColor(Constants.EMB_COL);
+        embedBuilder.setThumbnail(evt.getMember().getUser().getAvatarUrl());
+        evt.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
     }
 }

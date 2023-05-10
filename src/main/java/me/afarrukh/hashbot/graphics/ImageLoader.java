@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 public class ImageLoader {
@@ -24,7 +25,7 @@ public class ImageLoader {
 
     public static BufferedImage loadUrl(String path) {
         try {
-            URL url = new URL(path);
+            URL url = URI.create(path).toURL();
 
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder().url(url).build();

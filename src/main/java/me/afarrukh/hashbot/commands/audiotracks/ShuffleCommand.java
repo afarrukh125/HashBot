@@ -16,7 +16,7 @@ public class ShuffleCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().shuffle();
+            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().shuffleAndReplace();
             evt.getChannel().sendMessage("Shuffled the playlist :ok_hand:").queue();
         }
     }

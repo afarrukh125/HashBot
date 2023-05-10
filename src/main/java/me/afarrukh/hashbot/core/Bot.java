@@ -10,50 +10,46 @@ import me.afarrukh.hashbot.commands.audiotracks.playlist.ViewListCommand;
 import me.afarrukh.hashbot.commands.management.bot.*;
 import me.afarrukh.hashbot.commands.management.bot.owner.SetNameCommand;
 import me.afarrukh.hashbot.commands.management.guild.*;
-import me.afarrukh.hashbot.commands.management.user.*;
-import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.data.SQLUserDataManager;
+import me.afarrukh.hashbot.commands.management.user.ClearCommand;
+import me.afarrukh.hashbot.commands.management.user.PruneCommand;
+import me.afarrukh.hashbot.config.Config;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
 public class Bot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     public static CommandManager commandManager;
-    public static PrefixManager prefixManager;
     public static AudioTrackManager trackManager;
     private static JDA botUser;
     static ReactionManager reactionManager;
-    private final String token;
-    private CommandLineInputManager ownerInputManager;
+    private static Config config;
+    private CommandLineInputManager commandLineInputManager;
 
-    /**
-     * Creates our JDA user
-     *
-     * @param token The unique token used to log in to the discord servers
-     */
-    public Bot(String token) throws InterruptedException {
-        this.token = token;
+    public Bot(Config config) throws InterruptedException {
+        Bot.config = config;
         init();
     }
 
     public static JDA botUser() {
         return botUser;
+    }
+
+    public static Config getConfig() {
+        return config;
     }
 
     /**
@@ -77,19 +73,15 @@ public class Bot {
         LOG.info("Started and ready with bot user {}", botUser().getSelfUser().getName());
         trackManager = new AudioTrackManager();
 
-        prefixManager = new PrefixManager();
         reactionManager = new ReactionManager();
+        commandLineInputManager = new CommandLineInputManager();
 
-        setupNames();
-
-        ownerInputManager = new CommandLineInputManager();
-
-        try (ExecutorService cliExecutor = Executors.newSingleThreadExecutor()) {
+        try (ExecutorService cliExecutor = newSingleThreadExecutor()) {
             cliExecutor.execute(() -> {
                 while (true) {
                     Scanner scanner = new Scanner(System.in);
                     String input = scanner.nextLine();
-                    ownerInputManager.processInput(input);
+                    commandLineInputManager.processInput(input);
                 }
             });
         }
@@ -120,7 +112,7 @@ public class Bot {
     private void initialiseBotUser() {
         try {
             botUser = JDABuilder.create(
-                            token,
+                            config.getBotToken(),
                             GatewayIntent.DIRECT_MESSAGES,
                             GatewayIntent.GUILD_MEMBERS,
                             GatewayIntent.GUILD_MESSAGES,
@@ -137,13 +129,6 @@ public class Bot {
                             CacheFlag.STICKER)
                     .build()
                     .awaitReady();
-
-            Timer experienceTimer = new Timer();
-            experienceTimer.schedule(
-                    new VoiceExperienceTimer(),
-                    Constants.VOICE_EXPERIENCE_TIMER * 1000,
-                    Constants.VOICE_EXPERIENCE_TIMER * 1000);
-
             startUpMessages();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -163,7 +148,6 @@ public class Bot {
                 .addCommand(new FairShuffleCommand())
                 .addCommand(new HelpCommand())
                 .addCommand(new InterleaveCommand())
-                .addCommand(new LeaderboardCommand())
                 .addCommand(new LoadListCommand())
                 .addCommand(new LoopCommand())
                 .addCommand(new LoopQueueCommand())
@@ -193,24 +177,8 @@ public class Bot {
                 .addCommand(new ShuffleCommand())
                 .addCommand(new SkipCommand())
                 .addCommand(new SortByLengthCommand())
-                .addCommand(new StatsCommand())
                 .addCommand(new UptimeCommand())
                 .addCommand(new ViewListCommand())
                 .build();
-    }
-
-    private void setupNames() {
-        for (Guild g : botUser().getGuilds()) {
-            try {
-                SQLUserDataManager.updateUsernames(g);
-                for (Member m : g.getMembers()) {
-                    if (!SQLUserDataManager.getUserData(m).next()) {
-                        SQLUserDataManager.addMember(m);
-                    }
-                }
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

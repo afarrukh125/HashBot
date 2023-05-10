@@ -1,9 +1,7 @@
 package me.afarrukh.hashbot.core;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.data.GuildDataManager;
-import me.afarrukh.hashbot.data.GuildDataMapper;
-import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.BotUtils;
@@ -28,27 +26,23 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
-        if (evt.getAuthor().isBot()) return;
+        if (evt.getAuthor().isBot()) {
+            return;
+        }
+        Database database = Database.getInstance();
+        String prefix = database.getPrefixForGuild(evt.getGuild().getId());
         if (evt.getMessage()
                 .getContentRaw()
                 .startsWith(
-                        Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPrefix())) {
+                        prefix)) {
             Bot.commandManager.processEvent(evt);
             return;
         }
 
-        if (BotUtils.isPinnedChannel(evt)
-                && !evt.getMember()
-                        .getUser()
-                        .getId()
-                        .equals(Bot.botUser().getSelfUser().getId())) {
+        String userId = evt.getMember().getId();
+        if (BotUtils.isPinnedChannel(evt) && !userId.equals(Bot.botUser().getSelfUser().getId())) {
             evt.getMessage().delete().queue();
             return;
-        }
-        Invoker invoker = Invoker.of(evt.getMember());
-        if (invoker.hasTimePassed()) {
-            invoker.addRandomCredit();
-            invoker.addRandomExperience();
         }
     }
 
@@ -56,7 +50,6 @@ class MessageListener extends ListenerAdapter {
     public void onGuildVoiceUpdate(GuildVoiceUpdateEvent evt) {
         AudioChannel joinedChannel = evt.getChannelJoined();
         if (nonNull(joinedChannel)) {
-
             if (!joinedChannel
                     .getMembers()
                     .contains(evt.getGuild()
@@ -124,24 +117,21 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(MessageDeleteEvent evt) {
-        GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
-
-        if (gdm.getPinnedChannelId() == null || gdm.getPinnedChannelId().equals("")) {
-            return;
-        }
-
-        if (evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()) == null) {
-            return;
-        }
-
-        // If the message deleted is a pinned message remove its entry by pinned message id
-        if (evt.getChannel().getId().equals(gdm.getPinnedChannelId())) {
-            gdm.deletePinnedEntryByNew(evt.getMessageId());
-        } else {
-            // Otherwise remove it by normal message id
-            if (gdm.isPinned(evt.getMessageId())) {
-                gdm.deletePinnedEntryByOriginal(evt.getMessageId());
+        var database = Database.getInstance();
+        String guildId = evt.getGuild().getId();
+        database.getPinnedChannelIdForGuild(guildId).ifPresent(pinnedChannelId -> {
+            if (evt.getGuild().getTextChannelById(pinnedChannelId) != null) {
+                // If the message deleted is a pinned message remove its entry by pinned message id
+                database.getPinnedChannelIdForGuild(guildId).ifPresentOrElse(channelId -> {
+                    if (evt.getChannel().getId().equals(channelId)) {
+                        database.deletePinnedMessageEntryByBotPinnedMessageId(guildId, evt.getMessageId());
+                    }
+                }, () -> {
+                    if (database.isBotPinMessageInGuild(guildId, evt.getMessageId())) {
+                        database.deletePinnedMessageEntryByOriginalMessageId(guildId, evt.getMessageId());
+                    }
+                });
             }
-        }
+        });
     }
 }

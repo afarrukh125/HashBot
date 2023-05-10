@@ -1,6 +1,6 @@
 package me.afarrukh.hashbot.commands;
 
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -148,41 +148,45 @@ public abstract class Command {
     }
 
     public final MessageEmbed getCommandHelpMessage(TextChannel channel) {
-        String prefix =
-                Bot.prefixManager.getGuildRoleManager(channel.getGuild()).getPrefix();
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Viewing help for " + this.name);
-        StringBuilder sb = new StringBuilder();
-        sb.append("**Description:** ").append(this.description).append("\n\n");
+        var prefix = Database.getInstance().getPrefixForGuild(channel.getGuild().getId());
+        var embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Viewing help for " + this.name);
+        var stringBuilder = new StringBuilder();
+        stringBuilder.append("**Description:** ").append(this.description).append("\n\n");
 
         if (!aliases.isEmpty()) {
-            sb.append("**Aliases:**\n");
+            stringBuilder.append("**Aliases:**\n");
             for (String alias : aliases) {
-                sb.append("- ").append(alias).append("\n");
+                stringBuilder.append("- ").append(alias).append("\n");
             }
-            sb.append("\n");
+            stringBuilder.append("\n");
         }
         if (!parameters.keySet().isEmpty()) {
-            sb.append("**Parameters:** \n");
+            stringBuilder.append("**Parameters:** \n");
             for (String parameter : parameters.keySet())
-                sb.append("**")
+                stringBuilder
+                        .append("**")
                         .append("- ")
                         .append(parameter)
                         .append(":** ")
                         .append(parameters.get(parameter))
                         .append("\n\n");
-            sb.append("**Template usage:** ").append(prefix).append(name).append(" ");
+            stringBuilder
+                    .append("**Template usage:** ")
+                    .append(prefix)
+                    .append(name)
+                    .append(" ");
             for (String param : parameters.keySet())
-                sb.append("<").append(param).append("> ");
-            sb.append("\n\n");
+                stringBuilder.append("<").append(param).append("> ");
+            stringBuilder.append("\n\n");
             if (!exampleUsages.isEmpty()) {
-                sb.append("**Example usages:** \n");
+                stringBuilder.append("**Example usages:** \n");
                 for (String example : exampleUsages) {
-                    sb.append("- ").append(prefix).append(example).append("\n");
+                    stringBuilder.append("- ").append(prefix).append(example).append("\n");
                 }
             }
         }
-        return eb.setDescription(sb).build();
+        return embedBuilder.setDescription(stringBuilder).build();
     }
 
     /**

@@ -2,8 +2,7 @@ package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
-import me.afarrukh.hashbot.data.GuildDataManager;
-import me.afarrukh.hashbot.data.GuildDataMapper;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -19,8 +18,7 @@ public class SetUnpinnedCommand extends Command implements AdminCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        GuildDataManager jgm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
-        jgm.unsetPinnedChannel();
+        Database.getInstance().unsetPinnedChannelForGuild(evt.getGuild().getId());
         Message message = evt.getChannel()
                 .sendMessage("There is no longer a pinned channel for this server.")
                 .complete();

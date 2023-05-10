@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.core;
 
-import me.afarrukh.hashbot.data.GuildDataManager;
-import me.afarrukh.hashbot.data.GuildDataMapper;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;
@@ -18,62 +17,57 @@ class ReactionManager {
      * @param evt The event associated with the reaction being added
      */
     void processForPinning(MessageReactionAddEvent evt) {
-        Message m = evt.getChannel().retrieveMessageById(evt.getMessageId()).complete();
-        if (m == null) {
+        Message message =
+                evt.getChannel().retrieveMessageById(evt.getMessageId()).complete();
+        if (message == null) {
             return;
         }
 
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
 
-        // Getting the pinned channel ID from storage
-        GuildDataManager gdm = GuildDataMapper.getInstance().getDataManager(evt.getGuild());
+        Database database = Database.getInstance();
 
-        if (gdm.isPinned(m.getId())) {
+        if (database.isBotPinMessageInGuild(evt.getGuild().getId(), message.getId())) {
             return;
         }
 
-        if (gdm.getPinnedChannelId() == null) {
-            return;
-        }
-
-        TextChannel pinnedChannel = evt.getGuild().getTextChannelById(gdm.getPinnedChannelId());
-        if (pinnedChannel == null) {
-            return;
-        }
-
-        String pinnedChannelId =
-                evt.getGuild().getTextChannelById(gdm.getPinnedChannelId()).getId();
-
-        // Checking if the current channel is the pinned channel. If it is then we od not proceed
-        if (pinnedChannelId.equals(evt.getChannel().getId())) {
-            return;
-        }
-
-        // Checking if the pinned channel has been set
-        MessageChannel channel = evt.getGuild().getTextChannelById(pinnedChannelId);
-        if (channel == null) {
-            return;
-        }
-
-        int size = 0;
-
-        for (MessageReaction reaction : m.getReactions()) {
-            if (reaction.getEmoji().getName().equals(reactionId)) {
-                size = reaction.getCount();
-                break;
+        database.getPinnedChannelIdForGuild(evt.getGuild().getId()).ifPresent(pinnedChannelId -> {
+            TextChannel pinnedChannel = evt.getGuild().getTextChannelById(pinnedChannelId);
+            if (pinnedChannel == null) {
+                return;
             }
-        }
 
-        // If no reactions have been added then return
-        if (size == 0) {
-            return;
-        }
+            if (pinnedChannelId.equals(evt.getChannel().getId())) {
+                return;
+            }
 
-        // If we haven't yet passed the threshold then return
-        if (size < Bot.prefixManager.getGuildRoleManager(evt.getGuild()).getPinThreshold()) {
-            return;
-        }
+            MessageChannel channel = evt.getGuild().getTextChannelById(pinnedChannelId);
+            if (channel == null) {
+                return;
+            }
 
-        MessageUtils.pinMessage(m, channel);
+            int size = 0;
+
+            for (MessageReaction reaction : message.getReactions()) {
+                if (reaction.getEmoji().getName().equals(reactionId)) {
+                    size = reaction.getCount();
+                    break;
+                }
+            }
+
+            if (size == 0) {
+                return;
+            }
+
+            if (size < database.getPinThresholdForGuild(evt.getGuild().getId())) {
+                return;
+            }
+
+            if (database.isMessagePinnedInGuild(evt.getGuild().getId(), evt.getMessageId())) {
+                return;
+            }
+
+            MessageUtils.pinMessage(message, channel);
+        });
     }
 }

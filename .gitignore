@@ -1,7 +1,7 @@
 target/*
 out/*
 .idea/*
-res/images/
+src/main/resources/images/
 res/config/*
 res/guilds/*
 HashBot.iml

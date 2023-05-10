@@ -4,11 +4,10 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.entities.Invoker;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -131,9 +130,8 @@ public class EmbedUtils {
             if (ts.isFairPlay())
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
-                                + Bot.prefixManager
-                                        .getGuildRoleManager(evt.getGuild())
-                                        .getPrefix() + "fairplay to turn it off.",
+                                + Database.getInstance()
+                                .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));
@@ -142,7 +140,7 @@ public class EmbedUtils {
     }
 
     /**
-     * @param at  The audio track which has been skipped to
+     * @param at The audio track which has been skipped to
      * @return Returns an embed referring to the track which has been skipped to
      */
     public static MessageEmbed getSkippedToEmbed(AudioTrack at) {
@@ -221,31 +219,6 @@ public class EmbedUtils {
     }
 
     /**
-     * @param memberList An array of members which are sorted by order of experience
-     * @param evt        The message received event associated with the leaderboard request
-     * @return An embed that refers to the leaderboard of the users sorted by their credit
-     */
-    public static MessageEmbed getLeaderboard(java.util.List<Member> memberList, MessageReceivedEvent evt) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.setTitle("The leaderboard for " + evt.getGuild().getName() + ":");
-
-        int maxMembers = Constants.LEADERBOARD_MAX;
-
-        if (memberList.size() < maxMembers) {
-            maxMembers = memberList.size();
-        }
-
-        for (int i = 0; i < maxMembers; i++) {
-            Invoker inv = Invoker.of(memberList.get(i));
-            eb.appendDescription((i + 1) + ". **" + memberList.get(i).getUser().getName() + "** " + "| `Level: "
-                    + inv.getLevel() + "` | `Experience: " + inv.getExp() + "/" + inv.getExpForNextLevel() + "`\n\n");
-        }
-        eb.setThumbnail(evt.getGuild().getIconUrl());
-        return eb.build();
-    }
-
-    /**
      * @return An embed which informs that nothing is playing right now
      */
     public static MessageEmbed getNothingPlayingEmbed() {
@@ -253,24 +226,5 @@ public class EmbedUtils {
                 .setDescription("Nothing playing right now.")
                 .setColor(Constants.EMB_COL)
                 .build();
-    }
-
-    public static MessageEmbed getCreditsLeaderboardEmbed(java.util.List<Member> memberList, MessageReceivedEvent evt) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setColor(Constants.EMB_COL);
-        eb.setTitle("Credits leaderboard for " + evt.getGuild().getName());
-
-        int maxIndex = memberList.size();
-
-        if (maxIndex > 10) maxIndex = 10;
-
-        for (int i = 0; i < maxIndex; i++) {
-            Invoker invoker = Invoker.of(memberList.get(i));
-            eb.appendDescription((i + 1) + ". | **" + invoker.getMember().getEffectiveName() + "** | `Credits: "
-                    + invoker.getCredit() + "`\n\n");
-        }
-
-        eb.setThumbnail(evt.getGuild().getIconUrl());
-        return eb.build();
     }
 }
