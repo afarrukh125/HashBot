@@ -13,7 +13,7 @@ public class Constants {
     public static final String SELECTEDPOS = "full_moon";
     public static final String UNSELECTEDPOS = "=";
     public static final Color EMB_COL = new Color(100, 243, 213); // The default color for embeds
-    public static final int PIN_THRESHOLD = 5;
+    public static final int PIN_THRESHOLD = 1;
     public static long timeStarted = 0;
     public final Font font28;
     public final Font bigNumFont;

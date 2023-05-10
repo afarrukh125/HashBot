@@ -2,19 +2,20 @@ package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
+import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 import me.afarrukh.hashbot.track.PlaylistItem;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
-import org.neo4j.driver.Result;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.Runtime.getRuntime;
+import static java.util.Collections.singletonMap;
 
 public class Neo4jDatabase implements Database {
 
@@ -187,35 +188,72 @@ public class Neo4jDatabase implements Database {
     @Override
     public boolean isBotPinMessageInGuild(String guildId, String messageId) {
         Map<String, Object> parameters = Map.of("guild_id", guildId, "message_id", messageId);
-        Result result = driver.session()
+        var result = driver.session()
                 .run(
                         """
                                 MATCH (g:Guild)-[:HAS_PINNED_MESSAGE]->(p:PinnedMessage)
                                 WHERE g.id = $guild_id
-                                AND p.newMessageId = $message_id""",
+                                AND p.newMessageId = $message_id
+                                RETURN p""",
                         parameters);
         return result.hasNext();
     }
 
     @Override
     public Optional<String> getPinnedChannelIdForGuild(String guildId) {
-        // TODO implement
-        return Optional.empty();
+        var result = driver.session()
+                .run(
+                        "MATCH (g:Guild) WHERE g.id = $guild_id RETURN g.pinnedChannel AS pinnedChannel",
+                        singletonMap("guild_id", guildId));
+        var value = result.single().get("pinnedChannel");
+        if (!value.isNull()) {
+            return Optional.of(value.asString());
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
     public int getPinThresholdForGuild(String guildId) {
-        // TODO implement
-        return 0;
+        var result = driver.session()
+                .run(
+                        """
+                MERGE (g:Guild {id: $guild_id})
+                RETURN g.pinThreshold AS pinThreshold""",
+                        singletonMap("guild_id", guildId));
+        var value = result.single().get("pinThreshold");
+        if (value.isNull()) {
+            driver.session()
+                    .run(
+                            "MERGE (g:Guild {id: $guild_id}) SET g.pinThreshold = $threshold",
+                            Map.of("guild_id", guildId, "threshold", Constants.PIN_THRESHOLD));
+            return Constants.PIN_THRESHOLD;
+        } else {
+            return value.asInt();
+        }
     }
 
     @Override
     public void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId) {
-        // TODO implement
+        driver.session()
+                .run(
+                        """
+                        MATCH (g:Guild)-[:HAS_PINNED_MESSAGE]->(p:PinnedMessage)
+                        WHERE g.id = $guild_id
+                        AND p.originalMessageId = $message_id
+                        DETACH DELETE p""",
+                        Map.of("guild_id", guildId, "message_id", messageId));
     }
 
     @Override
     public void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId) {
-        // TODO implement
+        driver.session()
+                .run(
+                        """
+                        MATCH (g:Guild)-[:HAS_PINNED_MESSAGE]->(p:PinnedMessage)
+                        WHERE g.id = $guild_id
+                        AND p.newMessageId = $message_id
+                        DETACH DELETE p""",
+                        Map.of("guild_id", guildId, "message_id", messageId));
     }
 }
