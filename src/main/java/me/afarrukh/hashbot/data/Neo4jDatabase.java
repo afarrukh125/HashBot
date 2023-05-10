@@ -8,6 +8,7 @@ import me.afarrukh.hashbot.track.PlaylistItem;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -19,15 +20,20 @@ public class Neo4jDatabase implements Database {
 
     private final Driver driver;
     private final Config config;
+    private final Map<String, String> guildPrefixes;
 
     public Neo4jDatabase(Config config) {
         driver = GraphDatabase.driver(
                 config.getDbUri(), AuthTokens.basic(config.getDbUsername(), config.getDbPassword()));
         this.config = config;
+        guildPrefixes = new HashMap<>();
     }
 
     @Override
     public String getPrefixForGuild(String guildId) {
+        if (guildPrefixes.get(guildId) != null) {
+            return guildPrefixes.get(guildId);
+        }
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("guild_id", guildId);
         var result = driver.session()
@@ -41,7 +47,9 @@ public class Neo4jDatabase implements Database {
             driver.session().run("MERGE (g:Guild {id: $guild_id}) SET g.prefix = $prefix", parameters);
             return prefix;
         } else {
-            return result.asString();
+            var prefix = result.asString();
+            guildPrefixes.put(guildId, prefix);
+            return prefix;
         }
     }
 
@@ -139,38 +147,75 @@ public class Neo4jDatabase implements Database {
     }
 
     @Override
-    public void setPinnedChannelForGuild(String guildId, String channelId) {}
-
-    @Override
-    public void setPinThresholdForGuild(String id, int threshold) {}
-
-    @Override
-    public void setPrefixForGuild(String guildiD, String prefix) {}
-
-    @Override
-    public void unsetPinnedChannelForGuild(String guildId) {}
-
-    @Override
-    public void setMessageAsPinnedInGuild(String guildId, String originalMessageId, String newMessageId) {}
-
-    @Override
-    public boolean isBotPinMessageInGuild(String guildId, String messageId) {
-        return false;
+    public void setPinnedChannelForGuild(String guildId, String channelId) {
+        Map<String, Object> parameters = Map.of("guild_id", guildId, "channel_id", channelId);
+        driver.session().run("MERGE (g:Guild {id: $guild_id}) SET g.pinnedChannel = $channel_id", parameters);
     }
 
     @Override
-    public Optional<String> getPinnedChannelIdForGuild(String id) {
+    public void setPinThresholdForGuild(String guildId, int threshold) {
+        Map<String, Object> parameters = Map.of("guild_id", guildId, "threshold", threshold);
+        driver.session().run("MERGE (g:Guild {id: $guild_id}) SET g.pinThreshold = $threshold", parameters);
+    }
+
+    @Override
+    public void setPrefixForGuild(String guildId, String prefix) {
+        Map<String, Object> parameters = Map.of("guild_id", guildId, "prefix", prefix);
+        driver.session().run("MERGE (g:Guild {id: $guild_id}) SET g.prefix = $prefix", parameters);
+        guildPrefixes.put(guildId, prefix);
+    }
+
+    @Override
+    public void unsetPinnedChannelForGuild(String guildId) {
+        Map<String, Object> parameters = Map.of("guild_id", guildId);
+        driver.session().run("MERGE (g:Guild {id: $guild_id}) REMOVE g.pinnedChannel", parameters);
+    }
+
+    @Override
+    public void setMessageAsPinnedInGuild(String guildId, String originalMessageId, String newMessageId) {
+        Map<String, Object> parameters =
+                Map.of("guild_id", guildId, "original_message_id", originalMessageId, "new_message_id", newMessageId);
+        driver.session()
+                .run(
+                        """
+                MERGE (g:Guild {id: $guild_id})
+                MERGE (p:PinnedMessage {originalMessageId: $original_message_id, newMessageId: $new_message_id})
+                MERGE (g)-[:HAS_PINNED_MESSAGE]->(p)""",
+                        parameters);
+    }
+
+    @Override
+    public boolean isBotPinMessageInGuild(String guildId, String messageId) {
+        Map<String, Object> parameters = Map.of("guild_id", guildId, "message_id", messageId);
+        Result result = driver.session()
+                .run(
+                        """
+                                MATCH (g:Guild)-[:HAS_PINNED_MESSAGE]->(p:PinnedMessage)
+                                WHERE g.id = $guild_id
+                                AND p.newMessageId = $message_id""",
+                        parameters);
+        return result.hasNext();
+    }
+
+    @Override
+    public Optional<String> getPinnedChannelIdForGuild(String guildId) {
+        // TODO implement
         return Optional.empty();
     }
 
     @Override
-    public int getPinThresholdForGuild(String id) {
+    public int getPinThresholdForGuild(String guildId) {
+        // TODO implement
         return 0;
     }
 
     @Override
-    public void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId) {}
+    public void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId) {
+        // TODO implement
+    }
 
     @Override
-    public void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId) {}
+    public void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId) {
+        // TODO implement
+    }
 }

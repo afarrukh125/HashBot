@@ -27,9 +27,9 @@ public interface Database {
 
     void setPinnedChannelForGuild(String guildId, String channelId);
 
-    void setPinThresholdForGuild(String id, int threshold);
+    void setPinThresholdForGuild(String guildId, int threshold);
 
-    void setPrefixForGuild(String guildiD, String prefix);
+    void setPrefixForGuild(String guildId, String prefix);
 
     void unsetPinnedChannelForGuild(String guildId);
 
@@ -37,9 +37,9 @@ public interface Database {
 
     boolean isBotPinMessageInGuild(String guildId, String messageId);
 
-    Optional<String> getPinnedChannelIdForGuild(String id);
+    Optional<String> getPinnedChannelIdForGuild(String guildId);
 
-    int getPinThresholdForGuild(String id);
+    int getPinThresholdForGuild(String guildId);
 
     void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId);
 
