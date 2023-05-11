@@ -1,7 +1,5 @@
 package me.afarrukh.hashbot.config;
 
-import me.afarrukh.hashbot.graphics.FontLoader;
-
 import java.awt.*;
 
 public class Constants {
@@ -15,8 +13,6 @@ public class Constants {
     public static final Color EMB_COL = new Color(100, 243, 213); // The default color for embeds
     public static final int PIN_THRESHOLD = 1;
     public static long timeStarted = 0;
-    public final Font font28;
-    public final Font bigNumFont;
     public static final Long INITIAL_MEMORY =
             Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
@@ -29,8 +25,6 @@ public class Constants {
     private static Constants instance;
 
     private Constants() {
-        font28 = FontLoader.loadFont("fonts/VCR_OSD_MONO.ttf", 28);
-        bigNumFont = FontLoader.loadFont("fonts/VCR_OSD_MONO.ttf", 36);
     }
 
     public static Constants getInstance() {
@@ -43,13 +37,5 @@ public class Constants {
     public static void init() {
         timeStarted = System.currentTimeMillis();
         getInstance();
-    }
-
-    public Font font28() {
-        return font28;
-    }
-
-    public Font bigNumFont() {
-        return bigNumFont;
     }
 }
