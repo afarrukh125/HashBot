@@ -9,6 +9,9 @@ import me.afarrukh.hashbot.track.PlaylistItem;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -18,7 +21,7 @@ import static java.lang.Runtime.getRuntime;
 import static java.util.Collections.singletonMap;
 
 public class Neo4jDatabase implements Database {
-
+    private static final Logger LOG = LoggerFactory.getLogger(Neo4jDatabase.class);
     private final Driver driver;
     private final Config config;
     private final Map<String, String> guildPrefixes;
@@ -28,6 +31,9 @@ public class Neo4jDatabase implements Database {
                 config.getDbUri(), AuthTokens.basic(config.getDbUsername(), config.getDbPassword()));
         this.config = config;
         guildPrefixes = new HashMap<>();
+        var run = driver.session().run("MATCH (n) RETURN COUNT(n) AS count");
+        var count = run.single().get("count").asInt();
+        LOG.info("Connected to neo4j database with {} nodes", count);
     }
 
     @Override

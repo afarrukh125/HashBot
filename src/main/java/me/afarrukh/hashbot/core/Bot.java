@@ -13,21 +13,23 @@ import me.afarrukh.hashbot.commands.management.guild.*;
 import me.afarrukh.hashbot.commands.management.user.ClearCommand;
 import me.afarrukh.hashbot.commands.management.user.PruneCommand;
 import me.afarrukh.hashbot.config.Config;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.neo4j.driver.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class Bot {
@@ -39,7 +41,7 @@ public class Bot {
     private static Config config;
     private CommandLineInputManager commandLineInputManager;
 
-    public Bot(Config config) throws InterruptedException {
+    public Bot(Config config) throws InterruptedException, ExecutionException, TimeoutException {
         Bot.config = config;
         init();
     }
@@ -55,16 +57,20 @@ public class Bot {
     /**
      * Adds the commands and initialises all the managers
      */
-    private void init() throws InterruptedException {
-        try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
+    private void init() {
 
-            executor.execute(this::initialiseBotUser);
-            executor.execute(this::loadCommands);
-            executor.shutdown();
+        try (var executor = newFixedThreadPool(3)) {
+            CompletableFuture<Void> allTasks = CompletableFuture.allOf(runAsync(this::initialiseBotUser, executor),
+                    runAsync(this::loadCommands, executor),
+                    runAsync(this::verifyDatabaseConnection, executor));
 
-            //noinspection ResultOfMethodCallIgnored
-            executor.awaitTermination(1, TimeUnit.MINUTES);
+            allTasks.get(1, TimeUnit.MINUTES);
+        } catch (ExecutionException | InterruptedException | TimeoutException e) {
+            e.printStackTrace();
+            LOG.error("Failed to initialise bot as one of the startup tasks failed");
+            System.exit(0);
         }
+
 
         botUser().addEventListener(new MessageListener());
         botUser()
@@ -85,6 +91,10 @@ public class Bot {
                 }
             });
         }
+    }
+
+    private void verifyDatabaseConnection() {
+        Database.getInstance();
     }
 
     private void startUpMessages() {

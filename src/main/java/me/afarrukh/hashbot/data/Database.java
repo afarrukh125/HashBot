@@ -12,7 +12,12 @@ import java.util.Optional;
 public interface Database {
 
     static Database getInstance() {
+        try {
         return new Neo4jDatabase(Bot.getConfig());
+        } catch (Exception e) {
+            //TODO return new SQLiteDatabase(Bot.getConfig());
+            throw e;
+        }
     }
 
     Optional<Playlist> getPlaylistForUser(String playlistName, String userId);
