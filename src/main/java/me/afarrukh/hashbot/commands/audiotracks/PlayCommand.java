@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 public class PlayCommand extends Command implements AudioTrackCommand {
 
     public PlayCommand() {
@@ -33,9 +35,14 @@ public class PlayCommand extends Command implements AudioTrackCommand {
         }
 
         if (evt.getMember() != null
-                && Objects.requireNonNull(evt.getMember().getVoiceState()).getChannel() == null) return;
+                && requireNonNull(evt.getMember().getVoiceState()).getChannel() == null) {
+            evt.getChannel().sendMessage("You are not currently connected to voice").queue();
+            return;
+        }
 
-        if (PlayTopCommand.isBotConnected(evt)) return;
+        if (PlayTopCommand.isBotConnected(evt)) {
+            return;
+        }
 
         GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
         // To account for shuffling the list, we have the first branch
