@@ -30,6 +30,7 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         Member member = evt.getMember();
         if (member.getVoiceState().getChannel() == null) {
+            evt.getChannel().sendMessage("You must be in a voice channel to load a playlist").queue();
             return;
         }
 

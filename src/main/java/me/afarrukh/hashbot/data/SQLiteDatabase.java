@@ -4,16 +4,43 @@ import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
+import me.afarrukh.hashbot.track.PlaylistItem;
 
+import java.sql.*;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+
+import static java.util.Collections.emptyList;
 
 public class SQLiteDatabase implements Database {
-    private final Config config;
 
-    public SQLiteDatabase(Config config) {
-        this.config = config;
+    private static final String PATH = "HashBot.sqlite";
+    private final Config config;
+    private Connection connection;
+
+
+    SQLiteDatabase(Config config) {
+        try {
+            this.config = config;
+            this.connection = DriverManager.getConnection("jdbc:sqlite:%s".formatted(PATH));
+            createTablesIfNotPresent();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void createTablesIfNotPresent() {
+        try {
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LISTTRACK(listid INTEGER, trackurl VARCHAR(100), position INTEGER)");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LISTUSER(listid INTEGER CONSTRAINT listuser_pk PRIMARY KEY AUTOINCREMENT, userid VARCHAR(60))");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS PLAYLIST(listid INTEGER CONSTRAINT playlist_pk PRIMARY KEY AUTOINCREMENT, name VARCHAR(60), userid VARCHAR(60))");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS GUILD(id VARCHAR(30), prefix VARCHAR(10))");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -28,7 +55,22 @@ public class SQLiteDatabase implements Database {
 
     @Override
     public String getPrefixForGuild(String guildId) {
-        return null;
+        try {
+            var query = "SELECT prefix FROM GUILD WHERE GUILD.id = %s".formatted(guildId);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if(!resultSet.next()) {
+                String defaultPrefix = config.getPrefix();
+                var addQuery = "INSERT INTO GUILD VALUES(?, ?)";
+                var preparedStatement = connection.prepareStatement(addQuery);
+                preparedStatement.setString(1, guildId);
+                preparedStatement.setString(2, defaultPrefix);
+                preparedStatement.execute();
+                return defaultPrefix;
+            }
+            return resultSet.getString("prefix");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
