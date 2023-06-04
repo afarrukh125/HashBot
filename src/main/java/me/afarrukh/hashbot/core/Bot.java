@@ -19,7 +19,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.neo4j.driver.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +59,8 @@ public class Bot {
     private void init() {
 
         try (var executor = newFixedThreadPool(3)) {
-            CompletableFuture<Void> allTasks = CompletableFuture.allOf(runAsync(this::initialiseBotUser, executor),
+            CompletableFuture<Void> allTasks = CompletableFuture.allOf(
+                    runAsync(this::initialiseBotUser, executor),
                     runAsync(this::loadCommands, executor),
                     runAsync(this::verifyDatabaseConnection, executor));
 
@@ -70,7 +70,6 @@ public class Bot {
             LOG.error("Failed to initialise bot as one of the startup tasks failed");
             System.exit(0);
         }
-
 
         botUser().addEventListener(new MessageListener());
         botUser()

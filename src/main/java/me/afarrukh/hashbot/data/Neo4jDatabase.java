@@ -3,13 +3,13 @@ package me.afarrukh.hashbot.data;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 import me.afarrukh.hashbot.track.PlaylistItem;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
-import org.neo4j.driver.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,11 +22,12 @@ import static java.util.Collections.singletonMap;
 
 public class Neo4jDatabase implements Database {
     private static final Logger LOG = LoggerFactory.getLogger(Neo4jDatabase.class);
+    private static Neo4jDatabase instance;
     private final Driver driver;
     private final Config config;
     private final Map<String, String> guildPrefixes;
 
-    public Neo4jDatabase(Config config) {
+    private Neo4jDatabase(Config config) {
         driver = GraphDatabase.driver(
                 config.getDbUri(), AuthTokens.basic(config.getDbUsername(), config.getDbPassword()));
         this.config = config;
@@ -34,6 +35,13 @@ public class Neo4jDatabase implements Database {
         var run = driver.session().run("MATCH (n) RETURN COUNT(n) AS count");
         var count = run.single().get("count").asInt();
         LOG.info("Connected to neo4j database with {} nodes", count);
+    }
+
+    public static Neo4jDatabase getInstance() {
+        if (instance == null) {
+            instance = new Neo4jDatabase(Bot.getConfig());
+        }
+        return instance;
     }
 
     @Override

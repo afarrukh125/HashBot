@@ -55,7 +55,8 @@ public class AudioTrackUtils {
         if (gm.getPlayer().getPlayingTrack() != null) {
             gm.getPlayer().getPlayingTrack().stop();
         } else {
-            // TODO hack since if there is a track running it will also cause bot user to disconnect which also schedules a timer that has been cancelled
+            // TODO hack since if there is a track running it will also cause bot user to disconnect which also
+            // schedules a timer that has been cancelled
             gm.getDisconnectTimer().cancel();
         }
         gm.getScheduler().getQueue().clear();

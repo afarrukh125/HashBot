@@ -131,7 +131,7 @@ public class EmbedUtils {
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
                                 + Database.getInstance()
-                                .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
+                                        .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));

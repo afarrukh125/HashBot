@@ -9,8 +9,6 @@ import me.afarrukh.hashbot.track.results.YTSearchResultHandler;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
 
 public class PlayCommand extends Command implements AudioTrackCommand {
@@ -36,7 +34,9 @@ public class PlayCommand extends Command implements AudioTrackCommand {
 
         if (evt.getMember() != null
                 && requireNonNull(evt.getMember().getVoiceState()).getChannel() == null) {
-            evt.getChannel().sendMessage("You are not currently connected to voice").queue();
+            evt.getChannel()
+                    .sendMessage("You are not currently connected to voice")
+                    .queue();
             return;
         }
 

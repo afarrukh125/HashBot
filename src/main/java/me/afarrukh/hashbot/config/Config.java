@@ -17,12 +17,13 @@ public class Config {
     private final String dbUsername;
     private final String dbPassword;
 
-    public Config(@JsonProperty("prefix") String prefix,
-                  @JsonProperty(value = "botToken", required = true) String botToken,
-                  @JsonProperty("ownerIds") List<String> ownerIds,
-                  @JsonProperty(value = "dbUri") String dbUri,
-                  @JsonProperty(value = "dbUsername") String dbUsername,
-                  @JsonProperty(value = "dbPassword") String dbPassword) {
+    public Config(
+            @JsonProperty("prefix") String prefix,
+            @JsonProperty(value = "botToken", required = true) String botToken,
+            @JsonProperty("ownerIds") List<String> ownerIds,
+            @JsonProperty(value = "dbUri") String dbUri,
+            @JsonProperty(value = "dbUsername") String dbUsername,
+            @JsonProperty(value = "dbPassword") String dbPassword) {
         this.prefix = prefix;
         this.botToken = botToken;
         this.ownerIds = ownerIds;

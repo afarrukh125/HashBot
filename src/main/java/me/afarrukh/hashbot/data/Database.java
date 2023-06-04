@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
-import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 
@@ -13,9 +12,9 @@ public interface Database {
 
     static Database getInstance() {
         try {
-            return new Neo4jDatabase(Bot.getConfig());
+            return Neo4jDatabase.getInstance();
         } catch (Exception e) {
-            return new SQLiteDatabase(Bot.getConfig());
+            return SQLiteDatabase.getInstance();
         }
     }
 
@@ -25,7 +24,7 @@ public interface Database {
 
     String getPrefixForGuild(String guildId);
 
-    void createPlaylistForUser(String userId, String playlistName, Collection<TrackData> trackDataMap)
+    void createPlaylistForUser(String userId, String playlistName, Collection<TrackData> trackData)
             throws PlaylistException;
 
     List<Playlist> getAllPlaylistsForUser(String userId);

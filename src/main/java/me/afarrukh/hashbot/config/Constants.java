@@ -24,8 +24,7 @@ public class Constants {
 
     private static Constants instance;
 
-    private Constants() {
-    }
+    private Constants() {}
 
     public static Constants getInstance() {
         if (instance == null) {
