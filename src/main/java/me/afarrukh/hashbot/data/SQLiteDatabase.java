@@ -8,7 +8,10 @@ import me.afarrukh.hashbot.track.Playlist;
 import me.afarrukh.hashbot.track.PlaylistItem;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 
@@ -155,9 +158,7 @@ public class SQLiteDatabase implements Database {
 
     @Override
     public List<Playlist> getAllPlaylistsForUser(String userId) {
-        var query = "SELECT PLAYLIST.name, PLAYLIST.userid " +
-                "FROM PLAYLIST " +
-                "WHERE PLAYLIST.userid=%s";
+        var query = "SELECT PLAYLIST.name, PLAYLIST.userid " + "FROM PLAYLIST " + "WHERE PLAYLIST.userid=%s";
         query = query.formatted(userId);
         try {
             List<Playlist> playlists = synchronizedList(new ArrayList<>());
@@ -223,7 +224,6 @@ public class SQLiteDatabase implements Database {
 
     private void appendPlaylistIfPresent(List<Playlist> playlists, String playlistName, String userId) {
         getPlaylistForUser(playlistName, userId).ifPresent(playlists::add);
-
     }
 
     @NotNull
