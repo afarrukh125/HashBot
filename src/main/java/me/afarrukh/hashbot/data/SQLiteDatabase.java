@@ -197,43 +197,61 @@ public class SQLiteDatabase implements Database {
     }
 
     @Override
-    public void setPinnedChannelForGuild(String guildId, String channelId) {}
+    public void setPinnedChannelForGuild(String guildId, String channelId) {
+        // TODO implement
+    }
 
     @Override
-    public void setPinThresholdForGuild(String guildId, int threshold) {}
+    public void setPinThresholdForGuild(String guildId, int threshold) {
+        // TODO implement
+    }
 
     @Override
-    public void setPrefixForGuild(String guildId, String prefix) {}
+    public void setPrefixForGuild(String guildId, String prefix) {
+        // TODO implement
+    }
 
     @Override
-    public void unsetPinnedChannelForGuild(String guildId) {}
+    public void unsetPinnedChannelForGuild(String guildId) {
+        // TODO implement
+    }
 
     @Override
-    public void setMessageAsPinnedInGuild(String guildId, String originalMessageId, String newMessageId) {}
+    public void setMessageAsPinnedInGuild(String guildId, String originalMessageId, String newMessageId) {
+        // TODO implement
+    }
 
     @Override
     public boolean isBotPinMessageInGuild(String guildId, String messageId) {
+        // TODO implement
         return false;
     }
 
     @Override
     public Optional<String> getPinnedChannelIdForGuild(String guildId) {
+        // TODO implement
         return Optional.empty();
     }
 
     @Override
     public int getPinThresholdForGuild(String guildId) {
+        // TODO implement
         return 0;
     }
 
     @Override
-    public void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId) {}
+    public void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId) {
+        // TODO implement
+    }
 
     @Override
-    public void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId) {}
+    public void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId) {
+        // TODO implement
+    }
 
     @Override
     public boolean isMessagePinnedInGuild(String guildId, String originalMessageId) {
+        // TODO implement
         return false;
     }
 
