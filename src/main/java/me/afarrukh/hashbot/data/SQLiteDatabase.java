@@ -54,7 +54,7 @@ public class SQLiteDatabase implements Database {
             connection
                     .createStatement()
                     .execute(
-                            "CREATE TABLE IF NOT EXISTS PLAYLIST(listid VARCHAR(80) PRIMARY KEY, name VARCHAR(60), userid VARCHAR(60))");
+                            "CREATE TABLE IF NOT EXISTS PLAYLIST(listid VARCHAR(80) PRIMARY KEY REFERENCES LISTTRACK(listid), name VARCHAR(60), userid VARCHAR(60))");
             connection
                     .createStatement()
                     .execute("CREATE TABLE IF NOT EXISTS GUILD(id VARCHAR(30), prefix VARCHAR(10))");
@@ -178,7 +178,22 @@ public class SQLiteDatabase implements Database {
 
     @Override
     public boolean deletePlaylistForUser(String playlistName, String userId) {
-        return false;
+        var query = "SELECT PLAYLIST.listid FROM PLAYLIST " + "WHERE PLAYLIST.name = '%s' AND PLAYLIST.userid = '%s'";
+        query = query.formatted(playlistName, userId);
+        try {
+            var resultSet = connection.createStatement().executeQuery(query);
+            if (!resultSet.next()) {
+                return false;
+            }
+            var listId = resultSet.getString("listid");
+            var deletePlaylistQuery = "DELETE FROM PLAYLIST WHERE listid = '%s'".formatted(listId);
+            var deleteTracksQuery = "DELETE FROM LISTTRACK WHERE listid = '%s'".formatted(listId);
+            connection.createStatement().execute(deletePlaylistQuery);
+            connection.createStatement().execute(deleteTracksQuery);
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
