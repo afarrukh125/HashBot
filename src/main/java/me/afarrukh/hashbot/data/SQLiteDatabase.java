@@ -5,15 +5,17 @@ import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
+import me.afarrukh.hashbot.track.PlaylistItem;
+import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
-import static java.util.Collections.emptyList;
+import static java.lang.Runtime.getRuntime;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.synchronizedList;
+import static java.util.Comparator.comparing;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class SQLiteDatabase implements Database {
@@ -45,11 +47,11 @@ public class SQLiteDatabase implements Database {
             connection
                     .createStatement()
                     .execute(
-                            "CREATE TABLE IF NOT EXISTS LISTTRACK(listid VARCHAR(80), trackurl VARCHAR(100), position INTEGER)");
+                            "CREATE TABLE IF NOT EXISTS LISTTRACK(listid VARCHAR(80) REFERENCES PLAYLIST(listid) ON DELETE CASCADE, trackurl VARCHAR(100), position INTEGER)");
             connection
                     .createStatement()
                     .execute(
-                            "CREATE TABLE IF NOT EXISTS PLAYLIST(listid VARCHAR(80), name VARCHAR(60), userid VARCHAR(60))");
+                            "CREATE TABLE IF NOT EXISTS PLAYLIST(listid VARCHAR(80) PRIMARY KEY, name VARCHAR(60), userid VARCHAR(60))");
             connection
                     .createStatement()
                     .execute("CREATE TABLE IF NOT EXISTS GUILD(id VARCHAR(30), prefix VARCHAR(10))");
@@ -72,16 +74,15 @@ public class SQLiteDatabase implements Database {
             if (!result.next()) {
                 return Optional.empty();
             }
-            // TODO fix up
-            return Optional.of(new Playlist(playlistName, emptyList()));
+            List<PlaylistItem> playlistItems = new ArrayList<>();
+            playlistItems.add(new PlaylistItem(result.getString("trackurl")));
+            while (result.next()) {
+                playlistItems.add(new PlaylistItem(result.getString("trackurl")));
+            }
+            return Optional.of(new Playlist(playlistName, playlistItems));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public boolean deletePlaylistForUser(String playlistName, String userId) {
-        return false;
     }
 
     @Override
@@ -135,7 +136,7 @@ public class SQLiteDatabase implements Database {
                 queriesToExecute.add(trackQuery);
             }
 
-            try (var executor = newFixedThreadPool(8)) {
+            try (var executor = createExecutorService()) {
                 for (var query : queriesToExecute) {
                     executor.execute(() -> {
                         try {
@@ -154,7 +155,29 @@ public class SQLiteDatabase implements Database {
 
     @Override
     public List<Playlist> getAllPlaylistsForUser(String userId) {
-        return null;
+        var query = "SELECT PLAYLIST.name, PLAYLIST.userid " +
+                "FROM PLAYLIST " +
+                "WHERE PLAYLIST.userid=%s";
+        query = query.formatted(userId);
+        try {
+            List<Playlist> playlists = synchronizedList(new ArrayList<>());
+            var resultSet = connection.createStatement().executeQuery(query);
+            try (var executorService = createExecutorService()) {
+                while (resultSet.next()) {
+                    var playlistName = resultSet.getString("name");
+                    executorService.execute(() -> appendPlaylistIfPresent(playlists, playlistName, userId));
+                }
+            }
+            playlists.sort(comparing(Playlist::getName));
+            return playlists;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean deletePlaylistForUser(String playlistName, String userId) {
+        return false;
     }
 
     @Override
@@ -196,5 +219,15 @@ public class SQLiteDatabase implements Database {
     @Override
     public boolean isMessagePinnedInGuild(String guildId, String originalMessageId) {
         return false;
+    }
+
+    private void appendPlaylistIfPresent(List<Playlist> playlists, String playlistName, String userId) {
+        getPlaylistForUser(playlistName, userId).ifPresent(playlists::add);
+
+    }
+
+    @NotNull
+    private static ExecutorService createExecutorService() {
+        return newFixedThreadPool(getRuntime().availableProcessors() * 2);
     }
 }
