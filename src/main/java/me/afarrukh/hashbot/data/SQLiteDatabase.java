@@ -124,7 +124,7 @@ public class SQLiteDatabase implements Database {
                     + "AND PLAYLIST.name = '%s'";
             var checkQueryResult =
                     connection.createStatement().executeQuery(checkQuery.formatted(userId, playlistName));
-            if (checkQueryResult.first()) {
+            if (checkQueryResult.next()) {
                 throw new PlaylistException("Playlist with name %s already exists".formatted(playlistName));
             }
 
@@ -193,7 +193,7 @@ public class SQLiteDatabase implements Database {
         query = query.formatted(playlistName, userId);
         try {
             var resultSet = connection.createStatement().executeQuery(query);
-            if (!resultSet.first()) {
+            if (!resultSet.next()) {
                 return false;
             }
             var listId = resultSet.getString("listid");
@@ -270,7 +270,7 @@ public class SQLiteDatabase implements Database {
         query = query.formatted(messageId);
         try {
             var result = connection.createStatement().executeQuery(query);
-            return result.first();
+            return result.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -332,7 +332,7 @@ public class SQLiteDatabase implements Database {
         query = query.formatted(guildId, originalMessageId);
         try {
             var result = connection.createStatement().executeQuery(query);
-            return result.first();
+            return result.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

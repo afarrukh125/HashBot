@@ -40,7 +40,6 @@ class MessageListener extends ListenerAdapter {
         if (BotUtils.isPinnedChannel(evt)
                 && !userId.equals(Bot.botUser().getSelfUser().getId())) {
             evt.getMessage().delete().queue();
-            return;
         }
     }
 
