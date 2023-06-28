@@ -71,9 +71,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
-        Timer disconnectTimer = Bot.trackManager
-                .getGuildAudioPlayer(guild)
-                .getDisconnectTimer();
+        Timer disconnectTimer = Bot.trackManager.getGuildAudioPlayer(guild).getDisconnectTimer();
         disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
         if (isLooping()) {
             player.stopTrack();

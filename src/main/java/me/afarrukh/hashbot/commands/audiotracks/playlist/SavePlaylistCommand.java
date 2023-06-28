@@ -137,15 +137,15 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
         try {
             database.createPlaylistForUser(userId, playlistName, trackData);
+            evt.getChannel()
+                    .sendMessage("You have successfully created the playlist `" + params + "` with " + trackData.size()
+                            + " tracks.")
+                    .queue();
         } catch (PlaylistException e) {
             evt.getChannel()
                     .sendMessage("The name you have selected for this playlist is already in use. "
                             + "Please choose another")
                     .queue();
         }
-        evt.getChannel()
-                .sendMessage("You have successfully created the playlist `" + params + "` with " + trackData.size()
-                        + " tracks.")
-                .queue();
     }
 }

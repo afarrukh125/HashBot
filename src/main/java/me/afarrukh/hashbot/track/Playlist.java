@@ -1,8 +1,5 @@
 package me.afarrukh.hashbot.track;
 
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;

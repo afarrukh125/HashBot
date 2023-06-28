@@ -32,8 +32,8 @@ public class PruneCommand extends Command {
             }
             if (m.getAuthor().getId().equals(evt.getJDA().getSelfUser().getId())
                     || m.getContentRaw()
-                    .startsWith(
-                            database.getPrefixForGuild(evt.getGuild().getId()))) {
+                            .startsWith(
+                                    database.getPrefixForGuild(evt.getGuild().getId()))) {
                 messageBin.add(m);
             }
             if (messageBin.size() == 100) {

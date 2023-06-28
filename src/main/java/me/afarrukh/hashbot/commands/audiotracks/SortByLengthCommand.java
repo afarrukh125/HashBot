@@ -24,8 +24,8 @@ public class SortByLengthCommand extends Command {
                 .getAsArrayList();
 
         if (!requireNonNull(requireNonNull(evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId()))
-                .getVoiceState())
+                                .getMemberById(Bot.botUser().getSelfUser().getId()))
+                        .getVoiceState())
                 .inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();
             return;

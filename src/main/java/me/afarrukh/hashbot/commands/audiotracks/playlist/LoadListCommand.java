@@ -30,6 +30,9 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         Member member = evt.getMember();
         if (member.getVoiceState().getChannel() == null) {
+            evt.getChannel()
+                    .sendMessage("You must be in a voice channel to load a playlist")
+                    .queue();
             return;
         }
 
@@ -59,9 +62,7 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
                     var iterator = playlist.getItems().iterator();
                     var firstItem = iterator.next();
                     playerManager.loadItemOrdered(
-                            guildAudioPlayer,
-                            firstItem.uri(),
-                            new YTFirstLatentTrackHandler(member, memberId));
+                            guildAudioPlayer, firstItem.uri(), new YTFirstLatentTrackHandler(member, memberId));
                     int idx = 0;
                     while (iterator.hasNext()) {
                         var nextItem = iterator.next();

@@ -31,18 +31,15 @@ class MessageListener extends ListenerAdapter {
         }
         Database database = Database.getInstance();
         String prefix = database.getPrefixForGuild(evt.getGuild().getId());
-        if (evt.getMessage()
-                .getContentRaw()
-                .startsWith(
-                        prefix)) {
+        if (evt.getMessage().getContentRaw().startsWith(prefix)) {
             Bot.commandManager.processEvent(evt);
             return;
         }
 
         String userId = evt.getMember().getId();
-        if (BotUtils.isPinnedChannel(evt) && !userId.equals(Bot.botUser().getSelfUser().getId())) {
+        if (BotUtils.isPinnedChannel(evt)
+                && !userId.equals(Bot.botUser().getSelfUser().getId())) {
             evt.getMessage().delete().queue();
-            return;
         }
     }
 
@@ -122,15 +119,20 @@ class MessageListener extends ListenerAdapter {
         database.getPinnedChannelIdForGuild(guildId).ifPresent(pinnedChannelId -> {
             if (evt.getGuild().getTextChannelById(pinnedChannelId) != null) {
                 // If the message deleted is a pinned message remove its entry by pinned message id
-                database.getPinnedChannelIdForGuild(guildId).ifPresentOrElse(channelId -> {
-                    if (evt.getChannel().getId().equals(channelId)) {
-                        database.deletePinnedMessageEntryByBotPinnedMessageId(guildId, evt.getMessageId());
-                    }
-                }, () -> {
-                    if (database.isBotPinMessageInGuild(guildId, evt.getMessageId())) {
-                        database.deletePinnedMessageEntryByOriginalMessageId(guildId, evt.getMessageId());
-                    }
-                });
+                database.getPinnedChannelIdForGuild(guildId)
+                        .ifPresentOrElse(
+                                channelId -> {
+                                    if (evt.getChannel().getId().equals(channelId)) {
+                                        database.deletePinnedMessageEntryByBotPinnedMessageId(
+                                                guildId, evt.getMessageId());
+                                    }
+                                },
+                                () -> {
+                                    if (database.isBotPinMessageInGuild(guildId, evt.getMessageId())) {
+                                        database.deletePinnedMessageEntryByOriginalMessageId(
+                                                guildId, evt.getMessageId());
+                                    }
+                                });
             }
         });
     }

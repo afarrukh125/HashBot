@@ -1,4 +1,3 @@
 package me.afarrukh.hashbot.track;
 
-public record PlaylistItem(String uri) {
-}
+public record PlaylistItem(String uri) {}
