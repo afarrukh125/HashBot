@@ -26,7 +26,7 @@ class Main {
 
     private static Config getConfigFromFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        File targetFile = new File("res/config/settings.json");
+        File targetFile = new File("settings.json");
         if (targetFile.exists()) {
             return mapper.readValue(targetFile, Config.class);
         } else {
