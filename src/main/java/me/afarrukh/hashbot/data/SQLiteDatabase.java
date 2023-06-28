@@ -57,7 +57,12 @@ public class SQLiteDatabase implements Database {
                             "CREATE TABLE IF NOT EXISTS PLAYLIST(listid VARCHAR(80) PRIMARY KEY REFERENCES LISTTRACK(listid), name VARCHAR(60), userid VARCHAR(60))");
             connection
                     .createStatement()
-                    .execute("CREATE TABLE IF NOT EXISTS GUILD(id VARCHAR(30), prefix VARCHAR(10))");
+                    .execute(
+                            "CREATE TABLE IF NOT EXISTS GUILD(id VARCHAR(30), prefix VARCHAR(10), pinnedchannel VARCHAR(30), threshold INTEGER)");
+            connection
+                    .createStatement()
+                    .execute(
+                            "CREATE TABLE IF NOT EXISTS PINNEDMESSAGES(guildid VARCHAR(30) REFERENCES GUILD(id), originalid VARCHAR(30), pinnedid VARCHAR(30))");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -95,10 +100,12 @@ public class SQLiteDatabase implements Database {
             var resultSet = connection.createStatement().executeQuery(query);
             if (!resultSet.next()) {
                 String defaultPrefix = config.getPrefix();
-                var addQuery = "INSERT INTO GUILD VALUES(?, ?)";
+                var addQuery = "INSERT INTO GUILD VALUES(?, ?, ?, ?)";
                 var preparedStatement = connection.prepareStatement(addQuery);
                 preparedStatement.setString(1, guildId);
                 preparedStatement.setString(2, defaultPrefix);
+                preparedStatement.setString(3, "");
+                preparedStatement.setInt(4, 1);
                 preparedStatement.execute();
                 return defaultPrefix;
             }
@@ -117,7 +124,7 @@ public class SQLiteDatabase implements Database {
                     + "AND PLAYLIST.name = '%s'";
             var checkQueryResult =
                     connection.createStatement().executeQuery(checkQuery.formatted(userId, playlistName));
-            if (checkQueryResult.next()) {
+            if (checkQueryResult.first()) {
                 throw new PlaylistException("Playlist with name %s already exists".formatted(playlistName));
             }
 
@@ -176,13 +183,17 @@ public class SQLiteDatabase implements Database {
         }
     }
 
+    private void appendPlaylistIfPresent(List<Playlist> playlists, String playlistName, String userId) {
+        getPlaylistForUser(playlistName, userId).ifPresent(playlists::add);
+    }
+
     @Override
     public boolean deletePlaylistForUser(String playlistName, String userId) {
         var query = "SELECT PLAYLIST.listid FROM PLAYLIST " + "WHERE PLAYLIST.name = '%s' AND PLAYLIST.userid = '%s'";
         query = query.formatted(playlistName, userId);
         try {
             var resultSet = connection.createStatement().executeQuery(query);
-            if (!resultSet.next()) {
+            if (!resultSet.first()) {
                 return false;
             }
             var listId = resultSet.getString("listid");
@@ -198,65 +209,133 @@ public class SQLiteDatabase implements Database {
 
     @Override
     public void setPinnedChannelForGuild(String guildId, String channelId) {
-        // TODO implement
+        var query = "UPDATE GUILD SET pinnedchannel = '%s' WHERE id = '%s'";
+        query = query.formatted(channelId, guildId);
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void setPinThresholdForGuild(String guildId, int threshold) {
-        // TODO implement
+        var query = "UPDATE GUILD SET threshold = %d WHERE id = '%s'";
+        query = query.formatted(threshold, guildId);
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void setPrefixForGuild(String guildId, String prefix) {
-        // TODO implement
+        var query = "UPDATE GUILD SET prefix = '%s' WHERE id = '%s'";
+        query = query.formatted(prefix, guildId);
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void unsetPinnedChannelForGuild(String guildId) {
-        // TODO implement
+        var query = "UPDATE GUILD SET pinnedchannel = '' WHERE id = '%s'";
+        query = query.formatted(guildId);
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void setMessageAsPinnedInGuild(String guildId, String originalMessageId, String newMessageId) {
-        // TODO implement
+        try {
+            var query = connection.prepareStatement("INSERT INTO PINNEDMESSAGES VALUES(?, ?, ?)");
+            query.setString(1, guildId);
+            query.setString(2, originalMessageId);
+            query.setString(3, newMessageId);
+            query.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean isBotPinMessageInGuild(String guildId, String messageId) {
-        // TODO implement
-        return false;
+        var query = "SELECT guildid, originalid FROM PINNEDMESSAGES WHERE originalid = '%s'";
+        query = query.formatted(messageId);
+        try {
+            var result = connection.createStatement().executeQuery(query);
+            return result.first();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Optional<String> getPinnedChannelIdForGuild(String guildId) {
-        // TODO implement
-        return Optional.empty();
+        var query = "SELECT pinnedchannel FROM GUILD WHERE id = '%s'";
+        query = query.formatted(guildId);
+        try {
+            var result = connection.createStatement().executeQuery(query);
+            var id = result.getString("pinnedchannel");
+            if (id.isEmpty()) {
+                return Optional.empty();
+            }
+            return Optional.of(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public int getPinThresholdForGuild(String guildId) {
-        // TODO implement
-        return 0;
+        var query = "SELECT threshold FROM GUILD WHERE id = '%s'";
+        query = query.formatted(guildId);
+        try {
+            var result = connection.createStatement().executeQuery(query);
+            return result.getInt("threshold");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void deletePinnedMessageEntryByOriginalMessageId(String guildId, String messageId) {
-        // TODO implement
+        var query = "DELETE FROM PINNEDMESSAGES WHERE guildid = '%s' AND originalid = '%s'";
+        query = query.formatted(guildId, messageId);
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void deletePinnedMessageEntryByBotPinnedMessageId(String guildId, String messageId) {
-        // TODO implement
+        var query = "DELETE FROM PINNEDMESSAGES WHERE guildid = '%s' AND pinnedid = '%s'";
+        query = query.formatted(guildId, messageId);
+        try {
+            connection.createStatement().execute(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean isMessagePinnedInGuild(String guildId, String originalMessageId) {
-        // TODO implement
-        return false;
-    }
-
-    private void appendPlaylistIfPresent(List<Playlist> playlists, String playlistName, String userId) {
-        getPlaylistForUser(playlistName, userId).ifPresent(playlists::add);
+        var query = "SELECT originalid FROM PINNEDMESSAGES WHERE guildid = '%s' AND originalid = '%s'";
+        query = query.formatted(guildId, originalMessageId);
+        try {
+            var result = connection.createStatement().executeQuery(query);
+            return result.first();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @NotNull
