@@ -17,9 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
 
-/**
- * Created by Abdullah on 08/04/2019 20:22
- */
 public class ClearCommand extends Command implements AdminCommand {
     private static final Logger LOG = LoggerFactory.getLogger(ClearCommand.class);
 
