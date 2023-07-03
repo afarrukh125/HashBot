@@ -12,6 +12,7 @@ public class MoveCommand extends Command implements AudioTrackCommand {
     public MoveCommand() {
         super("move");
         addAlias("m");
+        addAlias("mv");
         description = "Moves a track from one index on the list to another";
         addParameter("original index", "The current position of the track you would like to move");
         addParameter("new index", "The new position of the track you would like to move");
