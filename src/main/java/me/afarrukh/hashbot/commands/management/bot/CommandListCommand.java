@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.CommandManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -26,9 +28,11 @@ public class CommandListCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        var injector = Guice.createInjector(new CoreBotModule());
+        var commandManager = injector.getInstance(CommandManager.class);
         List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR)
-                ? Bot.commandManager.getCommands()
-                : Bot.commandManager.getNonAdminCommands();
+                ? commandManager.getCommands()
+                : commandManager.getNonAdminCommands();
 
         List<MessageEmbed> embedArrayList = new ArrayList<>();
 

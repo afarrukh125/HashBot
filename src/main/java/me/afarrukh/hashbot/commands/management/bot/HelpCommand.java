@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.CommandManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -25,16 +27,16 @@ public class HelpCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        var injector = Guice.createInjector(new CoreBotModule());
+        var commandManager = injector.getInstance(CommandManager.class);
         if (params == null) {
-            List<MessageEmbed> embedArrayList = getHelpMessageEmbeds(evt);
-            List<MessageEmbed> embeds = embedArrayList;
-            for (MessageEmbed eb : embeds) {
+            var embeds = getHelpMessageEmbeds(evt, commandManager);
+            for (var eb : embeds) {
                 evt.getChannel().sendMessageEmbeds(eb).queue();
             }
             return;
         }
-
-        Command command = Bot.commandManager.commandFromName(params);
+        var command = commandManager.commandFromName(params);
         if (command == null) {
             evt.getChannel()
                     .sendMessage("There is no command with the name or alias " + params)
@@ -48,7 +50,7 @@ public class HelpCommand extends Command {
                 .queue();
     }
 
-    private List<MessageEmbed> getHelpMessageEmbeds(MessageReceivedEvent evt) {
+    private List<MessageEmbed> getHelpMessageEmbeds(MessageReceivedEvent evt, CommandManager commandManager) {
         List<MessageEmbed> embedArrayList = new ArrayList<>();
 
         var initialEmbed = new EmbedBuilder().setColor(Constants.EMB_COL);
@@ -60,7 +62,7 @@ public class HelpCommand extends Command {
 
         StringBuilder sb = new StringBuilder();
 
-        for (Command c : Bot.commandManager.getCommands()) {
+        for (Command c : commandManager.getCommands()) {
             if (c instanceof OwnerCommand || c instanceof CommandListCommand) continue;
 
             int descLength = 0;

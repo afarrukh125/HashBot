@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -18,9 +20,15 @@ public class FairPlayCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        if (!AudioTrackUtils.canInteract(evt)) return;
+        if (!AudioTrackUtils.canInteract(evt)) {
+            return;
+        }
+        var injector = Guice.createInjector(new CoreBotModule());
 
-        TrackScheduler ts = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+        TrackScheduler ts = injector.getInstance(Bot.class)
+                .getTrackManager()
+                .getGuildAudioPlayer(evt.getGuild())
+                .getScheduler();
 
         if (ts.isLoopingQueue()) {
             evt.getChannel()

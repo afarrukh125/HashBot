@@ -1,11 +1,14 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.track.results.YTSearchResultHandler;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -28,25 +31,27 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+        var injector = Guice.createInjector(new CoreBotModule());
+        AudioTrackManager trackManager = injector.getInstance(AudioTrackManager.class);
+        GuildAudioTrackManager gmm = trackManager.getGuildAudioPlayer(evt.getGuild());
         if (params.split(" ").length == 1 && params.contains("http")) {
-            Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
+            trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true));
             evt.getMessage().delete().queue();
         } else {
-            Bot.trackManager
-                    .getPlayerManager()
-                    .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
+            trackManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true));
         }
     }
 
     static boolean isBotConnected(MessageReceivedEvent evt) {
+        var injector = Guice.createInjector(new CoreBotModule());
+        JDA botUser = injector.getInstance(JDA.class);
         if (evt.getGuild()
-                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getMemberById(botUser.getSelfUser().getId())
                         .getVoiceState()
                         .getChannel()
                 != null) { // If the bot is already connected
             if (!evt.getGuild()
-                    .getMemberById(Bot.botUser().getSelfUser().getId())
+                    .getMemberById(botUser.getSelfUser().getId())
                     .getVoiceState()
                     .getChannel()
                     .equals(evt.getMember().getVoiceState().getChannel())) {

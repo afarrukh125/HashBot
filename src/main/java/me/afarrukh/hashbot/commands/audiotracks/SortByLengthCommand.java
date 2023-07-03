@@ -1,8 +1,11 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -18,13 +21,13 @@ public class SortByLengthCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<AudioTrack> tracks = Bot.trackManager
-                .getGuildAudioPlayer(evt.getGuild())
-                .getScheduler()
-                .getAsArrayList();
-
+        var injector = Guice.createInjector(new CoreBotModule());
+        var trackManager = injector.getInstance(AudioTrackManager.class);
+        List<AudioTrack> tracks =
+                trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList();
+        var botUser = injector.getInstance(JDA.class);
         if (!requireNonNull(requireNonNull(evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId()))
+                                .getMemberById(botUser.getSelfUser().getId()))
                         .getVoiceState())
                 .inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();
@@ -40,7 +43,7 @@ public class SortByLengthCommand extends Command {
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getGuild()
-                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getMemberById(botUser.getSelfUser().getId())
                         .getVoiceState()
                         .getChannel())) {
             evt.getChannel()
@@ -51,7 +54,7 @@ public class SortByLengthCommand extends Command {
 
         if (!tracks.isEmpty()) {
             tracks.sort((o1, o2) -> -Long.compare(o2.getDuration(), o1.getDuration()));
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(tracks);
+            trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(tracks);
             evt.getChannel()
                     .sendMessage("The queue has been sorted in order of size")
                     .queue();

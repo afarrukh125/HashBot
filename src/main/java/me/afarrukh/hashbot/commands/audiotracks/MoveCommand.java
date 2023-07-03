@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -31,12 +33,14 @@ public class MoveCommand extends Command implements AudioTrackCommand {
                 return;
             }
             if (AudioTrackUtils.canInteract(evt)) {
+                var injector = Guice.createInjector(new CoreBotModule());
                 int oldPos = Integer.parseInt(tokens[0]) - 1;
                 int newPos = Integer.parseInt(tokens[1]) - 1;
 
+                AudioTrackManager trackManager = injector.getInstance(AudioTrackManager.class);
                 if (oldPos < 0
                         || newPos + 1
-                                > Bot.trackManager
+                                > trackManager
                                         .getGuildAudioPlayer(evt.getGuild())
                                         .getScheduler()
                                         .getAsArrayList()
@@ -46,7 +50,7 @@ public class MoveCommand extends Command implements AudioTrackCommand {
                 }
                 if (newPos < 0
                         || oldPos + 1
-                                > Bot.trackManager
+                                > trackManager
                                         .getGuildAudioPlayer(evt.getGuild())
                                         .getScheduler()
                                         .getAsArrayList()
@@ -54,15 +58,12 @@ public class MoveCommand extends Command implements AudioTrackCommand {
                     evt.getChannel().sendMessage("Invalid index.").queue();
                     return;
                 }
-                AudioTrack track = Bot.trackManager
+                AudioTrack track = trackManager
                         .getGuildAudioPlayer(evt.getGuild())
                         .getScheduler()
                         .getAsArrayList()
                         .get(oldPos);
-                Bot.trackManager
-                        .getGuildAudioPlayer(evt.getGuild())
-                        .getScheduler()
-                        .move(oldPos, newPos);
+                trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().move(oldPos, newPos);
                 evt.getChannel()
                         .sendMessage("Moved `" + track.getInfo().title + "` to position " + tokens[1])
                         .queue();

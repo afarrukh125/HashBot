@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.inject.Singleton;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -8,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Singleton
 public class Config {
 
     private final String prefix;

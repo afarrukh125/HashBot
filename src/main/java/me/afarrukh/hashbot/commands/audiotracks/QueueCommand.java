@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -25,10 +27,11 @@ public class QueueCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
+        var injector = Guice.createInjector(new CoreBotModule());
+        var trackManager = injector.getInstance(AudioTrackManager.class);
         if (params == null)
             evt.getChannel()
-                    .sendMessageEmbeds(
-                            EmbedUtils.getQueueMsg(Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, 1))
+                    .sendMessageEmbeds(EmbedUtils.getQueueMsg(trackManager.getGuildAudioPlayer(evt.getGuild()), evt, 1))
                     .queue();
         else {
             try {
@@ -38,7 +41,7 @@ public class QueueCommand extends Command implements AudioTrackCommand {
                 }
                 evt.getChannel()
                         .sendMessageEmbeds(EmbedUtils.getQueueMsg(
-                                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, parseInt(params)))
+                                trackManager.getGuildAudioPlayer(evt.getGuild()), evt, parseInt(params)))
                         .queue();
             } catch (NumberFormatException e) {
                 onIncorrectParams(evt.getChannel().asTextChannel());

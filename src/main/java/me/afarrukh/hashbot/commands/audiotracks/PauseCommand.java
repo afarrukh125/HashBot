@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -19,7 +21,9 @@ public class PauseCommand extends Command implements AudioTrackCommand {
         if (AudioTrackUtils.canInteract(evt)) {
             var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
             var resumeCommandName = new ResumeCommand().getName();
-            if (!Bot.trackManager
+
+            var injector = Guice.createInjector(new CoreBotModule());
+            if (!injector.getInstance(AudioTrackManager.class)
                     .getGuildAudioPlayer(evt.getGuild())
                     .getPlayer()
                     .isPaused()) {

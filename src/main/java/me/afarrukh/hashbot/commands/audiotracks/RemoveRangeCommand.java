@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -35,7 +37,9 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
             // Get all the track ranges provided
             String[] ranges = params.split(",");
 
-            List<AudioTrack> trackList = new ArrayList<>(Bot.trackManager
+            var injector = Guice.createInjector(new CoreBotModule());
+            var trackManager = injector.getInstance(AudioTrackManager.class);
+            List<AudioTrack> trackList = new ArrayList<>(trackManager
                     .getGuildAudioPlayer(evt.getGuild())
                     .getScheduler()
                     .getAsArrayList());
@@ -120,7 +124,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                 trackList.removeAll(tracks);
             }
             // Replace the queue
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(trackList);
+            trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(trackList);
 
             if (ct == 0)
                 evt.getChannel()

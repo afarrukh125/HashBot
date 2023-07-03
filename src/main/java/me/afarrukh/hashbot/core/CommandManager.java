@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import com.google.inject.Singleton;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Comparator.comparing;
 
+@Singleton
 public class CommandManager {
 
     private final Map<String, Command> map;

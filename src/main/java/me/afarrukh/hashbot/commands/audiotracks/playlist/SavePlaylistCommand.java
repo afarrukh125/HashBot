@@ -1,10 +1,12 @@
 package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
@@ -70,15 +72,15 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
         }
 
         List<AudioTrack> trackList = new ArrayList<>();
+        var injector = Guice.createInjector(new CoreBotModule());
+        AudioTrackManager trackManager = injector.getInstance(AudioTrackManager.class);
         trackList.add(
-                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
-        trackList.addAll(Bot.trackManager
-                .getGuildAudioPlayer(evt.getGuild())
-                .getScheduler()
-                .getAsArrayList());
+                trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
+        trackList.addAll(
+                trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getAsArrayList());
 
         if (startIndex
-                > Bot.trackManager
+                > trackManager
                         .getGuildAudioPlayer(evt.getGuild())
                         .getScheduler()
                         .getQueue()

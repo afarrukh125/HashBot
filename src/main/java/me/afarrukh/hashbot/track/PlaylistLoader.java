@@ -1,7 +1,9 @@
 package me.afarrukh.hashbot.track;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -108,8 +110,11 @@ public class PlaylistLoader {
      * This essentially dumps all the latent tracks into the track queue, after which the purpose of this class is complete.
      */
     private void queueTracks() {
-        Bot.trackManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(tracks);
-        System.gc();
+        var injector = Guice.createInjector(new CoreBotModule());
+        injector.getInstance(AudioTrackManager.class)
+                .getGuildAudioPlayer(member.getGuild())
+                .getScheduler()
+                .queue(tracks);
     }
 
     public void notifyFailed() {

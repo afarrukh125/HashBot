@@ -1,10 +1,12 @@
 package me.afarrukh.hashbot.track.results;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.Member;
 
@@ -19,7 +21,11 @@ public class YTFirstLatentTrackHandler implements AudioLoadResultHandler {
     @Override
     public void trackLoaded(AudioTrack audioTrack) {
         audioTrack.setUserData(member.getUser().getName());
-        Bot.trackManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(audioTrack);
+        var injector = Guice.createInjector(new CoreBotModule());
+        injector.getInstance(AudioTrackManager.class)
+                .getGuildAudioPlayer(member.getGuild())
+                .getScheduler()
+                .queue(audioTrack);
         AudioTrackUtils.connectToChannel(member);
     }
 

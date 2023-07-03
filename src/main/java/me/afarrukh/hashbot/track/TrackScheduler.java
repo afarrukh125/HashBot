@@ -1,11 +1,13 @@
 package me.afarrukh.hashbot.track;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,6 +23,7 @@ import static java.util.Collections.shuffle;
 public class TrackScheduler extends AudioEventAdapter {
 
     private final AudioPlayer player;
+    private final AudioTrackManager trackManager;
     private final Guild guild;
     private BlockingQueue<AudioTrack> queue;
     private boolean looping;
@@ -33,6 +36,8 @@ public class TrackScheduler extends AudioEventAdapter {
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
         fairPlay = false;
+        var injector = Guice.createInjector(new CoreBotModule());
+        trackManager = injector.getInstance(AudioTrackManager.class);
     }
 
     public void queue(AudioTrack track) {
@@ -62,7 +67,7 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        Bot.trackManager.getGuildAudioPlayer(guild).resetDisconnectTimer();
+        trackManager.getGuildAudioPlayer(guild).resetDisconnectTimer();
     }
 
     /**
@@ -71,7 +76,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
-        Timer disconnectTimer = Bot.trackManager.getGuildAudioPlayer(guild).getDisconnectTimer();
+        Timer disconnectTimer = trackManager.getGuildAudioPlayer(guild).getDisconnectTimer();
         disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
         if (isLooping()) {
             player.stopTrack();

@@ -1,11 +1,14 @@
 package me.afarrukh.hashbot.utils;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -51,7 +54,9 @@ public class AudioTrackUtils {
     }
 
     public static void disconnect(Guild guild) {
-        GuildAudioTrackManager gm = Bot.trackManager.getGuildAudioPlayer(guild);
+        var injector = Guice.createInjector(new CoreBotModule());
+        GuildAudioTrackManager gm =
+                injector.getInstance(AudioTrackManager.class).getGuildAudioPlayer(guild);
         if (gm.getPlayer().getPlayingTrack() != null) {
             gm.getPlayer().getPlayingTrack().stop();
         } else {
@@ -87,8 +92,10 @@ public class AudioTrackUtils {
      * @return True or false depending on whether track commands can be called
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
+        var injector = Guice.createInjector(new CoreBotModule());
+        var botUser = injector.getInstance(JDA.class);
         if (evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId())
+                                .getMemberById(botUser.getSelfUser().getId())
                                 .getVoiceState()
                                 .getChannel()
                         == null
@@ -97,7 +104,7 @@ public class AudioTrackUtils {
         }
 
         return evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getMemberById(botUser.getSelfUser().getId())
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getMember().getVoiceState().getChannel());
@@ -146,7 +153,12 @@ public class AudioTrackUtils {
                     .queue();
             return;
         }
-        Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
+
+        var injector = Guice.createInjector(new CoreBotModule());
+        injector.getInstance(AudioTrackManager.class)
+                .getGuildAudioPlayer(evt.getGuild())
+                .getPlayer()
+                .setVolume(vol);
         evt.getChannel().sendMessage("Volume set to " + vol).queue();
     }
 
@@ -156,7 +168,9 @@ public class AudioTrackUtils {
      * @param evt The message received event associated with the pause request being sent
      */
     public static void pause(MessageReceivedEvent evt) {
-        AudioPlayer ap = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
+        var injector = Guice.createInjector(new CoreBotModule());
+        var trackManager = injector.getInstance(AudioTrackManager.class);
+        AudioPlayer ap = trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(true);
     }
 
@@ -166,7 +180,9 @@ public class AudioTrackUtils {
      * @param evt The message receieved event relating to the resume request
      */
     public static void resume(MessageReceivedEvent evt) {
-        AudioPlayer ap = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
+        var injector = Guice.createInjector(new CoreBotModule());
+        var trackManager = injector.getInstance(AudioTrackManager.class);
+        AudioPlayer ap = trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(false);
     }
 
@@ -178,10 +194,10 @@ public class AudioTrackUtils {
      */
     public static void seek(MessageReceivedEvent evt, int seconds) {
         try {
-            AudioTrack track = Bot.trackManager
-                    .getGuildAudioPlayer(evt.getGuild())
-                    .getPlayer()
-                    .getPlayingTrack();
+            var injector = Guice.createInjector(new CoreBotModule());
+            var trackManager = injector.getInstance(AudioTrackManager.class);
+            AudioTrack track =
+                    trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack();
 
             if (seconds > track.getDuration() / 1000 || seconds < 0)
                 evt.getChannel()
@@ -208,10 +224,10 @@ public class AudioTrackUtils {
      * @param idx The current index of the track to be removed
      */
     public static void remove(MessageReceivedEvent evt, int idx) {
-        BlockingQueue<AudioTrack> tracks = Bot.trackManager
-                .getGuildAudioPlayer(evt.getGuild())
-                .getScheduler()
-                .getQueue();
+        var injector = Guice.createInjector(new CoreBotModule());
+        var trackManager = injector.getInstance(AudioTrackManager.class);
+        BlockingQueue<AudioTrack> tracks =
+                trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
 
         int count = 1;
         for (AudioTrack track : tracks) {

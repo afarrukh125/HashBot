@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -22,8 +24,9 @@ public class ReverseQueueCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         if (AudioTrackUtils.canInteract(evt)) {
-
-            List<AudioTrack> tracks = Bot.trackManager
+            var injector = Guice.createInjector(new CoreBotModule());
+            var trackManager = injector.getInstance(AudioTrackManager.class);
+            List<AudioTrack> tracks = trackManager
                     .getGuildAudioPlayer(evt.getGuild())
                     .getScheduler()
                     .getAsArrayList();
@@ -31,7 +34,7 @@ public class ReverseQueueCommand extends Command {
 
             for (int i = tracks.size() - 1; i >= 0; i--) reversedTracks.add(tracks.get(i));
 
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(reversedTracks);
+            trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(reversedTracks);
 
             evt.getChannel().sendMessage("The queue has been reversed").queue();
         }

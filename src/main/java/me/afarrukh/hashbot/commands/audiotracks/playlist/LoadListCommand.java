@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.PlaylistLoader;
@@ -57,8 +59,10 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
                             .complete();
                     var playlistLoader = new PlaylistLoader(member, playlistSize, message, params);
 
-                    AudioPlayerManager playerManager = Bot.trackManager.getPlayerManager();
-                    GuildAudioTrackManager guildAudioPlayer = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+                    var injector = Guice.createInjector(new CoreBotModule());
+                    AudioTrackManager trackManager = injector.getInstance(AudioTrackManager.class);
+                    AudioPlayerManager playerManager = trackManager.getPlayerManager();
+                    GuildAudioTrackManager guildAudioPlayer = trackManager.getGuildAudioPlayer(evt.getGuild());
                     var iterator = playlist.getItems().iterator();
                     var firstItem = iterator.next();
                     playerManager.loadItemOrdered(

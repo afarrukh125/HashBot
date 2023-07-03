@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import com.google.inject.Singleton;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class AudioTrackManager {
     private final AudioPlayerManager playerManager;
     private final Map<Long, GuildAudioTrackManager> trackManagers;

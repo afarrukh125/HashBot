@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.track.results.YTSearchResultHandler;
@@ -44,20 +46,20 @@ public class PlayCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+        var injector = Guice.createInjector(new CoreBotModule());
+        AudioTrackManager trackManager = injector.getInstance(AudioTrackManager.class);
+        GuildAudioTrackManager gmm = trackManager.getGuildAudioPlayer(evt.getGuild());
         // To account for shuffling the list, we have the first branch
         if (params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
-            Bot.trackManager
+            trackManager
                     .getPlayerManager()
                     .loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
         } else if (params.split(" ").length == 1 && params.contains("http")) {
-            Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
+            trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
             evt.getMessage().delete().queue();
         } else
-            Bot.trackManager
-                    .getPlayerManager()
-                    .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
+            trackManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
     }
 
     @Override

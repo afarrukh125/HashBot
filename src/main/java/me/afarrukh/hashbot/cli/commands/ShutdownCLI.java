@@ -1,7 +1,9 @@
 package me.afarrukh.hashbot.cli.commands;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.cli.CLICommand;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +18,9 @@ public class ShutdownCLI extends CLICommand {
 
     @Override
     public void onInvocation(String params) {
-
+        var injector = Guice.createInjector(new CoreBotModule());
         LOG.info("Shutting down the bot...");
-        Bot.botUser().shutdown();
+        injector.getInstance(Bot.class).getBotUser().shutdown();
         LOG.info("Shut down successfully.");
         System.exit(0);
     }

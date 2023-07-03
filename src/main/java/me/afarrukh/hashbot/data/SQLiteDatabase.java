@@ -1,8 +1,9 @@
 package me.afarrukh.hashbot.data;
 
+import com.google.inject.Guice;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 import me.afarrukh.hashbot.track.PlaylistItem;
@@ -40,7 +41,8 @@ public class SQLiteDatabase implements Database {
 
     static SQLiteDatabase getInstance() {
         if (instance == null) {
-            instance = new SQLiteDatabase(Bot.getConfig());
+            var injector = Guice.createInjector(new CoreBotModule());
+            instance = new SQLiteDatabase(injector.getInstance(Config.class));
         }
         return instance;
     }

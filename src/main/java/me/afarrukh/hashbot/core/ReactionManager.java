@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
-class ReactionManager {
+public class ReactionManager {
 
     /**
      * We decide here if we want to post the message to the pinned channel depending on the reaction count

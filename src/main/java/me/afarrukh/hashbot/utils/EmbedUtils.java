@@ -1,9 +1,11 @@
 package me.afarrukh.hashbot.utils;
 
+import com.google.inject.Guice;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
@@ -94,7 +96,9 @@ public class EmbedUtils {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
-        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping()) sb.append(" [Looping]");
+        var injector = Guice.createInjector(new CoreBotModule());
+        var trackManager = injector.getInstance(AudioTrackManager.class);
+        if (trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping()) sb.append(" [Looping]");
         eb.setTitle(sb.toString());
         eb.appendDescription("[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri + ")\n\n");
         eb.appendDescription("**Channel**: `" + currentTrack.getInfo().author + "`\n");
