@@ -11,16 +11,16 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class PauseCommand extends Command implements AudioTrackCommand {
 
-    public PauseCommand() {
-        super("pause");
+    public PauseCommand(Database database) {
+        super("pause", database);
         description = "Pauses the track player";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
-            var resumeCommandName = new ResumeCommand().getName();
+            var prefix = database.getPrefixForGuild(evt.getGuild().getId());
+            var resumeCommandName = new ResumeCommand(database).getName();
 
             var injector = Guice.createInjector(new CoreBotModule());
             if (!injector.getInstance(AudioTrackManager.class)

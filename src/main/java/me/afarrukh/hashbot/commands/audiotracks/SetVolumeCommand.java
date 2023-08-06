@@ -2,13 +2,14 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SetVolumeCommand extends Command implements OwnerCommand {
 
-    public SetVolumeCommand() {
-        super("setvolume");
+    public SetVolumeCommand(Database database) {
+        super("setvolume", database);
         addAlias("sv");
         description = "Sets the volume to the desired value.";
         addParameter("volume", "The volume to set to");

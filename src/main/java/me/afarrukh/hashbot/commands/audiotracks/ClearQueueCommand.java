@@ -1,18 +1,21 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ClearQueueCommand extends Command implements AudioTrackCommand {
 
-    public ClearQueueCommand() {
-        super("clearqueue");
+    @Inject
+    public ClearQueueCommand(Database database) {
+        super("clearqueue", database);
         addAlias("cq");
         description = "Clears the current queue for the track player";
     }

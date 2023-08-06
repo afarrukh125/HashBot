@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
 import me.afarrukh.hashbot.track.results.YTSearchResultHandler;
@@ -15,8 +16,8 @@ import static java.util.Objects.requireNonNull;
 
 public class PlayCommand extends Command implements AudioTrackCommand {
 
-    public PlayCommand() {
-        super("play");
+    public PlayCommand(Database database) {
+        super("play", database);
         addAlias("p");
         description =
                 "Adds a track to the track queue. If you are queuing a playlist, you can provide 'shuffle' as an additional parameter "
@@ -53,13 +54,13 @@ public class PlayCommand extends Command implements AudioTrackCommand {
         if (params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
             trackManager
                     .getPlayerManager()
-                    .loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false));
+                    .loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false, database));
             evt.getMessage().delete().queue();
         } else if (params.split(" ").length == 1 && params.contains("http")) {
-            trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false));
+            trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false, database));
             evt.getMessage().delete().queue();
         } else
-            trackManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false));
+            trackManager.getPlayerManager().loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false, database));
     }
 
     @Override

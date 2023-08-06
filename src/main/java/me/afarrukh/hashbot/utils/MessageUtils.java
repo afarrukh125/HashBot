@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class MessageUtils {
-    public static void pinMessage(Message originalMessage, MessageChannel channel) {
+    public static void pinMessage(Message originalMessage, MessageChannel channel, Database database) {
 
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Constants.EMB_COL);
@@ -66,7 +66,7 @@ public class MessageUtils {
         eb.appendDescription("\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
         Message newMessage = channel.sendMessageEmbeds(eb.build()).complete();
 
-        Database.getInstance()
+        database
                 .setMessageAsPinnedInGuild(
                         originalMessage.getGuild().getId(), originalMessage.getId(), newMessage.getId());
     }

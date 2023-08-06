@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.data;
 
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
+import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 
@@ -10,12 +11,12 @@ import java.util.Optional;
 
 public interface Database {
 
-    static Database getInstance() {
-        try {
-            return Neo4jDatabase.getInstance();
-        } catch (Exception e) {
-            return SQLiteDatabase.getInstance();
-        }
+    static Database create(Config config) {
+            try {
+                return new Neo4jDatabase(config);
+            } catch (Exception e) {
+                return new SQLiteDatabase(config);
+            }
     }
 
     Optional<Playlist> getPlaylistForUser(String playlistName, String userId);

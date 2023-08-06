@@ -10,15 +10,15 @@ import java.util.concurrent.TimeUnit;
 
 public class SetUnpinnedCommand extends Command implements AdminCommand {
 
-    public SetUnpinnedCommand() {
-        super("setunpinned");
+    public SetUnpinnedCommand(Database database) {
+        super("setunpinned", database);
         description = "Unsets the pinned channel for this server. This can be typed in any channel";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
-        Database.getInstance().unsetPinnedChannelForGuild(evt.getGuild().getId());
+        database.unsetPinnedChannelForGuild(evt.getGuild().getId());
         Message message = evt.getChannel()
                 .sendMessage("There is no longer a pinned channel for this server.")
                 .complete();

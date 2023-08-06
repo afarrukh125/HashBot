@@ -16,6 +16,7 @@ import me.afarrukh.hashbot.commands.management.user.ClearCommand;
 import me.afarrukh.hashbot.commands.management.user.PruneCommand;
 import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.core.*;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -31,70 +32,81 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 
+@Singleton
 public class CoreBotModule extends AbstractModule {
     private static final Logger LOG = LoggerFactory.getLogger(CoreBotModule.class);
 
+    private static boolean instantiated;
+    public CoreBotModule() {
+        if(instantiated) {
+            throw new IllegalStateException("Already instantiated!");
+        }
+        instantiated = true;
+    }
+
     @Override
     protected void configure() {
+        var config = getConfigFromFile();
+        var database = Database.create(config);
+        AudioTrackManager audioTrackManager = new AudioTrackManager();
+        bind(AudioTrackManager.class).toInstance(audioTrackManager);
+        var commandManager = loadCommands(database, audioTrackManager);
         bind(MessageListener.class).in(Scopes.SINGLETON);
-        bind(CommandManager.class).toInstance(loadCommands());
-        bind(Config.class).toInstance(getConfigFromFile());
-        bind(AudioTrackManager.class).in(Scopes.SINGLETON);
+        bind(CommandManager.class).toInstance(commandManager);
+        bind(Config.class).toInstance(config);
         bind(ReactionManager.class).in(Scopes.SINGLETON);
         bind(CommandLineInputManager.class).in(Scopes.SINGLETON);
-        bind(JDA.class).toInstance(getJdaInstance());
+        bind(JDA.class).toInstance(getJdaInstance(config, commandManager));
         bind(Bot.class).asEagerSingleton();
     }
 
-    @Provides
     @Singleton
-    private CommandManager loadCommands() {
+    private CommandManager loadCommands(Database database, AudioTrackManager audioTrackManager) {
         return new CommandManager.Builder()
-                .addCommand(new CheckMemoryCommand())
-                .addCommand(new ClearCommand())
-                .addCommand(new ClearQueueCommand())
-                .addCommand(new CommandListCommand())
-                .addCommand(new DeleteListCommand())
-                .addCommand(new DisconnectCommand())
-                .addCommand(new FairPlayCommand())
-                .addCommand(new FairShuffleCommand())
-                .addCommand(new HelpCommand())
-                .addCommand(new InterleaveCommand())
-                .addCommand(new LoadListCommand())
-                .addCommand(new LoopCommand())
-                .addCommand(new LoopQueueCommand())
-                .addCommand(new MoveCommand())
-                .addCommand(new NowPlayingCommand())
-                .addCommand(new PauseCommand())
-                .addCommand(new PingCommand())
-                .addCommand(new PlayCommand())
-                .addCommand(new PlayTopCommand())
-                .addCommand(new PruneCommand())
-                .addCommand(new PruneQueueCommand())
-                .addCommand(new QueueCommand())
-                .addCommand(new RemoveCommand())
-                .addCommand(new RemoveRangeCommand())
-                .addCommand(new ResetPlayerCommand())
-                .addCommand(new ResumeCommand())
-                .addCommand(new ReverseQueueCommand())
-                .addCommand(new RoleRGBCommand())
-                .addCommand(new SavePlaylistCommand())
-                .addCommand(new SeekCommand())
-                .addCommand(new SetNameCommand())
-                .addCommand(new SetPinThresholdCommand())
-                .addCommand(new SetPinnedChannel())
-                .addCommand(new SetPrefixCommand())
-                .addCommand(new SetUnpinnedCommand())
-                .addCommand(new SetVolumeCommand())
-                .addCommand(new ShuffleCommand())
-                .addCommand(new SkipCommand())
-                .addCommand(new SortByLengthCommand())
-                .addCommand(new UptimeCommand())
-                .addCommand(new ViewListCommand())
+                .addCommand(new CheckMemoryCommand(database))
+                .addCommand(new ClearCommand(database))
+                .addCommand(new ClearQueueCommand(database))
+                .addCommand(new CommandListCommand(database))
+                .addCommand(new DeleteListCommand(database))
+                .addCommand(new DisconnectCommand(database, audioTrackManager))
+                .addCommand(new FairPlayCommand(database))
+                .addCommand(new FairShuffleCommand(database))
+                .addCommand(new HelpCommand(database))
+                .addCommand(new InterleaveCommand(database))
+                .addCommand(new LoadListCommand(database))
+                .addCommand(new LoopCommand(database))
+                .addCommand(new LoopQueueCommand(database))
+                .addCommand(new MoveCommand(database))
+                .addCommand(new NowPlayingCommand(database))
+                .addCommand(new PauseCommand(database))
+                .addCommand(new PingCommand(database))
+                .addCommand(new PlayCommand(database))
+                .addCommand(new PlayTopCommand(database))
+                .addCommand(new PruneCommand(database))
+                .addCommand(new PruneQueueCommand(database))
+                .addCommand(new QueueCommand(database))
+                .addCommand(new RemoveCommand(database, audioTrackManager))
+                .addCommand(new RemoveRangeCommand(database))
+                .addCommand(new ResetPlayerCommand(database, audioTrackManager))
+                .addCommand(new ResumeCommand(database))
+                .addCommand(new ReverseQueueCommand(database))
+                .addCommand(new RoleRGBCommand(database))
+                .addCommand(new SavePlaylistCommand(database))
+                .addCommand(new SeekCommand(database))
+                .addCommand(new SetNameCommand(database))
+                .addCommand(new SetPinThresholdCommand(database))
+                .addCommand(new SetPinnedChannelCommand(database))
+                .addCommand(new SetPrefixCommand(database))
+                .addCommand(new SetUnpinnedCommand(database))
+                .addCommand(new SetVolumeCommand(database))
+                .addCommand(new ShuffleCommand(database))
+                .addCommand(new SkipCommand(database))
+                .addCommand(new SortByLengthCommand(database))
+                .addCommand(new UptimeCommand(database))
+                .addCommand(new ViewListCommand(database))
                 .build();
     }
 
-    @Provides
     @Singleton
     private static Config getConfigFromFile() {
         try {
@@ -122,12 +134,8 @@ public class CoreBotModule extends AbstractModule {
         }
     }
 
-    @Inject
-    @Provides
     @Singleton
-    private JDA getJdaInstance() {
-        var injector = Guice.createInjector(new CoreBotModule());
-        var config = injector.getInstance(Config.class);
+    private JDA getJdaInstance(Config config, CommandManager commandManager) {
         JDA jda = null;
         try {
             jda = JDABuilder.create(
@@ -148,7 +156,7 @@ public class CoreBotModule extends AbstractModule {
                             CacheFlag.STICKER)
                     .build()
                     .awaitReady();
-            startUpMessages();
+            startUpMessages(commandManager);
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.exit(0);
@@ -156,10 +164,7 @@ public class CoreBotModule extends AbstractModule {
         return jda;
     }
 
-    @Inject
-    private void startUpMessages() {
-        var injector = Guice.createInjector(new CoreBotModule());
-        var commandManager = injector.getInstance(CommandManager.class);
+    private void startUpMessages(CommandManager commandManager) {
         List<Command> descriptionLessCommands = new ArrayList<>();
 
         for (var c : commandManager.getCommands()) {

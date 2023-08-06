@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class PruneQueueCommand extends Command implements AudioTrackCommand {
 
-    public PruneQueueCommand() {
-        super("prunequeue");
+    public PruneQueueCommand(Database database) {
+        super("prunequeue", database);
         addAlias("pq");
         description = "Removes tracks from any users that are no longer in voice.";
     }

@@ -1,14 +1,15 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class RoleRGBCommand extends Command {
 
-    public RoleRGBCommand() {
-        super("rolergb");
+    public RoleRGBCommand(Database database) {
+        super("rolergb", database);
         description = "Gets the RGB colour values for a particular role";
         addParameter("role name", "The name of the role for which you would like to find the RGB for");
     }

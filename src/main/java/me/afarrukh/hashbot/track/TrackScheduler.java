@@ -77,7 +77,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
         Timer disconnectTimer = trackManager.getGuildAudioPlayer(guild).getDisconnectTimer();
-        disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
+        disconnectTimer.schedule(new DisconnectTimer(guild, trackManager), Constants.DISCONNECT_DELAY * 1000);
         if (isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();

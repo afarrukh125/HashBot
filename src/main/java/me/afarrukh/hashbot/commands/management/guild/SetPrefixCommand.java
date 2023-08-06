@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SetPrefixCommand extends Command implements AdminCommand {
 
-    public SetPrefixCommand() {
-        super("setprefix");
+    public SetPrefixCommand(Database database) {
+        super("setprefix", database);
         description = "Sets the bot prefix";
         addParameter("prefix", "The new prefix for the bot");
         addExampleUsage("setprefix ,");
@@ -19,7 +19,7 @@ public class SetPrefixCommand extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         if (params != null && params.length() < 2) {
-            Database.getInstance().setPrefixForGuild(evt.getGuild().getId(), params);
+            database.setPrefixForGuild(evt.getGuild().getId(), params);
             evt.getChannel().sendMessage("Bot prefix is now " + params).queue();
         } else {
             onIncorrectParams(evt.getChannel().asTextChannel());

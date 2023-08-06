@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.core;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import me.afarrukh.hashbot.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.config.Config;
@@ -21,11 +22,12 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
 public class Bot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
     private CommandManager commandManager;
-    private AudioTrackManager trackManager;
     private JDA botUser;
     ReactionManager reactionManager;
     private final Config config;
+    private final AudioTrackManager audioTrackManager;
     private final MessageListener messageListener;
+    private final Database database;
     private CommandLineInputManager commandLineInputManager;
 
     private static boolean initialised;
@@ -38,10 +40,17 @@ public class Bot {
             ReactionManager reactionManager,
             CommandLineInputManager commandLineInputManager,
             JDA botUser,
-            MessageListener messageListener)
+            MessageListener messageListener,
+            Database database)
             throws InterruptedException, ExecutionException, TimeoutException {
         this.config = config;
+        this.commandManager = commandManager;
+        this.audioTrackManager = audioTrackManager;
+        this.reactionManager = reactionManager;
+        this.commandLineInputManager = commandLineInputManager;
+        this.botUser = botUser;
         this.messageListener = messageListener;
+        this.database = database;
     }
 
     public JDA getBotUser() {
@@ -56,7 +65,6 @@ public class Bot {
         if (initialised) {
             throw new IllegalStateException("Bot has already been initialised");
         }
-        verifyDatabaseConnection();
 
         botUser.addEventListener(messageListener);
         botUser.getPresence()
@@ -75,11 +83,7 @@ public class Bot {
         initialised = true;
     }
 
-    private void verifyDatabaseConnection() {
-        Database.getInstance();
-    }
-
     public AudioTrackManager getTrackManager() {
-        return trackManager;
+        return audioTrackManager;
     }
 }

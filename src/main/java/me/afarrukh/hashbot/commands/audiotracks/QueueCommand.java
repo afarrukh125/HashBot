@@ -5,6 +5,7 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -13,8 +14,8 @@ import static java.lang.Integer.parseInt;
 
 public class QueueCommand extends Command implements AudioTrackCommand {
 
-    public QueueCommand() {
-        super("queue");
+    public QueueCommand(Database database) {
+        super("queue", database);
         addAlias("q");
         addAlias("page");
         description = "Shows the current queue of tracks";

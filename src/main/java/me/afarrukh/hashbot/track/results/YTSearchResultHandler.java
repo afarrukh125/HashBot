@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.track.results;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
@@ -9,8 +10,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class YTSearchResultHandler extends YTGenericResultHandler {
 
-    public YTSearchResultHandler(GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop) {
-        super(gmm, evt, playTop);
+
+    public YTSearchResultHandler(GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop, Database database) {
+        super(gmm, evt, playTop, database);
     }
 
     @Override
@@ -28,16 +30,16 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
 
         firstTrack.setUserData(evt.getAuthor().getName());
 
-        AudioTrackUtils.play(evt, gmm, firstTrack, playTop);
+        AudioTrackUtils.play(evt, gmm, firstTrack, playTop,database);
     }
 
     @Override
     public void trackLoaded(AudioTrack track) {
         evt.getChannel()
-                .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(gmm, track, evt))
+                .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(gmm, track, evt, database))
                 .queue();
 
         track.setUserData(evt.getAuthor().getName());
-        AudioTrackUtils.play(evt, gmm, track, playTop);
+        AudioTrackUtils.play(evt, gmm, track, playTop, database);
     }
 }

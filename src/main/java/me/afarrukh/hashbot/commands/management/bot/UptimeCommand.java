@@ -6,13 +6,14 @@ import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.CommandManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class UptimeCommand extends Command implements SystemCommand {
 
-    public UptimeCommand() {
-        super("uptime");
+    public UptimeCommand(Database database) {
+        super("uptime", database);
         addAlias("up");
         description = "Displays the bot uptime in HH:MM:SS";
     }

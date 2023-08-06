@@ -29,7 +29,7 @@ public class SQLiteDatabase implements Database {
     private final Config config;
     private final Connection connection;
 
-    private SQLiteDatabase(Config config) {
+    public SQLiteDatabase(Config config) {
         try {
             this.config = config;
             this.connection = DriverManager.getConnection("jdbc:sqlite:%s".formatted(PATH));
@@ -37,14 +37,6 @@ public class SQLiteDatabase implements Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    static SQLiteDatabase getInstance() {
-        if (instance == null) {
-            var injector = Guice.createInjector(new CoreBotModule());
-            instance = new SQLiteDatabase(injector.getInstance(Config.class));
-        }
-        return instance;
     }
 
     private void createTablesIfNotPresent() {

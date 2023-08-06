@@ -6,13 +6,14 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MoveCommand extends Command implements AudioTrackCommand {
-    public MoveCommand() {
-        super("move");
+    public MoveCommand(Database database) {
+        super("move", database);
         addAlias("m");
         addAlias("mv");
         description = "Moves a track from one index on the list to another";

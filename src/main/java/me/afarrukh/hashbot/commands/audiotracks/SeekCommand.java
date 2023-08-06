@@ -2,13 +2,14 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SeekCommand extends Command implements AudioTrackCommand {
 
-    public SeekCommand() {
-        super("seek");
+    public SeekCommand(Database database) {
+        super("seek", database);
         addAlias("skim");
         addAlias("ff");
         description = "Seeks to the particular time (in seconds) of the currently playing track.";

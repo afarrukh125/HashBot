@@ -55,11 +55,11 @@ public abstract class Command {
      * A command may have an example usage to show, when querying the details for it
      */
     private final Set<String> exampleUsages;
+    protected final Database database;
 
     /**
      * A helpful description to describe the purpose of this command.
      *
-     * @see me.afarrukh.hashbot.utils.EmbedUtils#getHelpMsg(MessageReceivedEvent, List)
      */
     protected String description = null;
 
@@ -82,7 +82,8 @@ public abstract class Command {
      * @param name The name of the command to be called.
      * @see #addAlias(String)
      */
-    protected Command(String name) {
+    protected Command(String name, Database database) {
+        this.database = database;
         aliases = new HashSet<>();
         parameters = new LinkedHashMap<>(); // We need to preserve the order of insertion of the arguments
         this.name = name;
@@ -93,7 +94,6 @@ public abstract class Command {
      * Adds an alias to this command
      *
      * @param alias An alternative name for this command
-     * @see #Command(String)
      */
     protected final void addAlias(String alias) {
         if (alias.equals(name))
@@ -148,7 +148,7 @@ public abstract class Command {
     }
 
     public final MessageEmbed getCommandHelpMessage(TextChannel channel) {
-        var prefix = Database.getInstance().getPrefixForGuild(channel.getGuild().getId());
+        var prefix = database.getPrefixForGuild(channel.getGuild().getId());
         var embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Viewing help for " + this.name);
         var stringBuilder = new StringBuilder();

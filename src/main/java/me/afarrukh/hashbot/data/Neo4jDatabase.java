@@ -23,12 +23,11 @@ import static java.util.Collections.singletonMap;
 
 public class Neo4jDatabase implements Database {
     private static final Logger LOG = LoggerFactory.getLogger(Neo4jDatabase.class);
-    private static Neo4jDatabase instance;
     private final Driver driver;
     private final Config config;
     private final Map<String, String> guildPrefixes;
 
-    private Neo4jDatabase(Config config) {
+    public Neo4jDatabase(Config config) {
         driver = GraphDatabase.driver(
                 config.getDbUri(), AuthTokens.basic(config.getDbUsername(), config.getDbPassword()));
         this.config = config;
@@ -36,14 +35,6 @@ public class Neo4jDatabase implements Database {
         var run = driver.session().run("MATCH (n) RETURN COUNT(n) AS count");
         var count = run.single().get("count").asInt();
         LOG.info("Connected to neo4j database with {} nodes", count);
-    }
-
-    public static Neo4jDatabase getInstance() {
-        if (instance == null) {
-            var injector = Guice.createInjector(new CoreBotModule());
-            instance = new Neo4jDatabase(injector.getInstance(Config.class));
-        }
-        return instance;
     }
 
     @Override

@@ -19,8 +19,8 @@ import static me.afarrukh.hashbot.commands.management.bot.HelpCommand.appendComm
 
 public class CommandListCommand extends Command {
 
-    public CommandListCommand() {
-        super("commands");
+    public CommandListCommand(Database database) {
+        super("commands", database);
         addAlias("cmds");
         description = "Displays all commands provide a parameter e.g. track to see commands only of that category";
         addExampleUsage("help roles");
@@ -41,7 +41,7 @@ public class CommandListCommand extends Command {
 
         int pageCount = 2;
 
-        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
+        var prefix = database.getPrefixForGuild(evt.getGuild().getId());
 
         StringBuilder sb = new StringBuilder();
 

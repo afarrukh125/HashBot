@@ -14,8 +14,8 @@ import java.util.List;
 
 public class RemoveRangeCommand extends Command implements AudioTrackCommand {
 
-    public RemoveRangeCommand() {
-        super("removerange");
+    public RemoveRangeCommand(Database database) {
+        super("removerange", database);
         addAlias("rmrange");
         addAlias("rr");
         description = "Removes all tracks between the start and end (both inclusive) ranges from the track queue";
@@ -78,7 +78,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                 } else {
                     // If it is not a range
                     if (range.split("-").length == 1) {
-                        var prefix = Database.getInstance()
+                        var prefix = database
                                 .getPrefixForGuild(evt.getGuild().getId());
                         errorMessageBuilder
                                 .append("- Range ")
@@ -86,7 +86,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                                 .append(" was invalid, as it is not a range. "
                                         + "If you wish to remove individual tracks use ")
                                 .append(prefix)
-                                .append(new RemoveCommand().getName())
+                                .append(new RemoveCommand(database, trackManager).getName())
                                 .append(".")
                                 .append(" Alternatively you can " + "provide a range of 0 (e.g. 87-87)\n");
                         continue;

@@ -5,13 +5,14 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ResumeCommand extends Command implements AudioTrackCommand {
 
-    public ResumeCommand() {
-        super("resume");
+    public ResumeCommand(Database database) {
+        super("resume", database);
         addAlias("res");
         description = "Resumes the track player";
     }

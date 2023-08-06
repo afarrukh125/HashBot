@@ -1,10 +1,8 @@
 package me.afarrukh.hashbot.core;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.module.CoreBotModule;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
@@ -34,18 +32,21 @@ public class MessageListener extends ListenerAdapter {
     private final AudioTrackManager trackManager;
     private final ReactionManager reactionManager;
     private final JDA botUser;
+    private final Database database;
 
     @Inject
     public MessageListener(
             CommandManager commandManager,
             AudioTrackManager trackManager,
             ReactionManager reactionManager,
-            JDA botUser) {
+            JDA botUser,
+            Database database) {
 
         this.commandManager = commandManager;
         this.trackManager = trackManager;
         this.reactionManager = reactionManager;
         this.botUser = botUser;
+        this.database = database;
     }
 
     @Override
@@ -54,8 +55,6 @@ public class MessageListener extends ListenerAdapter {
             return;
         }
 
-        var injector = Guice.createInjector(new CoreBotModule());
-        Database database = Database.getInstance();
         String prefix = database.getPrefixForGuild(evt.getGuild().getId());
         if (evt.getMessage().getContentRaw().startsWith(prefix)) {
             commandManager.processEvent(evt);
@@ -63,7 +62,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         String userId = evt.getMember().getId();
-        if (BotUtils.isPinnedChannel(evt)
+        if (BotUtils.isPinnedChannel(evt, database)
                 && !userId.equals(botUser.getSelfUser().getId())) {
             evt.getMessage().delete().queue();
         }
@@ -101,7 +100,7 @@ public class MessageListener extends ListenerAdapter {
             GuildAudioTrackManager manager = trackManager.getGuildAudioPlayer(evt.getGuild());
 
             if (trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
-                AudioTrackUtils.disconnect(evt.getGuild());
+                AudioTrackUtils.disconnect(evt.getGuild(), trackManager);
                 return;
             }
 
@@ -113,7 +112,7 @@ public class MessageListener extends ListenerAdapter {
 
                 Timer disconnectTimer =
                         trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-                disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY * 1000);
+                disconnectTimer.schedule(new DisconnectTimer(evt.getGuild(), trackManager), Constants.DISCONNECT_DELAY * 1000);
             }
         }
     }
@@ -138,7 +137,6 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(MessageDeleteEvent evt) {
-        var database = Database.getInstance();
         String guildId = evt.getGuild().getId();
         database.getPinnedChannelIdForGuild(guildId).ifPresent(pinnedChannelId -> {
             if (evt.getGuild().getTextChannelById(pinnedChannelId) != null) {

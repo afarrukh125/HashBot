@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -25,7 +26,7 @@ public class AudioTrackUtils {
      * @param playTop      Whether or not the track is to be queued to the top of the list
      */
     public static void play(
-            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
+            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop, Database database) {
 
         connectToChannel(evt.getMember());
         if (playTop) {
@@ -40,7 +41,7 @@ public class AudioTrackUtils {
                     .queue();
         } else
             evt.getChannel()
-                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt))
+                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt, database))
                     .queue();
     }
 
@@ -53,10 +54,9 @@ public class AudioTrackUtils {
         }
     }
 
-    public static void disconnect(Guild guild) {
-        var injector = Guice.createInjector(new CoreBotModule());
+    public static void disconnect(Guild guild, AudioTrackManager audioTrackManager) {
         GuildAudioTrackManager gm =
-                injector.getInstance(AudioTrackManager.class).getGuildAudioPlayer(guild);
+                audioTrackManager.getGuildAudioPlayer(guild);
         if (gm.getPlayer().getPlayingTrack() != null) {
             gm.getPlayer().getPlayingTrack().stop();
         } else {
@@ -223,9 +223,7 @@ public class AudioTrackUtils {
      * @param evt The message received event associated with the track to be removed
      * @param idx The current index of the track to be removed
      */
-    public static void remove(MessageReceivedEvent evt, int idx) {
-        var injector = Guice.createInjector(new CoreBotModule());
-        var trackManager = injector.getInstance(AudioTrackManager.class);
+    public static void remove(MessageReceivedEvent evt, int idx, AudioTrackManager trackManager) {
         BlockingQueue<AudioTrack> tracks =
                 trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().getQueue();
 

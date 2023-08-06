@@ -16,8 +16,8 @@ import java.util.*;
 
 public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
-    public SavePlaylistCommand() {
-        super("savelist");
+    public SavePlaylistCommand(Database database) {
+        super("savelist", database);
         addAlias("saveplaylist");
         addAlias("save");
         addAlias("spl");
@@ -132,7 +132,6 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        var database = Database.getInstance();
         var userId = evt.getMember().getId();
 
         var playlistName = params;

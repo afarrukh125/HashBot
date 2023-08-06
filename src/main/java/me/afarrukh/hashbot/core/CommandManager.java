@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;

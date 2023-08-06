@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class LoadListCommand extends Command implements AudioTrackCommand {
 
-    public LoadListCommand() {
-        super("loadlist");
+    public LoadListCommand(Database database) {
+        super("loadlist", database);
         addAlias("plist");
         addAlias("dlist");
 
@@ -42,8 +42,6 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
             evt.getChannel().sendMessage("Please provide a playlist to load.").queue();
             return;
         }
-
-        var database = Database.getInstance();
 
         //noinspection UnnecessaryLocalVariable
         var playlistName = params;

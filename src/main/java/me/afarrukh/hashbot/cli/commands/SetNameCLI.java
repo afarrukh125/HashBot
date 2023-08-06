@@ -1,18 +1,18 @@
 package me.afarrukh.hashbot.cli.commands;
 
-import com.google.inject.Guice;
 import me.afarrukh.hashbot.cli.CLICommand;
 import me.afarrukh.hashbot.core.Bot;
-import me.afarrukh.hashbot.core.module.CoreBotModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SetNameCLI extends CLICommand {
     private static final Logger LOG = LoggerFactory.getLogger(SetNameCLI.class);
+    private final Bot bot;
 
-    public SetNameCLI() {
+    public SetNameCLI(Bot bot) {
         super("setname");
         addAlias("sn");
+        this.bot = bot;
     }
 
     @Override
@@ -21,9 +21,8 @@ public class SetNameCLI extends CLICommand {
             LOG.info("You need to provide a username to set");
             return;
         }
-        var injector = Guice.createInjector(new CoreBotModule());
         try {
-            injector.getInstance(Bot.class)
+            bot
                     .getBotUser()
                     .getSelfUser()
                     .getManager()

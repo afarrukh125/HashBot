@@ -5,14 +5,15 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class LoopQueueCommand extends Command implements AudioTrackCommand {
 
-    public LoopQueueCommand() {
-        super("loopqueue");
+    public LoopQueueCommand(Database database) {
+        super("loopqueue", database);
         addAlias("lq");
         description = "Adds tracks to the end of the queue once they are complete.";
     }

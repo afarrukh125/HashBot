@@ -10,6 +10,12 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 public class ReactionManager {
 
+    private final Database database;
+
+    public ReactionManager(Database database) {
+        this.database = database;
+    }
+
     /**
      * We decide here if we want to post the message to the pinned channel depending on the reaction count
      * We are testing for distinct users, hence we use the Set class. Algorithm is unfortunately O(n^2)
@@ -24,8 +30,6 @@ public class ReactionManager {
         }
 
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
-
-        Database database = Database.getInstance();
 
         if (database.isBotPinMessageInGuild(evt.getGuild().getId(), message.getId())) {
             return;
@@ -67,7 +71,7 @@ public class ReactionManager {
                 return;
             }
 
-            MessageUtils.pinMessage(message, channel);
+            MessageUtils.pinMessage(message, channel, database);
         });
     }
 }

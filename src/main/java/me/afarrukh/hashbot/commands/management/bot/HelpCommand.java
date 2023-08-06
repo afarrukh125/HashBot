@@ -18,8 +18,8 @@ public class HelpCommand extends Command {
 
     private static final int MAX_DESCRIPTION_LENGTH = 1600;
 
-    public HelpCommand() {
-        super("help");
+    public HelpCommand(Database database) {
+        super("help", database);
 
         description = "View the description for a specific command";
         addParameter("command name", "The name of the command to view an advanced for");
@@ -58,7 +58,7 @@ public class HelpCommand extends Command {
 
         int pageCount = 2;
 
-        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
+        var prefix = database.getPrefixForGuild(evt.getGuild().getId());
 
         StringBuilder sb = new StringBuilder();
 

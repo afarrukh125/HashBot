@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class ReverseQueueCommand extends Command {
 
-    public ReverseQueueCommand() {
-        super("reversequeue");
+    public ReverseQueueCommand(Database database) {
+        super("reversequeue", database);
         addAlias("rq");
         description = "Inverts the queue contents so that the last track is first and the first track is last. "
                 + "Does not affect the currently playing track.";

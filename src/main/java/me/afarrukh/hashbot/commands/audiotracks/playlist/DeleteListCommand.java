@@ -9,8 +9,8 @@ import static java.util.Objects.requireNonNull;
 
 public class DeleteListCommand extends Command implements AudioTrackCommand {
 
-    public DeleteListCommand() {
-        super("deletelist");
+    public DeleteListCommand(Database database) {
+        super("deletelist", database);
         addAlias("dl");
         description = "Delete one of your playlists by name";
         addParameter("name", "The name of the playlist to be deleted");
@@ -19,8 +19,8 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
-        var viewListCommandName = new ViewListCommand().getName();
+        var prefix = database.getPrefixForGuild(evt.getGuild().getId());
+        var viewListCommandName = new ViewListCommand(database).getName();
         if (params == null) {
             evt.getChannel()
                     .sendMessage(("You need to provide the name of the playlist you would like to delete. "
@@ -29,8 +29,6 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
                     .queue();
             return;
         }
-
-        var database = Database.getInstance();
 
         var playlistName = params;
 

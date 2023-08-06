@@ -6,12 +6,13 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class NowPlayingCommand extends Command implements AudioTrackCommand {
-    public NowPlayingCommand() {
-        super("nowplaying");
+    public NowPlayingCommand(Database database) {
+        super("nowplaying", database);
         addAlias("current");
         addAlias("np");
         description = "Shows the currently playing track";

@@ -13,8 +13,8 @@ import static java.util.Objects.requireNonNull;
 
 public class ViewListCommand extends Command {
 
-    public ViewListCommand() {
-        super("viewlists");
+    public ViewListCommand(Database database) {
+        super("viewlists", database);
         addAlias("vl");
         addAlias("playlists");
         description = "View all your playlists by name, and how many tracks are in each of them";
@@ -22,7 +22,6 @@ public class ViewListCommand extends Command {
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        var database = Database.getInstance();
         List<Playlist> playlists =
                 database.getAllPlaylistsForUser(evt.getMember().getId());
         var stringBuilder = new StringBuilder();

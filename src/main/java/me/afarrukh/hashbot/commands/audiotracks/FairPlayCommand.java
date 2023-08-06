@@ -5,14 +5,15 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class FairPlayCommand extends Command implements AudioTrackCommand {
 
-    public FairPlayCommand() {
-        super("fairplay");
+    public FairPlayCommand(Database database) {
+        super("fairplay", database);
         addAlias("fp");
         description =
                 "If this is turned on, tracks are automatically queued and sorted so everyone gets an equal chance to queue.";

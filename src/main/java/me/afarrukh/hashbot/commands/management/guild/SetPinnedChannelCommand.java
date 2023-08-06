@@ -8,10 +8,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.concurrent.TimeUnit;
 
-public class SetPinnedChannel extends Command implements AdminCommand {
+public class SetPinnedChannelCommand extends Command implements AdminCommand {
 
-    public SetPinnedChannel() {
-        super("setpinned");
+    public SetPinnedChannelCommand(Database database) {
+        super("setpinned", database);
         description =
                 "Sets the pin channel for this server. This channel will only allow images to be sent. This should be typed"
                         + " in the channel that is to be set as the pinned channel.";
@@ -21,7 +21,6 @@ public class SetPinnedChannel extends Command implements AdminCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
 
         TextChannel channel = evt.getChannel().asTextChannel();
-        Database database = Database.getInstance();
 
         database.setPinnedChannelForGuild(evt.getGuild().getId(), channel.getId());
         channel.sendMessage("The new pinned channel for this server is " + channel.getName())

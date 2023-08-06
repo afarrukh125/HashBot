@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.core.module.CoreBotModule;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -14,8 +15,8 @@ import static java.util.Objects.requireNonNull;
 
 public class SortByLengthCommand extends Command {
 
-    public SortByLengthCommand() {
-        super("sortlength");
+    public SortByLengthCommand(Database database) {
+        super("sortlength", database);
         description = "Sorts the remaining tracks in the track queue from shortest to longest";
     }
 
