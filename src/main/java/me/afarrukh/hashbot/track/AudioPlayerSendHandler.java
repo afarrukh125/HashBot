@@ -6,18 +6,13 @@ import net.dv8tion.jda.api.audio.AudioSendHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.ByteBuffer;
-import java.util.Objects;
 
-/**
- * Required to function with JDA and provide correct compatibility
- */
+import static java.util.Objects.requireNonNull;
+
 public class AudioPlayerSendHandler implements AudioSendHandler {
     private final AudioPlayer audioPlayer;
     private AudioFrame lastFrame;
 
-    /**
-     * @param audioPlayer Audio player to wrap.
-     */
     public AudioPlayerSendHandler(AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
     }
@@ -41,7 +36,7 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
         byte[] data = lastFrame != null ? lastFrame.getData() : null;
         lastFrame = null;
 
-        return ByteBuffer.wrap(Objects.requireNonNull(data));
+        return ByteBuffer.wrap(requireNonNull(data));
     }
 
     @Override

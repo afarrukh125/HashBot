@@ -5,9 +5,6 @@ import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-/**
- * Created by Abdullah on 10/04/2019 16:10
- */
 public class SetPinThresholdCommand extends Command implements AdminCommand {
 
     public SetPinThresholdCommand() {

@@ -6,9 +6,6 @@ import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.Timer;
 
-/**
- * Object that binds a guild to a player and track scheduler
- */
 public class GuildAudioTrackManager {
     private final AudioPlayer player;
     private final TrackScheduler scheduler;

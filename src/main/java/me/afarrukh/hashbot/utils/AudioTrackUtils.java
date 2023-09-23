@@ -15,12 +15,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class AudioTrackUtils {
 
-    /**
-     * @param evt          The message event used to retrieve data such as the channel the message is being sent to
-     * @param trackManager The track manager to be queried
-     * @param track        The track being queued
-     * @param playTop      Whether or not the track is to be queued to the top of the list
-     */
     public static void play(
             MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
 
@@ -67,12 +61,6 @@ public class AudioTrackUtils {
         gm.getPlayer().destroy();
     }
 
-    /**
-     * Returns the duration of a playlist
-     *
-     * @param pl The playlist to be queried
-     * @return A string with the duration of the playlist in HHMMSS format
-     */
     public static String getPlaylistDuration(AudioPlaylist pl) {
         long duration = 0;
         for (AudioTrack t : pl.getTracks()) {
@@ -82,10 +70,6 @@ public class AudioTrackUtils {
         return CmdUtils.longToHHMMSS(duration);
     }
 
-    /**
-     * @param evt The event associated with the call
-     * @return True or false depending on whether track commands can be called
-     */
     public static boolean canInteract(MessageReceivedEvent evt) {
         if (evt.getGuild()
                                 .getMemberById(Bot.botUser().getSelfUser().getId())
@@ -103,12 +87,6 @@ public class AudioTrackUtils {
                 .equals(evt.getMember().getVoiceState().getChannel());
     }
 
-    /**
-     * Gets the URL for the thumbnail for the provided track
-     *
-     * @param at The audio track for which the thumbnail URl is to be found
-     * @return A string with the URL to the given audio track
-     */
     public static String getThumbnailURL(AudioTrack at) {
         String vidURL = at.getInfo().uri;
         int idx = vidURL.indexOf("?v=");
@@ -116,10 +94,6 @@ public class AudioTrackUtils {
         return "https://img.youtube.com/vi/" + imgURL + "/0.jpg";
     }
 
-    /**
-     * @param track The audio track for which the current position and total duration is to be found
-     * @return A string with the highlighted current position as the appropriate string in constants file
-     */
     public static String getAudioTrackBar(AudioTrack track) {
         long totalDuration = track.getDuration();
         long currentPosition = track.getPosition();
@@ -133,12 +107,6 @@ public class AudioTrackUtils {
         return val.toString();
     }
 
-    /**
-     * Changes the volume to a desired value
-     *
-     * @param evt The event being queried for information such as the channel
-     * @param vol The volume to be changed to
-     */
     public static void setVolume(MessageReceivedEvent evt, int vol) {
         if (vol < 0 || vol > Constants.MAX_VOL) {
             evt.getChannel()
@@ -150,32 +118,16 @@ public class AudioTrackUtils {
         evt.getChannel().sendMessage("Volume set to " + vol).queue();
     }
 
-    /**
-     * Pauses the bot's audio player
-     *
-     * @param evt The message received event associated with the pause request being sent
-     */
     public static void pause(MessageReceivedEvent evt) {
         AudioPlayer ap = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(true);
     }
 
-    /**
-     * Resumes the bot
-     *
-     * @param evt The message receieved event relating to the resume request
-     */
     public static void resume(MessageReceivedEvent evt) {
         AudioPlayer ap = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(false);
     }
 
-    /**
-     * Looks for a particular time in the track
-     *
-     * @param evt     The message received event containing information regarding the track which is to be seeked through
-     * @param seconds The time in seconds to be searched for in the currently playing track
-     */
     public static void seek(MessageReceivedEvent evt, int seconds) {
         try {
             AudioTrack track = Bot.trackManager
@@ -193,7 +145,7 @@ public class AudioTrackUtils {
                 int toMilliSeconds = seconds * 1000;
                 track.setPosition(toMilliSeconds);
                 evt.getChannel()
-                        .sendMessage("Set position of current track to " + seconds)
+                        .sendMessage("Set position of current track to " + CmdUtils.longToMMSS(seconds))
                         .queue();
             }
         } catch (NullPointerException e) {
@@ -201,12 +153,6 @@ public class AudioTrackUtils {
         }
     }
 
-    /**
-     * The track to be removed from the queue at the given index
-     *
-     * @param evt The message received event associated with the track to be removed
-     * @param idx The current index of the track to be removed
-     */
     public static void remove(MessageReceivedEvent evt, int idx) {
         BlockingQueue<AudioTrack> tracks = Bot.trackManager
                 .getGuildAudioPlayer(evt.getGuild())

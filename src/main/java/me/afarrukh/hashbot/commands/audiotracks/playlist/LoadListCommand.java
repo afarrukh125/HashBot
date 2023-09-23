@@ -61,6 +61,7 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
                     GuildAudioTrackManager guildAudioPlayer = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
                     var iterator = playlist.getItems().iterator();
                     var firstItem = iterator.next();
+                    // TODO change this logic here to speed up loading
                     playerManager.loadItemOrdered(
                             guildAudioPlayer, firstItem.uri(), new YTFirstLatentTrackHandler(member, memberId));
                     int idx = 0;

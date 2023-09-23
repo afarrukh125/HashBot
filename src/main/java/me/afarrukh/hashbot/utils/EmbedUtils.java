@@ -17,12 +17,6 @@ import java.util.concurrent.BlockingQueue;
 @SuppressWarnings("Duplicates")
 public class EmbedUtils {
 
-    /**
-     * @param gmm  The guild track manager
-     * @param evt  The message received event associated with the queue message request
-     * @param page The page of the message queue to be displayed
-     * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single track embed.
-     */
     public static MessageEmbed getQueueMsg(GuildAudioTrackManager gmm, MessageReceivedEvent evt, int page) {
         try {
             EmbedBuilder eb = new EmbedBuilder();
@@ -84,12 +78,6 @@ public class EmbedUtils {
         }
     }
 
-    /**
-     * Returns an embed with the only track currently in the queue
-     *
-     * @param evt The event to get the channel to send it to
-     * @return A message embed with information on a single provided audio track
-     */
     public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, MessageReceivedEvent evt) {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
@@ -108,12 +96,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * @param gmm The guild track manager associated with the embed being requested
-     * @param at  The audio track which has been queued
-     * @param evt The message received event containing information such as which channel to send to
-     * @return an embed referring to a track which has been queued to an audioplayer already playing a track
-     */
     public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
@@ -139,10 +121,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * @param at The audio track which has been skipped to
-     * @return Returns an embed referring to the track which has been skipped to
-     */
     public static MessageEmbed getSkippedToEmbed(AudioTrack at) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Skipped to");
@@ -155,10 +133,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * @param at The audio track which has been skipped
-     * @return an embed referring to the track which has been skipped, not to be confused with getSkippedToEmbed
-     */
     public static MessageEmbed getSkippedEmbed(AudioTrack at) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Skipped track");
@@ -170,11 +144,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * @param gmm The track manager to query
-     * @param at  The audiotrack which is being added
-     * @return A message embed with the appropriate information for a track that has been queued to the top
-     */
     public static MessageEmbed getQueuedTopEmbed(GuildAudioTrackManager gmm, AudioTrack at) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
@@ -196,12 +165,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * Gets an embed that returns a playlist that has been queued
-     *
-     * @param playlist The playlist to be added
-     * @return the MessageEmbed object to represent this playlist that has been queued
-     */
     public static MessageEmbed getPlaylistEmbed(AudioPlaylist playlist) {
         AudioTrack firstTrack = playlist.getSelectedTrack();
 
@@ -218,9 +181,6 @@ public class EmbedUtils {
         return eb.build();
     }
 
-    /**
-     * @return An embed which informs that nothing is playing right now
-     */
     public static MessageEmbed getNothingPlayingEmbed() {
         return new EmbedBuilder()
                 .setDescription("Nothing playing right now.")

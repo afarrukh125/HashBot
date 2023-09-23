@@ -54,20 +54,11 @@ public class TrackScheduler extends AudioEventAdapter {
         player.startTrack(queue.poll(), false);
     }
 
-    /**
-     * Decides what happens when the track ends
-     *
-     * @param player The AudioPlayer associated with this trackscheduler
-     * @param track  The track that has been started
-     */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         Bot.trackManager.getGuildAudioPlayer(guild).resetDisconnectTimer();
     }
 
-    /**
-     * Decides what happens when a track ends
-     */
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
@@ -93,30 +84,15 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    /**
-     * Replaces the current queue with a new one
-     *
-     * @param collection The collection to replace the current queue with
-     */
     public void replaceQueue(Collection<AudioTrack> collection) {
         queue = new LinkedBlockingQueue<>(collection);
     }
 
-    /**
-     * Converts a BlockingQueue<> into an Arraylist<>
-     *
-     * @return The current track list in an arraylist format
-     */
     public List<AudioTrack> getAsArrayList() {
         // Convert the queue into an arraylist
         return new ArrayList<>(this.queue);
     }
 
-    /**
-     * Gets the duration of the queue's AudioTracks and the remaining time of the current track
-     *
-     * @return Returns a string in format h:m:s of the total queue time
-     */
     public String getTotalQueueTime() {
         long count = 0;
 
@@ -132,11 +108,6 @@ public class TrackScheduler extends AudioEventAdapter {
                 TimeUnit.MILLISECONDS.toSeconds(count) % TimeUnit.MINUTES.toSeconds(1));
     }
 
-    /**
-     * Skips to desired index
-     *
-     * @param index The index to skip to in the queue
-     */
     public void skip(int index) {
         for (int i = 0; i < index - 1; i++) {
             queue.poll();
@@ -157,12 +128,6 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    /**
-     * Gets the index of a given track (starts at 1 for user purposes)
-     *
-     * @param targetTrack The AudioTrack for which the index is to be found
-     * @return The index of the provided track
-     */
     public int getTrackIndex(AudioTrack targetTrack) {
         int count = 1;
         for (AudioTrack track : queue) {
@@ -174,12 +139,6 @@ public class TrackScheduler extends AudioEventAdapter {
         return count;
     }
 
-    /**
-     * Moves a track from one index to another
-     *
-     * @param originalPosition The track's current index
-     * @param newPosition      The desired index
-     */
     public void move(int originalPosition, int newPosition) {
         List<AudioTrack> trackList = getAsArrayList();
         try {
@@ -202,12 +161,6 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    /**
-     * Gets the total time until an audio track that has been added to the end of the queue
-     *
-     * @param track The audio track for which the time is to be calculated
-     * @return Returns a string in HHMMSS format corresponding to how long until the track is playing
-     */
     public String getTotalTimeTil(AudioTrack track) {
         int trackBeforeTargetIndex = getTrackIndex(track) - 1;
         long totalTime = 0;
@@ -221,9 +174,6 @@ public class TrackScheduler extends AudioEventAdapter {
         return CmdUtils.longToHHMMSS(totalTime);
     }
 
-    /**
-     * Shuffles the queue
-     */
     public void shuffleAndReplace() {
         // Convert the queue to arraylist
         List<AudioTrack> trackList = getAsArrayList();
@@ -310,20 +260,10 @@ public class TrackScheduler extends AudioEventAdapter {
         return queue;
     }
 
-    /**
-     * Returns the looping status of the track scheduler
-     *
-     * @return a boolean corresponding as to whether or not the track is looping
-     */
     public boolean isLooping() {
         return looping;
     }
 
-    /**
-     * Changes the looping status of the track scheduler
-     *
-     * @param loop The boolean status to which the looping is set to
-     */
     public void setLooping(boolean loop) {
         looping = loop;
     }
@@ -336,9 +276,6 @@ public class TrackScheduler extends AudioEventAdapter {
         this.loopingQueue = loopingQueue;
     }
 
-    /**
-     * @return The guild associated with this track scheduler
-     */
     public Guild getGuild() {
         return this.guild;
     }
