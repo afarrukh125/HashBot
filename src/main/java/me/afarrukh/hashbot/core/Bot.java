@@ -28,8 +28,8 @@ import java.util.Scanner;
 import java.util.concurrent.*;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
-import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
 
 public class Bot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
@@ -58,16 +58,15 @@ public class Bot {
      */
     private void init() {
 
-        try (var executor = newFixedThreadPool(3)) {
-            CompletableFuture<Void> allTasks = CompletableFuture.allOf(
+        try (var executor = newVirtualThreadPerTaskExecutor()) {
+            var allTasks = CompletableFuture.allOf(
                     runAsync(this::initialiseBotUser, executor),
                     runAsync(this::loadCommands, executor),
                     runAsync(this::verifyDatabaseConnection, executor));
 
             allTasks.get(1, TimeUnit.MINUTES);
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
-            e.printStackTrace();
-            LOG.error("Failed to initialise bot as one of the startup tasks failed");
+            LOG.error("Failed to initialise bot as one of the startup tasks failed, {}", e.getMessage());
             System.exit(0);
         }
 
@@ -81,11 +80,11 @@ public class Bot {
         reactionManager = new ReactionManager();
         commandLineInputManager = new CommandLineInputManager();
 
-        try (ExecutorService cliExecutor = newSingleThreadExecutor()) {
+        try (var cliExecutor = newSingleThreadExecutor()) {
             cliExecutor.execute(() -> {
                 while (true) {
-                    Scanner scanner = new Scanner(System.in);
-                    String input = scanner.nextLine();
+                    var scanner = new Scanner(System.in);
+                    var input = scanner.nextLine();
                     commandLineInputManager.processInput(input);
                 }
             });
@@ -99,7 +98,7 @@ public class Bot {
     private void startUpMessages() {
         List<Command> descriptionLessCommands = new ArrayList<>();
 
-        for (Command c : commandManager.getCommands()) {
+        for (var c : commandManager.getCommands()) {
             LOG.info("Adding {}", c.getClass().getSimpleName());
             if (c.getDescription() == null) {
                 descriptionLessCommands.add(c);
@@ -110,7 +109,7 @@ public class Bot {
                 commandManager.getCommands().size());
 
         if (!descriptionLessCommands.isEmpty()) {
-            for (Command c : descriptionLessCommands) {
+            for (var c : descriptionLessCommands) {
                 LOG.warn(
                         "The following command does not have a description: {}",
                         c.getClass().getSimpleName());
