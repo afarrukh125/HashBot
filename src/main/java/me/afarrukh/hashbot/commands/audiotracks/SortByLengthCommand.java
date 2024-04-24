@@ -1,8 +1,10 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import com.google.inject.Inject;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.Bot;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -11,8 +13,11 @@ import static java.util.Objects.requireNonNull;
 
 public class SortByLengthCommand extends Command {
 
-    public SortByLengthCommand() {
+    private final JDA jda;
+
+    public SortByLengthCommand(JDA jda) {
         super("sortlength");
+        this.jda = jda;
         description = "Sorts the remaining tracks in the track queue from shortest to longest";
     }
 
@@ -24,7 +29,7 @@ public class SortByLengthCommand extends Command {
                 .getAsArrayList();
 
         if (!requireNonNull(requireNonNull(evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId()))
+                                .getMemberById(jda.getSelfUser().getId()))
                         .getVoiceState())
                 .inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();
@@ -40,7 +45,7 @@ public class SortByLengthCommand extends Command {
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getGuild()
-                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getMemberById(jda.getSelfUser().getId())
                         .getVoiceState()
                         .getChannel())) {
             evt.getChannel()

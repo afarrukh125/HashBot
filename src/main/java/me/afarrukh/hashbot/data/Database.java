@@ -10,14 +10,6 @@ import java.util.Optional;
 
 public interface Database {
 
-    static Database getInstance() {
-        try {
-            return Neo4jDatabase.getInstance();
-        } catch (Exception e) {
-            return SQLiteDatabase.getInstance();
-        }
-    }
-
     Optional<Playlist> getPlaylistForUser(String playlistName, String userId);
 
     boolean deletePlaylistForUser(String playlistName, String userId);

@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -22,7 +23,7 @@ public class AudioTrackUtils {
      * @param playTop      Whether or not the track is to be queued to the top of the list
      */
     public static void play(
-            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
+            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop, Database database) {
 
         connectToChannel(evt.getMember());
         if (playTop) {
@@ -37,7 +38,7 @@ public class AudioTrackUtils {
                     .queue();
         } else
             evt.getChannel()
-                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt))
+                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt, database))
                     .queue();
     }
 
@@ -87,8 +88,9 @@ public class AudioTrackUtils {
      * @return True or false depending on whether track commands can be called
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
+        var jda = evt.getJDA();
         if (evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId())
+                                .getMemberById(jda.getSelfUser().getId())
                                 .getVoiceState()
                                 .getChannel()
                         == null
@@ -97,7 +99,7 @@ public class AudioTrackUtils {
         }
 
         return evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getMemberById(jda.getSelfUser().getId())
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getMember().getVoiceState().getChannel());

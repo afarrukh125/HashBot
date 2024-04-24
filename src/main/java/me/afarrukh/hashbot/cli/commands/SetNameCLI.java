@@ -1,15 +1,19 @@
 package me.afarrukh.hashbot.cli.commands;
 
+import com.google.inject.Inject;
 import me.afarrukh.hashbot.cli.CLICommand;
 import me.afarrukh.hashbot.core.Bot;
+import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SetNameCLI extends CLICommand {
     private static final Logger LOG = LoggerFactory.getLogger(SetNameCLI.class);
+    private final JDA jda;
 
-    public SetNameCLI() {
+    public SetNameCLI(JDA jda) {
         super("setname");
+        this.jda = jda;
         addAlias("sn");
     }
 
@@ -21,7 +25,7 @@ public class SetNameCLI extends CLICommand {
         }
 
         try {
-            Bot.botUser()
+            jda
                     .getSelfUser()
                     .getManager()
                     .setName(params)

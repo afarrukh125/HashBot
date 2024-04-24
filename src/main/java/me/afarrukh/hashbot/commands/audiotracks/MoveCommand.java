@@ -4,13 +4,17 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MoveCommand extends Command implements AudioTrackCommand {
-    public MoveCommand() {
+    private final Database database;
+
+    public MoveCommand(Database database) {
         super("move");
+        this.database = database;
         addAlias("m");
         addAlias("mv");
         description = "Moves a track from one index on the list to another";
@@ -68,14 +72,14 @@ public class MoveCommand extends Command implements AudioTrackCommand {
                         .queue();
             }
         } catch (NullPointerException e) {
-            onIncorrectParams(evt.getChannel().asTextChannel());
+            onIncorrectParams(database, evt.getChannel().asTextChannel());
         } catch (NumberFormatException e) {
             evt.getChannel().sendMessage("Please enter numerical indices only.").queue();
         }
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: move <old position> <new position>").queue();
     }
 }

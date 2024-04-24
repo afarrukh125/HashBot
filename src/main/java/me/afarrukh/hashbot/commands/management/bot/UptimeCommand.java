@@ -4,13 +4,17 @@ import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.CommandManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class UptimeCommand extends Command implements SystemCommand {
 
-    public UptimeCommand() {
+    private final CommandManager commandManager;
+
+    public UptimeCommand(CommandManager commandManager) {
         super("uptime");
+        this.commandManager = commandManager;
         addAlias("up");
         description = "Displays the bot uptime in HH:MM:SS";
     }
@@ -29,7 +33,7 @@ public class UptimeCommand extends Command implements SystemCommand {
                         .setColor(Constants.EMB_COL)
                         .appendDescription("Bot uptime: " + days + " days, " + hours + " hours, " + minutes
                                 + " minutes and " + seconds + " seconds.\n\n")
-                        .appendDescription("There have been " + Bot.commandManager.getCommandCount()
+                        .appendDescription("There have been " + commandManager.getCommandCount()
                                 + " commands executed this session.")
                         .build())
                 .queue();

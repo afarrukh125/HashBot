@@ -114,7 +114,7 @@ public class EmbedUtils {
      * @param evt The message received event containing information such as which channel to send to
      * @return an embed referring to a track which has been queued to an audioplayer already playing a track
      */
-    public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt, Database database) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Now playing");
@@ -130,7 +130,7 @@ public class EmbedUtils {
             if (ts.isFairPlay())
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
-                                + Database.getInstance()
+                                + database
                                         .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }

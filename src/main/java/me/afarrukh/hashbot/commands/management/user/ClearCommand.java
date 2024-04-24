@@ -2,6 +2,7 @@ package me.afarrukh.hashbot.commands.management.user;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -22,9 +23,11 @@ import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
  */
 public class ClearCommand extends Command implements AdminCommand {
     private static final Logger LOG = LoggerFactory.getLogger(ClearCommand.class);
+    private final Database database;
 
-    public ClearCommand() {
+    public ClearCommand(Database database) {
         super("clear");
+        this.database = database;
         description = "Removes the provided number of messages from the channel it is called in. Use with care.";
         addParameter("number of messages", "The number of messages to be deleted");
         addExampleUsage("clear 50");
@@ -41,7 +44,7 @@ public class ClearCommand extends Command implements AdminCommand {
         }
 
         if (params == null) {
-            onIncorrectParams(evt.getChannel().asTextChannel());
+            onIncorrectParams(database, evt.getChannel().asTextChannel());
             return;
         }
 
@@ -114,7 +117,7 @@ public class ClearCommand extends Command implements AdminCommand {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: clear <number of messages>").queue();
     }
 }

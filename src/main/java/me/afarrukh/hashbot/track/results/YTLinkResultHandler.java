@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.track.results;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
@@ -14,8 +15,11 @@ import java.util.List;
 
 public class YTLinkResultHandler extends YTGenericResultHandler {
 
-    public YTLinkResultHandler(GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop) {
+    private final Database database;
+
+    public YTLinkResultHandler(GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop, Database database) {
         super(gmm, evt, playTop);
+        this.database = database;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
         }
 
         firstTrack.setUserData(evt.getAuthor().getName());
-        AudioTrackUtils.play(evt, gmm, firstTrack, playTop);
+        AudioTrackUtils.play(evt, gmm, firstTrack, playTop, database);
 
         for (AudioTrack track : playlist) {
             if (track.equals(firstTrack)) continue;
@@ -68,6 +72,6 @@ public class YTLinkResultHandler extends YTGenericResultHandler {
     public void trackLoaded(AudioTrack track) {
         track.setUserData(evt.getAuthor().getName());
 
-        AudioTrackUtils.play(evt, gmm, track, playTop);
+        AudioTrackUtils.play(evt, gmm, track, playTop, database);
     }
 }

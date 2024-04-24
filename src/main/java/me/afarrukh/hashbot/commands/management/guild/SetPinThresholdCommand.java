@@ -10,8 +10,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 public class SetPinThresholdCommand extends Command implements AdminCommand {
 
-    public SetPinThresholdCommand() {
+    private final Database database;
+
+    public SetPinThresholdCommand(Database database) {
         super("pinthreshold");
+        this.database = database;
         addAlias("threshold");
         addAlias("pt");
         addAlias("setthreshold");
@@ -34,7 +37,7 @@ public class SetPinThresholdCommand extends Command implements AdminCommand {
                         .queue();
                 return;
             }
-            Database.getInstance().setPinThresholdForGuild(evt.getGuild().getId(), newValue);
+            database.setPinThresholdForGuild(evt.getGuild().getId(), newValue);
             evt.getChannel()
                     .sendMessage("The pinned threshold is now " + newValue)
                     .queue();

@@ -15,8 +15,11 @@ import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
 
 public class PruneCommand extends Command {
 
-    public PruneCommand() {
+    private final Database database;
+
+    public PruneCommand(Database database) {
         super("prune");
+        this.database = database;
         addAlias("clean");
         description = "Removes the last 100 bot related messages.";
     }
@@ -25,7 +28,6 @@ public class PruneCommand extends Command {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         MessagePaginationAction messageHistory = evt.getChannel().getIterableHistory();
         List<Message> messageBin = new LinkedList<>();
-        Database database = Database.getInstance();
         for (Message m : messageHistory) {
             if (database.isBotPinMessageInGuild(m.getGuild().getId(), m.getId())) {
                 continue;
@@ -65,7 +67,7 @@ public class PruneCommand extends Command {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: prune <user name> <number of message>").queue();
     }
 }

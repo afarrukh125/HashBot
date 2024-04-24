@@ -2,14 +2,18 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class RemoveCommand extends Command implements AudioTrackCommand {
 
-    public RemoveCommand() {
+    private final Database database;
+
+    public RemoveCommand(Database database) {
         super("remove");
+        this.database = database;
         addAlias("rm");
         addAlias("r");
         description = "Removes a track at the specified position on the queue";
@@ -22,12 +26,12 @@ public class RemoveCommand extends Command implements AudioTrackCommand {
         try {
             if (AudioTrackUtils.canInteract(evt)) AudioTrackUtils.remove(evt, Integer.parseInt(params));
         } catch (NullPointerException | NumberFormatException e) {
-            onIncorrectParams(evt.getChannel().asTextChannel());
+            onIncorrectParams(database, evt.getChannel().asTextChannel());
         }
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: remove/rm/r <track index>").queue();
     }
 }

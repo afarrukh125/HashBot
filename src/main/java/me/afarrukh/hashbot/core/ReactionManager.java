@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.core;
 
+import com.google.inject.Inject;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
@@ -8,14 +9,15 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
-class ReactionManager {
+public class ReactionManager {
 
-    /**
-     * We decide here if we want to post the message to the pinned channel depending on the reaction count
-     * We are testing for distinct users, hence we use the Set class. Algorithm is unfortunately O(n^2)
-     *
-     * @param evt The event associated with the reaction being added
-     */
+    private final Database database;
+
+    @Inject
+    public ReactionManager(Database database) {
+        this.database = database;
+    }
+
     void processForPinning(MessageReactionAddEvent evt) {
         Message message =
                 evt.getChannel().retrieveMessageById(evt.getMessageId()).complete();
@@ -25,7 +27,6 @@ class ReactionManager {
 
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
 
-        Database database = Database.getInstance();
 
         if (database.isBotPinMessageInGuild(evt.getGuild().getId(), message.getId())) {
             return;
@@ -67,7 +68,7 @@ class ReactionManager {
                 return;
             }
 
-            MessageUtils.pinMessage(message, channel);
+            MessageUtils.pinMessage(database, message, channel);
         });
     }
 }

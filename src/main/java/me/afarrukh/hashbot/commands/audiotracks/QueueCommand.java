@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.commands.audiotracks;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -11,8 +12,11 @@ import static java.lang.Integer.parseInt;
 
 public class QueueCommand extends Command implements AudioTrackCommand {
 
-    public QueueCommand() {
+    private final Database database;
+
+    public QueueCommand(Database database) {
         super("queue");
+        this.database = database;
         addAlias("q");
         addAlias("page");
         description = "Shows the current queue of tracks";
@@ -33,7 +37,7 @@ public class QueueCommand extends Command implements AudioTrackCommand {
         else {
             try {
                 if (parseInt(params) == 0) {
-                    onIncorrectParams(evt.getChannel().asTextChannel());
+                    onIncorrectParams(database, evt.getChannel().asTextChannel());
                     return;
                 }
                 evt.getChannel()
@@ -41,13 +45,13 @@ public class QueueCommand extends Command implements AudioTrackCommand {
                                 Bot.trackManager.getGuildAudioPlayer(evt.getGuild()), evt, parseInt(params)))
                         .queue();
             } catch (NumberFormatException e) {
-                onIncorrectParams(evt.getChannel().asTextChannel());
+                onIncorrectParams(database, evt.getChannel().asTextChannel());
             }
         }
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: queue/q/page <page number>").queue();
     }
 }

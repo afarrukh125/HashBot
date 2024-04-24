@@ -1,5 +1,6 @@
 package me.afarrukh.hashbot.data;
 
+import com.google.inject.Inject;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.core.Bot;
@@ -28,7 +29,8 @@ public class SQLiteDatabase implements Database {
     private final Config config;
     private final Connection connection;
 
-    private SQLiteDatabase(Config config) {
+    @Inject
+    public SQLiteDatabase(Config config) {
         try {
             this.config = config;
             this.connection = DriverManager.getConnection("jdbc:sqlite:%s".formatted(PATH));
@@ -36,13 +38,6 @@ public class SQLiteDatabase implements Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    static SQLiteDatabase getInstance() {
-        if (instance == null) {
-            instance = new SQLiteDatabase(Bot.getConfig());
-        }
-        return instance;
     }
 
     private void createTablesIfNotPresent() {

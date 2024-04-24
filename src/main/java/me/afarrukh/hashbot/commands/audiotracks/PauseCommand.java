@@ -9,15 +9,18 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class PauseCommand extends Command implements AudioTrackCommand {
 
-    public PauseCommand() {
+    private final Database database;
+
+    public PauseCommand(Database database) {
         super("pause");
+        this.database = database;
         description = "Pauses the track player";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
+            var prefix = database.getPrefixForGuild(evt.getGuild().getId());
             var resumeCommandName = new ResumeCommand().getName();
             if (!Bot.trackManager
                     .getGuildAudioPlayer(evt.getGuild())

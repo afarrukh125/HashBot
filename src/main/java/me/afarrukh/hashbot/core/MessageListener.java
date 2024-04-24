@@ -1,11 +1,14 @@
 package me.afarrukh.hashbot.core;
 
+import com.google.inject.Inject;
+import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.BotUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -18,27 +21,39 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Timer;
-
 import static java.util.Objects.nonNull;
 
-class MessageListener extends ListenerAdapter {
+public class MessageListener extends ListenerAdapter {
+
+    private final Config config;
+    private final Database database;
+    private final JDA jda;
+    private final ReactionManager reactionManager;
+    private final CommandManager commandManager;
+
+    @Inject
+    public MessageListener(Config config, Database database, JDA jda, ReactionManager reactionManager, CommandManager commandManager) {
+        this.config = config;
+        this.database = database;
+        this.jda = jda;
+        this.reactionManager = reactionManager;
+        this.commandManager = commandManager;
+    }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent evt) {
         if (evt.getAuthor().isBot()) {
             return;
         }
-        Database database = Database.getInstance();
         String prefix = database.getPrefixForGuild(evt.getGuild().getId());
         if (evt.getMessage().getContentRaw().startsWith(prefix)) {
-            Bot.commandManager.processEvent(evt);
+            commandManager.processEvent(evt, config);
             return;
         }
 
         String userId = evt.getMember().getId();
-        if (BotUtils.isPinnedChannel(evt)
-                && !userId.equals(Bot.botUser().getSelfUser().getId())) {
+        if (BotUtils.isPinnedChannel(database, evt)
+                && !userId.equals(jda.getSelfUser().getId())) {
             evt.getMessage().delete().queue();
         }
     }
@@ -85,7 +100,7 @@ class MessageListener extends ListenerAdapter {
                     && evt.getGuild().getAudioManager().isConnected()) {
                 Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
-                Timer disconnectTimer =
+                var disconnectTimer =
                         Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
                 disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY * 1000);
             }
@@ -94,27 +109,28 @@ class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent evt) {
-        if (evt.getUser().isBot()) return;
-        Bot.reactionManager.processForPinning(evt);
+        if (evt.getUser().isBot()) {
+            return;
+        }
+        reactionManager.processForPinning(evt);
     }
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent evt) {
-        Bot.botUser()
+        jda
                 .getPresence()
-                .setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
+                .setActivity(Activity.playing(" in " + jda.getGuilds().size() + " guilds"));
     }
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent evt) {
-        Bot.botUser()
+        jda
                 .getPresence()
-                .setActivity(Activity.playing(" in " + Bot.botUser().getGuilds().size() + " guilds"));
+                .setActivity(Activity.playing(" in " + jda.getGuilds().size() + " guilds"));
     }
 
     @Override
     public void onMessageDelete(MessageDeleteEvent evt) {
-        var database = Database.getInstance();
         String guildId = evt.getGuild().getId();
         database.getPinnedChannelIdForGuild(guildId).ifPresent(pinnedChannelId -> {
             if (evt.getGuild().getTextChannelById(pinnedChannelId) != null) {
