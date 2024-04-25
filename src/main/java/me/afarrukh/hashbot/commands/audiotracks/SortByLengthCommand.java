@@ -2,7 +2,8 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -11,20 +12,25 @@ import static java.util.Objects.requireNonNull;
 
 public class SortByLengthCommand extends Command {
 
-    public SortByLengthCommand() {
+    private final JDA jda;
+    private final AudioTrackManager audioTrackManager;
+
+    public SortByLengthCommand(JDA jda, AudioTrackManager audioTrackManager) {
         super("sortlength");
+        this.jda = jda;
+        this.audioTrackManager = audioTrackManager;
         description = "Sorts the remaining tracks in the track queue from shortest to longest";
     }
 
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
-        List<AudioTrack> tracks = Bot.trackManager
+        List<AudioTrack> tracks = audioTrackManager
                 .getGuildAudioPlayer(evt.getGuild())
                 .getScheduler()
                 .getAsArrayList();
 
         if (!requireNonNull(requireNonNull(evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId()))
+                                .getMemberById(jda.getSelfUser().getId()))
                         .getVoiceState())
                 .inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();
@@ -40,7 +46,7 @@ public class SortByLengthCommand extends Command {
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getGuild()
-                        .getMemberById(Bot.botUser().getSelfUser().getId())
+                        .getMemberById(jda.getSelfUser().getId())
                         .getVoiceState()
                         .getChannel())) {
             evt.getChannel()
@@ -51,7 +57,7 @@ public class SortByLengthCommand extends Command {
 
         if (!tracks.isEmpty()) {
             tracks.sort((o1, o2) -> -Long.compare(o2.getDuration(), o1.getDuration()));
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(tracks);
+            audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(tracks);
             evt.getChannel()
                     .sendMessage("The queue has been sorted in order of size")
                     .queue();

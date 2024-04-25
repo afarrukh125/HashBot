@@ -26,7 +26,7 @@ public class AudioTrackManager {
         GuildAudioTrackManager trackManager = trackManagers.get(guildId);
 
         if (trackManager == null) {
-            trackManager = new GuildAudioTrackManager(playerManager, guild);
+            trackManager = new GuildAudioTrackManager(playerManager, guild, this);
             trackManagers.put(guildId, trackManager);
         }
 
@@ -39,7 +39,7 @@ public class AudioTrackManager {
             return;
         }
         trackManagers.remove(guild.getIdLong());
-        trackManagers.put(guild.getIdLong(), new GuildAudioTrackManager(playerManager, guild));
+        trackManagers.put(guild.getIdLong(), new GuildAudioTrackManager(playerManager, guild, this));
     }
 
     public AudioPlayerManager getPlayerManager() {

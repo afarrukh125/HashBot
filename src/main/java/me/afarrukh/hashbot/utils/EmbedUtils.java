@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.utils;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
@@ -17,13 +17,11 @@ import java.util.concurrent.BlockingQueue;
 @SuppressWarnings("Duplicates")
 public class EmbedUtils {
 
-    /**
-     * @param gmm  The guild track manager
-     * @param evt  The message received event associated with the queue message request
-     * @param page The page of the message queue to be displayed
-     * @return An embed referring to the current queue of audio tracks playing. If not found it simply goes to the method for a single track embed.
-     */
-    public static MessageEmbed getQueueMsg(GuildAudioTrackManager gmm, MessageReceivedEvent evt, int page) {
+    public static MessageEmbed getQueueMessage(
+                                           MessageReceivedEvent evt,
+                                           int page,
+                                           AudioTrackManager audioTrackManager) {
+        var gmm = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
         try {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(Constants.EMB_COL);
@@ -35,7 +33,7 @@ public class EmbedUtils {
 
             // If there are no tracks in the queue then it will just give an embedded message for a single track.
             if (queue.size() == 0) {
-                return getSingleTrackEmbed(gmm.getPlayer().getPlayingTrack(), evt);
+                return getSingleTrackEmbed(gmm.getPlayer().getPlayingTrack(), evt, audioTrackManager);
             }
 
             // This block of code is to prevent the list from displaying a blank page as the last one
@@ -90,11 +88,11 @@ public class EmbedUtils {
      * @param evt The event to get the channel to send it to
      * @return A message embed with information on a single provided audio track
      */
-    public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, MessageReceivedEvent evt) {
+    public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, MessageReceivedEvent evt, AudioTrackManager audioTrackManager) {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
-        if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping()) sb.append(" [Looping]");
+        if (audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().isLooping()) sb.append(" [Looping]");
         eb.setTitle(sb.toString());
         eb.appendDescription("[" + currentTrack.getInfo().title + "](" + currentTrack.getInfo().uri + ")\n\n");
         eb.appendDescription("**Channel**: `" + currentTrack.getInfo().author + "`\n");
@@ -114,7 +112,7 @@ public class EmbedUtils {
      * @param evt The message received event containing information such as which channel to send to
      * @return an embed referring to a track which has been queued to an audioplayer already playing a track
      */
-    public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt) {
+    public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt, Database database) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Now playing");
@@ -130,7 +128,7 @@ public class EmbedUtils {
             if (ts.isFairPlay())
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
-                                + Database.getInstance()
+                                + database
                                         .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }

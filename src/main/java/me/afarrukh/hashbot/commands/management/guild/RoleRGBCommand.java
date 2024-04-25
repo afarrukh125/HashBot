@@ -1,14 +1,18 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
 import me.afarrukh.hashbot.commands.Command;
+import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class RoleRGBCommand extends Command {
 
-    public RoleRGBCommand() {
+    private final Database database;
+
+    public RoleRGBCommand(Database database) {
         super("rolergb");
+        this.database = database;
         description = "Gets the RGB colour values for a particular role";
         addParameter("role name", "The name of the role for which you would like to find the RGB for");
     }
@@ -16,7 +20,7 @@ public class RoleRGBCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getChannel().asTextChannel());
+            onIncorrectParams(database, evt.getChannel().asTextChannel());
             return;
         }
         for (Role r : evt.getGuild().getRoles()) {
@@ -40,7 +44,7 @@ public class RoleRGBCommand extends Command {
     }
 
     @Override
-    public void onIncorrectParams(TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: rolergb <role name>").queue();
     }
 }

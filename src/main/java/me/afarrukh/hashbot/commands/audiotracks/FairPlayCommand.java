@@ -2,15 +2,18 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class FairPlayCommand extends Command implements AudioTrackCommand {
 
-    public FairPlayCommand() {
+    private final AudioTrackManager audioTrackManager;
+
+    public FairPlayCommand(AudioTrackManager audioTrackManager) {
         super("fairplay");
+        this.audioTrackManager = audioTrackManager;
         addAlias("fp");
         description =
                 "If this is turned on, tracks are automatically queued and sorted so everyone gets an equal chance to queue.";
@@ -20,7 +23,7 @@ public class FairPlayCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (!AudioTrackUtils.canInteract(evt)) return;
 
-        TrackScheduler ts = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+        TrackScheduler ts = audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
 
         if (ts.isLoopingQueue()) {
             evt.getChannel()

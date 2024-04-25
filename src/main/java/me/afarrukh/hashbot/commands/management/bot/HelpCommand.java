@@ -1,9 +1,10 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
+import com.google.inject.Inject;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.CommandManager;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -15,10 +16,14 @@ import java.util.List;
 public class HelpCommand extends Command {
 
     private static final int MAX_DESCRIPTION_LENGTH = 1600;
+    private final Database database;
+    private final CommandManager commandManager;
 
-    public HelpCommand() {
+    @Inject
+    public HelpCommand(Database database, CommandManager commandManager) {
         super("help");
-
+        this.database = database;
+        this.commandManager = commandManager;
         description = "View the description for a specific command";
         addParameter("command name", "The name of the command to view an advanced for");
     }
@@ -26,15 +31,14 @@ public class HelpCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null) {
-            List<MessageEmbed> embedArrayList = getHelpMessageEmbeds(evt);
-            List<MessageEmbed> embeds = embedArrayList;
-            for (MessageEmbed eb : embeds) {
-                evt.getChannel().sendMessageEmbeds(eb).queue();
+            var embeds = getHelpMessageEmbeds(evt);
+            for (var embed : embeds) {
+                evt.getChannel().sendMessageEmbeds(embed).queue();
             }
             return;
         }
 
-        Command command = Bot.commandManager.commandFromName(params);
+        Command command = commandManager.commandFromName(params);
         if (command == null) {
             evt.getChannel()
                     .sendMessage("There is no command with the name or alias " + params)
@@ -44,7 +48,7 @@ public class HelpCommand extends Command {
 
         evt.getChannel()
                 .sendMessageEmbeds(
-                        command.getCommandHelpMessage(evt.getChannel().asTextChannel()))
+                        command.getCommandHelpMessage(database, evt.getChannel().asTextChannel()))
                 .queue();
     }
 
@@ -56,11 +60,11 @@ public class HelpCommand extends Command {
 
         int pageCount = 2;
 
-        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
+        var prefix = database.getPrefixForGuild(evt.getGuild().getId());
 
         StringBuilder sb = new StringBuilder();
 
-        for (Command c : Bot.commandManager.getCommands()) {
+        for (Command c : commandManager.getCommands()) {
             if (c instanceof OwnerCommand || c instanceof CommandListCommand) continue;
 
             int descLength = 0;

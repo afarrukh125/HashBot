@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.audiotracks;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -13,8 +13,11 @@ import java.util.Queue;
 
 public class PruneQueueCommand extends Command implements AudioTrackCommand {
 
-    public PruneQueueCommand() {
+    private final AudioTrackManager audioTrackManager;
+
+    public PruneQueueCommand(AudioTrackManager audioTrackManager) {
         super("prunequeue");
+        this.audioTrackManager = audioTrackManager;
         addAlias("pq");
         description = "Removes tracks from any users that are no longer in voice.";
     }
@@ -30,7 +33,7 @@ public class PruneQueueCommand extends Command implements AudioTrackCommand {
         List<Member> memberList =
                 evt.getGuild().getAudioManager().getConnectedChannel().getMembers();
 
-        Queue<AudioTrack> trackQueue = Bot.trackManager
+        Queue<AudioTrack> trackQueue = audioTrackManager
                 .getGuildAudioPlayer(evt.getGuild())
                 .getScheduler()
                 .getQueue();

@@ -1,9 +1,10 @@
 package me.afarrukh.hashbot.cli;
 
+import com.google.inject.Inject;
 import me.afarrukh.hashbot.cli.commands.CheckMemoryCLI;
 import me.afarrukh.hashbot.cli.commands.GarbageCleanCLI;
-import me.afarrukh.hashbot.cli.commands.SetNameCLI;
 import me.afarrukh.hashbot.cli.commands.ShutdownCLI;
+import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +15,12 @@ public class CommandLineInputManager {
     private static final Logger LOG = LoggerFactory.getLogger(CommandLineInputManager.class);
     private final Map<String, CLICommand> commandMap;
 
-    public CommandLineInputManager() {
+    @Inject
+    public CommandLineInputManager(JDA jda) {
         commandMap = new HashMap<>();
         addCommand(new CheckMemoryCLI());
         addCommand(new GarbageCleanCLI());
-        addCommand(new ShutdownCLI());
-        addCommand(new SetNameCLI());
+        addCommand(new ShutdownCLI(jda));
     }
 
     public void processInput(String input) {

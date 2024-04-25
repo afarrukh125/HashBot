@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.management.bot;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.CommandManager;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -17,8 +17,13 @@ import static me.afarrukh.hashbot.commands.management.bot.HelpCommand.appendComm
 
 public class CommandListCommand extends Command {
 
-    public CommandListCommand() {
+    private final CommandManager commandManager;
+    private final Database database;
+
+    public CommandListCommand(CommandManager commandManager, Database database) {
         super("commands");
+        this.commandManager = commandManager;
+        this.database = database;
         addAlias("cmds");
         description = "Displays all commands provide a parameter e.g. track to see commands only of that category";
         addExampleUsage("help roles");
@@ -27,8 +32,8 @@ public class CommandListCommand extends Command {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         List<Command> commandList = evt.getMember().hasPermission(Permission.ADMINISTRATOR)
-                ? Bot.commandManager.getCommands()
-                : Bot.commandManager.getNonAdminCommands();
+                ? commandManager.getCommands()
+                : commandManager.getNonAdminCommands();
 
         List<MessageEmbed> embedArrayList = new ArrayList<>();
 
@@ -37,7 +42,7 @@ public class CommandListCommand extends Command {
 
         int pageCount = 2;
 
-        var prefix = Database.getInstance().getPrefixForGuild(evt.getGuild().getId());
+        var prefix = database.getPrefixForGuild(evt.getGuild().getId());
 
         StringBuilder sb = new StringBuilder();
 

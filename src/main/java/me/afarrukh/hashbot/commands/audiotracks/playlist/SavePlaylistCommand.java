@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
@@ -14,8 +14,13 @@ import java.util.*;
 
 public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
-    public SavePlaylistCommand() {
+    private final Database database;
+    private final AudioTrackManager audioTrackManager;
+
+    public SavePlaylistCommand(Database database, AudioTrackManager audioTrackManager) {
         super("savelist");
+        this.database = database;
+        this.audioTrackManager = audioTrackManager;
         addAlias("saveplaylist");
         addAlias("save");
         addAlias("spl");
@@ -71,14 +76,14 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
         List<AudioTrack> trackList = new ArrayList<>();
         trackList.add(
-                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
-        trackList.addAll(Bot.trackManager
+                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
+        trackList.addAll(audioTrackManager
                 .getGuildAudioPlayer(evt.getGuild())
                 .getScheduler()
                 .getAsArrayList());
 
         if (startIndex
-                > Bot.trackManager
+                > audioTrackManager
                         .getGuildAudioPlayer(evt.getGuild())
                         .getScheduler()
                         .getQueue()
@@ -130,7 +135,6 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        var database = Database.getInstance();
         var userId = evt.getMember().getId();
 
         var playlistName = params;

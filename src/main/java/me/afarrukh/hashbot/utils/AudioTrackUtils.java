@@ -4,7 +4,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
+import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -22,7 +23,7 @@ public class AudioTrackUtils {
      * @param playTop      Whether or not the track is to be queued to the top of the list
      */
     public static void play(
-            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop) {
+            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop, Database database) {
 
         connectToChannel(evt.getMember());
         if (playTop) {
@@ -37,7 +38,7 @@ public class AudioTrackUtils {
                     .queue();
         } else
             evt.getChannel()
-                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt))
+                    .sendMessageEmbeds(EmbedUtils.getQueuedEmbed(trackManager, track, evt, database))
                     .queue();
     }
 
@@ -50,8 +51,8 @@ public class AudioTrackUtils {
         }
     }
 
-    public static void disconnect(Guild guild) {
-        GuildAudioTrackManager gm = Bot.trackManager.getGuildAudioPlayer(guild);
+    public static void disconnect(Guild guild, AudioTrackManager audioTrackManager) {
+        GuildAudioTrackManager gm = audioTrackManager.getGuildAudioPlayer(guild);
         if (gm.getPlayer().getPlayingTrack() != null) {
             gm.getPlayer().getPlayingTrack().stop();
         } else {
@@ -87,8 +88,9 @@ public class AudioTrackUtils {
      * @return True or false depending on whether track commands can be called
      */
     public static boolean canInteract(MessageReceivedEvent evt) {
+        var jda = evt.getJDA();
         if (evt.getGuild()
-                                .getMemberById(Bot.botUser().getSelfUser().getId())
+                                .getMemberById(jda.getSelfUser().getId())
                                 .getVoiceState()
                                 .getChannel()
                         == null
@@ -97,7 +99,7 @@ public class AudioTrackUtils {
         }
 
         return evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getMemberById(jda.getSelfUser().getId())
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getMember().getVoiceState().getChannel());
@@ -139,14 +141,14 @@ public class AudioTrackUtils {
      * @param evt The event being queried for information such as the channel
      * @param vol The volume to be changed to
      */
-    public static void setVolume(MessageReceivedEvent evt, int vol) {
+    public static void setVolume(MessageReceivedEvent evt, int vol, AudioTrackManager audioTrackManager) {
         if (vol < 0 || vol > Constants.MAX_VOL) {
             evt.getChannel()
                     .sendMessage("You cannot set the volume to that value")
                     .queue();
             return;
         }
-        Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
+        audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setVolume(vol);
         evt.getChannel().sendMessage("Volume set to " + vol).queue();
     }
 
@@ -155,8 +157,8 @@ public class AudioTrackUtils {
      *
      * @param evt The message received event associated with the pause request being sent
      */
-    public static void pause(MessageReceivedEvent evt) {
-        AudioPlayer ap = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
+    public static void pause(MessageReceivedEvent evt, AudioTrackManager audioTrackManager) {
+        AudioPlayer ap = audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(true);
     }
 
@@ -165,8 +167,8 @@ public class AudioTrackUtils {
      *
      * @param evt The message receieved event relating to the resume request
      */
-    public static void resume(MessageReceivedEvent evt) {
-        AudioPlayer ap = Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
+    public static void resume(MessageReceivedEvent evt, AudioTrackManager audioTrackManager) {
+        AudioPlayer ap = audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer();
         ap.setPaused(false);
     }
 
@@ -176,9 +178,9 @@ public class AudioTrackUtils {
      * @param evt     The message received event containing information regarding the track which is to be seeked through
      * @param seconds The time in seconds to be searched for in the currently playing track
      */
-    public static void seek(MessageReceivedEvent evt, int seconds) {
+    public static void seek(MessageReceivedEvent evt, int seconds, AudioTrackManager audioTrackManager) {
         try {
-            AudioTrack track = Bot.trackManager
+            AudioTrack track = audioTrackManager
                     .getGuildAudioPlayer(evt.getGuild())
                     .getPlayer()
                     .getPlayingTrack();
@@ -207,8 +209,8 @@ public class AudioTrackUtils {
      * @param evt The message received event associated with the track to be removed
      * @param idx The current index of the track to be removed
      */
-    public static void remove(MessageReceivedEvent evt, int idx) {
-        BlockingQueue<AudioTrack> tracks = Bot.trackManager
+    public static void remove(MessageReceivedEvent evt, int idx, AudioTrackManager audioTrackManager) {
+        BlockingQueue<AudioTrack> tracks = audioTrackManager
                 .getGuildAudioPlayer(evt.getGuild())
                 .getScheduler()
                 .getQueue();

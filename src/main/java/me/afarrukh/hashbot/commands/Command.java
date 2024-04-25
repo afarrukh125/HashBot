@@ -143,12 +143,12 @@ public abstract class Command {
      *
      * @param channel The TextChannel to send the message to with the correct usage message
      */
-    protected void onIncorrectParams(TextChannel channel) {
-        channel.sendMessageEmbeds(getCommandHelpMessage(channel)).queue();
+    protected void onIncorrectParams(Database database, TextChannel channel) {
+        channel.sendMessageEmbeds(getCommandHelpMessage(database, channel)).queue();
     }
 
-    public final MessageEmbed getCommandHelpMessage(TextChannel channel) {
-        var prefix = Database.getInstance().getPrefixForGuild(channel.getGuild().getId());
+    public final MessageEmbed getCommandHelpMessage(Database database, TextChannel channel) {
+        var prefix = database.getPrefixForGuild(channel.getGuild().getId());
         var embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Viewing help for " + this.name);
         var stringBuilder = new StringBuilder();

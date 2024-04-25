@@ -10,9 +10,9 @@ import static java.lang.Runtime.getRuntime;
 
 public class BotUtils {
 
-    public static boolean isPinnedChannel(MessageReceivedEvent evt) {
+    public static boolean isPinnedChannel(Database database, MessageReceivedEvent evt) {
         Optional<String> pinnedChannelIdForGuild =
-                Database.getInstance().getPinnedChannelIdForGuild(evt.getGuild().getId());
+                database.getPinnedChannelIdForGuild(evt.getGuild().getId());
         return pinnedChannelIdForGuild
                 .filter(s -> evt.getChannel().getId().equals(s))
                 .isPresent();

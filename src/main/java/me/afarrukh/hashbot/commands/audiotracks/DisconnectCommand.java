@@ -2,13 +2,20 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class DisconnectCommand extends Command implements AudioTrackCommand {
-    public DisconnectCommand() {
+
+    private final JDA jda;
+    private final AudioTrackManager audioTrackManager;
+
+    public DisconnectCommand(JDA jda, AudioTrackManager audioTrackManager) {
         super("disconnect");
+        this.jda = jda;
+        this.audioTrackManager = audioTrackManager;
         addAlias("dc");
         addAlias("d");
         addAlias("leave");
@@ -20,11 +27,11 @@ public class DisconnectCommand extends Command implements AudioTrackCommand {
         if (!AudioTrackUtils.canInteract(evt)) return;
 
         if (evt.getGuild()
-                .getMemberById(Bot.botUser().getSelfUser().getId())
+                .getMemberById(jda.getSelfUser().getId())
                 .getVoiceState()
                 .getChannel()
                 .equals(evt.getMember().getVoiceState().getChannel())) {
-            AudioTrackUtils.disconnect(evt.getGuild());
+            AudioTrackUtils.disconnect(evt.getGuild(), audioTrackManager);
         }
     }
 }

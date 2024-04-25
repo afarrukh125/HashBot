@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.audiotracks;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -12,8 +12,13 @@ import java.util.List;
 
 public class RemoveRangeCommand extends Command implements AudioTrackCommand {
 
-    public RemoveRangeCommand() {
+    private final Database database;
+    private final AudioTrackManager audioTrackManager;
+
+    public RemoveRangeCommand(Database database, AudioTrackManager audioTrackManager) {
         super("removerange");
+        this.database = database;
+        this.audioTrackManager = audioTrackManager;
         addAlias("rmrange");
         addAlias("rr");
         description = "Removes all tracks between the start and end (both inclusive) ranges from the track queue";
@@ -29,13 +34,13 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null) {
-            onIncorrectParams(evt.getChannel().asTextChannel());
+            onIncorrectParams(database, evt.getChannel().asTextChannel());
         } else {
             StringBuilder errorMessageBuilder = new StringBuilder();
             // Get all the track ranges provided
             String[] ranges = params.split(",");
 
-            List<AudioTrack> trackList = new ArrayList<>(Bot.trackManager
+            List<AudioTrack> trackList = new ArrayList<>(audioTrackManager
                     .getGuildAudioPlayer(evt.getGuild())
                     .getScheduler()
                     .getAsArrayList());
@@ -74,7 +79,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                 } else {
                     // If it is not a range
                     if (range.split("-").length == 1) {
-                        var prefix = Database.getInstance()
+                        var prefix = database
                                 .getPrefixForGuild(evt.getGuild().getId());
                         errorMessageBuilder
                                 .append("- Range ")
@@ -82,7 +87,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                                 .append(" was invalid, as it is not a range. "
                                         + "If you wish to remove individual tracks use ")
                                 .append(prefix)
-                                .append(new RemoveCommand().getName())
+                                .append(new RemoveCommand(database, audioTrackManager).getName())
                                 .append(".")
                                 .append(" Alternatively you can " + "provide a range of 0 (e.g. 87-87)\n");
                         continue;
@@ -115,12 +120,13 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                 }
             }
             int ct = 0;
+
             for (List<AudioTrack> tracks : trackRanges) {
                 ct += tracks.size();
                 trackList.removeAll(tracks);
             }
-            // Replace the queue
-            Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(trackList);
+
+            audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler().replaceQueue(trackList);
 
             if (ct == 0)
                 evt.getChannel()
