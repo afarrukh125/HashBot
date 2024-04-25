@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.data;
 import com.google.inject.Inject;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
-import me.afarrukh.hashbot.core.Bot;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.track.Playlist;
 import me.afarrukh.hashbot.track.PlaylistItem;

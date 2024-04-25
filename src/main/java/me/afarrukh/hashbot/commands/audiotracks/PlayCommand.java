@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
@@ -17,11 +17,13 @@ public class PlayCommand extends Command implements AudioTrackCommand {
 
     private final Database database;
     private final JDA jda;
+    private final AudioTrackManager audioTrackManager;
 
-    public PlayCommand(Database database, JDA jda) {
+    public PlayCommand(Database database, JDA jda, AudioTrackManager audioTrackManager) {
         super("play");
         this.database = database;
         this.jda = jda;
+        this.audioTrackManager = audioTrackManager;
         addAlias("p");
         description =
                 "Adds a track to the track queue. If you are queuing a playlist, you can provide 'shuffle' as an additional parameter "
@@ -51,18 +53,18 @@ public class PlayCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+        GuildAudioTrackManager gmm = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
         // To account for shuffling the list, we have the first branch
         if (params.split(" ").length == 2 && params.contains("http") && params.contains("shuffle")) {
-            Bot.trackManager
+            audioTrackManager
                     .getPlayerManager()
                     .loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false, database));
             evt.getMessage().delete().queue();
         } else if (params.split(" ").length == 1 && params.contains("http")) {
-            Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false, database));
+            audioTrackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false, database));
             evt.getMessage().delete().queue();
         } else
-            Bot.trackManager
+            audioTrackManager
                     .getPlayerManager()
                     .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, false, database));
     }

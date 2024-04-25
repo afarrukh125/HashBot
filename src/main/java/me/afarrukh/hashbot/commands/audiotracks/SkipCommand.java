@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
@@ -10,8 +10,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SkipCommand extends Command implements AudioTrackCommand {
 
-    public SkipCommand() {
+    private final AudioTrackManager audioTrackManager;
+
+    public SkipCommand(AudioTrackManager audioTrackManager) {
         super("skip");
+        this.audioTrackManager = audioTrackManager;
         addAlias("n");
         addAlias("next");
         addAlias("s");
@@ -24,7 +27,7 @@ public class SkipCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+            GuildAudioTrackManager gmm = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
             if (gmm.getScheduler().getQueue().isEmpty() && (gmm.getPlayer().getPlayingTrack() == null)) return;
             gmm.getScheduler().setLooping(false);
             if (params == null) {

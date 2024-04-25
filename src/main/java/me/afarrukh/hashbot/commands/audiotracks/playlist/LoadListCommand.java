@@ -3,7 +3,7 @@ package me.afarrukh.hashbot.commands.audiotracks.playlist;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.PlaylistLoader;
@@ -16,10 +16,12 @@ import org.jetbrains.annotations.NotNull;
 public class LoadListCommand extends Command implements AudioTrackCommand {
 
     private final Database database;
+    private final AudioTrackManager audioTrackManager;
 
-    public LoadListCommand(Database database) {
+    public LoadListCommand(Database database, AudioTrackManager audioTrackManager) {
         super("loadlist");
         this.database = database;
+        this.audioTrackManager = audioTrackManager;
         addAlias("plist");
         addAlias("dlist");
 
@@ -56,14 +58,14 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
                                     "Queueing playlist %s with %d tracks. It might take a while for all tracks to be added to the queue."
                                             .formatted(params, playlistSize))
                             .complete();
-                    var playlistLoader = new PlaylistLoader(member, playlistSize, message, params);
+                    var playlistLoader = new PlaylistLoader(audioTrackManager, member, playlistSize, message, params);
 
-                    AudioPlayerManager playerManager = Bot.trackManager.getPlayerManager();
-                    GuildAudioTrackManager guildAudioPlayer = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+                    AudioPlayerManager playerManager = audioTrackManager.getPlayerManager();
+                    GuildAudioTrackManager guildAudioPlayer = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
                     var iterator = playlist.getItems().iterator();
                     var firstItem = iterator.next();
                     playerManager.loadItemOrdered(
-                            guildAudioPlayer, firstItem.uri(), new YTFirstLatentTrackHandler(member, memberId));
+                            guildAudioPlayer, firstItem.uri(), new YTFirstLatentTrackHandler(member, memberId, audioTrackManager));
                     int idx = 0;
                     while (iterator.hasNext()) {
                         var nextItem = iterator.next();

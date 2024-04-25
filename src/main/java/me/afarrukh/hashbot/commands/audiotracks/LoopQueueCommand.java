@@ -2,15 +2,18 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.track.TrackScheduler;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class LoopQueueCommand extends Command implements AudioTrackCommand {
 
-    public LoopQueueCommand() {
+    private final AudioTrackManager audioTrackManager;
+
+    public LoopQueueCommand(AudioTrackManager audioTrackManager) {
         super("loopqueue");
+        this.audioTrackManager = audioTrackManager;
         addAlias("lq");
         description = "Adds tracks to the end of the queue once they are complete.";
     }
@@ -19,7 +22,7 @@ public class LoopQueueCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
             TrackScheduler ts =
-                    Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+                    audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
             if (ts.isFairPlay()) {
                 evt.getChannel()
                         .sendMessage("Cannot use this feature unless fairplay is disabled.")

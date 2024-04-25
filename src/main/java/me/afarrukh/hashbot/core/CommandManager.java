@@ -1,6 +1,5 @@
 package me.afarrukh.hashbot.core;
 
-import me.afarrukh.hashbot.CommandManagerModule;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
@@ -9,12 +8,7 @@ import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 import static java.util.Comparator.comparing;
 

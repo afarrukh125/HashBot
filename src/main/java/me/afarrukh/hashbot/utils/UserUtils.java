@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.utils;
 
 import me.afarrukh.hashbot.config.Config;
-import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.api.entities.User;
 
 public class UserUtils {

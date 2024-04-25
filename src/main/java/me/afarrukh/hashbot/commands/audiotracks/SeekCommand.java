@@ -2,13 +2,17 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SeekCommand extends Command implements AudioTrackCommand {
 
-    public SeekCommand() {
+    private final AudioTrackManager audioTrackManager;
+
+    public SeekCommand(AudioTrackManager audioTrackManager) {
         super("seek");
+        this.audioTrackManager = audioTrackManager;
         addAlias("skim");
         addAlias("ff");
         description = "Seeks to the particular time (in seconds) of the currently playing track.";
@@ -31,7 +35,7 @@ public class SeekCommand extends Command implements AudioTrackCommand {
                 } else {
                     String[] tokens = params.split(" ");
                     int seconds = Integer.parseInt(tokens[0]);
-                    AudioTrackUtils.seek(evt, seconds);
+                    AudioTrackUtils.seek(evt, seconds, audioTrackManager);
                 }
             } catch (NumberFormatException e) {
                 evt.getChannel()
@@ -61,6 +65,6 @@ public class SeekCommand extends Command implements AudioTrackCommand {
         }
 
         int desiredTime = desiredMinute + desiredSeconds;
-        AudioTrackUtils.seek(evt, desiredTime);
+        AudioTrackUtils.seek(evt, desiredTime, audioTrackManager);
     }
 }

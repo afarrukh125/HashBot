@@ -2,7 +2,7 @@ package me.afarrukh.hashbot.commands.audiotracks;
 
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
 import me.afarrukh.hashbot.track.results.YTLinkResultHandler;
@@ -15,11 +15,13 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
 
     private final Database database;
     private final JDA jda;
+    private final AudioTrackManager audioTrackManager;
 
-    public PlayTopCommand(Database database, JDA jda) {
+    public PlayTopCommand(Database database, JDA jda, AudioTrackManager audioTrackManager) {
         super("playtop");
         this.database = database;
         this.jda = jda;
+        this.audioTrackManager = audioTrackManager;
         addAlias("ptop");
         description = "Adds a track to the top of the track queue";
     }
@@ -35,12 +37,12 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
             return;
         }
 
-        GuildAudioTrackManager gmm = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+        GuildAudioTrackManager gmm = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
         if (params.split(" ").length == 1 && params.contains("http")) {
-            Bot.trackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true, database));
+            audioTrackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true, database));
             evt.getMessage().delete().queue();
         } else {
-            Bot.trackManager
+            audioTrackManager
                     .getPlayerManager()
                     .loadItem("ytsearch: " + params, new YTSearchResultHandler(gmm, evt, true, database));
         }

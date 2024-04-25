@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.api.entities.Guild;
@@ -26,10 +26,12 @@ public class TrackScheduler extends AudioEventAdapter {
     private boolean looping;
     private boolean loopingQueue;
     private boolean fairPlay;
+    private AudioTrackManager audioTrackManager;
 
-    public TrackScheduler(AudioPlayer player, Guild guild) {
+    public TrackScheduler(AudioPlayer player, Guild guild, AudioTrackManager audioTrackManager) {
         this.guild = guild;
         this.player = player;
+        this.audioTrackManager = audioTrackManager;
         this.queue = new LinkedBlockingQueue<>();
         looping = false;
         fairPlay = false;
@@ -62,7 +64,7 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        Bot.trackManager.getGuildAudioPlayer(guild).resetDisconnectTimer();
+        audioTrackManager.getGuildAudioPlayer(guild).resetDisconnectTimer();
     }
 
     /**
@@ -71,8 +73,8 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the current one is finished
-        Timer disconnectTimer = Bot.trackManager.getGuildAudioPlayer(guild).getDisconnectTimer();
-        disconnectTimer.schedule(new DisconnectTimer(guild), Constants.DISCONNECT_DELAY * 1000);
+        Timer disconnectTimer = audioTrackManager.getGuildAudioPlayer(guild).getDisconnectTimer();
+        disconnectTimer.schedule(new DisconnectTimer(guild, audioTrackManager), Constants.DISCONNECT_DELAY * 1000);
         if (isLooping()) {
             player.stopTrack();
             AudioTrack cloneTrack = track.makeClone();

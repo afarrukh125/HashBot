@@ -3,7 +3,6 @@ package me.afarrukh.hashbot.cli;
 import com.google.inject.Inject;
 import me.afarrukh.hashbot.cli.commands.CheckMemoryCLI;
 import me.afarrukh.hashbot.cli.commands.GarbageCleanCLI;
-import me.afarrukh.hashbot.cli.commands.SetNameCLI;
 import me.afarrukh.hashbot.cli.commands.ShutdownCLI;
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
@@ -22,7 +21,6 @@ public class CommandLineInputManager {
         addCommand(new CheckMemoryCLI());
         addCommand(new GarbageCleanCLI());
         addCommand(new ShutdownCLI(jda));
-        addCommand(new SetNameCLI(jda));
     }
 
     public void processInput(String input) {

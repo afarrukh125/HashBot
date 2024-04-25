@@ -1,7 +1,7 @@
 package me.afarrukh.hashbot.track;
 
 import me.afarrukh.hashbot.config.Constants;
-import me.afarrukh.hashbot.core.Bot;
+import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -33,6 +33,7 @@ public class PlaylistLoader {
      * The original size of the playlist
      */
     private final int originalSize;
+    private final AudioTrackManager audioTrackManager;
     /**
      * The original size of the playlist
      * We aim to count upwards towards this as we add tracks to this "barrier"
@@ -51,7 +52,8 @@ public class PlaylistLoader {
      * @param message  The associated message object to be updated once the playlist has been loaded
      * @param listName The name of the playlist
      */
-    public PlaylistLoader(Member member, int maxSize, Message message, String listName) {
+    public PlaylistLoader(AudioTrackManager audioTrackManager, Member member, int maxSize, Message message, String listName) {
+        this.audioTrackManager = audioTrackManager;
         this.maxSize = maxSize;
         this.member = member;
         this.tracks = new ArrayList<>();
@@ -108,7 +110,7 @@ public class PlaylistLoader {
      * This essentially dumps all the latent tracks into the track queue, after which the purpose of this class is complete.
      */
     private void queueTracks() {
-        Bot.trackManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(tracks);
+        audioTrackManager.getGuildAudioPlayer(member.getGuild()).getScheduler().queue(tracks);
         System.gc();
     }
 

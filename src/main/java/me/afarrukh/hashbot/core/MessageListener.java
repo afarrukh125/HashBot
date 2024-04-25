@@ -30,14 +30,17 @@ public class MessageListener extends ListenerAdapter {
     private final JDA jda;
     private final ReactionManager reactionManager;
     private final CommandManager commandManager;
+    private final AudioTrackManager audioTrackManager;
 
     @Inject
-    public MessageListener(Config config, Database database, JDA jda, ReactionManager reactionManager, CommandManager commandManager) {
+    public MessageListener(Config config, Database database, JDA jda, ReactionManager reactionManager, CommandManager commandManager,
+                           AudioTrackManager audioTrackManager) {
         this.config = config;
         this.database = database;
         this.jda = jda;
         this.reactionManager = reactionManager;
         this.commandManager = commandManager;
+        this.audioTrackManager = audioTrackManager;
     }
 
     @Override
@@ -67,15 +70,15 @@ public class MessageListener extends ListenerAdapter {
                     .contains(evt.getGuild()
                             .getMemberById(evt.getJDA().getSelfUser().getId()))) return;
 
-            GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+            GuildAudioTrackManager manager = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
 
             // Check if the user to join is the first to join and resume if it is already paused
             if ((joinedChannel.getMembers().size() == 2)
                     && manager.getPlayer().isPaused()
                     && evt.getGuild().getAudioManager().isConnected()) {
-                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
+                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
 
-                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
+                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
             }
         }
 
@@ -87,10 +90,10 @@ public class MessageListener extends ListenerAdapter {
                 return;
             }
 
-            GuildAudioTrackManager manager = Bot.trackManager.getGuildAudioPlayer(evt.getGuild());
+            GuildAudioTrackManager manager = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
 
-            if (Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
-                AudioTrackUtils.disconnect(evt.getGuild());
+            if (audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
+                AudioTrackUtils.disconnect(evt.getGuild(), audioTrackManager);
                 return;
             }
 
@@ -98,11 +101,11 @@ public class MessageListener extends ListenerAdapter {
             if (leftChannel.getMembers().size() == 1
                     && !manager.getPlayer().isPaused()
                     && evt.getGuild().getAudioManager().isConnected()) {
-                Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
+                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
 
                 var disconnectTimer =
-                        Bot.trackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-                disconnectTimer.schedule(new DisconnectTimer(evt.getGuild()), Constants.DISCONNECT_DELAY * 1000);
+                        audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
+                disconnectTimer.schedule(new DisconnectTimer(evt.getGuild(), audioTrackManager), Constants.DISCONNECT_DELAY * 1000);
             }
         }
     }

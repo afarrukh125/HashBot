@@ -5,10 +5,7 @@ import me.afarrukh.hashbot.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
 
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
@@ -20,7 +17,8 @@ class Main {
                 new ConfigModule(),
                 new DatabaseModule(),
                 new JDAModule(),
-                new CommandManagerModule());
+                new CommandManagerModule(),
+                new AudioTrackModule());
 
         injector.getInstance(Bot.class).init();
 

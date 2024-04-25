@@ -1,7 +1,6 @@
 package me.afarrukh.hashbot.cli.commands;
 
 import me.afarrukh.hashbot.cli.CLICommand;
-import me.afarrukh.hashbot.core.Bot;
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
