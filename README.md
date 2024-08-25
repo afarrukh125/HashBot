@@ -5,7 +5,7 @@ Caters to a smaller number of discord servers.
 
 ## Requirements
 
-* Java 21
+* Java 22
 * Maven 3.9+
   * To compile the jar simply run `mvn package` and an uber jar will be placed in the target folder
 * Optional: A Neo4j instance
