@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import static java.lang.Integer.parseInt;
+
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
@@ -7,8 +9,6 @@ import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import static java.lang.Integer.parseInt;
 
 public class QueueCommand extends Command implements AudioTrackCommand {
 
@@ -33,8 +33,7 @@ public class QueueCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (params == null)
             evt.getChannel()
-                    .sendMessageEmbeds(
-                            EmbedUtils.getQueueMessage(evt, 1, audioTrackManager))
+                    .sendMessageEmbeds(EmbedUtils.getQueueMessage(evt, 1, audioTrackManager))
                     .queue();
         else {
             try {

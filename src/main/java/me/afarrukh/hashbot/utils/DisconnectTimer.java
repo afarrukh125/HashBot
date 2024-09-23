@@ -1,9 +1,8 @@
 package me.afarrukh.hashbot.utils;
 
+import java.util.TimerTask;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import net.dv8tion.jda.api.entities.Guild;
-
-import java.util.TimerTask;
 
 public class DisconnectTimer extends TimerTask {
 

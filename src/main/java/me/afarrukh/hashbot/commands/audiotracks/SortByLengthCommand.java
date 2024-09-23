@@ -1,14 +1,13 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import static java.util.Objects.requireNonNull;
+
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.List;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
-
-import static java.util.Objects.requireNonNull;
 
 public class SortByLengthCommand extends Command {
 
@@ -29,8 +28,8 @@ public class SortByLengthCommand extends Command {
                 .getScheduler()
                 .getAsArrayList();
 
-        if (!requireNonNull(requireNonNull(evt.getGuild()
-                                .getMemberById(jda.getSelfUser().getId()))
+        if (!requireNonNull(requireNonNull(
+                                evt.getGuild().getMemberById(jda.getSelfUser().getId()))
                         .getVoiceState())
                 .inAudioChannel()) {
             evt.getChannel().sendMessage("Bot is not in channel").queue();

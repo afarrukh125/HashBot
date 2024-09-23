@@ -1,14 +1,13 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.ArrayList;
+import java.util.List;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RemoveRangeCommand extends Command implements AudioTrackCommand {
 
@@ -79,8 +78,7 @@ public class RemoveRangeCommand extends Command implements AudioTrackCommand {
                 } else {
                     // If it is not a range
                     if (range.split("-").length == 1) {
-                        var prefix = database
-                                .getPrefixForGuild(evt.getGuild().getId());
+                        var prefix = database.getPrefixForGuild(evt.getGuild().getId());
                         errorMessageBuilder
                                 .append("- Range ")
                                 .append(range)

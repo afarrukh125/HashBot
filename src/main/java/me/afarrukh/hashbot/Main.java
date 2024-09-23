@@ -1,19 +1,19 @@
 package me.afarrukh.hashbot;
 
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
 import com.google.inject.Guice;
+import java.util.Scanner;
 import me.afarrukh.hashbot.cli.CommandLineInputManager;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.Bot;
-
-import java.util.Scanner;
-
-import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 class Main {
 
     public static void main(String... args) {
         Constants.init();
-        var injector = Guice.createInjector(new CommandLineInputManagerModule(),
+        var injector = Guice.createInjector(
+                new CommandLineInputManagerModule(),
                 new ConfigModule(),
                 new DatabaseModule(),
                 new JDAModule(),

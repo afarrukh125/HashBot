@@ -1,12 +1,12 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
+import static java.lang.Runtime.getRuntime;
+
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.SystemCommand;
 import me.afarrukh.hashbot.config.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import static java.lang.Runtime.getRuntime;
 
 public class CheckMemoryCommand extends Command implements SystemCommand {
 

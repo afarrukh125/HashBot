@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.core;
 
+import static java.util.Objects.nonNull;
+
 import com.google.inject.Inject;
 import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.config.Constants;
@@ -21,8 +23,6 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import static java.util.Objects.nonNull;
-
 public class MessageListener extends ListenerAdapter {
 
     private final Config config;
@@ -33,8 +33,13 @@ public class MessageListener extends ListenerAdapter {
     private final AudioTrackManager audioTrackManager;
 
     @Inject
-    public MessageListener(Config config, Database database, JDA jda, ReactionManager reactionManager, CommandManager commandManager,
-                           AudioTrackManager audioTrackManager) {
+    public MessageListener(
+            Config config,
+            Database database,
+            JDA jda,
+            ReactionManager reactionManager,
+            CommandManager commandManager,
+            AudioTrackManager audioTrackManager) {
         this.config = config;
         this.database = database;
         this.jda = jda;
@@ -76,7 +81,10 @@ public class MessageListener extends ListenerAdapter {
             if ((joinedChannel.getMembers().size() == 2)
                     && manager.getPlayer().isPaused()
                     && evt.getGuild().getAudioManager().isConnected()) {
-                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(false);
+                audioTrackManager
+                        .getGuildAudioPlayer(evt.getGuild())
+                        .getPlayer()
+                        .setPaused(false);
 
                 audioTrackManager.getGuildAudioPlayer(evt.getGuild()).resetDisconnectTimer();
             }
@@ -92,7 +100,11 @@ public class MessageListener extends ListenerAdapter {
 
             GuildAudioTrackManager manager = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
 
-            if (audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack() == null) {
+            if (audioTrackManager
+                            .getGuildAudioPlayer(evt.getGuild())
+                            .getPlayer()
+                            .getPlayingTrack()
+                    == null) {
                 AudioTrackUtils.disconnect(evt.getGuild(), audioTrackManager);
                 return;
             }
@@ -101,11 +113,15 @@ public class MessageListener extends ListenerAdapter {
             if (leftChannel.getMembers().size() == 1
                     && !manager.getPlayer().isPaused()
                     && evt.getGuild().getAudioManager().isConnected()) {
-                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().setPaused(true);
+                audioTrackManager
+                        .getGuildAudioPlayer(evt.getGuild())
+                        .getPlayer()
+                        .setPaused(true);
 
                 var disconnectTimer =
                         audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getDisconnectTimer();
-                disconnectTimer.schedule(new DisconnectTimer(evt.getGuild(), audioTrackManager), Constants.DISCONNECT_DELAY * 1000);
+                disconnectTimer.schedule(
+                        new DisconnectTimer(evt.getGuild(), audioTrackManager), Constants.DISCONNECT_DELAY * 1000);
             }
         }
     }
@@ -120,16 +136,12 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent evt) {
-        jda
-                .getPresence()
-                .setActivity(Activity.playing(" in " + jda.getGuilds().size() + " guilds"));
+        jda.getPresence().setActivity(Activity.playing(" in " + jda.getGuilds().size() + " guilds"));
     }
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent evt) {
-        jda
-                .getPresence()
-                .setActivity(Activity.playing(" in " + jda.getGuilds().size() + " guilds"));
+        jda.getPresence().setActivity(Activity.playing(" in " + jda.getGuilds().size() + " guilds"));
     }
 
     @Override

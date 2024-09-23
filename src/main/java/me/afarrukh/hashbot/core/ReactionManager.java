@@ -27,7 +27,6 @@ public class ReactionManager {
 
         final String reactionId = "\uD83D\uDCCC"; // Pushpin emote ID
 
-
         if (database.isBotPinMessageInGuild(evt.getGuild().getId(), message.getId())) {
             return;
         }

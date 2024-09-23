@@ -1,14 +1,13 @@
 package me.afarrukh.hashbot.core;
 
 import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import me.afarrukh.hashbot.commands.Command;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Bot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);

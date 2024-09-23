@@ -1,15 +1,14 @@
 package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.List;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.Playlist;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
-
-import static java.util.Objects.requireNonNull;
 
 public class ViewListCommand extends Command {
 

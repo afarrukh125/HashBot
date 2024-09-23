@@ -1,8 +1,8 @@
 package me.afarrukh.hashbot.track;
 
-import java.util.List;
-
 import static java.util.Collections.unmodifiableList;
+
+import java.util.List;
 
 public class Playlist {
 

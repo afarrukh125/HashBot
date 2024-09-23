@@ -1,22 +1,21 @@
 package me.afarrukh.hashbot.track;
 
+import static java.lang.String.format;
+import static java.util.Collections.shuffle;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.utils.CmdUtils;
 import me.afarrukh.hashbot.utils.DisconnectTimer;
 import net.dv8tion.jda.api.entities.Guild;
-
-import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.String.format;
-import static java.util.Collections.shuffle;
 
 public class TrackScheduler extends AudioEventAdapter {
 

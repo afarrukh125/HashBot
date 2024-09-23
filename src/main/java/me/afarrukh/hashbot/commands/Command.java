@@ -1,12 +1,11 @@
 package me.afarrukh.hashbot.commands;
 
+import java.util.*;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.*;
 
 /**
  * A command is something the user types to interact with the bot.

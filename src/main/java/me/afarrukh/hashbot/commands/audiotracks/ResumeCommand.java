@@ -20,7 +20,10 @@ public class ResumeCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (AudioTrackUtils.canInteract(evt)) {
-            if (audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().isPaused()) {
+            if (audioTrackManager
+                    .getGuildAudioPlayer(evt.getGuild())
+                    .getPlayer()
+                    .isPaused()) {
                 AudioTrackUtils.resume(evt, audioTrackManager);
                 evt.getChannel().sendMessage("Resumed.").queue();
             } else evt.getChannel().sendMessage("The bot is already playing.").queue();

@@ -27,7 +27,8 @@ public class RemoveCommand extends Command implements AudioTrackCommand {
     @Override
     public void onInvocation(MessageReceivedEvent evt, String params) {
         try {
-            if (AudioTrackUtils.canInteract(evt)) AudioTrackUtils.remove(evt, Integer.parseInt(params), audioTrackManager);
+            if (AudioTrackUtils.canInteract(evt))
+                AudioTrackUtils.remove(evt, Integer.parseInt(params), audioTrackManager);
         } catch (NullPointerException | NumberFormatException e) {
             onIncorrectParams(database, evt.getChannel().asTextChannel());
         }

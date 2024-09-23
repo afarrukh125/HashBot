@@ -1,6 +1,7 @@
 package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.*;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.config.Constants;
@@ -9,8 +10,6 @@ import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.exceptions.PlaylistException;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.*;
 
 public class SavePlaylistCommand extends Command implements AudioTrackCommand {
 
@@ -75,8 +74,10 @@ public class SavePlaylistCommand extends Command implements AudioTrackCommand {
         }
 
         List<AudioTrack> trackList = new ArrayList<>();
-        trackList.add(
-                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getPlayer().getPlayingTrack());
+        trackList.add(audioTrackManager
+                .getGuildAudioPlayer(evt.getGuild())
+                .getPlayer()
+                .getPlayingTrack());
         trackList.addAll(audioTrackManager
                 .getGuildAudioPlayer(evt.getGuild())
                 .getScheduler()

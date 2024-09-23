@@ -1,5 +1,12 @@
 package me.afarrukh.hashbot.commands.management.user;
 
+import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.data.Database;
@@ -9,14 +16,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static me.afarrukh.hashbot.utils.MessageUtils.deleteAllMessagesFromBin;
 
 /**
  * Created by Abdullah on 08/04/2019 20:22

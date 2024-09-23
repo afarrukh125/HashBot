@@ -1,5 +1,7 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
+import static java.util.Objects.requireNonNull;
+
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
@@ -10,8 +12,6 @@ import me.afarrukh.hashbot.track.results.YTSearchResultHandler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import static java.util.Objects.requireNonNull;
 
 public class PlayCommand extends Command implements AudioTrackCommand {
 
@@ -61,7 +61,9 @@ public class PlayCommand extends Command implements AudioTrackCommand {
                     .loadItemOrdered(gmm, params.split(" ")[0], new YTLinkResultHandler(gmm, evt, false, database));
             evt.getMessage().delete().queue();
         } else if (params.split(" ").length == 1 && params.contains("http")) {
-            audioTrackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false, database));
+            audioTrackManager
+                    .getPlayerManager()
+                    .loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, false, database));
             evt.getMessage().delete().queue();
         } else
             audioTrackManager

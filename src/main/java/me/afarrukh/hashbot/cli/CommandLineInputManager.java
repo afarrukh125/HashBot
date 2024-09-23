@@ -1,15 +1,14 @@
 package me.afarrukh.hashbot.cli;
 
 import com.google.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 import me.afarrukh.hashbot.cli.commands.CheckMemoryCLI;
 import me.afarrukh.hashbot.cli.commands.GarbageCleanCLI;
 import me.afarrukh.hashbot.cli.commands.ShutdownCLI;
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CommandLineInputManager {
     private static final Logger LOG = LoggerFactory.getLogger(CommandLineInputManager.class);

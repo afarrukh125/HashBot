@@ -39,7 +39,9 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
 
         GuildAudioTrackManager gmm = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
         if (params.split(" ").length == 1 && params.contains("http")) {
-            audioTrackManager.getPlayerManager().loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true, database));
+            audioTrackManager
+                    .getPlayerManager()
+                    .loadItemOrdered(gmm, params, new YTLinkResultHandler(gmm, evt, true, database));
             evt.getMessage().delete().queue();
         } else {
             audioTrackManager
@@ -70,7 +72,7 @@ public class PlayTopCommand extends Command implements AudioTrackCommand {
     }
 
     @Override
-    public void onIncorrectParams(Database database,  TextChannel channel) {
+    public void onIncorrectParams(Database database, TextChannel channel) {
         channel.sendMessage("Usage: play <youtube search> OR play <youtube link>")
                 .queue();
     }

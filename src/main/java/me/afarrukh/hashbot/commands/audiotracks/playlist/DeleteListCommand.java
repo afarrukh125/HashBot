@@ -1,11 +1,11 @@
 package me.afarrukh.hashbot.commands.audiotracks.playlist;
 
+import static java.util.Objects.requireNonNull;
+
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import static java.util.Objects.requireNonNull;
 
 public class DeleteListCommand extends Command implements AudioTrackCommand {
 
@@ -32,7 +32,6 @@ public class DeleteListCommand extends Command implements AudioTrackCommand {
                     .queue();
             return;
         }
-
 
         var playlistName = params;
 

@@ -23,7 +23,8 @@ public class FairPlayCommand extends Command implements AudioTrackCommand {
     public void onInvocation(MessageReceivedEvent evt, String params) {
         if (!AudioTrackUtils.canInteract(evt)) return;
 
-        TrackScheduler ts = audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
+        TrackScheduler ts =
+                audioTrackManager.getGuildAudioPlayer(evt.getGuild()).getScheduler();
 
         if (ts.isLoopingQueue()) {
             evt.getChannel()

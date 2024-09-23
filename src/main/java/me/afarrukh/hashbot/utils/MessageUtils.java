@@ -1,5 +1,8 @@
 package me.afarrukh.hashbot.utils;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -7,10 +10,6 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class MessageUtils {
     public static void pinMessage(Database database, Message originalMessage, MessageChannel channel) {
@@ -66,9 +65,8 @@ public class MessageUtils {
         eb.appendDescription("\n[" + "Jump" + "](" + originalMessage.getJumpUrl() + ")");
         Message newMessage = channel.sendMessageEmbeds(eb.build()).complete();
 
-        database
-                .setMessageAsPinnedInGuild(
-                        originalMessage.getGuild().getId(), originalMessage.getId(), newMessage.getId());
+        database.setMessageAsPinnedInGuild(
+                originalMessage.getGuild().getId(), originalMessage.getId(), newMessage.getId());
     }
 
     public static void deleteAllMessagesFromBin(MessageReceivedEvent evt, List<Message> messageBin) {

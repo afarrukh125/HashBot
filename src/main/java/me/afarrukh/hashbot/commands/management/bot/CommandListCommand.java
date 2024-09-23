@@ -1,5 +1,9 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
+import static me.afarrukh.hashbot.commands.management.bot.HelpCommand.appendCommandInformation;
+
+import java.util.ArrayList;
+import java.util.List;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
@@ -9,11 +13,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static me.afarrukh.hashbot.commands.management.bot.HelpCommand.appendCommandInformation;
 
 public class CommandListCommand extends Command {
 

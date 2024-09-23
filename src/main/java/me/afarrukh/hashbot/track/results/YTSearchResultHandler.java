@@ -12,7 +12,8 @@ public class YTSearchResultHandler extends YTGenericResultHandler {
 
     private final Database database;
 
-    public YTSearchResultHandler(GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop, Database database) {
+    public YTSearchResultHandler(
+            GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop, Database database) {
         super(gmm, evt, playTop);
         this.database = database;
     }

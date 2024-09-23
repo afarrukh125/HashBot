@@ -1,6 +1,8 @@
 package me.afarrukh.hashbot.commands.management.bot;
 
 import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
 import me.afarrukh.hashbot.config.Constants;
@@ -9,9 +11,6 @@ import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HelpCommand extends Command {
 

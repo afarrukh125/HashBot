@@ -1,12 +1,11 @@
 package me.afarrukh.hashbot.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class Config {
 

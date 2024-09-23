@@ -1,12 +1,11 @@
 package me.afarrukh.hashbot.commands.management.guild;
 
+import java.util.concurrent.TimeUnit;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.concurrent.TimeUnit;
 
 public class SetUnpinnedCommand extends Command implements AdminCommand {
 

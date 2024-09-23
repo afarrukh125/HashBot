@@ -1,12 +1,11 @@
 package me.afarrukh.hashbot.utils;
 
+import static java.lang.Runtime.getRuntime;
+
+import java.util.Optional;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.Optional;
-
-import static java.lang.Runtime.getRuntime;
 
 public class BotUtils {
 

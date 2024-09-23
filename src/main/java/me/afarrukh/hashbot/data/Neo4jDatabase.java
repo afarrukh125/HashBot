@@ -1,6 +1,12 @@
 package me.afarrukh.hashbot.data;
 
+import static java.lang.Runtime.getRuntime;
+import static java.util.Collections.singletonMap;
+
 import com.google.inject.Inject;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
 import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.config.Constants;
@@ -12,13 +18,6 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static java.lang.Runtime.getRuntime;
-import static java.util.Collections.singletonMap;
 
 public class Neo4jDatabase implements Database {
     private static final Logger LOG = LoggerFactory.getLogger(Neo4jDatabase.class);

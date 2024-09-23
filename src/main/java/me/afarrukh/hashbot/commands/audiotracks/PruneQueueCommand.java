@@ -1,15 +1,14 @@
 package me.afarrukh.hashbot.commands.audiotracks;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AudioTrackCommand;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 
 public class PruneQueueCommand extends Command implements AudioTrackCommand {
 

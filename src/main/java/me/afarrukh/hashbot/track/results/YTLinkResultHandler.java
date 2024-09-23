@@ -2,6 +2,9 @@ package me.afarrukh.hashbot.track.results;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.data.Database;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
@@ -9,15 +12,12 @@ import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import me.afarrukh.hashbot.utils.EmbedUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class YTLinkResultHandler extends YTGenericResultHandler {
 
     private final Database database;
 
-    public YTLinkResultHandler(GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop, Database database) {
+    public YTLinkResultHandler(
+            GuildAudioTrackManager gmm, MessageReceivedEvent evt, boolean playTop, Database database) {
         super(gmm, evt, playTop);
         this.database = database;
     }

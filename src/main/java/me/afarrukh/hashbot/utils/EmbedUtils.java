@@ -2,6 +2,8 @@ package me.afarrukh.hashbot.utils;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.Iterator;
+import java.util.concurrent.BlockingQueue;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
@@ -11,16 +13,11 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.Iterator;
-import java.util.concurrent.BlockingQueue;
-
 @SuppressWarnings("Duplicates")
 public class EmbedUtils {
 
     public static MessageEmbed getQueueMessage(
-                                           MessageReceivedEvent evt,
-                                           int page,
-                                           AudioTrackManager audioTrackManager) {
+            MessageReceivedEvent evt, int page, AudioTrackManager audioTrackManager) {
         var gmm = audioTrackManager.getGuildAudioPlayer(evt.getGuild());
         try {
             EmbedBuilder eb = new EmbedBuilder();
@@ -88,7 +85,8 @@ public class EmbedUtils {
      * @param evt The event to get the channel to send it to
      * @return A message embed with information on a single provided audio track
      */
-    public static MessageEmbed getSingleTrackEmbed(AudioTrack currentTrack, MessageReceivedEvent evt, AudioTrackManager audioTrackManager) {
+    public static MessageEmbed getSingleTrackEmbed(
+            AudioTrack currentTrack, MessageReceivedEvent evt, AudioTrackManager audioTrackManager) {
         EmbedBuilder eb = new EmbedBuilder();
         StringBuilder sb = new StringBuilder(); // Building the title
         sb.append("Currently playing");
@@ -112,7 +110,8 @@ public class EmbedUtils {
      * @param evt The message received event containing information such as which channel to send to
      * @return an embed referring to a track which has been queued to an audioplayer already playing a track
      */
-    public static MessageEmbed getQueuedEmbed(GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt, Database database) {
+    public static MessageEmbed getQueuedEmbed(
+            GuildAudioTrackManager gmm, AudioTrack at, MessageReceivedEvent evt, Database database) {
         TrackScheduler ts = gmm.getScheduler();
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Now playing");
@@ -128,8 +127,7 @@ public class EmbedUtils {
             if (ts.isFairPlay())
                 eb.setFooter(
                         "Fairplay mode is currently on. Use "
-                                + database
-                                        .getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
+                                + database.getPrefixForGuild(evt.getGuild().getId()) + "fairplay to turn it off.",
                         null);
         }
         eb.setThumbnail(AudioTrackUtils.getThumbnailURL(at));

@@ -1,25 +1,24 @@
 package me.afarrukh.hashbot.data;
 
-import com.google.inject.Inject;
-import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
-import me.afarrukh.hashbot.config.Config;
-import me.afarrukh.hashbot.exceptions.PlaylistException;
-import me.afarrukh.hashbot.track.Playlist;
-import me.afarrukh.hashbot.track.PlaylistItem;
-import org.jetbrains.annotations.NotNull;
+import static java.lang.Runtime.getRuntime;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.synchronizedList;
+import static java.util.Comparator.comparing;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
+import com.google.inject.Inject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-
-import static java.lang.Runtime.getRuntime;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.synchronizedList;
-import static java.util.Comparator.comparing;
-import static java.util.concurrent.Executors.newFixedThreadPool;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
+import me.afarrukh.hashbot.config.Config;
+import me.afarrukh.hashbot.exceptions.PlaylistException;
+import me.afarrukh.hashbot.track.Playlist;
+import me.afarrukh.hashbot.track.PlaylistItem;
+import org.jetbrains.annotations.NotNull;
 
 public class SQLiteDatabase implements Database {
 

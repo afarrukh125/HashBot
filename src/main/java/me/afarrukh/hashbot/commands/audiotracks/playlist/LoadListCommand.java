@@ -65,7 +65,9 @@ public class LoadListCommand extends Command implements AudioTrackCommand {
                     var iterator = playlist.getItems().iterator();
                     var firstItem = iterator.next();
                     playerManager.loadItemOrdered(
-                            guildAudioPlayer, firstItem.uri(), new YTFirstLatentTrackHandler(member, memberId, audioTrackManager));
+                            guildAudioPlayer,
+                            firstItem.uri(),
+                            new YTFirstLatentTrackHandler(member, memberId, audioTrackManager));
                     int idx = 0;
                     while (iterator.hasNext()) {
                         var nextItem = iterator.next();

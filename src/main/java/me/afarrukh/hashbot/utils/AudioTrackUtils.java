@@ -3,6 +3,7 @@ package me.afarrukh.hashbot.utils;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.concurrent.BlockingQueue;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.data.Database;
@@ -11,8 +12,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
-
-import java.util.concurrent.BlockingQueue;
 
 public class AudioTrackUtils {
 
@@ -23,7 +22,11 @@ public class AudioTrackUtils {
      * @param playTop      Whether or not the track is to be queued to the top of the list
      */
     public static void play(
-            MessageReceivedEvent evt, GuildAudioTrackManager trackManager, AudioTrack track, boolean playTop, Database database) {
+            MessageReceivedEvent evt,
+            GuildAudioTrackManager trackManager,
+            AudioTrack track,
+            boolean playTop,
+            Database database) {
 
         connectToChannel(evt.getMember());
         if (playTop) {

@@ -2,10 +2,9 @@ package me.afarrukh.hashbot.track;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import java.util.Timer;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import net.dv8tion.jda.api.entities.Guild;
-
-import java.util.Timer;
 
 /**
  * Object that binds a guild to a player and track scheduler

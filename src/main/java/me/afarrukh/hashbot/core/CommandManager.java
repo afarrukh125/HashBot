@@ -1,5 +1,8 @@
 package me.afarrukh.hashbot.core;
 
+import static java.util.Comparator.comparing;
+
+import java.util.*;
 import me.afarrukh.hashbot.commands.Command;
 import me.afarrukh.hashbot.commands.tagging.AdminCommand;
 import me.afarrukh.hashbot.commands.tagging.OwnerCommand;
@@ -7,10 +10,6 @@ import me.afarrukh.hashbot.config.Config;
 import me.afarrukh.hashbot.utils.UserUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.*;
-
-import static java.util.Comparator.comparing;
 
 public class CommandManager {
 

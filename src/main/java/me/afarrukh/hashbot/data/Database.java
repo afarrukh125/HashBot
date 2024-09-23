@@ -1,12 +1,11 @@
 package me.afarrukh.hashbot.data;
 
-import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
-import me.afarrukh.hashbot.exceptions.PlaylistException;
-import me.afarrukh.hashbot.track.Playlist;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import me.afarrukh.hashbot.commands.audiotracks.playlist.TrackData;
+import me.afarrukh.hashbot.exceptions.PlaylistException;
+import me.afarrukh.hashbot.track.Playlist;
 
 public interface Database {
 

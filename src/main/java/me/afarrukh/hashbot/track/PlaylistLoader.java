@@ -1,13 +1,12 @@
 package me.afarrukh.hashbot.track;
 
+import java.util.ArrayList;
+import java.util.List;
 import me.afarrukh.hashbot.config.Constants;
 import me.afarrukh.hashbot.core.AudioTrackManager;
 import me.afarrukh.hashbot.utils.AudioTrackUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlaylistLoader {
 
@@ -33,6 +32,7 @@ public class PlaylistLoader {
      * The original size of the playlist
      */
     private final int originalSize;
+
     private final AudioTrackManager audioTrackManager;
     /**
      * The original size of the playlist
@@ -52,7 +52,8 @@ public class PlaylistLoader {
      * @param message  The associated message object to be updated once the playlist has been loaded
      * @param listName The name of the playlist
      */
-    public PlaylistLoader(AudioTrackManager audioTrackManager, Member member, int maxSize, Message message, String listName) {
+    public PlaylistLoader(
+            AudioTrackManager audioTrackManager, Member member, int maxSize, Message message, String listName) {
         this.audioTrackManager = audioTrackManager;
         this.maxSize = maxSize;
         this.member = member;
