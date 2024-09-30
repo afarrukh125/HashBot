@@ -4,6 +4,10 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.clients.AndroidMusicWithThumbnail;
+import dev.lavalink.youtube.clients.MusicWithThumbnail;
+import dev.lavalink.youtube.clients.TvHtml5EmbeddedWithThumbnail;
+import dev.lavalink.youtube.clients.WebWithThumbnail;
 import java.util.HashMap;
 import java.util.Map;
 import me.afarrukh.hashbot.track.GuildAudioTrackManager;
@@ -16,7 +20,12 @@ public class AudioTrackManager {
     public AudioTrackManager() {
         this.trackManagers = new HashMap<>();
         this.playerManager = new DefaultAudioPlayerManager();
-        playerManager.registerSourceManager(new YoutubeAudioSourceManager());
+        playerManager.registerSourceManager(new YoutubeAudioSourceManager(
+                true,
+                new WebWithThumbnail(),
+                new AndroidMusicWithThumbnail(),
+                new TvHtml5EmbeddedWithThumbnail(),
+                new MusicWithThumbnail()));
 
         AudioSourceManagers.registerLocalSource(playerManager);
         AudioSourceManagers.registerRemoteSources(playerManager);
