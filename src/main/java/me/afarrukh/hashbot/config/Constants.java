@@ -22,7 +22,7 @@ public class Constants {
             Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
     // The limit of a playlist that can be created within the bot
-    public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 100;
+    public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 150;
 
     // How often to update the message when loading or creating a new playlist through the bot
     public static final int PLAYLIST_UPDATE_INTERVAL = 10;
