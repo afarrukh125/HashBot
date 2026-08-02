@@ -24,8 +24,11 @@ public class Constants {
     // The limit of a playlist that can be created within the bot
     public static final int CUSTOM_PLAYLIST_SIZE_LIMIT = 150;
 
-    // How often to update the message when loading or creating a new playlist through the bot
-    public static final int PLAYLIST_UPDATE_INTERVAL = 10;
+    public static final long PLAYLIST_UPDATE_INTERVAL_MS = 2500;
+
+    public static final int PLAYLIST_LOAD_LANES = 4;
+
+    public static final long TRACK_LOAD_TIMEOUT_SECONDS = 30;
 
     private static Constants instance;
 

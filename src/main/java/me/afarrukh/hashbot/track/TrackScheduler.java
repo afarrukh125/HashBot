@@ -45,9 +45,14 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    public void queue(Collection<LatentTrack> tracks) {
-        for (LatentTrack t : tracks) {
-            queue(t.getTrack());
+    public void queue(Collection<AudioTrack> tracks) {
+        for (AudioTrack track : tracks) {
+            if (!player.startTrack(track, true)) {
+                queue.offer(track);
+            }
+        }
+        if (fairPlay) {
+            interleave(false);
         }
     }
 
